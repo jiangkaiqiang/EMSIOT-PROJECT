@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.AreaAlarmMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.AreaAlarm">
+    <id column="alarm_id" jdbcType="INTEGER" property="alarm_id" />
+    <result column="area_type" jdbcType="INTEGER" property="area_type" />
+    <result column="sensitive_area_id" jdbcType="VARCHAR" property="sensitive_area_id" />
+    <result column="enter_plate_num" jdbcType="VARCHAR" property="enter_plate_num" />
+    <result column="enter_time" jdbcType="TIMESTAMP" property="enter_time" />
+    <result column="process_state" jdbcType="INTEGER" property="process_state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    alarm_id, area_type, sensitive_area_id, enter_plate_num, enter_time, process_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from area_alarm
+    where alarm_id = #{alarm_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from area_alarm
+    where alarm_id = #{alarm_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.AreaAlarm">
+    insert into area_alarm (alarm_id, area_type, sensitive_area_id, 
+      enter_plate_num, enter_time, process_state
+      )
+    values (#{alarm_id,jdbcType=INTEGER}, #{area_type,jdbcType=INTEGER}, #{sensitive_area_id,jdbcType=VARCHAR}, 
+      #{enter_plate_num,jdbcType=VARCHAR}, #{enter_time,jdbcType=TIMESTAMP}, #{process_state,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.AreaAlarm">
+    insert into area_alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="alarm_id != null">
+        alarm_id,
+      </if>
+      <if test="area_type != null">
+        area_type,
+      </if>
+      <if test="sensitive_area_id != null">
+        sensitive_area_id,
+      </if>
+      <if test="enter_plate_num != null">
+        enter_plate_num,
+      </if>
+      <if test="enter_time != null">
+        enter_time,
+      </if>
+      <if test="process_state != null">
+        process_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="alarm_id != null">
+        #{alarm_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_type != null">
+        #{area_type,jdbcType=INTEGER},
+      </if>
+      <if test="sensitive_area_id != null">
+        #{sensitive_area_id,jdbcType=VARCHAR},
+      </if>
+      <if test="enter_plate_num != null">
+        #{enter_plate_num,jdbcType=VARCHAR},
+      </if>
+      <if test="enter_time != null">
+        #{enter_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="process_state != null">
+        #{process_state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.AreaAlarm">
+    update area_alarm
+    <set>
+      <if test="area_type != null">
+        area_type = #{area_type,jdbcType=INTEGER},
+      </if>
+      <if test="sensitive_area_id != null">
+        sensitive_area_id = #{sensitive_area_id,jdbcType=VARCHAR},
+      </if>
+      <if test="enter_plate_num != null">
+        enter_plate_num = #{enter_plate_num,jdbcType=VARCHAR},
+      </if>
+      <if test="enter_time != null">
+        enter_time = #{enter_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="process_state != null">
+        process_state = #{process_state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where alarm_id = #{alarm_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.AreaAlarm">
+    update area_alarm
+    set area_type = #{area_type,jdbcType=INTEGER},
+      sensitive_area_id = #{sensitive_area_id,jdbcType=VARCHAR},
+      enter_plate_num = #{enter_plate_num,jdbcType=VARCHAR},
+      enter_time = #{enter_time,jdbcType=TIMESTAMP},
+      process_state = #{process_state,jdbcType=INTEGER}
+    where alarm_id = #{alarm_id,jdbcType=INTEGER}
+  </update>
+</mapper>

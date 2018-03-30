@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.ElectrombileStationMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.ElectrombileStation">
+    <id column="ele_sta_id" jdbcType="INTEGER" property="ele_sta_id" />
+    <result column="ele_gua_card_num" jdbcType="INTEGER" property="ele_gua_card_num" />
+    <result column="station_phy_num" jdbcType="INTEGER" property="station_phy_num" />
+    <result column="hard_read_time" jdbcType="TIMESTAMP" property="hard_read_time" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ele_sta_id, ele_gua_card_num, station_phy_num, hard_read_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from electrombile_station
+    where ele_sta_id = #{ele_sta_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from electrombile_station
+    where ele_sta_id = #{ele_sta_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.ElectrombileStation">
+    insert into electrombile_station (ele_sta_id, ele_gua_card_num, station_phy_num, 
+      hard_read_time, update_time)
+    values (#{ele_sta_id,jdbcType=INTEGER}, #{ele_gua_card_num,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER}, 
+      #{hard_read_time,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.ElectrombileStation">
+    insert into electrombile_station
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ele_sta_id != null">
+        ele_sta_id,
+      </if>
+      <if test="ele_gua_card_num != null">
+        ele_gua_card_num,
+      </if>
+      <if test="station_phy_num != null">
+        station_phy_num,
+      </if>
+      <if test="hard_read_time != null">
+        hard_read_time,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ele_sta_id != null">
+        #{ele_sta_id,jdbcType=INTEGER},
+      </if>
+      <if test="ele_gua_card_num != null">
+        #{ele_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="station_phy_num != null">
+        #{station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="hard_read_time != null">
+        #{hard_read_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.ElectrombileStation">
+    update electrombile_station
+    <set>
+      <if test="ele_gua_card_num != null">
+        ele_gua_card_num = #{ele_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="station_phy_num != null">
+        station_phy_num = #{station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="hard_read_time != null">
+        hard_read_time = #{hard_read_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ele_sta_id = #{ele_sta_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.ElectrombileStation">
+    update electrombile_station
+    set ele_gua_card_num = #{ele_gua_card_num,jdbcType=INTEGER},
+      station_phy_num = #{station_phy_num,jdbcType=INTEGER},
+      hard_read_time = #{hard_read_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP}
+    where ele_sta_id = #{ele_sta_id,jdbcType=INTEGER}
+  </update>
+</mapper>

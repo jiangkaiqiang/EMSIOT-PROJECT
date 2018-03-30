@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<web-app
+
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+
+	version="2.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+	xmlns="http://java.sun.com/xml/ns/javaee">
+
+
+
+	<context-param>  
+
+        <param-name>log4jConfigLocation</param-name>  
+
+        <param-value>/WEB-INF/classes/log4j.properties</param-value>  
+
+    </context-param>  
+
+    
+
+    
+
+	<context-param>
+
+		<param-name>contextConfigLocation</param-name>
+
+		<param-value>
+
+            classpath*:config/spring/local/appcontext-*.xml,
+
+        </param-value>
+
+	</context-param>
+
+	
+
+    <listener><!-- log4监听 -->
+
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+
+    </listener>
+
+	<listener><!-- srping mvc监听 -->
+
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+
+	</listener>
+
+	<listener><!-- 防止内存泄露        --> 
+
+	   <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>   
+
+	</listener>
+
+
+
+	<servlet>
+
+		<servlet-name>mvc-dispatcher</servlet-name>
+
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+		<init-param>
+
+			<param-name>contextConfigLocation</param-name>
+
+			<param-value>/WEB-INF/springMVC-servlet.xml</param-value>
+
+		</init-param>
+
+		<load-on-startup>1</load-on-startup>
+
+	</servlet>
+
+	<filter>  
+
+	  <filter-name>characterEncodingFilter</filter-name>  
+
+	  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+
+	  <init-param>  
+
+	   <param-name>encoding</param-name>  
+
+	   <param-value>UTF-8</param-value>  
+
+	  </init-param>  
+
+	  <init-param>  
+
+	   <param-name>forceEncoding</param-name>  
+
+	   <param-value>true</param-value>  
+
+	  </init-param>  
+
+	</filter>  
+
+	<filter-mapping>  
+
+	  <filter-name>characterEncodingFilter</filter-name>  
+
+	  <url-pattern>/*</url-pattern>  
+
+	</filter-mapping>
+
+	
+
+	 <filter>
+
+	    <filter-name>cors</filter-name>
+
+	    <filter-class>com.ems.iot.manage.filter.CrossInterceptor</filter-class>
+
+	</filter>
+
+	<filter-mapping>
+
+	    <filter-name>cors</filter-name>
+
+	    <url-pattern>/*</url-pattern>
+
+	</filter-mapping>
+
+	
+
+	<servlet-mapping>
+
+		<servlet-name>mvc-dispatcher</servlet-name>
+
+		<url-pattern>/a/*</url-pattern>
+
+		<url-pattern>/i/*</url-pattern>
+
+	</servlet-mapping>
+
+	
+
+	
+
+	<welcome-file-list>
+
+	    <welcome-file>index.html</welcome-file>
+
+	</welcome-file-list>
+
+</web-app>

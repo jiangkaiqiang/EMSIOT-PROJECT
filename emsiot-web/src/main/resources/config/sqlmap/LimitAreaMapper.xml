@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.LimitAreaMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.LimitArea">
+    <id column="limit_area_id" jdbcType="INTEGER" property="limit_area_id" />
+    <result column="limit_area_name" jdbcType="VARCHAR" property="limit_area_name" />
+    <result column="station_ids" jdbcType="VARCHAR" property="station_ids" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="add_time" />
+    <result column="black_list_elects" jdbcType="VARCHAR" property="black_list_elects" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    limit_area_id, limit_area_name, station_ids, add_time, black_list_elects
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from limit_area
+    where limit_area_id = #{limit_area_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from limit_area
+    where limit_area_id = #{limit_area_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.LimitArea">
+    insert into limit_area (limit_area_id, limit_area_name, station_ids, 
+      add_time, black_list_elects)
+    values (#{limit_area_id,jdbcType=INTEGER}, #{limit_area_name,jdbcType=VARCHAR}, #{station_ids,jdbcType=VARCHAR}, 
+      #{add_time,jdbcType=TIMESTAMP}, #{black_list_elects,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.LimitArea">
+    insert into limit_area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="limit_area_id != null">
+        limit_area_id,
+      </if>
+      <if test="limit_area_name != null">
+        limit_area_name,
+      </if>
+      <if test="station_ids != null">
+        station_ids,
+      </if>
+      <if test="add_time != null">
+        add_time,
+      </if>
+      <if test="black_list_elects != null">
+        black_list_elects,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="limit_area_id != null">
+        #{limit_area_id,jdbcType=INTEGER},
+      </if>
+      <if test="limit_area_name != null">
+        #{limit_area_name,jdbcType=VARCHAR},
+      </if>
+      <if test="station_ids != null">
+        #{station_ids,jdbcType=VARCHAR},
+      </if>
+      <if test="add_time != null">
+        #{add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="black_list_elects != null">
+        #{black_list_elects,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.LimitArea">
+    update limit_area
+    <set>
+      <if test="limit_area_name != null">
+        limit_area_name = #{limit_area_name,jdbcType=VARCHAR},
+      </if>
+      <if test="station_ids != null">
+        station_ids = #{station_ids,jdbcType=VARCHAR},
+      </if>
+      <if test="add_time != null">
+        add_time = #{add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="black_list_elects != null">
+        black_list_elects = #{black_list_elects,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where limit_area_id = #{limit_area_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.LimitArea">
+    update limit_area
+    set limit_area_name = #{limit_area_name,jdbcType=VARCHAR},
+      station_ids = #{station_ids,jdbcType=VARCHAR},
+      add_time = #{add_time,jdbcType=TIMESTAMP},
+      black_list_elects = #{black_list_elects,jdbcType=VARCHAR}
+    where limit_area_id = #{limit_area_id,jdbcType=INTEGER}
+  </update>
+</mapper>

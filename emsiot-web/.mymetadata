@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="shfb-web"
+  id="myeclipse.1465024770130"
+  context-root="/shfb-web"
+  j2ee-spec="6.0"
+  archive="shfb-web.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

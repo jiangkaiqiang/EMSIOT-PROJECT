@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="app/css/index.css">
+		<link rel="stylesheet" type="text/css" href="app/css/login.css">
+		<script type="text/javascript" src="assets/js/jquery-1.12.0.min.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/smartpaginator.js"></script>
+    </head>
+    <body>
+    	<!-- head部分结构开始 -->
+			<!--<div class="head">-->
+				<!--<div class="logoArea pull-left" onclick="">-->
+					<!--<h1 class="logo  pull-left"></h1>-->
+					<!--<h3 class="manage  pull-left">电动车管理系统</h3>-->
+				<!--</div>-->
+			<!--</div>-->
+    	<!-- head部分结构结束 -->
+		
+		<!-- 主体区域结构开始 -->
+    		<div class="content">            
+                <div class="panel">
+                   <div class="panel-heading">
+					   <div class="panel-first">新疆喀什地区公安局</div>
+                       <div class="panel-title">电动车监管系统</div>
+					   <div class="panel-last">THE ELECTRIC MOBIKE MANAGE SYSTEM</div>
+					   <img src="app/img/logo.png" alt=""/>
+                   </div>
+                   <div class="panel-body">
+                      <div class="main-form-container">
+                        <div class="form-group has-feedback">
+							<span class="glyphicon form-control-feedback" id="userIcon"></span>
+                            <input type="text" class="form-control" name="adminname" id="adminname" placeholder='请输入用户名' >
+                            <!-- 错误信息 popover -->
+                            <div class="err-popover-out">
+                                <div class="err-popover">
+                                    <div class="tri-right"></div>
+                                    <div class="tri-right-in"></div>
+                                    <div class="err-popover-content"></div>
+                                </div>
+                            </div>
+                            <!-- 错误信息 popover end -->
+                        </div>
+                        <div class="form-group has-feedback">
+							<span class="glyphicon  form-control-feedback" id="passworIcon"></span>
+                            <input type="password" class="form-control" id="adminpwd" name="adminpwd" placeholder='请输入密码' >
+                            <!-- 错误信息 popover -->
+                            <div class="err-popover-out">
+                                <div class="err-popover">
+                                    <div class="tri-right"></div>
+                                    <div class="tri-right-in"></div>
+                                    <div class="err-popover-content"></div>
+                                </div>
+                            </div>
+                            <!-- 错误信息 popover end -->
+                        </div>
+                        <button type="button" id="submit" class="btn btn-form-common form-control" onclick="login();"><span>登录</span></button>
+                        <div class="row">
+                          <div class="col-xs-8">
+                            <a style="color:red" hidden=true id="mention">用户名或密码错误</a>
+                          </div>
+                        </div>
+                   </div>
+                </div>
+    			<!-- 内容区域结构结束-->
+    		</div>
+<script>
+	$(document).ready(function(){
+		$.ajax({url: "/i/user/findUser",async:false, cache: false}).success(function(data){
+				if(data.success&&data.entity.id != 0){
+				  window.location.href = "http://"+ window.location.host + "/#/home";
+				}
+			});
+		});
+		
+		function showErrorInfo(msg){
+			var msgEl = $("#mention");
+			if(msg == null || msg == ''){
+                msgEl.hide();
+                msgEl.html('');
+			}else{
+				msgEl.show();
+    			msgEl.html(msg);
+			}
+		}
+		function login() {
+		          var me = "#submit";
+			        if($(me).data('isLoading') === true)return;
+					showErrorInfo("");
+					if ($("#adminname").val() == '') {
+						showErrorInfo("用户名不能为空！");
+						return;
+					} else if ($("#adminpwd").val() == '') {
+						showErrorInfo("密码不能为空！");
+						return;
+					} 
+					
+					$(me).text("登录中...");
+					$(me).data('isLoading',true);
+					 var rds = document.getElementsByName("adminrole");
+					var adminRole="";
+					for ( var i = 0; i < rds.length; i++) {
+						if (rds.item(i).checked) {
+							adminRole = rds.item(i).getAttribute("value");
+							break;
+						} else {
+							continue;
+						}
+					 }
+					   $.ajax({
+								type : 'POST',
+								dataType : "json",
+								url : "/i/user/login",
+								data : {userName : $("#adminname").val(),password : $("#adminpwd").val()},
+								complete : function(e){
+                                    $(me).text("登录");
+                                    $(me).delay(500).data('isLoading',false);
+								},
+								success : function(data) {
+									if (data.success) {
+	                                    document.cookie = data.message;
+										if (window.location.hash != "") {
+											backUrl = window.location.hash;
+										} else {
+											backUrl = "#/home";
+										}
+										window.location.href = "http://"+ window.location.host + "/"+ backUrl;
+										window.Event.returnValue = false;
+									} else {
+									    $("#mention")[0].hidden = false;
+										showErrorInfo(data.message);
+									}
+								}
+							});
+				};
+			$(document).on({keyup : function(e) {if (e.keyCode == '13'){login();}}});
+		
+</script>
+    	<!-- 主体区域结构结束-->
+    </body>
+</html>

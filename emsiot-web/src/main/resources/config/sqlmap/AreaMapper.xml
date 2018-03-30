@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.AreaMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.Area">
+    <id column="_id" jdbcType="INTEGER" property="_id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="area_id" jdbcType="VARCHAR" property="area_id" />
+    <result column="city_id" jdbcType="VARCHAR" property="city_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    _id, name, area_id, city_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from area
+    where _id = #{_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from area
+    where _id = #{_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.Area">
+    insert into area (_id, name, area_id, 
+      city_id)
+    values (#{_id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{area_id,jdbcType=VARCHAR}, 
+      #{city_id,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Area">
+    insert into area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="_id != null">
+        _id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+      <if test="city_id != null">
+        city_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="_id != null">
+        #{_id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=VARCHAR},
+      </if>
+      <if test="city_id != null">
+        #{city_id,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Area">
+    update area
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=VARCHAR},
+      </if>
+      <if test="city_id != null">
+        city_id = #{city_id,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where _id = #{_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.Area">
+    update area
+    set name = #{name,jdbcType=VARCHAR},
+      area_id = #{area_id,jdbcType=VARCHAR},
+      city_id = #{city_id,jdbcType=VARCHAR}
+    where _id = #{_id,jdbcType=INTEGER}
+  </update>
+</mapper>

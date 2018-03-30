@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.StationMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.Station">
+    <id column="station_id" jdbcType="INTEGER" property="station_id" />
+    <result column="station_phy_num" jdbcType="INTEGER" property="station_phy_num" />
+    <result column="station_name" jdbcType="VARCHAR" property="station_name" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="station_type" jdbcType="VARCHAR" property="station_type" />
+    <result column="station_status" jdbcType="INTEGER" property="station_status" />
+    <result column="install_date" jdbcType="TIMESTAMP" property="install_date" />
+    <result column="soft_version" jdbcType="VARCHAR" property="soft_version" />
+    <result column="contact_person" jdbcType="VARCHAR" property="contact_person" />
+    <result column="contact_tele" jdbcType="VARCHAR" property="contact_tele" />
+    <result column="stick_num" jdbcType="VARCHAR" property="stick_num" />
+    <result column="install_pic" jdbcType="VARCHAR" property="install_pic" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    station_id, station_phy_num, station_name, longitude, latitude, station_type, station_status, 
+    install_date, soft_version, contact_person, contact_tele, stick_num, install_pic
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from station
+    where station_id = #{station_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from station
+    where station_id = #{station_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.Station">
+    insert into station (station_id, station_phy_num, station_name, 
+      longitude, latitude, station_type, 
+      station_status, install_date, soft_version, 
+      contact_person, contact_tele, stick_num, 
+      install_pic)
+    values (#{station_id,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER}, #{station_name,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{station_type,jdbcType=VARCHAR}, 
+      #{station_status,jdbcType=INTEGER}, #{install_date,jdbcType=TIMESTAMP}, #{soft_version,jdbcType=VARCHAR}, 
+      #{contact_person,jdbcType=VARCHAR}, #{contact_tele,jdbcType=VARCHAR}, #{stick_num,jdbcType=VARCHAR}, 
+      #{install_pic,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Station">
+    insert into station
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="station_id != null">
+        station_id,
+      </if>
+      <if test="station_phy_num != null">
+        station_phy_num,
+      </if>
+      <if test="station_name != null">
+        station_name,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="station_type != null">
+        station_type,
+      </if>
+      <if test="station_status != null">
+        station_status,
+      </if>
+      <if test="install_date != null">
+        install_date,
+      </if>
+      <if test="soft_version != null">
+        soft_version,
+      </if>
+      <if test="contact_person != null">
+        contact_person,
+      </if>
+      <if test="contact_tele != null">
+        contact_tele,
+      </if>
+      <if test="stick_num != null">
+        stick_num,
+      </if>
+      <if test="install_pic != null">
+        install_pic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="station_id != null">
+        #{station_id,jdbcType=INTEGER},
+      </if>
+      <if test="station_phy_num != null">
+        #{station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="station_name != null">
+        #{station_name,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="station_type != null">
+        #{station_type,jdbcType=VARCHAR},
+      </if>
+      <if test="station_status != null">
+        #{station_status,jdbcType=INTEGER},
+      </if>
+      <if test="install_date != null">
+        #{install_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="soft_version != null">
+        #{soft_version,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_person != null">
+        #{contact_person,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_tele != null">
+        #{contact_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="stick_num != null">
+        #{stick_num,jdbcType=VARCHAR},
+      </if>
+      <if test="install_pic != null">
+        #{install_pic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Station">
+    update station
+    <set>
+      <if test="station_phy_num != null">
+        station_phy_num = #{station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="station_name != null">
+        station_name = #{station_name,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="station_type != null">
+        station_type = #{station_type,jdbcType=VARCHAR},
+      </if>
+      <if test="station_status != null">
+        station_status = #{station_status,jdbcType=INTEGER},
+      </if>
+      <if test="install_date != null">
+        install_date = #{install_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="soft_version != null">
+        soft_version = #{soft_version,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_person != null">
+        contact_person = #{contact_person,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_tele != null">
+        contact_tele = #{contact_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="stick_num != null">
+        stick_num = #{stick_num,jdbcType=VARCHAR},
+      </if>
+      <if test="install_pic != null">
+        install_pic = #{install_pic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where station_id = #{station_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.Station">
+    update station
+    set station_phy_num = #{station_phy_num,jdbcType=INTEGER},
+      station_name = #{station_name,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      station_type = #{station_type,jdbcType=VARCHAR},
+      station_status = #{station_status,jdbcType=INTEGER},
+      install_date = #{install_date,jdbcType=TIMESTAMP},
+      soft_version = #{soft_version,jdbcType=VARCHAR},
+      contact_person = #{contact_person,jdbcType=VARCHAR},
+      contact_tele = #{contact_tele,jdbcType=VARCHAR},
+      stick_num = #{stick_num,jdbcType=VARCHAR},
+      install_pic = #{install_pic,jdbcType=VARCHAR}
+    where station_id = #{station_id,jdbcType=INTEGER}
+  </update>
+  <select id="findAllStations" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
+        SELECT * FROM `station` 
+    </select>
+</mapper>

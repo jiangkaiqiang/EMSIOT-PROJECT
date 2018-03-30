@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>电动车管理系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <link rel="shortcut icon" href="assets/img/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="app/css/app.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="app/css/index.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/simple-line-icons.css"/>
+    <link rel="stylesheet" type="text/css" href="app/css/app.css">
+    <link rel="stylesheet" type="text/css" href="app/css/home.css">
+    <link rel="stylesheet" type="text/css"  href="bower_components/angular-multi-select-master/isteven-multi-select.css"/>
+</head>
+
+<body>
+<div class="app app-header-fixed" id="app">
+
+    <!-- navbar -->
+    <div class="app-header navbar">
+        <!-- navbar header -->
+        <div class="navbar-header bg-dark">
+            <button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">
+                <i class="glyphicon glyphicon-cog"></i>
+            </button>
+            <button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside"  ui-scroll="app">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </button>
+            <!-- brand -->
+            <a onclick="location.href='index.html'" class="navbar-brand text-lt">
+                <ul>
+                    <li>
+                        <img class="logo" src="app/img/logo.png">
+                    </li>
+                    <li>
+                        <p style="font-size:13px;margin:2px 5px;" class="hidden-folded m-l-xs">新疆喀什地区公安局</p>
+                        <span class="hidden-folded m-l-xs">电动车监管系统</span>
+                    </li>
+                </ul>
+            </a>
+            <!-- / brand -->
+        </div>
+        <!-- / navbar header -->
+
+
+        <!-- navbar collapse -->
+
+        <div class="collapse pos-rlt navbar-collapse box-shadow bg-dark-only">
+            <!-- buttons -->
+            <div class="nav navbar-nav hidden-xs">
+                <a href="#" class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">
+                    <i class="fa fa-dedent fa-fw text"></i>
+                    <i class="fa fa-indent fa-fw text-active"></i>
+                </a>
+            </div>
+            <!-- / buttons -->
+            <!-- nabar right -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <!-- search form -->
+                    <form class="navbar-form navbar-form-sm navbar-left" ui-shift="prependTo"
+                          data-target=".navbar-collapse" role="search" >
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" ng-model="selected"
+                                       typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                                       class="form-control input-sm bg-light no-border searchInput padder"
+                                       placeholder="搜索车辆基站报警">
+                                 <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm bg-light searchInput"><i class="fa fa-search margin-right" ></i>搜索</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- / search form -->
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="height:70px;line-height:40px;">
+                        <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+                        <span translate="header.navbar.new.NEW">喀什地区</span> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" translate="header.navbar.new.PROJECT">区域1</a></li>
+                        <li>
+                            <a href>
+                                <span translate="header.navbar.new.TASK">区域2</span>
+                            </a>
+                        </li>
+                        <li><a href translate="header.navbar.new.USER">区域3</a></li>
+                        <li>
+                            <a href>
+                                <span translate="header.navbar.new.EMAIL">区域4</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- / dropdown -->
+                </li>
+
+            </ul>
+            <!-- / navbar right -->
+
+        </div>
+
+        <!-- / navbar collapse -->
+
+
+    </div>
+    <!-- / navbar -->
+
+
+    <!-- menu -->
+    <div class="app-aside hidden-xs bg-dark-aside">
+        <div class="aside-wrap bg-dark-aside">
+            <div class="navi-wrap">
+                <!-- user -->
+                <div class="clearfix hidden-xs text-center" id="aside-user">
+                    <div class="dropdown wrapper">
+                        <a ui-sref="app.page.profile">
+                            <span class="thumb-lg w-auto-folded avatar m-t-sm">
+                                <img src="app/img/a11.jpg" class="img-full" alt="..." style="width:70px;">
+                            </span>
+                        </a>
+                        <a href="#" class="dropdown-toggle hidden-folded" data-toggle="dropdown">
+                             <span class="clear text-left">
+                                <span class="block m-t-sm" style="font-size:16px;" ng-model="admin">
+                                    {{admin.user_name}}&nbsp;欢迎您!
+                                </span>
+                                <span class="text-muted text-xs ">修改密码</span>
+                                <span class="text-muted text-xs margin-left" aria-hidden="true" ng-click="logout()">安全退出</span>
+                             </span>
+                        </a>
+                        <!-- dropdown -->
+
+                        <ul class="dropdown-menu animated fadeInRight w hidden-folded">
+                            <li class="wrapper b-b m-b-sm bg-info m-t-n-xs">
+                                <span class="arrow top hidden-folded arrow-info"></span>
+                                <div>
+                                    <p>修改密码</p>
+                                </div>
+                                <progressbar value="60" type="white" class="progress-xs m-b-none dker"></progressbar>
+                            </li>
+                            <li>
+                               <input type="text" class="form-control"placeholder="请输入旧密码" style="width:96%;margin-left:5px;">
+                            </li>
+                            <li>
+                                <input type="text" class="form-control"  placeholder="请输入新密码" style="width:96%;margin:5px 0 0 5px;">
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <button ui-sref="access.signin" type="button" class="btn btn-info">确定</button>
+                                <button ui-sref="access.signin" type="button" class="btn btn-default">取消</button>
+                            </li>
+                        </ul>
+                        <!-- / dropdown -->
+
+
+                    </div>
+
+                </div>
+                <!-- / user -->
+
+                <!-- nav -->
+                <nav ui-nav class="navi">
+                    <ul class="nav">
+                       <li  id="home">
+                            <a href="#/home">
+                                <img src="app/img/asideIcon01.png" alt=""/>
+                                <span class="font-bold">监控台</span>
+                            </a>
+                        </li>
+                        <li ng-click="goMenu('userManage','#/userManage')" id="userManage">
+                            <a href class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="fa fa-fw fa-angle-right text"></i>
+                                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                                 </span>
+                                <img src="app/img/asideIcon02.png" alt=""/>
+                                <span class="font-bold" translate="aside.nav.DASHBOARD">车辆管理</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active">
+                                    <a href="#/electManage">
+                                        <span>车辆管理</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a  href="#/userRoleManage">
+                                        <span>管理2</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a href="#/operationLog">
+                                        <span>管理3</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a href="#/stationManage">
+                                <img src="app/img/asideIcon03.png" alt=""/>
+                                <span class="font-bold">基站管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="fa fa-fw fa-angle-right text"></i>
+                                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                                </span>
+                                <img src="app/img/asideIcon04.png" alt=""/>
+                                <span class="font-bold">特殊对象管理</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li class="nav-sub-header">
+                                    <a href>
+                                        <span>特殊管理1</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="apps.note">
+                                        <span>特殊管理2</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="apps.contact">
+                                        <span>特殊管理3</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="app.weather">
+                                        <span>特殊管理4</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a href="#/home">
+                                <img src="app/img/asideIcon05.png" alt=""/>
+                                <span>统计图表</span>
+                            </a>
+                        </li>
+
+                        <li ng-class="{active:$state.includes('app.ui')}">
+                            <a ui-sref="app.mail.list">
+                                <img src="app/img/asideIcon06.png" alt=""/>
+                                <span translate="aside.nav.components.ui_kits.UI_KITS">系统配置管理</span>
+                            </a>
+
+                        </li>
+                        <li ng-class="{active:$state.includes('app.table')}">
+                            <a ui-sref="app.mail.list" ng-click="goMenu('personalSpace','#/personalSpace')"
+                               id="personalSpace">
+
+                                <!--<i class="glyphicon glyphicon-user"></i>-->
+                                <img src="app/img/asideIcon07.png" alt=""/>
+                                <span translate="aside.nav.components.table.TABLE">用户中心</span>
+                            </a>
+
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- nav -->
+            </div>
+        </div>
+    </div>
+    <!-- / menu -->
+
+    <!-- 主体区域结构开始 -->
+    <div ui-view style="overflow: hidden" class="countWarp">
+
+    </div>
+    <!-- 主体区域结构结束-->
+
+
+</div>
+<script type="text/javascript" src="assets/js/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/smartpaginator.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js?"></script>
+<script src="bower_components/angular/ng-file-upload.min.js"></script>
+<script src="bower_components/angular/ng-file-upload-shim.min.js"></script>
+<script src="bower_components/highlightjs/highlight.pack.js"></script>
+<script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
+<script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+<script src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
+<script src="bower_components/angucomplete/angucomplete.js"></script>
+<script src="bower_components/at-table/dist/angular-table.min.js"></script>
+<script src="bower_components/bootstrap/js/carousel.js"></script>
+<script src="bower_components/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+<script src="bower_components/angular/ngRemoteValidate.0.6.1.min.js"></script>
+<!--map js  -->
+<!-- app js -->
+<script src="app/js/app.js"></script>
+<script src="app/js/index.js"></script> 
+<script src="app/js/home.js"></script>
+<script src="app/js/operationLog.js"></script>
+<script src="app/js/personalSpace.js"></script>
+<script src="app/js/userManage.js"></script>
+<script src="app/js/electManage.js"></script>
+<script src="app/js/stationManage.js"></script>
+<script src="app/js/userRoleManage.js"></script>
+<script type="text/javascript">
+    +function ($) {
+        $(function () {
+            // class
+            $(document).on('click', '[data-toggle^="class"]', function (e) {
+                e && e.preventDefault();
+                console.log('abc');
+                var $this = $(e.target), $class, $target, $tmp, $classes, $targets;
+                !$this.data('toggle') && ($this = $this.closest('[data-toggle^="class"]'));
+                $class = $this.data()['toggle'];
+                $target = $this.data('target') || $this.attr('href');
+                $class && ($tmp = $class.split(':')[1]) && ($classes = $tmp.split(','));
+                $target && ($targets = $target.split(','));
+                $classes && $classes.length && $.each($targets, function (index, value) {
+                    if ($classes[index].indexOf('*') !== -1) {
+                        var patt = new RegExp('\\s' +
+                        $classes[index].
+                                replace(/\*/g, '[A-Za-z0-9-_]+').
+                                split(' ').
+                                join('\\s|\\s') +
+                        '\\s', 'g');
+                        $($this).each(function (i, it) {
+                            var cn = ' ' + it.className + ' ';
+                            while (patt.test(cn)) {
+                                cn = cn.replace(patt, ' ');
+                            }
+                            it.className = $.trim(cn);
+                        });
+                    }
+                    ($targets[index] != '#') && $($targets[index]).toggleClass($classes[index]) || $this.toggleClass($classes[index]);
+                });
+                $this.toggleClass('active');
+            });
+
+            // collapse nav
+            $(document).on('click', 'nav a', function (e) {
+                var $this = $(e.target), $active;
+                $this.is('a') || ($this = $this.closest('a'));
+
+                $active = $this.parent().siblings(".active");
+                $active && $active.toggleClass('active').find('> ul:visible').slideUp(200);
+
+                ($this.parent().hasClass('active') && $this.next().slideUp(200)) || $this.next().slideDown(200);
+                $this.parent().toggleClass('active');
+
+                $this.next().is('ul') && e.preventDefault();
+
+                setTimeout(function () {
+                    $(document).trigger('updateNav');
+                }, 300);
+            });
+        });
+    }(jQuery);
+</script>
+</body>
+
+
+</html>

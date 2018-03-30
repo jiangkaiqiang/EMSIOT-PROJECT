@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ems.iot.manage.dao.CityMapper">
+
+    <select id="findCitysByProvinceId" parameterType="map" resultType="com.ems.iot.manage.entity.City">
+        SELECT *
+        FROM `city` WHERE `province_id` = #{provinceID}
+    </select>
+    
+    <select id="findCityById" parameterType="map" resultType="com.ems.iot.manage.entity.City">
+        SELECT *
+        FROM `city` WHERE `city_id` = #{CityID}
+    </select>
+    
+     <select id="findProvinceById" parameterType="map" resultType="Province">
+        SELECT *
+        FROM `province` WHERE `province_id` = #{provinceID}
+    </select>
+    
+     <select id="findCityList" parameterType="map" resultType="City">
+        SELECT *
+        FROM `city` 
+    </select>
+    
+      <select id="findProvinceByName" parameterType="map" resultType="Province">
+        SELECT *
+        FROM `province` WHERE `name` like "%"#{provinceName}"%"
+    </select>
+
+    <select id="findCityByNameAndProvinceId" parameterType="map" resultType="com.ems.iot.manage.entity.City">
+        SELECT *
+        FROM `city` 
+        <where> 
+		 <if test="provinceID != -1">
+			     province_id=#{provinceID}
+		 </if>
+		  AND `name` like "%"#{cityName}"%"
+		 </where>
+    </select>
+    <select id="findAreaNameByAreaID" parameterType="map" resultType="Area">
+        SELECT *
+        FROM `area` WHERE `area_id` = #{AreaID}
+    </select>
+</mapper>

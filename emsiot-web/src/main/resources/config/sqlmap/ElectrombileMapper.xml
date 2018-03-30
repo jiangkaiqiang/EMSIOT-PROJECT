@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.ElectrombileMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.Electrombile">
+    <id column="elect_id" jdbcType="INTEGER" property="elect_id" />
+    <result column="gua_card_num" jdbcType="INTEGER" property="gua_card_num" />
+    <result column="plate_num" jdbcType="VARCHAR" property="plate_num" />
+    <result column="ve_id_num" jdbcType="VARCHAR" property="ve_id_num" />
+    <result column="elect_brand" jdbcType="VARCHAR" property="elect_brand" />
+    <result column="buy_date" jdbcType="DATE" property="buy_date" />
+    <result column="elect_color" jdbcType="VARCHAR" property="elect_color" />
+    <result column="motor_num" jdbcType="VARCHAR" property="motor_num" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="pro_id" jdbcType="INTEGER" property="pro_id" />
+    <result column="city_id" jdbcType="INTEGER" property="city_id" />
+    <result column="area_id" jdbcType="INTEGER" property="area_id" />
+    <result column="elect_type" jdbcType="INTEGER" property="elect_type" />
+    <result column="insur_detail" jdbcType="INTEGER" property="insur_detail" />
+    <result column="elect_pic" jdbcType="VARCHAR" property="elect_pic" />
+    <result column="indentity_card_pic" jdbcType="VARCHAR" property="indentity_card_pic" />
+    <result column="record_pic" jdbcType="VARCHAR" property="record_pic" />
+    <result column="install_card_pic" jdbcType="VARCHAR" property="install_card_pic" />
+    <result column="owner_tele" jdbcType="VARCHAR" property="owner_tele" />
+    <result column="owner_name" jdbcType="VARCHAR" property="owner_name" />
+    <result column="owner_address" jdbcType="VARCHAR" property="owner_address" />
+    <result column="owner_id" jdbcType="VARCHAR" property="owner_id" />
+    <result column="recorder_id" jdbcType="INTEGER" property="recorder_id" />
+    <result column="recorder_time" jdbcType="TIMESTAMP" property="recorder_time" />
+    <result column="elect_state" jdbcType="INTEGER" property="elect_state" />
+    <result column="black_list_recorder" jdbcType="INTEGER" property="black_list_recorder" />
+    <result column="black_list_time" jdbcType="TIMESTAMP" property="black_list_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    elect_id, gua_card_num, plate_num, ve_id_num, elect_brand, buy_date, elect_color, 
+    motor_num, note, pro_id, city_id, area_id, elect_type, insur_detail, elect_pic, indentity_card_pic, 
+    record_pic, install_card_pic, owner_tele, owner_name, owner_address, owner_id, recorder_id, 
+    recorder_time, elect_state, black_list_recorder, black_list_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from electrombile
+    where elect_id = #{elect_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from electrombile
+    where elect_id = #{elect_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.Electrombile">
+    insert into electrombile (elect_id, gua_card_num, plate_num, 
+      ve_id_num, elect_brand, buy_date, 
+      elect_color, motor_num, note, 
+      pro_id, city_id, area_id, 
+      elect_type, insur_detail, elect_pic, 
+      indentity_card_pic, record_pic, install_card_pic, 
+      owner_tele, owner_name, owner_address, 
+      owner_id, recorder_id, recorder_time, 
+      elect_state, black_list_recorder, black_list_time
+      )
+    values (#{elect_id,jdbcType=INTEGER}, #{gua_card_num,jdbcType=INTEGER}, #{plate_num,jdbcType=VARCHAR}, 
+      #{ve_id_num,jdbcType=VARCHAR}, #{elect_brand,jdbcType=VARCHAR}, #{buy_date,jdbcType=DATE}, 
+      #{elect_color,jdbcType=VARCHAR}, #{motor_num,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{pro_id,jdbcType=INTEGER}, #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}, 
+      #{elect_type,jdbcType=INTEGER}, #{insur_detail,jdbcType=INTEGER}, #{elect_pic,jdbcType=VARCHAR}, 
+      #{indentity_card_pic,jdbcType=VARCHAR}, #{record_pic,jdbcType=VARCHAR}, #{install_card_pic,jdbcType=VARCHAR}, 
+      #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{owner_address,jdbcType=VARCHAR}, 
+      #{owner_id,jdbcType=VARCHAR}, #{recorder_id,jdbcType=INTEGER}, #{recorder_time,jdbcType=TIMESTAMP}, 
+      #{elect_state,jdbcType=INTEGER}, #{black_list_recorder,jdbcType=INTEGER}, #{black_list_time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Electrombile">
+    insert into electrombile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="elect_id != null">
+        elect_id,
+      </if>
+      <if test="gua_card_num != null">
+        gua_card_num,
+      </if>
+      <if test="plate_num != null">
+        plate_num,
+      </if>
+      <if test="ve_id_num != null">
+        ve_id_num,
+      </if>
+      <if test="elect_brand != null">
+        elect_brand,
+      </if>
+      <if test="buy_date != null">
+        buy_date,
+      </if>
+      <if test="elect_color != null">
+        elect_color,
+      </if>
+      <if test="motor_num != null">
+        motor_num,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="pro_id != null">
+        pro_id,
+      </if>
+      <if test="city_id != null">
+        city_id,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+      <if test="elect_type != null">
+        elect_type,
+      </if>
+      <if test="insur_detail != null">
+        insur_detail,
+      </if>
+      <if test="elect_pic != null">
+        elect_pic,
+      </if>
+      <if test="indentity_card_pic != null">
+        indentity_card_pic,
+      </if>
+      <if test="record_pic != null">
+        record_pic,
+      </if>
+      <if test="install_card_pic != null">
+        install_card_pic,
+      </if>
+      <if test="owner_tele != null">
+        owner_tele,
+      </if>
+      <if test="owner_name != null">
+        owner_name,
+      </if>
+      <if test="owner_address != null">
+        owner_address,
+      </if>
+      <if test="owner_id != null">
+        owner_id,
+      </if>
+      <if test="recorder_id != null">
+        recorder_id,
+      </if>
+      <if test="recorder_time != null">
+        recorder_time,
+      </if>
+      <if test="elect_state != null">
+        elect_state,
+      </if>
+      <if test="black_list_recorder != null">
+        black_list_recorder,
+      </if>
+      <if test="black_list_time != null">
+        black_list_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="elect_id != null">
+        #{elect_id,jdbcType=INTEGER},
+      </if>
+      <if test="gua_card_num != null">
+        #{gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="plate_num != null">
+        #{plate_num,jdbcType=VARCHAR},
+      </if>
+      <if test="ve_id_num != null">
+        #{ve_id_num,jdbcType=VARCHAR},
+      </if>
+      <if test="elect_brand != null">
+        #{elect_brand,jdbcType=VARCHAR},
+      </if>
+      <if test="buy_date != null">
+        #{buy_date,jdbcType=DATE},
+      </if>
+      <if test="elect_color != null">
+        #{elect_color,jdbcType=VARCHAR},
+      </if>
+      <if test="motor_num != null">
+        #{motor_num,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="elect_type != null">
+        #{elect_type,jdbcType=INTEGER},
+      </if>
+      <if test="insur_detail != null">
+        #{insur_detail,jdbcType=INTEGER},
+      </if>
+      <if test="elect_pic != null">
+        #{elect_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="indentity_card_pic != null">
+        #{indentity_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record_pic != null">
+        #{record_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="install_card_pic != null">
+        #{install_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_tele != null">
+        #{owner_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_name != null">
+        #{owner_name,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_address != null">
+        #{owner_address,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id != null">
+        #{owner_id,jdbcType=VARCHAR},
+      </if>
+      <if test="recorder_id != null">
+        #{recorder_id,jdbcType=INTEGER},
+      </if>
+      <if test="recorder_time != null">
+        #{recorder_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="elect_state != null">
+        #{elect_state,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_recorder != null">
+        #{black_list_recorder,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_time != null">
+        #{black_list_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Electrombile">
+    update electrombile
+    <set>
+      <if test="gua_card_num != null">
+        gua_card_num = #{gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="plate_num != null">
+        plate_num = #{plate_num,jdbcType=VARCHAR},
+      </if>
+      <if test="ve_id_num != null">
+        ve_id_num = #{ve_id_num,jdbcType=VARCHAR},
+      </if>
+      <if test="elect_brand != null">
+        elect_brand = #{elect_brand,jdbcType=VARCHAR},
+      </if>
+      <if test="buy_date != null">
+        buy_date = #{buy_date,jdbcType=DATE},
+      </if>
+      <if test="elect_color != null">
+        elect_color = #{elect_color,jdbcType=VARCHAR},
+      </if>
+      <if test="motor_num != null">
+        motor_num = #{motor_num,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        pro_id = #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="elect_type != null">
+        elect_type = #{elect_type,jdbcType=INTEGER},
+      </if>
+      <if test="insur_detail != null">
+        insur_detail = #{insur_detail,jdbcType=INTEGER},
+      </if>
+      <if test="elect_pic != null">
+        elect_pic = #{elect_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="indentity_card_pic != null">
+        indentity_card_pic = #{indentity_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record_pic != null">
+        record_pic = #{record_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="install_card_pic != null">
+        install_card_pic = #{install_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_tele != null">
+        owner_tele = #{owner_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_name != null">
+        owner_name = #{owner_name,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_address != null">
+        owner_address = #{owner_address,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id != null">
+        owner_id = #{owner_id,jdbcType=VARCHAR},
+      </if>
+      <if test="recorder_id != null">
+        recorder_id = #{recorder_id,jdbcType=INTEGER},
+      </if>
+      <if test="recorder_time != null">
+        recorder_time = #{recorder_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="elect_state != null">
+        elect_state = #{elect_state,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_recorder != null">
+        black_list_recorder = #{black_list_recorder,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_time != null">
+        black_list_time = #{black_list_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where elect_id = #{elect_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.Electrombile">
+    update electrombile
+    set gua_card_num = #{gua_card_num,jdbcType=INTEGER},
+      plate_num = #{plate_num,jdbcType=VARCHAR},
+      ve_id_num = #{ve_id_num,jdbcType=VARCHAR},
+      elect_brand = #{elect_brand,jdbcType=VARCHAR},
+      buy_date = #{buy_date,jdbcType=DATE},
+      elect_color = #{elect_color,jdbcType=VARCHAR},
+      motor_num = #{motor_num,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      pro_id = #{pro_id,jdbcType=INTEGER},
+      city_id = #{city_id,jdbcType=INTEGER},
+      area_id = #{area_id,jdbcType=INTEGER},
+      elect_type = #{elect_type,jdbcType=INTEGER},
+      insur_detail = #{insur_detail,jdbcType=INTEGER},
+      elect_pic = #{elect_pic,jdbcType=VARCHAR},
+      indentity_card_pic = #{indentity_card_pic,jdbcType=VARCHAR},
+      record_pic = #{record_pic,jdbcType=VARCHAR},
+      install_card_pic = #{install_card_pic,jdbcType=VARCHAR},
+      owner_tele = #{owner_tele,jdbcType=VARCHAR},
+      owner_name = #{owner_name,jdbcType=VARCHAR},
+      owner_address = #{owner_address,jdbcType=VARCHAR},
+      owner_id = #{owner_id,jdbcType=VARCHAR},
+      recorder_id = #{recorder_id,jdbcType=INTEGER},
+      recorder_time = #{recorder_time,jdbcType=TIMESTAMP},
+      elect_state = #{elect_state,jdbcType=INTEGER},
+      black_list_recorder = #{black_list_recorder,jdbcType=INTEGER},
+      black_list_time = #{black_list_time,jdbcType=TIMESTAMP}
+    where elect_id = #{elect_id,jdbcType=INTEGER}
+  </update>
+</mapper>

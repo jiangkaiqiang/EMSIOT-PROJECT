@@ -1,0 +1,322 @@
+    <div style="padding: 28px 30px 0 30px;background-color: #F1F1F1;">
+    
+    <!-- 按钮操作区域开始 -->
+			<div class="col-sm-12" style="height:70px">
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-default pull-left" id="plusCold" data-toggle="modal" data-target="#addUser">
+					<span class="glyphicon glyphicon-plus"></span>添加用户
+				</button>
+				</div>
+		        <div  class="col-sm-4">								
+					  关键字查询：								
+					<input type="text" ng-model="keyword" placeholder="请输入关键词" id="myText" />
+					<div id="searchImg" ng-click="goSearch()">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>
+				</div>
+				<div  class="col-sm-5">								
+					是否有效：<select  class="form-control" style="height:35px;width:100px !important" ng-model="optAudit" ng-change="auditChanged(optAudit)">
+				<option value="8">所有</option>
+				<option value="2">无效</option>
+				<option value="1">有效</option>
+			         </select>
+				</div>
+			</div>
+			<div class="col-sm-12" style="height:50px">
+			 <div  class="col-sm-4">	
+                <!--指定 date标记-->  
+                <div class='input-group date' id='datetimepicker1'>  
+                    <input type='text' class="form-control" placeholder="开始时间" ng-model="startTime" />  
+                    <span class="input-group-addon">  
+                        <span class="glyphicon glyphicon-calendar"></span>  
+                    </span>  
+                </div>  
+                </div>
+                <div  class="col-sm-4">	
+                <!--指定 date标记-->  
+                <div class='input-group date' id='datetimepicker2'>  
+                    <input type='text' class="form-control" placeholder="结束时间" ng-model="endTime" />  
+                    <span class="input-group-addon">  
+                        <span class="glyphicon glyphicon-calendar"></span>  
+                    </span>  
+                </div> 
+                </div>
+                <div  class="col-sm-2">	
+			<button type="button" class="btn btn-default pull-right" ng-click="goSearch()">
+					日期查询
+				</button>	
+				</div>
+               <div  class="col-sm-2">	
+			<button type="button" class="btn btn-default pull-right" ng-click="showAll()">
+					显示全部
+				</button>	
+				</div>
+			</div>
+			<!-- 按钮操作区域结束 -->
+    
+			<!-- 表格操作区域开始 -->
+			<div class="tableArea">
+				<table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+				   <thead>
+				      <tr>
+				         <th>
+				         	<div>
+				         		<input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox" >
+				         		<label for="allSecSon" >全选</label>
+				         	</div>
+				         </th>
+				         <th>序号</th>
+				         <th>用户名</th>
+				         <th>手机号码</th>
+				         <th>工作单位</th>
+				         <th>所属项目</th>
+				         <th>所属构件厂</th>
+				         <th>角色</th>
+				         <th>是否有效</th>
+				         <th>创建时间</th>
+				         <th>最后登录时间</th>
+				         <th>操作</th>
+				      </tr>
+				   </thead>
+				   <tbody>
+				      <tr ng-repeat="user in Allusers">
+				         <td>
+						 <input type="checkbox" ng-checked="exists(user, selected)"
+                    				ng-click="toggle(user, selected)"/>
+				         </td>
+				         <!-- <td>{{user.sysUser.user_id}}</td> -->
+				         <td>{{$index+1}}</td>
+				         <td>{{user.sysUser.user_name}}</td>
+				         <td>{{user.sysUser.user_tel}}</td>
+				          <td>{{user.sysUser.company}}</td>
+				         <td>{{user.projectName}}</td>
+				         <td>{{user.compFactoryName}}</td>
+				         <td>{{user.userRoleName}}</td>
+				         <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
+				         <td>{{user.sysUser.create_time}}</td>
+				         <td>{{user.sysUser.login_time}}</td>
+				         <td>
+				         	<button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
+				            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser" ng-click="goUpdateUser(user.sysUser.user_id)">编辑</button>
+				         </td>
+				      </tr>
+				   </tbody>
+				</table>
+				<div class="page">
+               <!-- 翻页功能 -->
+               <div class="row" style="text-align:center">
+                    <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                             ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                             boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                </div>
+	</div>
+			</div>
+			<!-- 表格操作区域结束 -->
+			<div class="three">
+				<div class="btn-group" role="group">
+				<!-- <button type="button" class="btn btn-default" ng-click="printReport()">打印报表</button> -->
+				   <button type="button" class="btn btn-default" ng-click="deleteUsers()">批量删除</button>
+				</div>
+			</div>
+    </div>  
+   	<!--  添加用户模态框 -->
+   	<div class="modal fade" id="addUser" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	            <button type="button" class="close" 
+	               data-dismiss="modal" aria-hidden="true">
+	                  &times;
+	            </button>
+	            <h4 class="modal-title" id="myModalLabel">
+	               添加用户
+	            </h4>
+	         </div>
+	         <div class="modal-body">
+	            	<form class="form-horizontal" name="userForm">
+					   <div class="form-group">
+					      <label for="firstname" class="col-sm-2 control-label"><font color="red">*</font>用户名</label>
+					      <div class="col-sm-10">
+					         <input type="text" class="form-control" ng-model="username" name="username"
+					            placeholder="请输入名字" ng-remote-validate="/i/user/checkUserName"
+                		        ng-remote-method="GET">
+                	           <em style="text-align: right;" ng-show="userForm.username.$error.ngRemoteValidate"><font color="red">该用户已存在</font></em>
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="password" class="col-sm-2 control-label"><font color="red">*</font>密码</label>
+					      <div class="col-sm-10">
+					         <input type="password" class="form-control" id="password" ng-model="password"
+					            placeholder="请输入密码">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="password" class="col-sm-2 control-label"><font color="red">*</font>确认密码</label>
+					      <div class="col-sm-10">
+					         <input type="password" class="form-control" id="password1" ng-model="password1"
+					            placeholder="请确认密码">
+					              <p ng-show="password!=password1"><font color="red">两次密码不一致</font></p>
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="phoneNum" class="col-sm-2 control-label">手机号</label>
+					      <div class="col-sm-10">
+					         <input type="number" class="form-control" id="phoneNum" name="phoneNum" ng-model="telephone"
+					            placeholder="请输入手机号">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="company" class="col-sm-2 control-label">工作单位</label>
+					      <div class="col-sm-10">
+					         <input type="text" class="form-control" id="companyid" name="company" ng-model="company"
+					            placeholder="请输入工作单位">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="project" class="col-sm-2 control-label">所属项目</label>
+					      <div class="col-sm-10">
+					         <select id=""  class="form-control" style="height:35px;width:100px !important"
+                                     ng-model="addProjectid" ng-disabled="editable"
+                                     ng-change="addProjectSelected(addProjectid)"
+                                     ng-options="x.pro_id as x.pro_name for x in projects"></select>
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="compfactory" class="col-sm-2 control-label">所属构件厂</label>
+					      <div class="col-sm-10">
+					         <select id=""  class="form-control" style="height:35px;width:100px !important"
+                                     ng-model="addcompfactoryid" ng-disabled="editable"
+                                     ng-change="addCompFactorySelected(addcompfactoryid)"
+                                     ng-options="x.comp_factory_id as x.comp_factory_name for x in compfactorys"></select>
+					      </div>
+					   </div>
+					    <div class="form-group">
+					      <label for="role" class="col-sm-2 control-label">角色</label>
+					      <div class="col-sm-10">
+					          <select id=""  class="form-control" style="height:35px;width:100px !important"
+                                     ng-model="addUserRoleid" ng-disabled="editable"
+                                     ng-change="addUserRoleSelected(addUserRoleid)"
+                                     ng-options="x.user_role_id as x.user_role_name for x in userRoles"></select>
+					      </div>
+					   </div>
+					    <div class="form-group">
+					      <label for="role" class="col-sm-2 control-label">是否有效</label>
+					      <div class="col-sm-10">
+					      <input type="checkbox" ng-model="validforadd"> 
+					      </div>
+					   </div>
+	            	</form>
+	         </div>
+	         <div class="modal-footer">
+	            <button type="button" class="btn btn-default" 
+	               data-dismiss="modal">取消
+	            </button>
+	            <button type="button" ng-click="submit()" class="btn btn-primary">
+	                                                       提交
+	            </button>
+	         </div>
+	      </div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+	</div>
+	<!--  添加用户模态框 end -->
+    
+    <!--  编辑用户模态框 -->
+   	<div class="modal fade" id="updateUser" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	            <button type="button" class="close" 
+	               data-dismiss="modal" aria-hidden="true">
+	                  &times;
+	            </button>
+	            <h4 class="modal-title" id="myModalLabel">
+	               编辑用户
+	            </h4>
+	         </div>
+	         <div class="modal-body">
+	            	<form class="form-horizontal" name="uuserForm">
+					   <div class="form-group">
+					      <label for="firstname" class="col-sm-2 control-label"><font color="red">*</font>用户名</label>
+					      <div class="col-sm-10">
+					         <input type="text" class="form-control" ng-model="userForUpdate.user_name" name="uusername"
+					            placeholder="请输入名字" ng-remote-validate="/i/user/checkUserName"
+                		        ng-remote-method="GET">
+                	           <em style="text-align: right;" ng-show="uuserForm.uusername.$error.ngRemoteValidate"><font color="red">该用户已存在</font></em>
+					      </div>
+					   </div>
+					   <!-- <div class="form-group">
+					      <label for="password" class="col-sm-2 control-label"><font color="red">*</font>密码</label>
+					      <div class="col-sm-10">
+					         <input type="password" class="form-control" id="password" ng-model="passwordForUpdate"
+					            placeholder="请输入密码">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="password" class="col-sm-2 control-label"><font color="red">*</font>确认密码</label>
+					      <div class="col-sm-10">
+					         <input type="password" class="form-control" id="password1" ng-model="passwordForUpdate1"
+					            placeholder="请确认密码">
+					              <p ng-show="passwordForUpdate!=passwordForUpdate1"><font color="red">两次密码不一致</font></p>
+					      </div>
+					   </div> -->
+					   <div class="form-group">
+					      <label for="phoneNum" class="col-sm-2 control-label">手机号</label>
+					      <div class="col-sm-10">
+					         <input type="text" class="form-control" id="phoneNum" name="phoneNum" ng-model="userForUpdate.user_tel"
+					            placeholder="请输入手机号">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="company" class="col-sm-2 control-label">工作单位</label>
+					      <div class="col-sm-10">
+					         <input type="text" class="form-control" id="companyid" name="company" ng-model="userForUpdate.company"
+					            placeholder="请输入工作单位">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="project" class="col-sm-2 control-label">所属项目</label>
+					      <div class="col-sm-10">
+					         <select id=""  class="form-control" style="height:35px;width:100px !important"
+                                     ng-model="userForUpdate.pro_id" ng-disabled="editable"
+                                     ng-change="updateProjectSelected(userForUpdate.proid)"
+                                     ng-options="x.pro_id as x.pro_name for x in projects"></select>
+					      </div>
+					   </div>
+					    <div class="form-group">
+					      <label for="compfactory" class="col-sm-2 control-label">所属构件厂</label>
+					      <div class="col-sm-10">
+					         <select id=""  class="form-control" style="height:35px;width:100px !important"
+                                     ng-model="userForUpdate.comp_factory_id" ng-disabled="editable"
+                                     ng-change="updateCompFactorySelected(userForUpdate.comp_factory_id)"
+                                     ng-options="x.comp_factory_id as x.comp_factory_name for x in compfactorys"></select>
+					      </div>
+					   </div>
+					    <div class="form-group">
+					      <label for="role" class="col-sm-2 control-label">角色</label>
+					      <div class="col-sm-10">
+					          <select id=""  class="form-control" style="height:35px;width:100px !important"
+                                     ng-model="userForUpdate.user_role_id" ng-disabled="editable"
+                                     ng-change="updateUserRoleSelected(userForUpdate.user_role_id)"
+                                     ng-options="x.user_role_id as x.user_role_name for x in userRoles"></select>
+					      </div>
+					   </div>
+					    <div class="form-group">
+					      <label for="role" class="col-sm-2 control-label">是否有效</label>
+					      <div class="col-sm-10">
+					      <input type="checkbox" ng-model="validforupdate"> 
+					      </div>
+					   </div>
+	            	</form>
+	         </div>
+	         <div class="modal-footer">
+	            <button type="button" class="btn btn-default" 
+	               data-dismiss="modal">取消
+	            </button>
+	            <button type="button" ng-click="update()" class="btn btn-primary">
+	                                                       更新
+	            </button>
+	         </div>
+	      </div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+	</div>
+	<!--  编辑用户模态框 end -->

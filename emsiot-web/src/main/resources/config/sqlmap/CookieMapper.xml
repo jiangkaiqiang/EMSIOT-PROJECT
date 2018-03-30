@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ems.iot.manage.dao.CookieMapper">
+
+	<insert id="insertCookie" parameterType="Cookies">
+		INSERT INTO `cookies`
+		(
+		`cookie`,
+		`username`,
+		`expireTime`,
+		`addTime`
+		) 
+		VALUE
+		(
+		#{cookie},
+		#{username},
+		#{expireTime},
+		now()
+		)
+	</insert>
+	
+	<select id="findEffectiveCookie" parameterType="map" resultType="Cookies">
+	    SELECT * FROM `cookies`
+	    WHERE cookie = #{cookie} 
+	    AND addTime + INTERVAL expireTime MINUTE >= now()
+	</select>
+	
+	<delete id="deleteCookie" parameterType="map">
+	    DELETE FROM `cookies` 
+	    WHERE cookie = #{cookie}
+	</delete>
+
+</mapper>

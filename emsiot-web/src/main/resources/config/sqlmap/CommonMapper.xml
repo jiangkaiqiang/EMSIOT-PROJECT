@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ems.iot.manage.dao.CommonMapper">
+   <!-- 公用组件查询 -->
+    <select id="getBaseData" parameterType="map" resultType="map">
+        select ${code},${value} from ${table} ;
+    </select>
+    <select id="getBaseDataByID" parameterType="map" resultType="map">
+        select ${code},${value} from ${table} where id=#{id};
+    </select>
+    <select id="getCommData" parameterType="map" resultType="map">
+        select type_code,type_name,type_desc from comm_mata_data where source_type=#{codetype};
+    </select>
+    <select id="getCommDataByID" parameterType="int" resultType="map">
+        select type_code,type_name,type_desc from comm_mata_data where type_code=#{type_code} and source_type=#{codetype} ;
+    </select>
+</mapper>

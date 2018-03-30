@@ -1,0 +1,434 @@
+    <div style="padding: 28px 30px 0 30px;background-color: #F1F1F1;">
+    	<!-- 按钮操作区域开始 -->
+			<div class="col-sm-12" style="height:70px">
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-default pull-left" id="plusCold" data-toggle="modal" data-target="#addUserRole">
+					<span class="glyphicon glyphicon-plus"></span>添加角色
+				</button>
+				</div>
+		        <div  class="col-sm-4">								
+					关键字查询：<input type="text" ng-model="keyword" placeholder="请输入关键词" id="myText" />
+					<div id="searchImg" ng-click="goSearch()">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-12" style="height:50px">
+			 <div  class="col-sm-4">	
+                <!--指定 date标记-->  
+                <div class='input-group date' id='datetimepicker1'>  
+                    <input type='text' class="form-control" placeholder="开始时间" ng-model="startTime" />  
+                    <span class="input-group-addon">  
+                        <span class="glyphicon glyphicon-calendar"></span>  
+                    </span>  
+                </div>  
+                </div>
+                <div  class="col-sm-4">	
+                <!--指定 date标记-->  
+                <div class='input-group date' id='datetimepicker2'>  
+                    <input type='text' class="form-control" placeholder="结束时间" ng-model="endTime" />  
+                    <span class="input-group-addon">  
+                        <span class="glyphicon glyphicon-calendar"></span>  
+                    </span>  
+                </div> 
+                </div>
+                <div  class="col-sm-2">	
+			<button type="button" class="btn btn-default pull-right" ng-click="goSearch()">
+					日期查询
+				</button>	
+				</div>
+               <div  class="col-sm-2">	
+			<button type="button" class="btn btn-default pull-right" ng-click="showAll()">
+					显示全部
+				</button>	
+				</div>
+			</div>
+			<!-- 按钮操作区域结束 -->
+			<!-- 表格操作区域开始 -->
+			<div class="tableArea">
+				<table class="table table-striped table-bordered" id="tableArea" ng-model="Allprojects">
+				   <thead>
+				      <tr>
+				         <th>序号</th>
+				         <th>角色名称</th>
+				         <th>备注</th>
+				         <th>创建人</th>
+				         <th>创建时间</th>
+				         <th>用户数</th>
+				         <th>操作</th>
+				      </tr>
+				   </thead>
+				   <tbody>
+				      <tr ng-repeat="userRoleDto in AlluserRoles">
+				        <!--  <td>{{userRoleDto.userRole.user_role_id}}</td> -->
+				         <td>{{$index+1}}</td>
+				         <td>{{userRoleDto.userRole.user_role_name}}</td>
+				         <td>{{userRoleDto.userRole.user_role_note}}</td>
+				         <td>{{userRoleDto.userRole.creater}}</td>
+				         <td>{{userRoleDto.userRole.createTime}}</td>
+				         <td>{{userRoleDto.userNum}}</td>
+				         <td>
+  				            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUserRole" ng-click="goUpdate(userRoleDto.userRole.user_role_id)">编辑</button>
+				         	<button class="delete" ng-click="goDeleteUserRole(userRoleDto.userRole.user_role_id)"></button>
+				         </td>
+				      </tr>
+				   </tbody>
+				</table>
+				<div class="page">
+               <!-- 翻页功能 -->
+               <div class="row" style="text-align:center">
+                    <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                             ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                             boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                </div>
+	</div>
+			</div>
+			<!-- 表格操作区域结束 -->
+			<!-- <div class="three">
+				<div class="btn-group" role="group">
+				    <button type="button" class="btn btn-default" ng-click="printReport()">打印报表</button>
+				   <button type="button" class="btn btn-default" ng-click="deleteProjects()">批量删除</button>
+				</div>
+			</div> -->
+    </div>  
+   	<!--  添加用户角色模态框 -->
+   	<div class="modal fade" id="addUserRole" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	            <button type="button" class="close" 
+	               data-dismiss="modal" aria-hidden="true">
+	                  &times;
+	            </button>
+	            <h4 class="modal-title" id="myModalLabel">
+	               添加用户角色
+	            </h4>
+	         </div>
+	         <div class="modal-body">
+	            	<form class="form-horizontal" name="projectForm">
+	            	<div class="tabbable" id="tabs-615459">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#panel-182509" data-toggle="tab">角色信息</a>
+					</li>
+					<li>
+						<a href="#panel-162989" data-toggle="tab">角色权限</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="panel-182509" style="padding:50px 50px 50px 50px">
+						<div class="form-group">
+					      <label for="projectname" class="col-sm-3 control-label"><font color="red">*</font>角色名称</label>
+					      <div class="col-sm-8">
+					         <input type="text" class="form-control" ng-model="userRoleName" name="userRoleName" placeholder="请输入角色名称">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="projectname" class="col-sm-3 control-label">备注</label>
+					      <div class="col-sm-8">
+					         <textarea type="text" rows="4" class="form-control" id="note" name="note" ng-model="note"
+					            placeholder="请输入角色备注">
+					            </textarea>
+					      </div>
+					   </div>
+					</div>
+					<div class="tab-pane" id="panel-162989" style="padding:30px 50px 50px 200px">
+						<div class="accordion" id="accordion-7827">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451062">概览</a>
+					</div>
+					<div id="accordion-element-451062" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="overView"> <span class="glyphicon glyphicon-tags"></span>  综合概览 
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451063">构件管理</a>
+					</div>
+					<div id="accordion-element-451063" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="compManage"> <span class="glyphicon glyphicon-tags"></span>  构件管理
+						</div>
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="processManage"> <span class="glyphicon glyphicon-tags"></span>  进度管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451064">项目管理</a>
+					</div>
+					<div id="accordion-element-451064" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="projectManage"> <span class="glyphicon glyphicon-tags"></span>  项目管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451065">构件厂管理</a>
+					</div>
+					<div id="accordion-element-451065" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="compFactoryManage"> <span class="glyphicon glyphicon-tags"></span>  构件厂管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451066">系统管理</a>
+					</div>
+					<div id="accordion-element-451066" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userManage"> <span class="glyphicon glyphicon-tags"></span>  用户管理
+						</div>
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="roleManage"> <span class="glyphicon glyphicon-tags"></span>  角色管理
+						</div>
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="logManage"> <span class="glyphicon glyphicon-tags"></span> 操作日志
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451067">生产管理</a>
+					</div>
+					<div id="accordion-element-451067" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="productManage"> <span class="glyphicon glyphicon-tags"></span>  生产管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451068">个人中心</a>
+					</div>
+					<div id="accordion-element-451068" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="personalManage"> <span class="glyphicon glyphicon-tags"></span>  个人中心
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451069">平板端权限</a>
+					</div>
+					<div id="accordion-element-451069" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="pcManage"> <span class="glyphicon glyphicon-tags"></span> 是否构件厂
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451070">解绑/进度编辑权限</a>
+					</div>
+					<div id="accordion-element-451070" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="bindManage"> <span class="glyphicon glyphicon-tags"></span> 解绑/进度编辑权限
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#accordion-element-451071">构件只读权限</a>
+					</div>
+					<div id="accordion-element-451071" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="compReadOnlyManage"> <span class="glyphicon glyphicon-tags"></span> 构件只读权限
+						</div>
+					</div>
+				</div>
+			</div>
+					</div>
+				</div>
+			</div>
+	            	</form>
+	         </div>
+	         <div class="modal-footer">
+	            <button type="button" class="btn btn-default" 
+	               data-dismiss="modal">取消
+	            </button>
+	            <button type="button" ng-click="submit()" class="btn btn-primary" >
+	                                                       提交
+	            </button>
+	         </div>
+	      </div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+	</div>
+	<!--  添加用户角色模态框 end -->
+	  	<!--  修改用户角色模态框 -->
+   	<div class="modal fade" id="updateUserRole" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	            <button type="button" class="close" 
+	               data-dismiss="modal" aria-hidden="true">
+	                  &times;
+	            </button>
+	            <h4 class="modal-title" id="myModalLabel">
+	               修改用户角色
+	            </h4>
+	         </div>
+	         <div class="modal-body">
+	            	<form class="form-horizontal" name="projectForm">
+	            	<div class="tabbable" id="utabs-615459">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#upanel-182509" data-toggle="tab">角色信息</a>
+					</li>
+					<li>
+						<a href="#upanel-162989" data-toggle="tab">角色权限</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="upanel-182509" style="padding:50px 50px 50px 50px">
+						<div class="form-group">
+					      <label for="projectname" class="col-sm-3 control-label"><font color="red">*</font>角色名称</label>
+					      <div class="col-sm-8">
+					         <input type="text" class="form-control" ng-model="userRoleDtoForUpdate.userRole.user_role_name" name="userRoleName" placeholder="请输入角色名称">
+					      </div>
+					   </div>
+					   <div class="form-group">
+					      <label for="projectname" class="col-sm-3 control-label">备注</label>
+					      <div class="col-sm-8">
+					         <textarea type="text" rows="4" class="form-control" id="note" name="note" ng-model="userRoleDtoForUpdate.userRole.user_role_note"
+					            placeholder="请输入角色备注">
+					            </textarea>
+					      </div>
+					   </div>
+					</div>
+					<div class="tab-pane" id="upanel-162989" style="padding:30px 50px 50px 200px">
+						<div class="accordion" id="uaccordion-7827">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451062">概览</a>
+					</div>
+					<div id="uaccordion-element-451062" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.overView"> <span class="glyphicon glyphicon-tags"></span>  综合概览 
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451063">构件管理</a>
+					</div>
+					<div id="uaccordion-element-451063" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.compManage"> <span class="glyphicon glyphicon-tags"></span>  构件管理
+						</div>
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.processManage"> <span class="glyphicon glyphicon-tags"></span>  进度管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451064">项目管理</a>
+					</div>
+					<div id="uaccordion-element-451064" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.projectManage"> <span class="glyphicon glyphicon-tags"></span>  项目管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451065">构件厂管理</a>
+					</div>
+					<div id="uaccordion-element-451065" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.compFactoryManage"> <span class="glyphicon glyphicon-tags"></span>  构件厂管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-7827" href="#uaccordion-element-451066">系统管理</a>
+					</div>
+					<div id="uaccordion-element-451066" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.userManage"> <span class="glyphicon glyphicon-tags"></span>  用户管理
+						</div>
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.roleManage"> <span class="glyphicon glyphicon-tags"></span>  角色管理
+						</div>
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.logManage"> <span class="glyphicon glyphicon-tags"></span> 操作日志
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451067">生产管理</a>
+					</div>
+					<div id="uaccordion-element-451067" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.productManage"> <span class="glyphicon glyphicon-tags"></span>  生产管理
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451068">个人中心</a>
+					</div>
+					<div id="uaccordion-element-451068" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.personalManage"> <span class="glyphicon glyphicon-tags"></span>  个人中心
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451069">平板端权限</a>
+					</div>
+					<div id="uaccordion-element-451069" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.pcManage"> <span class="glyphicon glyphicon-tags"></span> 是否构件厂
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451070">解绑/进度编辑权限</a>
+					</div>
+					<div id="uaccordion-element-451070" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.bindManage"> <span class="glyphicon glyphicon-tags"></span> 解绑/进度编辑权限
+						</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<span class="glyphicon glyphicon-folder-open"></span> <a class="accordion-toggle" data-toggle="collapse" data-parent="#uaccordion-7827" href="#uaccordion-element-451071">构件只读权限</a>
+					</div>
+					<div id="uaccordion-element-451071" class="accordion-body in collapse">
+						<div class="accordion-inner">
+						<input type="checkbox" ng-model="userRoleDtoForUpdate.compReadOnlyManage"> <span class="glyphicon glyphicon-tags"></span> 构件只读权限
+						</div>
+					</div>
+				</div>
+			</div>
+					</div>
+				</div>
+			</div>
+	            	</form>
+	         </div>
+	         <div class="modal-footer">
+	            <button type="button" class="btn btn-default" 
+	               data-dismiss="modal">取消
+	            </button>
+	            <button type="button" ng-click="update()" class="btn btn-primary" >
+	                                                       提交
+	            </button>
+	         </div>
+	      </div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+	</div>
+	<!--  添加修改角色模态框 end -->

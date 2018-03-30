@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.SensitiveAreaMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.SensitiveArea">
+    <id column="sensitive_area_id" jdbcType="INTEGER" property="sensitive_area_id" />
+    <result column="sensitive_area_name" jdbcType="VARCHAR" property="sensitive_area_name" />
+    <result column="station_ids" jdbcType="VARCHAR" property="station_ids" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="add_time" />
+    <result column="black_list_elects" jdbcType="VARCHAR" property="black_list_elects" />
+    <result column="sens_start_time" jdbcType="TIMESTAMP" property="sens_start_time" />
+    <result column="sens_end_time" jdbcType="TIMESTAMP" property="sens_end_time" />
+    <result column="enter_num" jdbcType="INTEGER" property="enter_num" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sensitive_area_id, sensitive_area_name, station_ids, add_time, black_list_elects, 
+    sens_start_time, sens_end_time, enter_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sensitive_area
+    where sensitive_area_id = #{sensitive_area_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sensitive_area
+    where sensitive_area_id = #{sensitive_area_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.SensitiveArea">
+    insert into sensitive_area (sensitive_area_id, sensitive_area_name, 
+      station_ids, add_time, black_list_elects, 
+      sens_start_time, sens_end_time, enter_num
+      )
+    values (#{sensitive_area_id,jdbcType=INTEGER}, #{sensitive_area_name,jdbcType=VARCHAR}, 
+      #{station_ids,jdbcType=VARCHAR}, #{add_time,jdbcType=TIMESTAMP}, #{black_list_elects,jdbcType=VARCHAR}, 
+      #{sens_start_time,jdbcType=TIMESTAMP}, #{sens_end_time,jdbcType=TIMESTAMP}, #{enter_num,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.SensitiveArea">
+    insert into sensitive_area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sensitive_area_id != null">
+        sensitive_area_id,
+      </if>
+      <if test="sensitive_area_name != null">
+        sensitive_area_name,
+      </if>
+      <if test="station_ids != null">
+        station_ids,
+      </if>
+      <if test="add_time != null">
+        add_time,
+      </if>
+      <if test="black_list_elects != null">
+        black_list_elects,
+      </if>
+      <if test="sens_start_time != null">
+        sens_start_time,
+      </if>
+      <if test="sens_end_time != null">
+        sens_end_time,
+      </if>
+      <if test="enter_num != null">
+        enter_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sensitive_area_id != null">
+        #{sensitive_area_id,jdbcType=INTEGER},
+      </if>
+      <if test="sensitive_area_name != null">
+        #{sensitive_area_name,jdbcType=VARCHAR},
+      </if>
+      <if test="station_ids != null">
+        #{station_ids,jdbcType=VARCHAR},
+      </if>
+      <if test="add_time != null">
+        #{add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="black_list_elects != null">
+        #{black_list_elects,jdbcType=VARCHAR},
+      </if>
+      <if test="sens_start_time != null">
+        #{sens_start_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sens_end_time != null">
+        #{sens_end_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enter_num != null">
+        #{enter_num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.SensitiveArea">
+    update sensitive_area
+    <set>
+      <if test="sensitive_area_name != null">
+        sensitive_area_name = #{sensitive_area_name,jdbcType=VARCHAR},
+      </if>
+      <if test="station_ids != null">
+        station_ids = #{station_ids,jdbcType=VARCHAR},
+      </if>
+      <if test="add_time != null">
+        add_time = #{add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="black_list_elects != null">
+        black_list_elects = #{black_list_elects,jdbcType=VARCHAR},
+      </if>
+      <if test="sens_start_time != null">
+        sens_start_time = #{sens_start_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sens_end_time != null">
+        sens_end_time = #{sens_end_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enter_num != null">
+        enter_num = #{enter_num,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sensitive_area_id = #{sensitive_area_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.SensitiveArea">
+    update sensitive_area
+    set sensitive_area_name = #{sensitive_area_name,jdbcType=VARCHAR},
+      station_ids = #{station_ids,jdbcType=VARCHAR},
+      add_time = #{add_time,jdbcType=TIMESTAMP},
+      black_list_elects = #{black_list_elects,jdbcType=VARCHAR},
+      sens_start_time = #{sens_start_time,jdbcType=TIMESTAMP},
+      sens_end_time = #{sens_end_time,jdbcType=TIMESTAMP},
+      enter_num = #{enter_num,jdbcType=INTEGER}
+    where sensitive_area_id = #{sensitive_area_id,jdbcType=INTEGER}
+  </update>
+</mapper>
