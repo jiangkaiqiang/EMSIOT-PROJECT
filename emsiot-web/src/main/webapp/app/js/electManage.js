@@ -8,6 +8,45 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				}
 		   });
 	};
+
+	//文件上传
+	var uploadUrl = 'https://xxxxxxx';
+	function upfile(event) {
+		var event = event || window.event,
+			dom = '',
+			upfile = $("#upfile").get(0).files[0],
+			otype = upfile.type || '获取失败',
+			osize = upfile.size / 1054000,
+			ourl = window.URL.createObjectURL(upfile); //文件临时地址
+			console.log(upfile);
+			console.log(otype);
+		//$('#file_type').text("选择上传文件类型：" + otype);
+		//$('#file_size').text("选择上传文件大小，共" + osize.toFixed(2) + "MB。");
+        //
+		//console.log("文件类型：" + otype); //文件类型
+		//console.log("文件大小：" + osize); //文件大小
+        //
+		//if ('video/mp4' == otype || 'video/avi' == otype || 'video/x-msvideo' == otype) {
+		//	dom = '<video id="video" width="100%" height="100%" controls="controls" autoplay="autoplay" src=' + ourl + '></video>';
+		//}
+		//if ('audio/mp3' == otype || 'audio/wav' == otype  || 'audio/x-m4a' == otype) {
+		//	dom = '<audio id="audio" width="100%" height="100%" controls="controls" autoplay="autoplay" loop="loop" src=' + ourl + ' ></audio>';
+		//}
+		if ('image/jpeg' == otype || 'image/png' == otype || 'image/gif' == otype) {
+			dom = '<img id="photo" width="100%" height="100%" alt="我是image图片文件" src=' + ourl + ' title="" />';
+		}
+		$('#carPhoto').html(dom);
+	};
+
+
+
+	//显示下拉搜索条件
+	$scope. searchBlock=function(){
+	var  unblockContent=$(".search-container .unblock-content");
+	console.log(unblockContent);
+		unblockContent.toggleClass("no-block");
+}
+
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 12;
@@ -259,3 +298,4 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    }).on('dp.change', function (e) {  
 		    });  
 });
+

@@ -1,0 +1,13 @@
+.countWarp .station-content{
+    width:60%;
+    height:auto;
+    /*padding:10px 10px;*/
+    background:#fff;
+    position:absolute;
+    top:20px;left:20px;
+    z-index:500;
+}
+
+.countWarp .searchInput{
+    background:transparent;
+}
