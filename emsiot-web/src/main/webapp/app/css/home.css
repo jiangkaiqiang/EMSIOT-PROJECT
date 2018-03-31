@@ -3,7 +3,7 @@
     -webkit-box-shadow:0px 0px 10px 0px #333;
     -moz-box-shadow:0px 0px 10px 0px #333;
     box-shadow:0px 0px 10px 0px #333;
-    min-height:65px;
+    min-height:60px;
     position:fixed;
     width:100%;
 }
@@ -34,7 +34,7 @@
     color:#7C8196;
 }
 .countWarp .navbar-nav > li > a{
-    line-height:1.5em;
+    line-height:1.45em;
 }
 .countWarp .nav > li > a{
     padding:10px 15px;
@@ -48,13 +48,13 @@
 }
 .container-fluid{
     width:100%;
-    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
-    display: -moz-box; /* Firefox 17- */
-    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
-    display: -moz-flex; /* Firefox 18+ */
-    display: -ms-flexbox; /* IE 10 */
-    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
-    justify-content:space-between;
+    /*display: -webkit-box; /!* Chrome 4+, Safari 3.1, iOS Safari 3.2+ *!/*/
+    /*display: -moz-box; /!* Firefox 17- *!/*/
+    /*display: -webkit-flex; /!* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 *!/*/
+    /*display: -moz-flex; /!* Firefox 18+ *!/*/
+    /*display: -ms-flexbox; /!* IE 10 *!/*/
+    /*display: flex; /!* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ *!/*/
+    /*justify-content:space-between;*/
 }
 .container-fluid>ul:first-child{
     padding-left:0;

@@ -182,16 +182,16 @@ body{
 	cursor: pointer;
 }
 .tableArea{
-	margin-top: 50px;
+	/*margin-top: 50px;*/
 }
 .tableArea thead th{
-	background-color: #E4E4E4;
+	background-color: #F4F7FC;
 	font-size: 14px;
 	padding:4px 0!important;
 	font-weight: 800;
 }
 .tableArea thead th:first-child,.tableArea thead th:last-child{
-	width:150px;
+	/*width:150px;*/
 }
 .tableArea thead th{	
 	text-align: center;
@@ -298,8 +298,8 @@ tbody tr td{
 }
 .content .panel .panel-title{
 	text-align: center;
-	line-height: 40px;
-	font-size: 2.1em;
+	line-height: 45px;
+	font-size: 2.9em;
 	color:#E4EBED;
 }
 #submit{
@@ -688,7 +688,7 @@ footer{
 .panel{
 	background-color:transparent!important;
 }
-.panel-first{font-size:1.2em;color:#E4EBED;}
+.panel-first{font-size:2.2em;color:#E4EBED;}
 .panel-last{color:#788284;margin-bottom:25px;}
 .panel-heading{text-align:center;}
 .btn.focus, .btn:focus, .btn:hover{outline:0;border:0;}
@@ -696,3 +696,4 @@ footer{
 .form-control-feedback{top:10PX;left:19%;color:#2D7CF9;}
 #passworIcon{background:url(../img/loginLock.png) no-repeat}
 #userIcon{background:url(../img/userIcon.png) no-repeat}
+.countWarp{position:relative;}
