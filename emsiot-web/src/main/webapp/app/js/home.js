@@ -20,20 +20,14 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        // 获取基站
 			   	    $http.get('/i/station/findAllStations').success(function (data) {
 			   	        $scope.stations = data;
-			   	        console.log(data[0]);
 			   	        
 			   	        showStation();
 			   	    });
 			        
 			        	 function showStation(){
-			        	  var latlngs=[
-			        	   [75.979,39.475],
-			        	   [76.0038210511,39.5189055971],
-			        	   [75.8222930000,39.5087320000],
-			        	   [75.9844190000,39.3718700000]
-			        	  ];
+
 			        	  var markers = [];
-			        	  for(var i=0;i<900;i++){
+			        	  for(var i=0;i<10;i++){
 			        	   var pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
 			        	   var myIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
 			        	   var marker2 = new BMap.Marker(pt,{icon:myIcon}); 
@@ -60,7 +54,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	   var marker = new BMap.Marker(pt,{icon:myIcon}); 
 			        	   map.addOverlay(marker); 
 			        	   
-			        	   alert(e.point.lng + "," + e.point.lat);
 			        	 });
 			 });
 	 });	 
