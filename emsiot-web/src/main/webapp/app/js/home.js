@@ -29,7 +29,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        		 var sContent ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>显示的是一个基站！</h4>";
 
 			        		 var markers = [];
-			        	  for(var i=0;i<20;i++){
+			        	  for(var i=0;i<100;i++){
 			        		  console.log($scope.stations[i].longitude+","+$scope.stations[i].latitude);
 				        	   pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
 				        	   marker2 = new BMap.Marker(pt,{icon:stationIcon}); 
