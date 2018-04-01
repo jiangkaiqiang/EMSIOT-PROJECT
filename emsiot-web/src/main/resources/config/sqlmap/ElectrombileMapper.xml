@@ -64,7 +64,7 @@
       #{elect_type,jdbcType=INTEGER}, #{insur_detail,jdbcType=INTEGER}, #{elect_pic,jdbcType=VARCHAR}, 
       #{indentity_card_pic,jdbcType=VARCHAR}, #{record_pic,jdbcType=VARCHAR}, #{install_card_pic,jdbcType=VARCHAR}, 
       #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{owner_address,jdbcType=VARCHAR}, 
-      #{owner_id,jdbcType=VARCHAR}, #{recorder_id,jdbcType=INTEGER}, #{recorder_time,jdbcType=TIMESTAMP}, 
+      #{owner_id,jdbcType=VARCHAR}, #{recorder_id,jdbcType=INTEGER}, now(), 
       #{elect_state,jdbcType=INTEGER}, #{black_list_recorder,jdbcType=INTEGER}, #{black_list_time,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -351,4 +351,49 @@
       black_list_time = #{black_list_time,jdbcType=TIMESTAMP}
     where elect_id = #{elect_id,jdbcType=INTEGER}
   </update>
+  <select id="findAllElectrombiles" parameterType="int" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="recorderID != null">
+				recorder_id = #{recorderID}
+			</if>
+			<if test="electState != null">
+				AND elect_state = #{electState}
+			</if>
+			<if test="insurDetail != null">
+				AND insur_detail = #{insurDetail}
+			</if>
+			<if test="proID != null">
+				AND pro_id = #{proID}
+			</if>
+			<if test="cityID != null">
+				AND city_id = #{cityID}
+			</if>
+			<if test="areaID != null">
+				AND area_id = #{areaID}
+			</if>
+			<if test="ownerTele != null">
+				AND owner_tele = #{ownerTele}
+			</if>
+			<if test="ownerID != null">
+				AND owner_id = #{ownerID}
+			</if>
+			<if test="plateNum != null">
+				AND plate_num = #{plateNum}
+			</if>
+			<if test="guaCardNum != null">
+				AND gua_card_num = #{guaCardNum}
+			</if>
+			<if test="ownerName != null">
+				AND owner_name like "%"#{ownerName}"%"
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND recorder_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND recorder_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
 </mapper>

@@ -45,7 +45,12 @@ public class CityController {
         return cityMapper.findCitysByProvinceId(provinceID);
     }
     
-
+    @RequestMapping(value = "/findAreasByCityId", method = RequestMethod.GET)
+    @ResponseBody
+    public Object findAreasByCityId(@RequestParam Integer cityID) {
+        return cityMapper.findAreasByCityId(cityID);
+    }
+    
     @RequestMapping(value = "/findCityById", method = RequestMethod.GET)
     @ResponseBody
     public Object findCityById(@RequestParam Integer CityID) {

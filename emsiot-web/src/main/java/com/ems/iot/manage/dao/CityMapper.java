@@ -17,6 +17,8 @@ import java.util.List;
 public interface CityMapper {
     List<City> findCitysByProvinceId(@Param("provinceID") int provinceID);
     
+    List<City> findAreasByCityId(@Param("cityID") int cityID);
+    
     List<City> findCityList();
     
     City findCityById(@Param("CityID") int CityID);

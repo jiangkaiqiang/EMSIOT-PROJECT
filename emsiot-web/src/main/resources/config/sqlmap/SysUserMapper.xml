@@ -76,7 +76,7 @@
 		SELECT * FROM `sys_user`
 		<where>
 			<if test="keyword != null">
-				AND user_name like "%"#{keyword}"%"
+			    user_name like "%"#{keyword}"%"
 			</if>
 			<if test="startTime!=null and startTime!=''">
 				AND create_time &gt;= #{startTime}

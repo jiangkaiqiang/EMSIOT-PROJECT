@@ -8,7 +8,6 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				}
 		   });
 	};
-
 	//文件上传
 	var uploadUrl = 'https://xxxxxxx';
 	function upfile(event) {
@@ -49,44 +48,52 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 
 	$scope.load();
 	// 显示最大页数
-    $scope.maxSize = 12;
+    $scope.maxSize = 10;
     // 总条目数(默认每页十条)
-    $scope.bigTotalItems = 12;
+    $scope.bigTotalItems = 10;
     // 当前页
     $scope.bigCurrentPage = 1;
-	$scope.Allusers = [];
+	$scope.AllElectDtos = [];
 	$scope.optAudit = '8';
-	 // 获取当前用户的列表
-
-	  
-    $scope.getUsers = function() {
+	 // 获取当前车辆的列表
+    $scope.getElects = function() {
 		$http({
 			method : 'POST',
-			url : '/i/user/findUserList',
+			url : '/i/elect/findElectList',
 			params : {
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
 				startTime : $scope.startTime,
 				endTime : $scope.endTime,
-				keyword : encodeURI($scope.keyword,"UTF-8"),
+				recorderID : $scope.recorderID,
+				electState : $scope.electState,
+				insurDetail : $scope.insurDetail,
+				proID : $scope.proID,
+				cityID : $scope.cityID,
+				areaID : $scope.areaID,
+				ownerTele : $scope.ownerTele,
+				ownerID : $scope.ownerID,
+				plateNum : $scope.plateNum,
+				guaCardNum : $scope.guaCardNum,
+				ownerName : $scope.ownerName
 			}
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
-			$scope.Allusers = data.list;
+			$scope.AllElectDtos = data.list;
 		});
 	}
 
 	$scope.pageChanged = function() {
-		$scope.getUsers();
+		$scope.getElects();
 	}
-	$scope.getUsers();
+	$scope.getElects();
 	// 获取当前冷库的列表
 	$scope.auditChanged = function(optAudiet) {
-		$scope.getUsers();
+		$scope.getElects();
 	}
     
 	$scope.goSearch = function () {
-		$scope.getUsers();
+		$scope.getElects();
     }
 	
 	$scope.showAll = function () {
@@ -99,134 +106,168 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	        }
 	        return true;
 	}
-    
-    // 获取角色
-    $http.get('/i/userrole/findAllUserRole').success(function (data) {
-        $scope.userRoles = data;
-        $scope.addUserRoleid = data[0].user_role_id;
+    //获取全部省
+    $http.get('/i/city/findProvinceList').success(function (data) {
+        $scope.provinces = data;
+        $scope.addProvinceID = data[0].province_id;
     });
 	
-    $scope.goDeleteUser = function (userID) {
-    	if(delcfm()){
-    	$http.get('/i/user/deleteUserByID', {
+    $scope.getCitis = function () {
+    	$http.get('/i/city/findCitysByProvinceId', {
             params: {
-                "userID": userID
+                "provinceID": $scope.addProvinceID
             }
         }).success(function (data) {
-        	$scope.getUsers();
-        	alert("删除成功");
+        	$scope.citis = data;
+            $scope.addCityID = data[0].city_id;
+        });
+    }
+    
+    $scope.getAreas = function () {
+    	$http.get('/i/city/findAreasByCityId', {
+            params: {
+                "cityID": $scope.addCityID
+            }
+        }).success(function (data) {
+        	$scope.areas = data;
+            $scope.addAreaID = data[0].area_id;
+        });
+    }
+    
+    $scope.goDeleteElect = function (electID) {
+    	if(delcfm()){
+    	$http.get('/i/elect/deleteElectByID', {
+            params: {
+                "electID": electID
+            }
+        }).success(function (data) {
+        	$scope.getElects();
         });
     	}
     }
-    $scope.deleteUsers = function(){
+    $scope.godeleteElects = function(){
     	if(delcfm()){
-    	var userIDs = [];
+    	var electIDs = [];
     	for(i in $scope.selected){
-    		userIDs.push($scope.selected[i].sysUser.user_id);
+    		electIDs.push($scope.selected[i].electrombile.elect_id);
     	}
-    	if(userIDs.length >0 ){
+    	if(electIDs.length >0 ){
     		$http({
     			method:'DELETE',
-    			url:'/i/user/deleteUserByIDs',
+    			url:'/i/elect/deleteElectByIDs',
     			params:{
-    				'userIDs': userIDs
+    				'electIDs': electIDs
     			}
     		}).success(function (data) {
-    			$scope.getUsers();
-            	alert("删除成功");
+    			$scope.getElects();
             });
     	}
     	}
     }
    
-    
     $scope.selected = [];
-    $scope.toggle = function (user, list) {
-		  var idx = list.indexOf(user);
+    $scope.toggle = function (electDto, list) {
+		  var idx = list.indexOf(electDto);
 		  if (idx > -1) {
 		    list.splice(idx, 1);
 		  }
 		  else {
-		    list.push(user);
+		    list.push(electDto);
 		  }
     };
-    $scope.exists = function (user, list) {
-    	return list.indexOf(user) > -1;
+    $scope.exists = function (electDto, list) {
+    	return list.indexOf(electDto) > -1;
     };
     $scope.isChecked = function() {
-        return $scope.selected.length === $scope.Allusers.length;
+        return $scope.selected.length === $scope.AllElectDtos.length;
     };
     $scope.toggleAll = function() {
-        if ($scope.selected.length === $scope.Allusers.length) {
+        if ($scope.selected.length === $scope.AllElectDtos.length) {
         	$scope.selected = [];
         } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-        	$scope.selected = $scope.Allusers.slice(0);
+        	$scope.selected = $scope.AllElectDtos.slice(0);
         }
     };
     
-    $scope.getUserIDsFromSelected = function(audit){
-    	var userIDs = [];
+    $scope.getElectIDsFromSelected = function(audit){
+    	var electIDs = [];
     	for(i in $scope.selected){
     		if(audit != undefined)
     			$scope.selected[i].audit = audit;
-    		userIDs.push($scope.selected[i].id);
+    		electIDs.push($scope.selected[i].id);
     	}
-    	return userIDs;
+    	return electIDs;
     }
     
-    $scope.getAudit = function(i){
-    	if(i==1)
-    		return '有效';
+    $scope.getInsur = function(insur_detail){
+    	if(insur_detail==1)
+    		return '投保';
+        else if(insur_detail==null){
+    		return '未知';
+    	}
         else{
-    		return '无效';
-    	}
+        	return '未投保';
+        }
     }
     
+    $scope.getState = function(elect_state){
+    	if(elect_state==1)
+    		return '正常';
+        else{
+        	return '黑名单';
+        }
+    }
     
     function checkInput(){
         var flag = true;
         // 检查必须填写项
-        if ($scope.username == undefined || $scope.username == '') {
+        if ($scope.addGuaCardNum == undefined || $scope.addGuaCardNum == '') {
             flag = false;
         }
-        if ($scope.password == undefined || $scope.password == '') {
+        if ($scope.addPlateNum == undefined || $scope.addPlateNum == '') {
             flag = false;
         }
         return flag;
     }
 
-    
-    
     $scope.submit = function(){
         if (checkInput()){
-          if($scope.password==$scope.password1){
-        	var valid;
-        	if($scope.validforadd)  valid = 1;
-        	else  valid = 2;
             $http({
-            	method : 'GET', 
-    			url:'/i/user/addUser',
+            	method : 'POST', 
+    			url:'/i/elect/addElect',
     			params:{
-    				'user_name': $scope.username,
-    				'password': $scope.password,
-    				'user_role_id' : $scope.addUserRoleid,
-    				'company': $scope.company,
-    				'pro_id' : $scope.addProjectid,
-    				'comp_factory_id' : $scope.addcompfactoryid,
-    				'valid_status' : valid,
-    				'user_tel' : $scope.telephone
+    			    'gua_card_num': $scope.addGuaCardNum,
+    			    'plate_num' : $scope.addPlateNum,
+    			    've_id_num' : $scope.addVeIdNum,
+    			    'elect_brand' : $scope.addElectBrand,
+    			    'buy_date' : $scope.addBuyDate,
+    			    'elect_color' : $scope.addElectColor,
+    			    'motor_num' : $scope.addMotorNum,
+    			    'note' : $scope.addNote,
+    			    'pro_id' : $scope.addProvinceID,
+    			    'city_id' : $scope.addCityID,
+    			    'area_id' : $scope.addAreaID,
+    			    'elect_type' : $scope.addElectType,
+    			    'insur_detail' : $scope.addInsurDetail,
+    			    'elect_pic' : $scope.electPic,
+    			    'indentity_card_pic' : $scope.indentityCardPic,
+    			    'record_pic' : $scope.recordPic,
+    			    'install_card_pic' : $scope.installCardPic,
+    			    'owner_tele' : $scope.addOwnerTele,
+    			    'owner_name' : $scope.addOwnerName,
+    			    'owner_address' : $scope.addOwnerAddress,
+    			    'owner_id' : $scope.addOwnerID,
+    			    'recorder_id' : $rootScope.admin.user_id,
+    			    'elect_state' : 1,
     			}
     		}).then(function (resp) {
     			 alert(resp.data.message);
-                 $scope.getUsers();
-                 $("#addUser").modal("hide"); 
+    			 $scope.getElects();
+                 $("#addCar").modal("hide"); 
             });
            }
-          else{
-        	  alert("两次密码不一致!");
-           }
-          } else {
-            alert("请填写用户名或密码!");
+       else {
+            alert("防盗芯片编号和车牌号不能为空");
         }
     }
     

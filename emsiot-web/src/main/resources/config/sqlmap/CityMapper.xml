@@ -9,6 +9,11 @@
         FROM `city` WHERE `province_id` = #{provinceID}
     </select>
     
+    <select id="findAreasByCityId" parameterType="map" resultType="com.ems.iot.manage.entity.Area">
+        SELECT *
+        FROM `area` WHERE `city_id` = #{cityID}
+    </select>
+    
     <select id="findCityById" parameterType="map" resultType="com.ems.iot.manage.entity.City">
         SELECT *
         FROM `city` WHERE `city_id` = #{CityID}
