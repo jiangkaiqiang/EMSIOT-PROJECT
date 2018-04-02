@@ -139,6 +139,12 @@ public class UserController extends BaseController {
 		
 	}
 	
+	@RequestMapping(value = "/findAllUsers")
+	@ResponseBody
+	public Object findAllUsers() throws UnsupportedEncodingException {
+		return userDao.findAllUser(null, null, null);
+	}
+	
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
 	@ResponseBody
 	public Object addUser(SysUser user) throws UnsupportedEncodingException {

@@ -2,6 +2,8 @@ package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
@@ -21,6 +24,7 @@ import com.ems.iot.manage.dto.ElectrombileDto;
 import com.ems.iot.manage.dto.NgRemoteValidateDTO;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.SysUserDto;
+import com.ems.iot.manage.dto.UploadFileEntity;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.SysUser;
@@ -127,15 +131,87 @@ public class ElectController extends BaseController {
 	 * @param electrombile
 	 * @return
 	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
 	 */
-	@RequestMapping(value = "/addElect", method = RequestMethod.POST)
+	@RequestMapping(value = "/addElect")
 	@ResponseBody
-	public Object addElect(Electrombile electrombile) throws UnsupportedEncodingException {
+	public Object addElect(@RequestParam(required = false) Integer gua_card_num,
+			@RequestParam(required = false) String plate_num,
+			@RequestParam(required = false) String ve_id_num,
+			@RequestParam(required = false) String elect_brand,
+			@RequestParam(required = false) String buy_date,
+			@RequestParam(required = false) String elect_color,
+			@RequestParam(required = false) String motor_num, 
+			@RequestParam(required = false) String note,
+			@RequestParam(required = false) Integer pro_id,
+			@RequestParam(required = false) Integer city_id,
+			@RequestParam(required = false) Integer area_id,
+			@RequestParam(required = false) Integer elect_type,
+			@RequestParam(required = false) Integer insur_detail,
+			@RequestParam(required = false) MultipartFile elect_pic,
+			@RequestParam(required = false) MultipartFile indentity_card_pic,
+			@RequestParam(required = false) MultipartFile record_pic,
+			@RequestParam(required = false) MultipartFile install_card_pic,
+			@RequestParam(required = false) String owner_tele,
+			@RequestParam(required = false) String owner_name,
+			@RequestParam(required = false) String owner_address,
+			@RequestParam(required = false) String owner_id,
+			@RequestParam(required = false) Integer recorder_id,
+			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+		Electrombile electrombile = new Electrombile();
+		electrombile.setGua_card_num(gua_card_num);
+		electrombile.setPlate_num(plate_num);
+		electrombile.setVe_id_num(ve_id_num);
+		electrombile.setElect_brand(elect_brand);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		electrombile.setBuy_date(sdf.parse(buy_date));
+		electrombile.setElect_color(elect_color);
+		electrombile.setMotor_num(motor_num);
+		electrombile.setNote(note);
+		electrombile.setPro_id(pro_id);
+		electrombile.setCity_id(city_id);
+		electrombile.setArea_id(area_id);
+		electrombile.setElect_type(elect_type);
+		electrombile.setInsur_detail(insur_detail);
+		electrombile.setOwner_tele(owner_tele);
+		electrombile.setOwner_name(owner_name);
+		electrombile.setOwner_address(owner_address);
+		electrombile.setOwner_id(owner_id);
+		electrombile.setRecorder_id(recorder_id);
+		electrombile.setElect_state(elect_state);
 		if (electrombile.getGua_card_num() == null) {
 			return new ResultDto(-1, "防盗芯片编号不能为空！");
 		}
 		if (electrombile.getPlate_num() == null) {
 			return new ResultDto(-1, "车牌号不能为空！");
+		}
+		if (null!=elect_pic) {
+			String dir = String.format("%s/elect/electPic", baseDir);
+			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=indentity_card_pic) {
+			String dir = String.format("%s/elect/indentityCardPic", baseDir);
+			String indentity_card_pic_name = String.format("indentityCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=record_pic) {
+			String dir = String.format("%s/elect/recordPic", baseDir);
+			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setRecord_pic(FtpService.READ_URL+"data/"+dir + "/" + record_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=install_card_pic) {
+			String dir = String.format("%s/elect/installCardPic", baseDir);
+			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.insert(electrombile);
 		return new ResultDto(0,"添加成功");

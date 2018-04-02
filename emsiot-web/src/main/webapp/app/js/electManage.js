@@ -1,4 +1,4 @@
-coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
@@ -36,16 +36,41 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		}
 		$('#carPhoto').html(dom);
 	};
+	
+	$scope.addElectPic = function () {
+		
+    };
+    $scope.dropElectPic = function(electPic){
+    	$scope.electPic = null;
+    };
 
-
-
+    $scope.addIndentityCardPic = function () {
+		
+    };
+    $scope.dropIndentityCardPic = function(indentityCardPic){
+    	$scope.indentityCardPic = null;
+    };
+    
+    $scope.addRecordPic = function () {
+		
+    };
+    $scope.dropRecordPic = function(recordPic){
+    	$scope.recordPic = null;
+    };
+    
+    $scope.addInstallCardPic = function () {
+		
+    };
+    $scope.dropInstallCardPic = function(installCardPic){
+    	$scope.installCardPic = null;
+    };
+    
 	//显示下拉搜索条件
-	$scope. searchBlock=function(){
+	$scope.searchBlock=function(){
 	var  unblockContent=$(".search-container .unblock-content");
 	console.log(unblockContent);
 		unblockContent.toggleClass("no-block");
-}
-
+    }
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 10;
@@ -112,6 +137,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         $scope.addProvinceID = data[0].province_id;
     });
 	
+    //获取全部管理员
+    $http.get('/i/user/findAllUsers').success(function (data) {
+        $scope.sysUsers = data;
+        $scope.sysUserID = data[0].user_id;
+    });
+    
     $scope.getCitis = function () {
     	$http.get('/i/city/findCitysByProvinceId', {
             params: {
@@ -232,11 +263,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 
     $scope.submit = function(){
         if (checkInput()){
-            $http({
-            	method : 'POST', 
-    			url:'/i/elect/addElect',
-    			params:{
-    			    'gua_card_num': $scope.addGuaCardNum,
+        	data = {
+        			'gua_card_num': $scope.addGuaCardNum,
     			    'plate_num' : $scope.addPlateNum,
     			    've_id_num' : $scope.addVeIdNum,
     			    'elect_brand' : $scope.addElectBrand,
@@ -258,14 +286,20 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'owner_address' : $scope.addOwnerAddress,
     			    'owner_id' : $scope.addOwnerID,
     			    'recorder_id' : $rootScope.admin.user_id,
-    			    'elect_state' : 1,
-    			}
-    		}).then(function (resp) {
-    			 alert(resp.data.message);
+    			    'elect_state' : 1
+	            };
+	       Upload.upload({
+	                url: '/i/elect/addElect',
+	                headers :{ 'Content-Transfer-Encoding': 'utf-8' },
+	                data: data
+	            }).success(function (data) {
+            if(data.success){
+            	 alert(data.message);
     			 $scope.getElects();
                  $("#addCar").modal("hide"); 
-            });
-           }
+            }
+        });
+          }
        else {
             alert("防盗芯片编号和车牌号不能为空");
         }
