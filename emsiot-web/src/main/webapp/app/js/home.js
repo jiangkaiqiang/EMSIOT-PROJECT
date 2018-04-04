@@ -83,6 +83,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	 //通过双击地图添加基站，弹出窗口
 			        	 var stationInfo = "<div style=\"width:300px;height:400px;\">请输入要添加的基站信息：</div>";
 			        	 var stationWin = new BMap.InfoWindow(stationInfo); 
+			        	 
 			        	 map.addEventListener("dblclick",function(e){
 			        	 var currentpt = new BMap.Point(e.point.lng,e.point.lat);
 			        	 var myIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
