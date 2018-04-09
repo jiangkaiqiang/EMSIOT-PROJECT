@@ -257,5 +257,51 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		 $('#datetimepicker2').datetimepicker({  
 		    	autoclose:true
 		    }).on('dp.change', function (e) {  
-		    });  
+		    });
+
+
+
+/*-------------------t4月3号添加，以下内容不可删除------------------------------*/
+
+
+
+	//开关选项控制
+	$('.btnCircle').click(function () {
+
+		var left = $(this).css('left');
+		left = parseInt(left);
+		if (left == 0) {
+			$(this).css('left', '25px'),
+				$(this).css('background-color', '#66b3ff'),
+				$(this).parent().css('background-color', '#66b3ff');
+			$(this).parent().parent().addClass("active");
+		} else {
+			$(this).css('left', '0px'),
+				$(this).css('background-color', '#fff'),
+				$(this).parent().css('background-color', '#ccc');
+			$(this).parent().parent().removeClass("active");
+		}
+
+	});
+
+	//选择按钮显示隐藏ok图标
+	var btnWhite=$(".addUserModal .search-container .btn-white");
+	console.log(btnWhite);
+	$(btnWhite).click(function (){
+		$(this).toggleClass("active");
+		$(this).children(".btn-ok").toggleClass("icon-active");
+	});
+
+
+	//tabs切换功能实现
+ $("#addUser .tabs input").click(function(){
+	 $("#addUser .tabs input").prop("checked","false");
+	 $(this).prop("checked","true");
+	 $("ul.search-container li").css("display","none");
+	 var a=$(this).attr("id")+"-car";
+	 $("."+a).css("display","block");
+ });
+
+
+
 });

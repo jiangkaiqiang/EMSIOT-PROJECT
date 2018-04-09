@@ -1,4 +1,12 @@
 coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+	var navBtn=$(".home-title a")
+	//console.log(navBtn);
+	navBtn.click(function(){
+	   navBtn.removeClass("active");
+	   $(this).addClass("active");
+	   console.log("点击了一次");
+
+	});
 	 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 		    $scope.user = data;
 		     // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什

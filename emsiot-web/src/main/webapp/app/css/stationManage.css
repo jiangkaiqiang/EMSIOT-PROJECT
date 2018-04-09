@@ -11,3 +11,11 @@
 .countWarp .searchInput{
     background:transparent;
 }
+.station-content .title-nav>li:last-child a{
+    background:none!important;
+    color:#333;
+}
+.station-content .title-nav{width:80%;}
+@media screen and (max-width : 1024px){
+    .countWarp .station-content{width:80%;}
+}

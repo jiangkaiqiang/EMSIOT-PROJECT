@@ -430,14 +430,14 @@ a.list-group-item.hover {
 }
 
 .pagination > li > a {
-  border-color: #dee5e7;
+  /*border-color: #dee5e7;*/
 }
 
-.pagination > li > a:hover,
-.pagination > li > a:focus {
-  background-color: #edf1f2;
-  border-color: #dee5e7;
-}
+/*.pagination > li > a:hover,*/
+/*.pagination > li > a:focus {*/
+  /*background-color: #edf1f2;*/
+  /*border-color: #dee5e7;*/
+/*}*/
 
 .panel {
   border-radius: 2px;
@@ -5416,6 +5416,9 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 .margin-bottom{
   margin-bottom:1%;
 }
+.margin-bottom2{
+  margin-bottom:2%;
+}
 .panel-success{
   /*border-color:transparent!important;*/
 }
@@ -5433,7 +5436,7 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 /*单页面导航 / 搜索框 样式*/
 .page-title{
   width:98%;
-  padding:10px;
+  padding-left:10px;
   margin:10px 0 10px 15px;
 
 }
@@ -5460,6 +5463,15 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
   display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
   justify-content: space-between;
 }
+.flex-around{
+  display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+  display: -moz-box; /* Firefox 17- */
+  display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+  display: -moz-flex; /* Firefox 18+ */
+  display: -ms-flexbox; /* IE 10 */
+  display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+  justify-content: space-around;
+}
 
 .flex-items{
   display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
@@ -5470,6 +5482,16 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
   display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
   align-items: center;
 }
+.flex-end{
+  display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+  display: -moz-box; /* Firefox 17- */
+  display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+  display: -moz-flex; /* Firefox 18+ */
+  display: -ms-flexbox; /* IE 10 */
+  display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+  justify-content: flex-end;
+}
+
 .title-text{
   font-size:15px;
   font-weight:bold;
@@ -5482,7 +5504,7 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 }
 .title-nav>li:last-child>a{
   padding:10px 20px;
-  background:url(../img/addCarBg.png) no-repeat;
+  background:url(../img/addCarBlue-lg.png) no-repeat;
   color:#fff;
 }
 .title-brand{
@@ -5492,6 +5514,12 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 }
 .border-dashed{
   border-right:1px dashed #91A2BE;
+  margin:0 3px;
+  padding:0 10px 0 0;
+}
+.border-dashed-both{
+  border-right:1px dashed #91A2BE;
+  border-left:1px dashed #91A2BE;
   margin:0 3px;
   padding:0 10px 0 0;
 }
@@ -5550,7 +5578,7 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 @media (min-width:768px){
   .modal-dialog{
     width:60%;
-    margin:35px auto;
+    margin:80px auto;
   }
 }
 
@@ -5638,28 +5666,43 @@ position:absolute;
 .full-width{
   width:100%;
 }
-/*@media screen and (min-width: 1024px) {*/
-  /*.visible-xs,*/
-  /*.visible-sm,*/
-  /*.visible-md,*/
-  /*.visible-lg {*/
-    /*display: none !important;*/
-  /*}*/
-  /*.visible-xs-block,*/
-  /*.visible-xs-inline,*/
-  /*.visible-xs-inline-block,*/
-  /*.visible-sm-block,*/
-  /*.visible-sm-inline,*/
-  /*.visible-sm-inline-block,*/
-  /*.visible-md-block,*/
-  /*.visible-md-inline,*/
-  /*.visible-md-inline-block,*/
-  /*.visible-lg-block,*/
-  /*.visible-lg-inline,*/
-  /*.visible-lg-inline-block {*/
-    /*display: none !important;*/
-  /*}*/
-  /*.visible-xs {*/
-    /*display: block !important;*/
-  /*}*/
-/*}*/
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  cursor: pointer;
+  background-color: #fff;
+  opacity: 1;}
+
+.input-group .form-control {
+  position: relative;
+  z-index: 0;
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.pagination > .active > a, .pagination > .active > span,
+.pagination > .active > a:hover, .pagination > .active > span:hover,
+.pagination > .active > a:focus, .pagination > .active > span:focus {
+  z-index: 2;
+  color: #fff!important;
+  cursor: default;
+  background-color:#2C7DFA!important;
+  border-color: #2C7DFA!important;
+}
+
+.pagination > li > a, .pagination > li > span {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color:#777;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+  color: #fff;
+  background-color:#2C7DFA!important;
+  border-color: #2C7DFA!important;
+}
