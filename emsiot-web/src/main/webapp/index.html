@@ -136,35 +136,10 @@
                                 <span class="block m-t-sm" style="font-size:16px;" ng-model="admin">
                                     {{admin.user_name}}&nbsp;欢迎您!
                                 </span>
-                                <span class="text-muted text-xs ">修改密码</span>
+                               <span class="text-muted text-xs " data-toggle="modal" data-target="#passwordEdit">修改密码</span>
                                 <span class="text-muted text-xs margin-left" aria-hidden="true" ng-click="logout()">安全退出</span>
                              </span>
                         </a>
-                        <!-- dropdown -->
-
-                        <ul class="dropdown-menu animated fadeInRight w hidden-folded">
-                            <li class="wrapper b-b m-b-sm bg-info m-t-n-xs">
-                                <span class="arrow top hidden-folded arrow-info"></span>
-                                <div>
-                                    <p>修改密码</p>
-                                </div>
-                                <progressbar value="60" type="white" class="progress-xs m-b-none dker"></progressbar>
-                            </li>
-                            <li>
-                               <input type="text" class="form-control"placeholder="请输入旧密码" style="width:96%;margin-left:5px;">
-                            </li>
-                            <li>
-                                <input type="text" class="form-control"  placeholder="请输入新密码" style="width:96%;margin:5px 0 0 5px;">
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <button ui-sref="access.signin" type="button" class="btn btn-info">确定</button>
-                                <button ui-sref="access.signin" type="button" class="btn btn-default">取消</button>
-                            </li>
-                        </ul>
-                        <!-- / dropdown -->
-
-
                     </div>
 
                 </div>
@@ -289,7 +264,80 @@
         </div>
     </div>
     <!-- / menu -->
+     <!--修改密码模态框-->
+<div class="modal fade" id="passwordEdit" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="">
+                    修改密码
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="psdEditForm">
+                    <div class="form-group">
+                        <label for="" class="control-label col-md-3">
+                            <i>*</i>
+                            当前密码：
+                        </label>
 
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control">
+                            <em style="text-align: right;" ng-show="">
+                                <i color="red">密码不能为空不能空！</i>
+                            </em>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label col-md-3">
+                            <i>*</i>
+                            新密码：
+                        </label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control">
+                            <em style="text-align: right;" ng-show="">
+                                <i color="red">密码不能为空不能空！</i>
+                            </em>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="control-label col-md-3">
+                            <i>*</i>
+                            确认新密码：
+                        </label>
+
+                        </label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control">
+                            <em style="text-align: right;" ng-show="">
+                                <i color="red">密码不能为空不能空！</i>
+                            </em>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submit()" class="btn btn-primary">
+                    提交
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消
+                </button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
     <!-- 主体区域结构开始 -->
     <div ui-view style="overflow: hidden" class="countWarp">
 
