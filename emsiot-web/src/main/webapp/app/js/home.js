@@ -10,7 +10,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        $scope.cityName = data.name;
 			        var map = new BMap.Map("allmap",{
 			        	  minZoom:5,
-			        	  maxZoom:15
+			        	  maxZoom:30
 			        	 });    // 创建Map实例
 			        	 map.centerAndZoom($scope.cityName, 10);  // 初始化地图,设置中心点坐标和地图级别
 			        	 map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
@@ -25,14 +25,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	 function showStation(){
 			        		 var pt;
 			        		 var marker2;
-			        		 var stationIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
+			        		 //var stationIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
 			        		 var sContent ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>显示的是一个基站！</h4>";
 
 			        		 var markers = [];
-			        	  for(var i=0;i<100;i++){
+			        	  for(var i=0;i<1000;i++){
 			        		  console.log($scope.stations[i].longitude+","+$scope.stations[i].latitude);
 				        	   pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
-				        	   marker2 = new BMap.Marker(pt,{icon:stationIcon}); 
+				        	  // marker2 = new BMap.Marker(pt,{icon:stationIcon}); 
+				        	   marker2 = new BMap.Marker(pt); 
 				        	   var infoWindow = new BMap.InfoWindow(sContent); 
 				        	   
 				        	   marker2.addEventListener("click", function(){          
