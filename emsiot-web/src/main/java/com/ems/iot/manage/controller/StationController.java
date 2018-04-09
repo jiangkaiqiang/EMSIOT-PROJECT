@@ -26,7 +26,7 @@ public class StationController extends BaseController {
 	private StationMapper stationMapper;
 
 	/**
-	 * 查询所有基站
+	 * 根据关键字查询所有基站
 	 * 
 	 * @return
 	 * @throws UnsupportedEncodingException
@@ -49,6 +49,18 @@ public class StationController extends BaseController {
 		PageHelper.startPage(pageNum, pageSize);
 		Page<Station> staions= (Page<Station>) stationMapper.findAllStations();
 
+		return stationMapper.findAllStations();
+	}
+	
+	/**
+	 * 查询所有基站
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findAllStationsForMap")
+	@ResponseBody
+	public Object findAllStationsForMap() throws UnsupportedEncodingException {
 		return stationMapper.findAllStations();
 	}
 	

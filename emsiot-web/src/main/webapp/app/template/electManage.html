@@ -79,44 +79,51 @@
                     <i class="fa fa-fw fa-angle-up text-active"></i>
                 </a>
             </div>
-            <div class="unblock-content no-block">
-                <div class="form-group">
-                    <label for="area">所属区域</label>
-                    <select class="form-control" id="">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>上海</option>
-                        <option>黑名单</option>
-                    </select>
-                    <select class="form-control" id="">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>上海</option>
-                        <option>上海</option>
-                    </select>
-                    <select class="form-control" id="">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>徐汇</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control">
-                        <option>车主手机号</option>
-                        <option>身份证号</option>
-                        <option>车牌号</option>
-                        <option>防盗芯片编号</option>
-                        <option>车主姓名</option>
-                    </select>
-                    <input type="text" class="form-control" placeholder="请输入关键词"/>
-                </div>
+			<div class="unblock-content no-block">
+				<div class="form-group">
+					<label for="area">所属区域</label> <select class="form-control" id="">
+						<option value="" disabled selected style="display:none;">-请选择-</option>
+						<option>上海</option>
+						<option>黑名单</option>
+					</select> <select class="form-control" id="">
+						<option value="" disabled selected style="display:none;">-请选择-</option>
+						<option>上海</option>
+						<option>上海</option>
+					</select> <select class="form-control" id="">
+						<option value="" disabled selected style="display:none;">-请选择-</option>
+						<option>徐汇</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<select class="form-control">
+						<option>车主手机号</option>
+						<option>身份证号</option>
+						<option>车牌号</option>
+						<option>防盗芯片编号</option>
+						<option>车主姓名</option>
+					</select> <input type="text" class="form-control" placeholder="请输入关键词" />
+				</div>
 
-                <div class="form-group">
-                    <label for="area">时间区间</label>
-                    <input type="text" class="form-control" placeholder="开始时间"/>
-                    -
-                    <input type="text" class="form-control" placeholder="结束时间"/>
-                </div>
+				<div class="form-group datePicker">
+					<label>选择日期：</label>
+					<!--指定 date标记-->
+					<div class='input-group date' id='electDateStart'>
+						<input type='text' class="form-control" placeholder="选择开始时间"
+							readonly /> <span class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+					--
+					<div class='input-group date' id='electDateEnd'>
+						<input type='text' class="form-control" placeholder="选择结束时间"
+							readonly /> <span class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
 
-            </div>
-        </form>
+			</div>
+		</form>
     </div>
 </nav>
 

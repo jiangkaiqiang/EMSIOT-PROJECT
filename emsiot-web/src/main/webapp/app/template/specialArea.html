@@ -1,0 +1,93 @@
+<!--<div class="specialArea-content shadow">-->
+    <nav class="page-title no-margin no-padding full-width shadow specialArea-content">
+        <div class="title-brand flex-around align-items no-border">
+            <div class="title-text margin-left-md">特殊区域管理</div>
+
+            <ul class="title-nav flex-between align-items margin-left">
+                <li>
+                    <form class="navbar-form navbar-form-sm" ui-shift="prependTo" data-target=".navbar-collapse"
+                          role="search">
+                        <div class="form-group border-bottom">
+                            <div class="input-group">
+                                <input type="text" ng-model="selected"
+                                       typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                                       class="form-control input-sm bg-light no-border searchInput no-padding"
+                                       placeholder="请输入基站编号搜索" style="color:#333;">
+                        <span class="input-group-btn">
+                             <button type="submit" class="btn btn-sm bg-light searchInput text-right">
+                                 <img src="app/img/search-black .png" alt="" class="pull-right"/>
+                             </button>
+                        </span>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+                <li class="border-dashed" style="height:15px;color:#7D7C82;"></li>
+                <li>
+                    <a href="" style="color:#7D7C82;">
+                        <i class="glyphicon glyphicon-trash" style="color:#2A7CF9;"></i>
+                        <span>批量删除</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="app/img/huaxianIcon-white.png" alt=""/>
+                        <span>设置限制区</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 表格操作区域开始 -->
+        <div class="tableArea no-padding full-width no-margin">
+            <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+                <thead>
+                <tr>
+                    <th>
+                        <div>
+                            <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                        </div>
+                    </th>
+                    <!--<th>序号</th>-->
+                    <th>限制区域名</th>
+                    <th>起点站编号</th>
+                    <th>终点站编号</th>
+                    <th>总站数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in Allusers">
+                    <td>
+                        <input type="checkbox" ng-checked="exists(user, selected)"
+                               ng-click="toggle(user, selected)"/>
+                    </td>
+                    <!-- <td>{{user.sysUser.user_id}}</td> -->
+                    <td>{{$index+1}}</td>
+                    <td>{{user.sysUser.user_tel}}</td>
+                    <td>{{user.sysUser.user_tel}}</td>
+                    <td>{{user.sysUser.company}}</td>
+                    <td>
+                        <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
+                                ng-click="goUpdateUser(user.sysUser.user_id)">编辑
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="page">
+                <!-- 翻页功能 -->
+                <div class="row" style="text-align:center">
+                    <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                                ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                                boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                </div>
+            </div>
+        </div>
+        <!-- 表格操作区域结束 -->
+    </nav>
+<!--</div>-->
+
+<!--以下市可视化内容-->
+<div style="width:500px;height:500px;ground:#ddd;">bbdbgf</div>

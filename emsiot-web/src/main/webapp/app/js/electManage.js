@@ -364,13 +364,21 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		            alert("请填写用户名!");
 		        }
 		    }
-		 $('#datetimepicker1').datetimepicker({  
-		    	autoclose:true
-		    }).on('dp.change', function (e) {  
-		    });  
-		 $('#datetimepicker2').datetimepicker({  
-		    	autoclose:true
-		    }).on('dp.change', function (e) {  
-		    });  
+		//选择日期
+
+		 $('#electDateStart').datetimepicker({
+		     format: 'yyyy-mm-dd',
+		     minView: "month",
+		     autoclose:true,
+		     maxDate:new Date(),
+		     pickerPosition: "bottom-left"
+		 });
+		 $("#electDateEnd").datetimepicker({
+		     format : 'yyyy-mm-dd',
+		     minView: 'month',
+		     autoclose:true,
+		     maxDate:new Date(),
+		     pickerPosition: "bottom-left"
+		 }); 
 });
 

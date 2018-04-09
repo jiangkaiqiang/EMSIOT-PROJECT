@@ -1,0 +1,32 @@
+.alarmManage-content .title-nav form.navbar-form{
+    background: #EAF2FF;
+    border-radius: 5px;
+    margin-right:8px;
+}
+.alarmManage-content .title-nav form.navbar-form button.bg-light{
+    color:#2B7DFA!important;
+    text-align:right;
+}
+.alarmManage-content .title-nav form.navbar-form input.bg-light{
+    color:#333!important;
+    text-align:left;
+}
+.alarmManage-content .title-nav form.navbar-form input.bg-light{
+    color:#333!important;
+    text-align:left;
+}
+.alarmManage-content .title-nav .border-dashed{
+    border-right: 1px dashed #91A2BE;
+    margin: 0 3px;
+    padding: 0 10px 0 0px;
+    display: inline-block!important;
+    height: 15px!important;
+}
+
+.alarmManage-content .title-nav form.navbar-form{
+    margin-top:3px!important;
+}
+.alarmManage-content .title-brand{
+    /*border:0!important;*/
+}
+.alarmManage-content .title-nav>li:last-child>a{background:none;color:#2C7DFA;}

@@ -1,0 +1,26 @@
+.countWarp .specialArea-content{
+    width:60%;
+    height:auto;
+    background:#fff;
+    position:absolute;
+    top:20px;left:20px;
+    z-index:500;
+}
+.specialArea-content .title-nav{width:80%;}
+.specialArea-content .title-nav>li:last-child>a {
+    padding: 6px 0;
+    background: url(../img/addCarBg-lg.png) no-repeat;
+    color: #fff;
+    width:140px;
+    height:57px;
+}
+.specialArea-content .title-nav>li:last-child>a img{
+    margin-left:10px;
+    margin-bottom:5px;
+}
+.specialArea-content .title-text{width:19%;}
+.specialArea-content .navbar-form{padding:0!important;}
+
+@media screen and (max-width : 1024px){
+    .countWarp .specialArea-content{width:80%;}
+}

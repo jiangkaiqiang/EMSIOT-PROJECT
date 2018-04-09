@@ -70,5 +70,15 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/stationManage',
         controller: 'stationManage',
         templateUrl: 'app/template/stationManage.html'
+    }).state('alarmManage', {
+        //报警管理
+        url: '/alarmManage',
+        controller: 'alarmManage',
+        templateUrl: 'app/template/alarmManage.html'
+    }).state('specialArea', {
+        //报警管理
+        url: '/specialArea',
+        controller: 'specialArea',
+        templateUrl: 'app/template/specialArea.html'
     });
 });

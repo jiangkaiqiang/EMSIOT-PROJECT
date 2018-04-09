@@ -18,6 +18,9 @@
     <link rel="stylesheet" type="text/css" href="app/css/home.css">
     <link rel="stylesheet" type="text/css" href="app/css/electManage.css">
     <link rel="stylesheet" type="text/css" href="app/css/stationManage.css">
+    <link rel="stylesheet" type="text/css" href="app/css/userManage.css">
+    <link rel="stylesheet" type="text/css" href="app/css/alarmManage.css">
+    <link rel="stylesheet" type="text/css" href="app/css/specialArea.css">
     <link rel="stylesheet" type="text/css"  href="bower_components/angular-multi-select-master/isteven-multi-select.css"/>
 </head>
 
@@ -191,7 +194,7 @@
                                         <span>车辆管理</span>
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
+                                <!-- <li ui-sref-active="active">
                                     <a  href="#/userRoleManage">
                                         <span>管理2</span>
                                     </a>
@@ -200,7 +203,7 @@
                                     <a href="#/operationLog">
                                         <span>管理3</span>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                         <li ui-sref-active="active">
@@ -209,6 +212,7 @@
                                 <span class="font-bold">基站管理</span>
                             </a>
                         </li>
+                        
                         <li>
                             <a class="auto">
                                 <span class="pull-right text-muted">
@@ -216,54 +220,66 @@
                                     <i class="fa fa-fw fa-angle-down text-active"></i>
                                 </span>
                                 <img src="app/img/asideIcon04.png" alt=""/>
-                                <span class="font-bold">特殊对象管理</span>
+                                <span class="font-bold">特殊区域管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
-                                <li class="nav-sub-header">
-                                    <a href>
-                                        <span>特殊管理1</span>
+                                <li ui-sref-active="active">
+                                    <a href="#/specialArea">
+                                        <span>限制区域管理</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="apps.note">
-                                        <span>特殊管理2</span>
-                                    </a>
-                                </li>
-                                <li ui-sref-active="active">
-                                    <a ui-sref="apps.contact">
-                                        <span>特殊管理3</span>
-                                    </a>
-                                </li>
-                                <li ui-sref-active="active">
-                                    <a ui-sref="app.weather">
-                                        <span>特殊管理4</span>
+                                        <span>敏感区域管理</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        
+                        <li>
+                            <a class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="fa fa-fw fa-angle-right text"></i>
+                                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                                </span>
+                                <img src="app/img/asideIcon04.png" alt=""/>
+                                <span class="font-bold">报警管理</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active">
+                                    <a href="#/alarmManage">
+                                        <span>限制区域报警管理</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="apps.note">
+                                        <span>敏感区域报警管理</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
                         <li ui-sref-active="active">
                             <a href="#/home">
                                 <img src="app/img/asideIcon05.png" alt=""/>
-                                <span>统计图表</span>
+                                <span>图表信息统计</span>
                             </a>
                         </li>
 
-                        <li ng-class="{active:$state.includes('app.ui')}">
-                            <a ui-sref="app.mail.list">
-                                <img src="app/img/asideIcon06.png" alt=""/>
-                                <span translate="aside.nav.components.ui_kits.UI_KITS">系统配置管理</span>
+                         <li ui-sref-active="active">
+                            <a href="#/userManage">
+                                <img src="app/img/asideIcon07.png" alt=""/>
+                                <span class="font-bold">用户管理</span>
                             </a>
-
                         </li>
+                        
                         <li ng-class="{active:$state.includes('app.table')}">
                             <a ui-sref="app.mail.list" ng-click="goMenu('personalSpace','#/personalSpace')"
                                id="personalSpace">
-
                                 <!--<i class="glyphicon glyphicon-user"></i>-->
                                 <img src="app/img/asideIcon07.png" alt=""/>
                                 <span translate="aside.nav.components.table.TABLE">用户中心</span>
                             </a>
-
                         </li>
 
                     </ul>
@@ -316,6 +332,8 @@
 <script src="app/js/electManage.js"></script>
 <script src="app/js/stationManage.js"></script>
 <script src="app/js/userRoleManage.js"></script>
+<script src="app/js/alarmManage.js"></script>
+<script src="app/js/specialArea.js"></script>
 <script type="text/javascript">
     +function ($) {
         $(function () {
