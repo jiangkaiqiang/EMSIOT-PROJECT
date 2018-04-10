@@ -1,7 +1,7 @@
 /**
  * Created by SAIHE01 on 2018/4/8.
  */
-coldWeb.controller('alarmManage', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+coldWeb.controller('sensitiveAreaAlarm', function ($rootScope, $scope, $state, $cookies, $http, $location) {
     //$.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
     //    var user = data;
     //

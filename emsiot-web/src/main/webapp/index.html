@@ -154,7 +154,7 @@
                                 <span class="font-bold">监控台</span>
                             </a>
                         </li>
-                        <li ng-click="goMenu('userManage','#/userManage')" id="userManage">
+                        <li id="userManage">
                             <a href class="auto">
                                 <span class="pull-right text-muted">
                                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -169,23 +169,40 @@
                                         <span>车辆管理</span>
                                     </a>
                                 </li>
-                                <!-- <li ui-sref-active="active">
-                                    <a  href="#/userRoleManage">
-                                        <span>管理2</span>
+                                <li ui-sref-active="active">
+                                    <a  href="#/blackListManage">
+                                        <span>黑名单管理</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
-                                    <a href="#/operationLog">
-                                        <span>管理3</span>
+                                    <a href="#/alarmTrack">
+                                        <span>报警追踪</span>
                                     </a>
-                                </li> -->
+                                </li>
                             </ul>
                         </li>
-                        <li ui-sref-active="active">
-                            <a href="#/stationManage">
+                        
+                         <li>
+                            <a class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="fa fa-fw fa-angle-right text"></i>
+                                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                                </span>
                                 <img src="app/img/asideIcon03.png" alt=""/>
                                 <span class="font-bold">基站管理</span>
                             </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active">
+                                    <a href="#/stationManage">
+                                        <span>添加基站</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a href="#/stationDeviceManage">
+                                        <span>基站设备管理</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         
                         <li>
@@ -199,12 +216,12 @@
                             </a>
                             <ul class="nav nav-sub dk">
                                 <li ui-sref-active="active">
-                                    <a href="#/specialArea">
+                                    <a href="#/limitArea">
                                         <span>限制区域管理</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
-                                    <a ui-sref="apps.note">
+                                    <a href="#/sensitiveArea">
                                         <span>敏感区域管理</span>
                                     </a>
                                 </li>
@@ -218,16 +235,16 @@
                                     <i class="fa fa-fw fa-angle-down text-active"></i>
                                 </span>
                                 <img src="app/img/asideIcon04.png" alt=""/>
-                                <span class="font-bold">报警管理</span>
+                                <span class="font-bold">区域报警管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
                                 <li ui-sref-active="active">
-                                    <a href="#/alarmManage">
+                                    <a href="#/limitAreaAlarm">
                                         <span>限制区域报警管理</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
-                                    <a ui-sref="apps.note">
+                                    <a href="#/sensitiveAreaAlarm">
                                         <span>敏感区域报警管理</span>
                                     </a>
                                 </li>
@@ -248,14 +265,14 @@
                             </a>
                         </li>
                         
-                        <li ng-class="{active:$state.includes('app.table')}">
+                      <!--   <li ng-class="{active:$state.includes('app.table')}">
                             <a ui-sref="app.mail.list" ng-click="goMenu('personalSpace','#/personalSpace')"
                                id="personalSpace">
-                                <!--<i class="glyphicon glyphicon-user"></i>-->
+                                <i class="glyphicon glyphicon-user"></i>
                                 <img src="app/img/asideIcon07.png" alt=""/>
                                 <span translate="aside.nav.components.table.TABLE">用户中心</span>
                             </a>
-                        </li>
+                        </li> -->
 
                     </ul>
                 </nav>
@@ -380,8 +397,13 @@
 <script src="app/js/electManage.js"></script>
 <script src="app/js/stationManage.js"></script>
 <script src="app/js/userRoleManage.js"></script>
-<script src="app/js/alarmManage.js"></script>
-<script src="app/js/specialArea.js"></script>
+<script src="app/js/limitAreaAlarm.js"></script>
+<script src="app/js/sensitiveAreaAlarm.js"></script>
+<script src="app/js/limitArea.js"></script>
+<script src="app/js/sensitiveArea.js"></script>
+<script src="app/js/blackListManage.js"></script>
+<script src="app/js/alarmTrack.js"></script>
+<script src="app/js/stationDeviceManage.js"></script>
 <script type="text/javascript">
     +function ($) {
         $(function () {

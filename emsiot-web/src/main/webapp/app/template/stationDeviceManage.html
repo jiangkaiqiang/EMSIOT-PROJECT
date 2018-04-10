@@ -2,7 +2,7 @@
     <div class="title-brand flex-between align-items">
         <div class="title-text flex-items">
             <img src="app/img/alarm-icon.png" alt="" style="margin-right:5px;"/>
-            报警管理
+            基站设备管理
         </div>
         <ul class="title-nav flex align-items">
             <li>
@@ -13,7 +13,7 @@
                             <input type="text" ng-model="selected"
                                    typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                    class="form-control input-sm bg-light no-border searchInput padder"
-                                   placeholder="账户查询">
+                                   placeholder="基站编号查询">
                                  <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm bg-light searchInput"><i
                                             class="fa fa-search margin-right"></i></button>
@@ -35,7 +35,7 @@
         <form class="form-inline">
             <div class="block-content">
                 <div class="form-group">
-                    <label for="importUser">报警区域&nbsp;&nbsp;&nbsp;</label>
+                    <label for="importUser">基站所属区域&nbsp;&nbsp;&nbsp;</label>
                     <select class="form-control" id="importUser">
                         <option value="" disabled selected style="display:none;">-请选择-</option>
                         <option>区域1</option>
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="form-group datePicker">
-                    <label>报警时间：</label>
+                    <label>添加时间：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='alarmDateStart'>
                         <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;"/>
@@ -84,13 +84,11 @@
                 </div>
             </th>
             <th>序号</th>
-            <th>报警区域</th>
-            <th>报警车辆编号</th>
-            <th>报警时间</th>
-            <th>车辆颜色</th>
-            <th>状态</th>
-            <th>所在区域</th>
-            <th>车主手机号</th>
+            <th>基站名称</th>
+            <th>基站编号</th>
+            <th>基站地址</th>
+            <th>基站状态</th>
+            <th>添加时间</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -106,8 +104,6 @@
             <td>{{user.sysUser.user_tel}}</td>
             <td>{{user.sysUser.company}}</td>
             <td>{{user.projectName}}</td>
-            <td>{{user.compFactoryName}}</td>
-            <td>{{user.userRoleName}}</td>
             <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
             <td>
                 <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>

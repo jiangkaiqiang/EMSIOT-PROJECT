@@ -70,15 +70,33 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/stationManage',
         controller: 'stationManage',
         templateUrl: 'app/template/stationManage.html'
-    }).state('alarmManage', {
-        //报警管理
-        url: '/alarmManage',
-        controller: 'alarmManage',
-        templateUrl: 'app/template/alarmManage.html'
-    }).state('specialArea', {
-        //报警管理
-        url: '/specialArea',
-        controller: 'specialArea',
-        templateUrl: 'app/template/specialArea.html'
+    }).state('limitAreaAlarm', {
+        url: '/limitAreaAlarm',
+        controller: 'limitAreaAlarm',
+        templateUrl: 'app/template/limitAreaAlarm.html'
+    }).state('sensitiveAreaAlarm', {
+        url: '/sensitiveAreaAlarm',
+        controller: 'sensitiveAreaAlarm',
+        templateUrl: 'app/template/sensitiveAreaAlarm.html'
+    }).state('limitArea', {
+        url: '/limitArea',
+        controller: 'limitArea',
+        templateUrl: 'app/template/limitArea.html'
+    }).state('sensitiveArea', {
+        url: '/sensitiveArea',
+        controller: 'sensitiveArea',
+        templateUrl: 'app/template/sensitiveArea.html'
+    }).state('blackListManage', {
+        url: '/blackListManage',
+        controller: 'blackListManage',
+        templateUrl: 'app/template/blackListManage.html'
+    }).state('alarmTrack', {
+        url: '/alarmTrack',
+        controller: 'alarmTrack',
+        templateUrl: 'app/template/alarmTrack.html'
+    }).state('stationDeviceManage', {
+        url: '/stationDeviceManage',
+        controller: 'stationDeviceManage',
+        templateUrl: 'app/template/stationDeviceManage.html'
     });
 });

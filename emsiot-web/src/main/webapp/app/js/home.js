@@ -1,6 +1,10 @@
 coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http, $location) {
 	 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 		    $scope.user = data;
+		    if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
+				url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
+				window.location.href = url;
+			}
 		     // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
 			 $http.get('/i/city/findCityNameByAreaID', {
 			            params: {

@@ -1,0 +1,130 @@
+<nav class="page-title shadow alarmManage-content">
+    <div class="title-brand flex-between align-items">
+        <div class="title-text flex-items">
+            <img src="app/img/alarm-icon.png" alt="" style="margin-right:5px;"/>
+            报警追踪
+        </div>
+        <ul class="title-nav flex align-items">
+            <li>
+                <form class="navbar-form navbar-form-sm navbar-left" ui-shift="prependTo"
+                      data-target=".navbar-collapse" role="search">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" ng-model="selected"
+                                   typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                                   class="form-control input-sm bg-light no-border searchInput padder"
+                                   placeholder="车牌号查询">
+                                 <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm bg-light searchInput"><i
+                                            class="fa fa-search margin-right"></i></button>
+                                </span>
+                        </div>
+                    </div>
+                </form>
+            </li>
+            <li>
+                <a href="">
+                    <b class="border-dashed-left"></b>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>批量删除</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="search-container">
+        <form class="form-inline">
+            <div class="block-content">
+                <div class="form-group">
+                    <label for="importUser">报警区域&nbsp;&nbsp;&nbsp;</label>
+                    <select class="form-control" id="importUser">
+                        <option value="" disabled selected style="display:none;">-请选择-</option>
+                        <option>区域1</option>
+                        <option>区域2</option>
+                        <option>区域3</option>
+                        <option>区域4</option>
+                    </select>
+                </div>
+
+                <div class="form-group datePicker">
+                    <label>报警时间：</label>
+                    <!--指定 date标记-->
+                    <div class='input-group date' id='alarmDateStart'>
+                        <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    --
+                    <div class='input-group date' id='alarmDateEnd'>
+                        <input type='text' class="form-control" placeholder="选择结束时间" readonly style="width:200px;"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary">搜索</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</nav>
+
+<!-- 表格操作区域开始 -->
+<div class="tableArea shadow countent no-padding">
+    <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+        <thead>
+        <tr>
+            <th>
+                <div>
+                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                    <label for="allSecSon">全选</label>
+                </div>
+            </th>
+            <th>序号</th>
+            <th>报警区域</th>
+            <th>报警车辆牌号</th>
+            <th>报警时间</th>
+            <th>车辆颜色</th>
+            <th>状态</th>
+            <th>车主姓名</th>
+            <th>车主手机号</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in Allusers">
+            <td>
+                <input type="checkbox" ng-checked="exists(user, selected)"
+                       ng-click="toggle(user, selected)"/>
+            </td>
+            <!-- <td>{{user.sysUser.user_id}}</td> -->
+            <td>{{$index+1}}</td>
+            <td>{{user.sysUser.user_name}}</td>
+            <td>{{user.sysUser.user_tel}}</td>
+            <td>{{user.sysUser.company}}</td>
+            <td>{{user.projectName}}</td>
+            <td>{{user.compFactoryName}}</td>
+            <td>{{user.userRoleName}}</td>
+            <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
+            <td>
+                <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
+                        ng-click="goUpdateUser(user.sysUser.user_id)">编辑
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="page">
+        <!-- 翻页功能 -->
+        <div class="row" style="text-align:center">
+            <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                        ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                        boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+    </div>
+</div>
+<!-- 表格操作区域结束 -->
