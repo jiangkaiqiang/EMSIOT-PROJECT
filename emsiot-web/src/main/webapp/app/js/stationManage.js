@@ -7,7 +7,58 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 					window.location.href = url;
 				}
 		   });
+		 
+		 
+		 
+		 
+		 
 	};
+	 var mapStation = new BMap.Map("stationMap",{
+   	  minZoom:5,
+   	  maxZoom:30
+   	 });    // 创建Map实例
+	 mapStation.centerAndZoom("喀什", 10);  // 初始化地图,设置中心点坐标和地图级别
+	 mapStation.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	 mapStation.disableDoubleClickZoom();
+   	 //通过双击地图添加基站，弹出窗口
+	 var geoc = new BMap.Geocoder();    
+
+
+	 mapStation.addEventListener("dblclick",function(e){
+		 var stationInfo = "<div style=\"width:300px;height:400px;\">";
+		 var stationWin;
+
+		 var currentpt = new BMap.Point(e.point.lng,e.point.lat);
+		 stationInfo += "此处的经度为："+e.point.lng+"<br>此处的纬度为："+e.point.lat+"<br>";
+		 geoc.getLocation(e.point, function(rs){
+			 	if(rs==null){
+			 		stationInfo+="获取不到具体位置";
+			 		console.log("null++++++");
+					 stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+			 	}
+			 	else{
+			 		var addComp = rs.addressComponents;
+			 		console.log(addComp.province);
+			 		//stationInfo += addComp.province;
+			 		stationInfo += addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
+			 	}
+				 stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+
+			}); 
+		 
+
+		 //var myIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
+		 var marker = new BMap.Marker(currentpt); 
+		 marker.addEventListener("click", function(){          
+		        this.openInfoWindow(stationWin);
+		  });
+		 mapStation.addOverlay(marker); 
+	 });
+	  
+	 
+	
+	
+	
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 12;
