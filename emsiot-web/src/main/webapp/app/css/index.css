@@ -697,12 +697,11 @@ footer{
 #passworIcon{background:url(../img/loginLock.png) no-repeat}
 #userIcon{background:url(../img/userIcon.png) no-repeat}
 .countWarp{position:relative;}
-.navbar-btn,.navbar-btn:hover,.navbar-btn:active,.navbar-btn:focus,.navbar-btn:visited{
-	color:#fff;
-}
+#aside-user >.wrapper>.hidden-folded>.text-left{padding-top:10px;padding-left:5px;}
+/*#passwordEdit .modal-content*/
 #passwordEdit .modal-content{
 	/*加载背景图 */
-	background:url(../img/passwordBg.png);
+	background-image: url(../img/passwordBg.png);
 
 	/* 背景图垂直、水平均居中 */
 	background-position: center center;
@@ -718,4 +717,7 @@ footer{
 
 	/* 设置背景颜色，背景图加载过程中会显示背景色 */
 	background-color: #fff;
+
 }
+.bg-dark-only .btn:active, .bg-dark-only .btn.active{color:#fff;}
+.bg-dark-only .btn:visited, .bg-dark-only .btn.visited{color:#fff;}

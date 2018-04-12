@@ -6,13 +6,12 @@
     top:20px;left:20px;
     z-index:500;
 }
-.specialArea-content .title-nav{width:80%;}
 .specialArea-content .title-nav>li:last-child>a {
     padding: 6px 0;
     background: url(../img/addCarBg-lg.png) no-repeat;
     color: #fff;
     width:140px;
-    height:57px;
+    height:50px;
 }
 .specialArea-content .title-nav>li:last-child>a img{
     margin-left:10px;
@@ -20,7 +19,36 @@
 }
 .specialArea-content .title-text{width:19%;}
 .specialArea-content .navbar-form{padding:0!important;}
+.specialArea-content .title-nav {margin-left:32%;}
+.countWarp .specialArea-content .navbar-form{margin-top:0!important;}
+
+
+
+
+
+
+
 
 @media screen and (max-width : 1024px){
     .countWarp .specialArea-content{width:80%;}
+    .specialArea-content .title-nav {margin-left:2%;}
 }
+@media screen and (min-width : 1280px) and (min-width:1024px) {
+    .specialArea-content .title-nav {margin-left:2%;}
+}
+@media screen and (min-width : 1366px) and (min-width:1280px) {
+    .specialArea-content .title-nav {margin-left:8%;}
+}
+@media screen and (min-width : 1440px) and (min-width:1366px) {
+    .specialArea-content .title-nav {margin-left:12%;}
+}
+@media screen and (min-width : 1600px) and (min-width:1440px) {
+    .specialArea-content .title-nav {margin-left:20%;}
+}
+@media screen and (min-width : 1680px) and (min-width:1600px) {
+    .specialArea-content .title-nav {margin-left:24%;}
+}
+@media screen and (min-width : 1920px) and (min-width:1680px) {
+    .specialArea-content .title-nav {margin-left:32%;}
+}
+

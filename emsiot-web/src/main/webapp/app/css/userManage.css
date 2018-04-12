@@ -64,7 +64,7 @@
     color:#2D7DF6;
 }
 .countWarp .configSelect{padding:6px 12px;width:125px;border-radius:20px;}
-.countWarp .swichWrap {
+.countWarp #addUser .swichWrap {
     float:right;
     width:40px;
     height:17px;
@@ -124,7 +124,18 @@ ul.search-container li{
 ul.search-container li:first-child{
     display:block;
 }
+.userManage .title-brand{padding:10px 0;}
 
+.userManage .title-brand .navbar-form button{
+    width: 50px!important;
+    height: 25px!important;
+    /*border-left: 1px solid #c0c3c9!important;*/
+    border-left: 1px solid rgba(192,195,201,0.5)!important;
+}
+
+#userAreaSelect select{margin:0 5px;width:80px;}
+
+#userAreaSelect .form-control{margin-bottom:0;}
 
 /*tabs切换页面的样式*/
 .tabs {

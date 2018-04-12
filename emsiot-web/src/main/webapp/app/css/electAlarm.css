@@ -1,0 +1,25 @@
+
+@media screen and (max-width:1280px) and (min-width:1023px){
+    .electAlarm .search-container .form-group{margin:5px 0;}
+}
+
+.electAlarm .title-nav a{
+background-image: url(../img/addCarBlue-xlg.png)!important;
+
+/* 背景图垂直、水平均居中 */
+background-position: center center;
+
+/* 背景图不重复 */
+background-repeat: no-repeat;
+
+/* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+/*background-attachment: fixed;*/
+
+/* 让背景图基于容器大小伸缩 */
+background-size: cover;
+
+/* 设置背景颜色，背景图加载过程中会显示背景色 */
+background-color: #2C7DFA;
+}
+#electAlarmArea select{margin:0 3px;}
+#electAlarmDate .glyphicon-calendar{opacity:0.5}

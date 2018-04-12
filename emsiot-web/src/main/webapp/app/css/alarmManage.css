@@ -29,4 +29,29 @@
 .alarmManage-content .title-brand{
     /*border:0!important;*/
 }
+.alarmManage-content .title-brand{padding:10px 0;}
 .alarmManage-content .title-nav>li:last-child>a{background:none;color:#2C7DFA;}
+.alarmManage-content .title-brand .navbar-form button{
+    width: 50px!important;
+    height: 25px!important;
+    /*border-left: 1px solid #c0c3c9!important;*/
+    border-left: 1px solid rgba(192,195,201,0.5)!important;
+}
+
+.alarmManage-content .search-container .datePicker input{
+    border-right:0;
+}
+.alarmManage-content .search-container .datePicker .glyphicon{
+    opacity:0.5;
+}
+
+@media screen and (max-width:1078px) and (min-width:769px){
+    .alarmManage-content .search-container .datePicker{
+        margin-top:10px;
+    }
+}
+@media screen and (max-width:1142px) and (min-width:769px){
+    .alarmManage-content .search-container .block-content>.form-group:last-child{
+        margin-top:10px;
+    }
+}

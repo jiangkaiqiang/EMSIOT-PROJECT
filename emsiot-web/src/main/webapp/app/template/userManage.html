@@ -129,12 +129,30 @@
                                     </button>
                                 </li>
                             </ul>
-                            <div>
-                                <button class="btn btn-white margin-left-md" type="button">
-                                    <i class="glyphicon glyphicon-map-marker"></i>
-                                    请选择地区
-                                    <i class="glyphicon glyphicon-triangle-bottom"></i>
-                                </button>
+
+
+                            <div class="form-group flex" id="userAreaSelect">
+                                <label for="" class="control-label">
+                                    <i>*</i>
+                                    地区：
+                                </label>
+
+
+                                <select id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"
+                                        ng-change="getCitis()"
+                                        ng-options="x.province_id as x.name for x in provinces"></select>
+                                <select id="" class="form-control" ng-model="addCityID" ng-disabled="editable"
+                                        ng-change="getAreas(addCityID)"
+                                        ng-options="x.city_id as x.name for x in citis"></select>
+                                <select id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"
+                                        ng-options="x.area_id as x.name for x in areas"></select>
+
+
+                                <!--<button class="btn btn-white margin-left-md" type="button">-->
+                                <!--<i class="glyphicon glyphicon-map-marker"></i>-->
+                                <!--请选择地区-->
+                                <!--<i class="glyphicon glyphicon-triangle-bottom"></i>-->
+                                <!--</button>-->
                             </div>
                         </div>
 
@@ -177,11 +195,11 @@
                                         <ul>
                                             <li title="车辆备案登记">
                                                 <label for="tab1" role="">
-                                                 <span>车辆备案登记</span>
+                                                    <span>车辆备案登记</span>
                                                 </label>
                                             </li>
                                             <li title="车辆报警">
-                                                <label for="tab2"  role="">
+                                                <label for="tab2" role="">
                                                     <span>车辆报警</span>
                                                 </label>
                                             </li>
@@ -198,55 +216,55 @@
                             <ul class="search-container" id="content">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                    注册车辆--添加
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        注册车辆--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
                                         注册车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
                                         注册车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                    注册车辆--添加
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        注册车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        注册车辆--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
                                         注册车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        注册车辆--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                 </li>
 
                                 <li class="tab2-car">
                                     <button class="btn btn-white" type="button">
                                         报警车辆--添加
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                    报警车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        报警车辆--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                    报警车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        报警车辆--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
                                         报警车辆--添加
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                    报警车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        报警车辆--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                    报警车辆--查看
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        报警车辆--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
 
                                 </li>
@@ -288,7 +306,8 @@
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" ng-model="username" name="username"
                                                ng-remote-validate="/i/user/checkUserName" ng-remote-method="GET">
-                                        <em style="text-align: right;" ng-show="userForm.username.$error.ngRemoteValidate">
+                                        <em style="text-align: right;"
+                                            ng-show="userForm.username.$error.ngRemoteValidate">
                                             <i color="red">平台昵称不能为空</i>
                                         </em>
                                     </div>
@@ -325,7 +344,8 @@
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" ng-model="username" name="username"
                                                ng-remote-validate="/i/user/checkUserName" ng-remote-method="GET">
-                                        <em style="text-align: right;" ng-show="userForm.username.$error.ngRemoteValidate">
+                                        <em style="text-align: right;"
+                                            ng-show="userForm.username.$error.ngRemoteValidate">
                                             <i color="red">密码不能为空</i>
                                         </em>
                                     </div>
