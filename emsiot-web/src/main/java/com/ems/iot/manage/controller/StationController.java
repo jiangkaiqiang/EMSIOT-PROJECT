@@ -1,16 +1,25 @@
 package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ems.iot.manage.dao.StationMapper;
+import com.ems.iot.manage.dto.BaseDto;
+import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.UploadFileEntity;
+import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.service.FtpService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.Page;
@@ -24,7 +33,9 @@ import com.github.pagehelper.Page;
 public class StationController extends BaseController {
 	@Autowired
 	private StationMapper stationMapper;
-
+	private static String baseDir = "picture";
+	@Autowired
+	private FtpService ftpService;
 	/**
 	 * 根据关键字查询所有基站
 	 * 
@@ -35,21 +46,17 @@ public class StationController extends BaseController {
 	@ResponseBody
 	public Object findAllStations(@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize") Integer pageSize,
-			@RequestParam(value = "stationID", required = false) Integer stationID,
+			@RequestParam(value="startTime", required=false) String startTime,
+			@RequestParam(value="endTime", required=false) String endTime,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum,
 			@RequestParam(value = "stationName", required = false) String stationName,
-			@RequestParam(value = "longitude", required = false) String longitude,
-			@RequestParam(value = "latitude", required = false) String latitude,
-			@RequestParam(value = "stationType", required = false) String stationType,
-			@RequestParam(value = "stationStatus", required = false) Integer stationStatus,
-			@RequestParam(value = "installDate", required = false) Date installDate,
-			@RequestParam(value = "stickNum", required = false) String stickNum) throws UnsupportedEncodingException {
+			@RequestParam(value = "stationStatus", required = false) Integer stationStatus
+			) throws UnsupportedEncodingException {
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 12 : pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<Station> staions= (Page<Station>) stationMapper.findAllStations();
-
-		return stationMapper.findAllStations();
+		Page<Station> staions= stationMapper.findAllStationsByKey(startTime, endTime, stationPhyNum, stationName, stationStatus);
+		return new PageInfo<Station>(staions);
 	}
 	
 	/**
@@ -64,22 +71,111 @@ public class StationController extends BaseController {
 		return stationMapper.findAllStations();
 	}
 	
-	@RequestMapping(value = "/addElect")
+	/**
+	 * 删除基站
+	 * @param stationID
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteStationByID")
 	@ResponseBody
-	public Object addElect(@RequestParam(required = false) Integer stationID,
-			@RequestParam(required = false) Integer stationPhyNum,
-			@RequestParam(required = false) String stationName,
+	public Object deleteStationByID(Integer stationID) {
+		 stationMapper.deleteByPrimaryKey(stationID);
+		 return new BaseDto(0);
+	}
+	
+	/**
+	 * 批量删除基站
+	 * @param stationIDs
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteStationByIDs")
+	@ResponseBody
+	public Object deleteStationByIDs(Integer[] stationIDs) {
+		for(Integer stationID:stationIDs){
+			stationMapper.deleteByPrimaryKey(stationID);
+		}
+		return new BaseDto(0);
+	}
+	/**
+	 * 更新基站信息
+	 * @param station
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/updateStation")
+	@ResponseBody
+	public Object updateStation(Station station) throws UnsupportedEncodingException {
+		if (station.getStation_phy_num() == null) {
+			return new ResultDto(-1, "基站物理编号不能为空！");
+		}
+		if (station.getStation_name() == null) {
+			return new ResultDto(-1, "基站名称不能为空！");
+		}
+		stationMapper.updateByPrimaryKeySelective(station);
+		return new ResultDto(0,"更新成功");
+	}
+	
+	/**
+	 * 添加基站
+	 * @param station_phy_num
+	 * @param station_name
+	 * @param longitude
+	 * @param latitude
+	 * @param station_type
+	 * @param station_status
+	 * @param install_date
+	 * @param soft_version
+	 * @param contact_person
+	 * @param contact_tele
+	 * @param install_pic
+	 * @param stick_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException
+	 */
+	@RequestMapping(value = "/addStation")
+	@ResponseBody
+	public Object addStation(
+			@RequestParam(required = false) Integer station_phy_num,
+			@RequestParam(required = false) String station_name,
 			@RequestParam(required = false) String longitude,
 			@RequestParam(required = false) String latitude,
-			@RequestParam(required = false) String stationType,
-			@RequestParam(required = false) Integer stationStatus,
-			@RequestParam(required = false) Date installDate,
-			@RequestParam(required = false) Date softVersion,
-			@RequestParam(required = false) Date contactPerson,
-			@RequestParam(required = false) Date contactTele,
-			@RequestParam(required = false) String stickNum			
-			)throws UnsupportedEncodingException{
-		
-		return null;
+			@RequestParam(required = false) String station_type,
+			@RequestParam(required = false) Integer station_status,
+			@RequestParam(required = false) String install_date,
+			@RequestParam(required = false) String soft_version,
+			@RequestParam(required = false) String contact_person,
+			@RequestParam(required = false) String contact_tele,
+			@RequestParam(required = false) MultipartFile install_pic,
+			@RequestParam(required = false) String stick_num			
+			)throws UnsupportedEncodingException, ParseException{
+		if (null == station_phy_num) {
+			return new ResultDto(-1, "基站物理编号不能为空！");
+		}
+		if (null == station_name) {
+			return new ResultDto(-1, "基站名称不能为空！");
+		}
+	    Station station = new Station();
+	    station.setContact_person(contact_person);
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    station.setInstall_date(sdf.parse(install_date));
+	    station.setContact_tele(contact_tele);
+	    station.setLatitude(latitude);
+	    station.setLongitude(longitude);
+	    station.setSoft_version(soft_version);
+	    station.setStation_name(station_name);
+	    station.setStation_phy_num(station_phy_num);
+	    station.setStation_status(station_status);
+	    station.setStation_type(station_type);
+	    station.setStick_num(stick_num);
+	    if (null!=install_pic) {
+			String dir = String.format("%s/station/stationPic", baseDir);
+			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			station.setInstall_pic(FtpService.READ_URL+"data/"+dir + "/" + station_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+	    stationMapper.insert(station);
+	    return new ResultDto(0,"添加成功");
 	}
 }

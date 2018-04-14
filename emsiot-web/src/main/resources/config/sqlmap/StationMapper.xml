@@ -188,4 +188,25 @@
   <select id="findAllStations" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
         SELECT * FROM `station` 
     </select>
+    <select id="findAllStationsByKey" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="stationStatus != null">
+				station_status = #{stationStatus}
+			</if>
+			<if test="stationPhyNum != null">
+				AND station_phy_num = #{stationPhyNum}
+			</if>
+			<if test="stationName != null">
+				AND station_name like "%"#{stationName}"%"
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND recorder_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND recorder_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `install_date` desc
+	</select>
 </mapper>

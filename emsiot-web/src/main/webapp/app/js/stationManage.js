@@ -6,11 +6,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
 				}
-		   });
-		 
-		 
-		 
-		 
+		   });	 
 		 
 	};
 	 var mapStation = new BMap.Map("stationMap",{
@@ -56,9 +52,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	 });
 	  
 	 
-	
-	
-	
+
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 12;

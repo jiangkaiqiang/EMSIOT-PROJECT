@@ -1,7 +1,7 @@
 <div class="station-content shadow">
     <nav class="page-title no-margin no-padding full-width">
         <div class="title-brand flex align-items no-border">
-            <div class="title-text margin-left-md">基础设施管理</div>
+            <div class="title-text margin-left-md">基站管理</div>
 
             <ul class="title-nav flex-around align-items margin-left">
                 <li>
@@ -43,9 +43,8 @@
                         </div>
                     </th>
                     <!--<th>序号</th>-->
-                    <th>基站编号</th>
-                    <th>地址</th>
-                    <th>创建时间</th>
+                    <th>基站物理编号</th>
+                    <th>基站名称</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -55,8 +54,6 @@
                         <input type="checkbox" ng-checked="exists(user, selected)"
                                ng-click="toggle(user, selected)"/>
                     </td>
-                    <!-- <td>{{user.sysUser.user_id}}</td> -->
-                    <td>{{$index+1}}</td>
                     <td>{{user.sysUser.user_tel}}</td>
                     <td>{{user.sysUser.company}}</td>
                     <td>

@@ -351,7 +351,7 @@
       black_list_time = #{black_list_time,jdbcType=TIMESTAMP}
     where elect_id = #{elect_id,jdbcType=INTEGER}
   </update>
-  <select id="findAllElectrombiles" parameterType="int" resultType="Electrombile">
+  <select id="findAllElectrombiles" parameterType="map" resultType="Electrombile">
 		SELECT * FROM `electrombile`
 		<where>
 			<if test="recorderID != null">
