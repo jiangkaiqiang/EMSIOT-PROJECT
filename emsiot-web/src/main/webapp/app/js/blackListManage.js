@@ -13,19 +13,8 @@ console.log("报警页面展示成功");
     $scope.goHome = function () {
         $state.reload();
     }
-
-    //选择日期
-
-    $('#alarmDateStart').datetimepicker({
-        format: 'yyyy-mm-dd - hh:mm:ss',
-        //minView: "month",
-        autoclose:true,
-        maxDate:new Date(),
-        pickerPosition: "bottom-left"
-    });
-    $("#alarmDateEnd").datetimepicker({
-        format : 'yyyy-mm-dd - hh:mm:ss',
-        //minView: 'month',
+    $('#electAlarmDate').datetimepicker({
+        format: 'yyyy-mm-dd  hh:mm:ss',
         autoclose:true,
         maxDate:new Date(),
         pickerPosition: "bottom-left"

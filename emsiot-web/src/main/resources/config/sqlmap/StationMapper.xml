@@ -189,7 +189,7 @@
         SELECT * FROM `station` 
     </select>
     <select id="findAllStationsByKey" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
-		SELECT * FROM `electrombile`
+		SELECT * FROM `station`
 		<where>
 			<if test="stationStatus != null">
 				station_status = #{stationStatus}

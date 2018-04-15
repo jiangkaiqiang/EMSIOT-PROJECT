@@ -83,6 +83,12 @@ public class StationController extends BaseController {
 		 return new BaseDto(0);
 	}
 	
+	@RequestMapping(value = "/findStationByID")
+	@ResponseBody
+	public Object findStationByID(Integer stationID) { 
+		 return stationMapper.selectByPrimaryKey(stationID);
+	}
+	
 	/**
 	 * 批量删除基站
 	 * @param stationIDs

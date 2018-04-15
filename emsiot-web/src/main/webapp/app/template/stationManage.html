@@ -1,7 +1,7 @@
 <div class="station-content shadow">
     <nav class="page-title no-margin no-padding full-width">
         <div class="title-brand flex align-items no-border">
-            <div class="title-text margin-left-md">基站管理</div>
+            <div class="title-text margin-left-md">双击地图——添加基站</div>
 
             <ul class="title-nav flex-around align-items margin-left">
                 <li>
@@ -9,12 +9,12 @@
                           role="search">
                         <div class="form-group border-bottom">
                             <div class="input-group">
-                                <input type="text" ng-model="selected"
+                                <input type="text" ng-model="stationPhyNum"
                                        typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                        class="form-control input-sm bg-light no-border searchInput no-padding"
                                        placeholder="请输入基站编号搜索" style="color:#333;">
                         <span class="input-group-btn">
-                             <button type="submit" class="btn btn-sm bg-light searchInput text-right">
+                             <button ng-click="goSearch()" class="btn btn-sm bg-light searchInput text-right">
                                  <img src="app/img/search .png" alt="" class="pull-right"/>
                              </button>
                         </span>
@@ -26,7 +26,7 @@
                 <li>
                     <a href="">
                         <i class="glyphicon glyphicon-trash" style="color:#2C7DFA;"></i>
-                        <span>批量删除</span>
+                        <button ng-click="goDeleteStations()">批量删除</button>
                     </a>
                 </li>
             </ul>
@@ -57,9 +57,8 @@
                     <td>{{station.station_phy_num}}</td>
                     <td>{{station.station_name}}</td>
                     <td>
-                        <button class="delete" ng-click="goDeleteStation(station.station_id)"></button>
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                                ng-click="goUpdateStation(station.station_id)">编辑
+                        <button class="btn btn-primary btn-sm" ng-click="goDeleteStation(station.station_id)">删除</button>
+                        <button class="btn btn-primary btn-sm" ng-click="goStationLocation(station.station_id)">查看位置
                         </button>
                     </td>
                 </tr>
@@ -80,3 +79,4 @@
 
 <!--以下市可视化内容-->
 <div id="stationMap" style="width:100%;height:800px;ground:#ddd;"></div>
+<!--添加基站信息模态框-->

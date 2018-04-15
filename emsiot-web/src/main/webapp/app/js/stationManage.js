@@ -30,7 +30,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 			 	if(rs==null){
 			 		stationInfo+="获取不到具体位置";
 			 		console.log("null++++++");
-					 stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+					stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
 			 	}
 			 	else{
 			 		var addComp = rs.addressComponents;
@@ -39,8 +39,8 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 			 		stationInfo += addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
 			 	}
 				 stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
-
-			}); 
+	     
+	     }); 
 		 
 
 		 //var myIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
@@ -50,14 +50,26 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 		  });
 		 mapStation.addOverlay(marker); 
 	 });
-	  
+	 
+	 $scope.goStationLocation = function (stationID) {
+	    	$http.get('/i/station/findStationByID', {
+	            params: {
+	                "stationID": stationID
+	            }
+	        }).success(function (data) {
+	        	$scope.locationStation = data;
+	        	//这里我得到了基站的信息包括经纬度等，需要将其显示在地图上
+	        	alert($scope.locationStation.longitude);
+	        });
+	    	
+	}
 	 
 
 	$scope.load();
 	// 显示最大页数
-    $scope.maxSize = 12;
+    $scope.maxSize = 7;
     // 总条目数(默认每页十条)
-    $scope.bigTotalItems = 12;
+    $scope.bigTotalItems = 10;
     // 当前页
     $scope.bigCurrentPage = 1;
 	$scope.AllStations = [];
@@ -109,38 +121,38 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	}
     
     // 获取角色
-    $http.get('/i/userrole/findAllUserRole').success(function (data) {
-        $scope.userRoles = data;
-        $scope.addUserRoleid = data[0].user_role_id;
-    });
+//    $http.get('/i/userrole/findAllUserRole').success(function (data) {
+//        $scope.userRoles = data;
+//        $scope.addUserRoleid = data[0].user_role_id;
+//    });
 	
-    $scope.goDeleteUser = function (userID) {
+    $scope.goDeleteStation = function (stationID) {
     	if(delcfm()){
-    	$http.get('/i/user/deleteUserByID', {
+    	$http.get('/i/station/deleteStationByID', {
             params: {
-                "userID": userID
+                "stationID": stationID
             }
         }).success(function (data) {
-        	$scope.getUsers();
+        	$scope.getStations();
         	alert("删除成功");
         });
     	}
     }
-    $scope.deleteUsers = function(){
+    $scope.goDeleteStations = function(){
     	if(delcfm()){
-    	var userIDs = [];
+    	var stationIDs = [];
     	for(i in $scope.selected){
-    		userIDs.push($scope.selected[i].sysUser.user_id);
+    		stationIDs.push($scope.selected[i].station_id);
     	}
-    	if(userIDs.length >0 ){
+    	if(stationIDs.length >0 ){
     		$http({
     			method:'DELETE',
-    			url:'/i/user/deleteUserByIDs',
+    			url:'/i/station/deleteStationByIDs',
     			params:{
-    				'userIDs': userIDs
+    				'stationIDs': stationIDs
     			}
     		}).success(function (data) {
-    			$scope.getUsers();
+    			$scope.getStations();
             	alert("删除成功");
             });
     	}
@@ -149,37 +161,37 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
    
     
     $scope.selected = [];
-    $scope.toggle = function (user, list) {
-		  var idx = list.indexOf(user);
+    $scope.toggle = function (station, list) {
+		  var idx = list.indexOf(station);
 		  if (idx > -1) {
 		    list.splice(idx, 1);
 		  }
 		  else {
-		    list.push(user);
+		    list.push(station);
 		  }
     };
-    $scope.exists = function (user, list) {
-    	return list.indexOf(user) > -1;
+    $scope.exists = function (station, list) {
+    	return list.indexOf(station) > -1;
     };
     $scope.isChecked = function() {
-        return $scope.selected.length === $scope.Allusers.length;
+        return $scope.selected.length === $scope.AllStations.length;
     };
     $scope.toggleAll = function() {
-        if ($scope.selected.length === $scope.Allusers.length) {
+        if ($scope.selected.length === $scope.AllStations.length) {
         	$scope.selected = [];
         } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-        	$scope.selected = $scope.Allusers.slice(0);
+        	$scope.selected = $scope.AllStations.slice(0);
         }
     };
     
-    $scope.getUserIDsFromSelected = function(audit){
-    	var userIDs = [];
+    $scope.getStationIDsFromSelected = function(audit){
+    	var stationIDs = [];
     	for(i in $scope.selected){
     		if(audit != undefined)
     			$scope.selected[i].audit = audit;
-    		userIDs.push($scope.selected[i].id);
+    		stationIDs.push($scope.selected[i].id);
     	}
-    	return userIDs;
+    	return stationIDs;
     }
     
     $scope.getAudit = function(i){
