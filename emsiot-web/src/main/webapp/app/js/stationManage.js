@@ -1,4 +1,4 @@
-coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cookies, Upload, $http, $location) {
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
@@ -207,55 +207,69 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
         {id:"1",name:"SP-RFS-336-391"},
         {id:"2",name:"RG-RFS-336-392"}
     ];
-    $scope.AllStationState = [
-        {id:"1",name:"SP-RFS-336-391"},
-        {id:"2",name:"RG-RFS-336-392"}
+    $scope.AllStationStatus = [
+        {id:"1",name:"正常"},
+        {id:"2",name:"故障"}
     ];
     $scope.addStationType = "1";
+    $scope.addStationStatus = "1";
     function checkInput(){
         var flag = true;
         // 检查必须填写项
-        if ($scope.username == undefined || $scope.username == '') {
+        if ($scope.addStationPhyNum == undefined || $scope.addStationPhyNum == '') {
             flag = false;
         }
-        if ($scope.password == undefined || $scope.password == '') {
+        if ($scope.addStationName == undefined || $scope.addStationName == '') {
             flag = false;
         }
         return flag;
     }
-   
+    $scope.addInstallPic = function () {
+		
+    };
+    $scope.dropInstallPic = function(installPic){
+    	$scope.installPic = null;
+    };
+    
     $scope.submit = function(){
         if (checkInput()){
-          if($scope.password==$scope.password1){
-        	var valid;
-        	if($scope.validforadd)  valid = 1;
-        	else  valid = 2;
-            $http({
-            	method : 'GET', 
-    			url:'/i/user/addUser',
-    			params:{
-    				'user_name': $scope.username,
-    				'password': $scope.password,
-    				'user_role_id' : $scope.addUserRoleid,
-    				'company': $scope.company,
-    				'pro_id' : $scope.addProjectid,
-    				'comp_factory_id' : $scope.addcompfactoryid,
-    				'valid_status' : valid,
-    				'user_tel' : $scope.telephone
-    			}
-    		}).then(function (resp) {
-    			 alert(resp.data.message);
-                 $scope.getUsers();
-                 $("#addUser").modal("hide"); 
-            });
-           }
-          else{
-        	  alert("两次密码不一致!");
-           }
-          } else {
-            alert("请填写用户名或密码!");
+        	var stationType="";
+        	if($scope.addStationType=="1")  
+        		stationType = "SP-RFS-336-391";
+        	else  
+        		stationType = "RG-RFS-336-392";
+        	data = {
+        			'station_phy_num': $scope.addStationPhyNum,
+    				'station_name': $scope.addStationName,
+    				'longitude' : $scope.addStationLng,
+    				'latitude': $scope.addStationLat,
+    				'station_type' : stationType,
+    				'station_status' : $scope.addStationStatus,
+    				'install_date' : $scope.addInstallDate,
+    				'soft_version' : $scope.addSoftVersion,
+    				'contact_person' : $scope.addcontactPerson,
+    				'contact_tele' : $scope.addcontactTele,
+    				'stick_num' : "123123",
+    				'install_pic' : $scope.installPic
+	            };
+	       Upload.upload({
+	                url: '/i/station/addStation',
+	                headers :{ 'Content-Transfer-Encoding': 'utf-8' },
+	                data: data
+	            }).success(function (data) {
+            if(data.success){
+            	 alert(data.message);
+    			 $scope.getStations();
+                 $("#addStation").modal("hide"); 
+            }
+        });
+          }
+       else {
+    	   alert("请填写基站编号和基站名!");
         }
     }
+    
+    
     
 	 $scope.goUpdateUser = function(userID) {
 		    $scope.validforupdate  = false;

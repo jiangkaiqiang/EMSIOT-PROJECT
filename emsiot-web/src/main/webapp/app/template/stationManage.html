@@ -167,10 +167,9 @@
                                     基站状态：
                                 </label>
                                 <div class="col-sm-8">
-                                    <select name="" id="" class="form-control" >
-                                        <option value="">正常</option>
-                                        <option value="">故障</option>
-                                    </select>
+                                    <select id=""  class="form-control"
+                                     ng-model="addStationStatus" ng-disabled="editable"
+                                     ng-options="x.id as x.name for x in AllStationStatus"></select>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +195,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" >
+                                    <input type="text" class="form-control" ng-model="addSoftVersion">
                                 </div>
                             </div>
                         </div>
@@ -209,7 +208,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" >
+                                    <input type="text" class="form-control" ng-model="addcontactPerson">
                                 </div>
                             </div>
                         </div>
@@ -220,20 +219,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    安装图片：
-                                </label>
-                                <div class="col-sm-8">
-                                   <a href="javascript:;" class="picfile">选择图片<input type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic" name="electPic" ></a>
-		                           <output id="pic_list" class="pic_list"><span><img class="thumb" ngf-src="electPic" title="{{electPic.name}}"><i ng-click="dropElectPic(electPic)">×</i></span></output>
+                                    <input type="text" class="form-control" ng-model="addcontactTele">
                                 </div>
                             </div>
                         </div>
@@ -246,6 +232,19 @@
                                 </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="addStationAddress" ng-model="addStationAddress">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    安装图片：
+                                </label>
+                                <div class="col-sm-8">
+                                   <a href="javascript:;" class="picfile">选择图片<input type="file" id="installPic" ngf-select="addInstallPic()" ng-model="installPic" name="installPic" ></a>
+		                           <output id="pic_list" class="pic_list"><span><img class="thumb" ngf-src="installPic" title="{{installPic.name}}"><i ng-click="dropInstallPic(installPic)">×</i></span></output>
                                 </div>
                             </div>
                         </div>
