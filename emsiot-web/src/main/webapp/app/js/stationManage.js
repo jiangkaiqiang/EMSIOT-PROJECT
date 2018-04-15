@@ -60,25 +60,27 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     $scope.bigTotalItems = 12;
     // 当前页
     $scope.bigCurrentPage = 1;
-	$scope.Allusers = [];
+	$scope.AllStations = [];
 	$scope.optAudit = '8';
 	 // 获取当前用户的列表
 
 	  
-    $scope.getUsers = function() {
+    $scope.getStations = function() {
 		$http({
 			method : 'POST',
-			url : '/i/user/findUserList',
+			url : '/i/station/findAllStations',
 			params : {
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
 				startTime : $scope.startTime,
 				endTime : $scope.endTime,
-				keyword : encodeURI($scope.keyword,"UTF-8"),
+				stationPhyNum : $scope.stationPhyNum,
+				stationName : $scope.stationName,
+				stationStatus : $scope.stationStatus
 			}
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
-			$scope.Allusers = data.list;
+			$scope.AllStations = data.list;
 		});
 	}
 

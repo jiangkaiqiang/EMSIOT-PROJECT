@@ -34,7 +34,7 @@
 
         <!-- 表格操作区域开始 -->
         <div class="tableArea no-padding full-width no-margin">
-            <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+            <table class="table table-striped table-bordered" id="tableArea" ng-model="AllStations">
                 <thead>
                 <tr>
                     <th>
@@ -49,17 +49,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in Allusers">
+                <tr ng-repeat="station in AllStations">
                     <td>
-                        <input type="checkbox" ng-checked="exists(user, selected)"
-                               ng-click="toggle(user, selected)"/>
+                        <input type="checkbox" ng-checked="exists(station, selected)"
+                               ng-click="toggle(station, selected)"/>
                     </td>
-                    <td>{{user.sysUser.user_tel}}</td>
-                    <td>{{user.sysUser.company}}</td>
+                    <td>{{station.station_phy_num}}</td>
+                    <td>{{station.station_name}}</td>
                     <td>
-                        <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
+                        <button class="delete" ng-click="goDeleteStation(station.station_id)"></button>
                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                                ng-click="goUpdateUser(user.sysUser.user_id)">编辑
+                                ng-click="goUpdateStation(station.station_id)">编辑
                         </button>
                     </td>
                 </tr>

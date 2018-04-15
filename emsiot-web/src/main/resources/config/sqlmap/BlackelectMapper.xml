@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.BlackelectMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.Blackelect">
+    <id column="black_id" jdbcType="INTEGER" property="black_id" />
+    <result column="gua_card_num" jdbcType="INTEGER" property="gua_card_num" />
+    <result column="case_occur_time" jdbcType="TIMESTAMP" property="case_occur_time" />
+    <result column="owner_tele" jdbcType="VARCHAR" property="owner_tele" />
+    <result column="owner_name" jdbcType="VARCHAR" property="owner_name" />
+    <result column="pro_id" jdbcType="INTEGER" property="pro_id" />
+    <result column="city_id" jdbcType="INTEGER" property="city_id" />
+    <result column="area_id" jdbcType="INTEGER" property="area_id" />
+    <result column="case_address" jdbcType="VARCHAR" property="case_address" />
+    <result column="case_address_type" jdbcType="VARCHAR" property="case_address_type" />
+    <result column="case_detail" jdbcType="VARCHAR" property="case_detail" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    black_id, gua_card_num, case_occur_time, owner_tele, owner_name, pro_id, city_id, 
+    area_id, case_address, case_address_type, case_detail
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blackelect
+    where black_id = #{black_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from blackelect
+    where black_id = #{black_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.Blackelect">
+    insert into blackelect (black_id, gua_card_num, case_occur_time, 
+      owner_tele, owner_name, pro_id, 
+      city_id, area_id, case_address, 
+      case_address_type, case_detail)
+    values (#{black_id,jdbcType=INTEGER}, #{gua_card_num,jdbcType=INTEGER}, #{case_occur_time,jdbcType=TIMESTAMP}, 
+      #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{pro_id,jdbcType=INTEGER}, 
+      #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}, #{case_address,jdbcType=VARCHAR}, 
+      #{case_address_type,jdbcType=VARCHAR}, #{case_detail,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Blackelect">
+    insert into blackelect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="black_id != null">
+        black_id,
+      </if>
+      <if test="gua_card_num != null">
+        gua_card_num,
+      </if>
+      <if test="case_occur_time != null">
+        case_occur_time,
+      </if>
+      <if test="owner_tele != null">
+        owner_tele,
+      </if>
+      <if test="owner_name != null">
+        owner_name,
+      </if>
+      <if test="pro_id != null">
+        pro_id,
+      </if>
+      <if test="city_id != null">
+        city_id,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+      <if test="case_address != null">
+        case_address,
+      </if>
+      <if test="case_address_type != null">
+        case_address_type,
+      </if>
+      <if test="case_detail != null">
+        case_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="black_id != null">
+        #{black_id,jdbcType=INTEGER},
+      </if>
+      <if test="gua_card_num != null">
+        #{gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="case_occur_time != null">
+        #{case_occur_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owner_tele != null">
+        #{owner_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_name != null">
+        #{owner_name,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="case_address != null">
+        #{case_address,jdbcType=VARCHAR},
+      </if>
+      <if test="case_address_type != null">
+        #{case_address_type,jdbcType=VARCHAR},
+      </if>
+      <if test="case_detail != null">
+        #{case_detail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Blackelect">
+    update blackelect
+    <set>
+      <if test="gua_card_num != null">
+        gua_card_num = #{gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="case_occur_time != null">
+        case_occur_time = #{case_occur_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owner_tele != null">
+        owner_tele = #{owner_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_name != null">
+        owner_name = #{owner_name,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        pro_id = #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="case_address != null">
+        case_address = #{case_address,jdbcType=VARCHAR},
+      </if>
+      <if test="case_address_type != null">
+        case_address_type = #{case_address_type,jdbcType=VARCHAR},
+      </if>
+      <if test="case_detail != null">
+        case_detail = #{case_detail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where black_id = #{black_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.Blackelect">
+    update blackelect
+    set gua_card_num = #{gua_card_num,jdbcType=INTEGER},
+      case_occur_time = #{case_occur_time,jdbcType=TIMESTAMP},
+      owner_tele = #{owner_tele,jdbcType=VARCHAR},
+      owner_name = #{owner_name,jdbcType=VARCHAR},
+      pro_id = #{pro_id,jdbcType=INTEGER},
+      city_id = #{city_id,jdbcType=INTEGER},
+      area_id = #{area_id,jdbcType=INTEGER},
+      case_address = #{case_address,jdbcType=VARCHAR},
+      case_address_type = #{case_address_type,jdbcType=VARCHAR},
+      case_detail = #{case_detail,jdbcType=VARCHAR}
+    where black_id = #{black_id,jdbcType=INTEGER}
+  </update>
+</mapper>
