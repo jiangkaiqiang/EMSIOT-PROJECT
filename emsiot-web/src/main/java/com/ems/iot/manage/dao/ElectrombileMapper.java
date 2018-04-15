@@ -1,5 +1,7 @@
 package com.ems.iot.manage.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.ems.iot.manage.entity.Electrombile;
@@ -15,6 +17,8 @@ public interface ElectrombileMapper {
     Electrombile selectByPrimaryKey(Integer elect_id);
     
     Electrombile findPlateNumByGuaCardNum(@Param("guaCardNum") int guaCardNum);
+    
+    List<Electrombile> findElectrombiles(@Param("num") int num);
 
     int updateByPrimaryKeySelective(Electrombile record);
 

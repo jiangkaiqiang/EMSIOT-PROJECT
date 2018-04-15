@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import com.ems.iot.manage.entity.Blackelect;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
@@ -16,6 +17,7 @@ public class GenDataUtil {
 	private static String[] firstName = { "赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈" };
 	private static String[] lastName = { "小贤", "志伟", "海涛", "凯强", "利栋", "宗超", "超", "伟", "亮", "栋" };
 	private static String[] color = { "红", "橙", "黄", "绿", "青", "蓝", "紫", "黑", "白", "银" };
+	private static String[] occurType= {"社区","地铁站","商场","超市","沿街商铺","办公楼","医院","车站","学校","其他"};
 
 	public static void gendata(Electrombile electrombile, Station station, ElectrombileStation electrombileStation,int index){
 	Random rand= new Random();
@@ -69,5 +71,20 @@ public class GenDataUtil {
 	electrombileStation.setStation_phy_num(station.getStation_phy_num());
 	electrombileStation.setHard_read_time(new Date());
 	electrombileStation.setUpdate_time(new Date());
+	}
+	
+	public static void genBlackelect(Electrombile electrombile,Blackelect blackelect){
+		Calendar occur_calendar = Calendar.getInstance();
+		Random rand= new Random();
+		occur_calendar.add(Calendar.DATE, -rand.nextInt(before_interval));
+		Date occur_date = occur_calendar.getTime();
+		
+		blackelect.setGua_card_num(electrombile.getGua_card_num());
+		blackelect.setCase_occur_time(occur_date);
+		blackelect.setOwner_tele(electrombile.getOwner_tele());
+		blackelect.setOwner_name(electrombile.getOwner_name());
+		blackelect.setCase_address("新疆喀什XXX");
+		blackelect.setCase_address_type(occurType[rand.nextInt(10)]);
+		blackelect.setDeal_status(rand.nextInt(2));
 	}
 }
