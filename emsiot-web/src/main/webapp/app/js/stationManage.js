@@ -85,16 +85,16 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	}
 
 	$scope.pageChanged = function() {
-		$scope.getUsers();
+		$scope.getStations();
 	}
-	$scope.getUsers();
+	$scope.getStations();
 	// 获取当前冷库的列表
 	$scope.auditChanged = function(optAudiet) {
-		$scope.getUsers();
+		$scope.getStations();
 	}
     
 	$scope.goSearch = function () {
-		$scope.getUsers();
+		$scope.getStations();
     }
 	
 	$scope.showAll = function () {
