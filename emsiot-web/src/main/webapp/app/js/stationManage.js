@@ -19,34 +19,39 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
    	 //通过双击地图添加基站，弹出窗口
 	 var geoc = new BMap.Geocoder();    
 
-
 	 mapStation.addEventListener("dblclick",function(e){
-		 var stationInfo = "<div style=\"width:300px;height:400px;\">";
-		 var stationWin;
-
+		 //var stationInfo = "<div style=\"width:300px;height:400px;\">";
+		 //var stationWin;
 		 var currentpt = new BMap.Point(e.point.lng,e.point.lat);
-		 stationInfo += "此处的经度为："+e.point.lng+"<br>此处的纬度为："+e.point.lat+"<br>";
+		 $scope.addStationLng = e.point.lng;
+		 $scope.addStationLat = e.point.lat;
+		 //stationInfo += "此处的经度为："+e.point.lng+"<br>此处的纬度为："+e.point.lat+"<br>";
 		 geoc.getLocation(e.point, function(rs){
 			 	if(rs==null){
-			 		stationInfo+="获取不到具体位置";
-			 		console.log("null++++++");
-					stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+			 		//stationInfo+="获取不到具体位置";
+			 		//console.log("null++++++");
+					//stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+					$scope.addStationAddress = "获取不到具体位置";
 			 	}
 			 	else{
 			 		var addComp = rs.addressComponents;
-			 		console.log(addComp.province);
+			 		//console.log(addComp.province);
 			 		//stationInfo += addComp.province;
-			 		stationInfo += addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
+			 		//stationInfo += addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
+			 		$scope.addStationAddress = addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
 			 	}
-				 stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
-	     
+		    //stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+		    $("#addStation").modal("show");
+		    $("#addStationLng").val($scope.addStationLng);
+		    $("#addStationLat").val($scope.addStationLat);
+		    $("#addStationAddress").val($scope.addStationAddress);
 	     }); 
 		 
-
 		 //var myIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
 		 var marker = new BMap.Marker(currentpt); 
 		 marker.addEventListener("click", function(){          
-		        this.openInfoWindow(stationWin);
+		        //this.openInfoWindow(stationWin);
+			 $('#addStation').modal('show')
 		  });
 		 mapStation.addOverlay(marker); 
 	 });
@@ -64,7 +69,12 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	    	
 	}
 	 
-
+	$('#electAlarmDate').datetimepicker({
+	        format: 'yyyy-mm-dd  hh:mm:ss',
+	        autoclose:true,
+	        maxDate:new Date(),
+	        pickerPosition: "bottom-left"
+    });
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 7;
@@ -74,9 +84,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     $scope.bigCurrentPage = 1;
 	$scope.AllStations = [];
 	$scope.optAudit = '8';
-	 // 获取当前用户的列表
-
-	  
+	 // 获取当前基站的列表
     $scope.getStations = function() {
 		$http({
 			method : 'POST',
@@ -100,7 +108,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 		$scope.getStations();
 	}
 	$scope.getStations();
-	// 获取当前冷库的列表
+	// 获取当前基站的列表
 	$scope.auditChanged = function(optAudiet) {
 		$scope.getStations();
 	}
@@ -119,12 +127,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	        }
 	        return true;
 	}
-    
-    // 获取角色
-//    $http.get('/i/userrole/findAllUserRole').success(function (data) {
-//        $scope.userRoles = data;
-//        $scope.addUserRoleid = data[0].user_role_id;
-//    });
 	
     $scope.goDeleteStation = function (stationID) {
     	if(delcfm()){
@@ -159,7 +161,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     	}
     }
    
-    
     $scope.selected = [];
     $scope.toggle = function (station, list) {
 		  var idx = list.indexOf(station);
@@ -201,8 +202,16 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     		return '无效';
     	}
     }
-    
-    
+   
+    $scope.AllStationType = [
+        {id:"1",name:"SP-RFS-336-391"},
+        {id:"2",name:"RG-RFS-336-392"}
+    ];
+    $scope.AllStationState = [
+        {id:"1",name:"SP-RFS-336-391"},
+        {id:"2",name:"RG-RFS-336-392"}
+    ];
+    $scope.addStationType = "1";
     function checkInput(){
         var flag = true;
         // 检查必须填写项
@@ -214,9 +223,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
         }
         return flag;
     }
-
-    
-    
+   
     $scope.submit = function(){
         if (checkInput()){
           if($scope.password==$scope.password1){

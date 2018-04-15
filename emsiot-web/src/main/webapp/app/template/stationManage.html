@@ -78,5 +78,191 @@
 </div>
 
 <!--以下市可视化内容-->
-<div id="stationMap" style="width:100%;height:800px;ground:#ddd;"></div>
+<div id="stationMap" style="width:100%;height:1000px;ground:#ddd;"></div>
 <!--添加基站信息模态框-->
+<div class="modal fade" id="addStation" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="modal-title" id="">
+                    添加基站
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="electForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    物理编号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="addStationPhyNum" class="form-control" ng-model="addStationPhyNum">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    安装时间：
+                                </label>
+                                <div class="col-sm-8">
+                                    <div class='input-group date' id='electAlarmDate'>
+                                        <input type='text' class="form-control" placeholder="选择安装时间" readonly ng-model="addInstallDate"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+						                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    经度：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="addStationLng" class="form-control" ng-model="addStationLng">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    纬度：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text"  id="addStationLat" class="form-control" ng-model="addStationLat">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    基站型号：
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id=""  class="form-control"
+                                     ng-model="addStationType" ng-disabled="editable"
+                                     ng-options="x.id as x.name for x in AllStationType"></select>
+                                </div>
+                       </div>
+                        <div class="col-md-6">
+                             <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    基站状态：
+                                </label>
+                                <div class="col-sm-8">
+                                    <select name="" id="" class="form-control" >
+                                        <option value="">正常</option>
+                                        <option value="">故障</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    设备名称：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addStationName">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    软件版本：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    联系人：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    联系电话：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    安装图片：
+                                </label>
+                                <div class="col-sm-8">
+                                   <a href="javascript:;" class="picfile">选择图片<input type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic" name="electPic" ></a>
+		                           <output id="pic_list" class="pic_list"><span><img class="thumb" ngf-src="electPic" title="{{electPic.name}}"><i ng-click="dropElectPic(electPic)">×</i></span></output>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    基站地址：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="addStationAddress" ng-model="addStationAddress">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submit()" class="btn btn-primary">
+                    添加
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--添加基站信息模态框 end-->
