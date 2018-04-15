@@ -396,4 +396,8 @@
 		</where>
 		order by `recorder_time` desc
 	</select>
+	  <select id="findPlateNumByGuaCardNum" parameterType="map" resultType="com.ems.iot.manage.entity.Electrombile">
+        SELECT *
+        FROM `electrombile` WHERE `gua_card_num` = #{guaCardNum}
+    </select>
 </mapper>

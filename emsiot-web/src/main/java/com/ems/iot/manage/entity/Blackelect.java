@@ -25,6 +25,8 @@ public class Blackelect {
 
     private String case_detail;
 
+    private Integer deal_status;
+
     public Integer getBlack_id() {
         return black_id;
     }
@@ -111,5 +113,13 @@ public class Blackelect {
 
     public void setCase_detail(String case_detail) {
         this.case_detail = case_detail == null ? null : case_detail.trim();
+    }
+
+    public Integer getDeal_status() {
+        return deal_status;
+    }
+
+    public void setDeal_status(Integer deal_status) {
+        this.deal_status = deal_status;
     }
 }

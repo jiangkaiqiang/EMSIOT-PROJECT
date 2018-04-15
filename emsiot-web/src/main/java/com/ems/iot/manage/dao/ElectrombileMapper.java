@@ -13,6 +13,8 @@ public interface ElectrombileMapper {
     int insertSelective(Electrombile record);
 
     Electrombile selectByPrimaryKey(Integer elect_id);
+    
+    Electrombile findPlateNumByGuaCardNum(@Param("guaCardNum") int guaCardNum);
 
     int updateByPrimaryKeySelective(Electrombile record);
 
