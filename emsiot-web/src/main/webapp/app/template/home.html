@@ -27,31 +27,176 @@
     </ul>
 
     <ul class="flex home-nav-right">
+        <li><i class="border-dashed"></i></li>
         <li>
-            <a href="">
-               <img src="app/img/guijiSearch.png" alt=""/>
+            <a href="" data-toggle="modal" data-target="#guijiModal">
+                <img src="app/img/guijiSearch.png" alt=""/>
                 <span>轨迹查询</span>
             </a>
         </li>
+        <li><i class="border-dashed"></i></li>
         <li>
-            <a href="#">
-            <img src="app/img/dingweiIcon.png" alt=""/>
-            <span>定位</span>
+            <a href="#" data-toggle="modal" data-target="#dingweiModal">
+                <img src="app/img/dingweiIcon.png" alt=""/>
+                <span>定位</span>
             </a>
         </li>
-        <li>
-            <a href="#">
-            <img src="app/img/minganArea.png" alt=""/>
-            <span>敏感区域</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-            <img src="app/img/huaxianIcon.png" alt=""/>
-            <span>化限制区</span>
-            </a>
-        </li>
+        <li><i class="border-dashed"></i></li>
     </ul>
+
+    <!--轨迹查询模态框-->
+    <div class="modal fade" id="guijiModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="">
+                        轨迹查询
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-3">
+                                查询条件：
+                            </label>
+
+                            <div class="col-sm-7 flex">
+                                <select name="" id="" class="form-control">
+                                    <option value="">电动车</option>
+                                    <option value="">摩托车</option>
+                                </select>
+
+                                <select name="" id="" class="form-control">
+                                    <option value="">防盗芯片ID</option>
+                                    <option value="">车牌号</option>
+                                </select>
+
+                                <input type="text" placeholder="请输入关键词" class="form-control"/>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-3">
+                                日期从：
+                            </label>
+
+                            <div class="col-sm-7 flex">
+                                <div class='input-group date' id='homeDateStart'>
+                                    <input type='text' class="form-control" placeholder="选择开始时间" readonly/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+						            </span>
+                                </div>
+                                &nbsp;
+                                至
+                                &nbsp;
+                                <div class='input-group date' id='homeDateEnd'>
+                                    <input type='text' class="form-control" placeholder="选择结束时间" readonly/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+						            </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-3">
+
+                            </label>
+
+                            <div class="col-sm-7 flex">
+                                <div class="flex-items">
+                                    <input type="checkbox"/>今日轨迹
+                                </div>
+                                <div class="flex-items">
+                                    <div class="swichWrap">
+                                        <div class="guijiCircle"></div>
+                                    </div>
+                                    跟踪轨迹
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">
+                        查询轨迹
+                    </button>
+                    <button type="button" class="btn btn-guiji">
+                        轨迹回放
+                    </button>
+                    <button type="button" class="btn btn-guiji">
+                        清除轨迹
+                    </button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+
+
+    <!--定位模态框-->
+    <div class="modal fade" id="dingweiModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="">
+                        车辆定位
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-3">
+                                定位条件：
+                            </label>
+
+                            <div class="col-sm-7 flex">
+                                <select name="" id="" class="form-control">
+                                    <option value="">电动车</option>
+                                    <option value="">摩托车</option>
+                                </select>
+
+                                <select name="" id="" class="form-control">
+                                    <option value="">防盗芯片ID</option>
+                                    <option value="">车牌号</option>
+                                </select>
+
+                                <input type="text" placeholder="请输入关键词" class="form-control"/>
+
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">
+                        确定
+                    </button>
+                    <button type="button" class="btn btn-guiji">
+                        清除定位
+                    </button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
 
 </div>
 <!--以下市可视化地图的内容-->

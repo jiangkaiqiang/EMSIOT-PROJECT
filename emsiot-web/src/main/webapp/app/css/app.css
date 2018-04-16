@@ -4660,7 +4660,8 @@ button.searchInput:hover{
   display: inline-block;
   width: 60px;
   height: 60px;
-  margin-left: 24px;
+  margin-left: 5px;
+  margin-right: 10px;
 }
 
 .thumb-md {
