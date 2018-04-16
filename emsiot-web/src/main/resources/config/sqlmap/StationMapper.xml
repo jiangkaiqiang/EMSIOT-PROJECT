@@ -15,10 +15,12 @@
     <result column="contact_tele" jdbcType="VARCHAR" property="contact_tele" />
     <result column="stick_num" jdbcType="VARCHAR" property="stick_num" />
     <result column="install_pic" jdbcType="VARCHAR" property="install_pic" />
+    <result column="station_address" jdbcType="VARCHAR" property="station_address" />
   </resultMap>
   <sql id="Base_Column_List">
     station_id, station_phy_num, station_name, longitude, latitude, station_type, station_status, 
-    install_date, soft_version, contact_person, contact_tele, stick_num, install_pic
+    install_date, soft_version, contact_person, contact_tele, stick_num, install_pic, 
+    station_address
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -35,12 +37,12 @@
       longitude, latitude, station_type, 
       station_status, install_date, soft_version, 
       contact_person, contact_tele, stick_num, 
-      install_pic)
+      install_pic, station_address)
     values (#{station_id,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER}, #{station_name,jdbcType=VARCHAR}, 
       #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{station_type,jdbcType=VARCHAR}, 
       #{station_status,jdbcType=INTEGER}, #{install_date,jdbcType=TIMESTAMP}, #{soft_version,jdbcType=VARCHAR}, 
       #{contact_person,jdbcType=VARCHAR}, #{contact_tele,jdbcType=VARCHAR}, #{stick_num,jdbcType=VARCHAR}, 
-      #{install_pic,jdbcType=VARCHAR})
+      #{install_pic,jdbcType=VARCHAR}, #{station_address,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Station">
     insert into station
@@ -84,6 +86,9 @@
       <if test="install_pic != null">
         install_pic,
       </if>
+      <if test="station_address != null">
+        station_address,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="station_id != null">
@@ -124,6 +129,9 @@
       </if>
       <if test="install_pic != null">
         #{install_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="station_address != null">
+        #{station_address,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +174,9 @@
       <if test="install_pic != null">
         install_pic = #{install_pic,jdbcType=VARCHAR},
       </if>
+      <if test="station_address != null">
+        station_address = #{station_address,jdbcType=VARCHAR},
+      </if>
     </set>
     where station_id = #{station_id,jdbcType=INTEGER}
   </update>
@@ -182,7 +193,8 @@
       contact_person = #{contact_person,jdbcType=VARCHAR},
       contact_tele = #{contact_tele,jdbcType=VARCHAR},
       stick_num = #{stick_num,jdbcType=VARCHAR},
-      install_pic = #{install_pic,jdbcType=VARCHAR}
+      install_pic = #{install_pic,jdbcType=VARCHAR},
+      station_address = #{station_address,jdbcType=VARCHAR}
     where station_id = #{station_id,jdbcType=INTEGER}
   </update>
   <select id="findAllStations" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
@@ -201,10 +213,10 @@
 				AND station_name like "%"#{stationName}"%"
 			</if>
 			<if test="startTime!=null and startTime!=''">
-				AND recorder_time &gt;= #{startTime}
+				AND install_date &gt;= #{startTime}
 			</if>
 			<if test="endTime!=null and endTime!=''">
-				AND recorder_time &lt;= #{endTime}
+				AND install_date &lt;= #{endTime}
 			</if>
 		</where>
 		order by `install_date` desc

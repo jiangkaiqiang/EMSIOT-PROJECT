@@ -6,11 +6,15 @@
 .search-container .unblock-content{padding-bottom:15px;}
 
 #addCar #adressArea .form-control{
+     display:inline-block;
+     width:32.5%;
+ }
+#viewModalElec #viewArea .form-control{
     display:inline-block;
     width:32.5%;
 }
 
-#addCar .fileup .up-content a{
+.fileup .up-content a{
     position: relative;
     border: 1px dashed #ddd;
     display: inline-block;
@@ -35,14 +39,14 @@
     /* 设置背景颜色，背景图加载过程中会显示背景色 */
     background-color: #f3f3f3;
 }
-#addCar .fileup .up-content a:hover,
-#addCar .fileup .up-content a:focus,
-#addCar .fileup .up-content a:active,
-#addCar .fileup .up-content a:visited{
+ .fileup .up-content a:hover,
+ .fileup .up-content a:focus,
+.fileup .up-content a:active,
+ .fileup .up-content a:visited{
     border: 1px dashed red;
 
 }
-#addCar .fileup .up-content input[type='file']{
+ .fileup .up-content input[type='file']{
     position: absolute;
     top: 0;
     left: 0;
@@ -50,18 +54,23 @@
     height: 120px;
     opacity:0;
 }
-#addCar .fileup .up-content output{
+.fileup .up-content output{
     width:118px;
     height:118px;
     padding:0;
 }
-#addCar .fileup .up-content output i{
+.fileup .up-content output span{
+    width:120px;
+    position:absolute;
+    top:0;left:0;
+}
+.fileup .up-content output i{
     position:absolute;
     top:-10px;
     right:-10px;
     color:red;
 }
-#addCar .fileup .up-content output img{
+ .fileup .up-content output img{
     height:118px;width:118px;
 }
 
@@ -98,4 +107,11 @@
 }
 .electManage .search-container .datePicker input{
     border-right:0;
+}
+ #viewModalElec input{
+    border:0;
+     background:transparent;
+}
+#viewModalElec select{
+    border:0;
 }

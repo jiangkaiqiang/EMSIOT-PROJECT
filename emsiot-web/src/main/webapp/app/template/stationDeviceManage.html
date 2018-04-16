@@ -10,12 +10,12 @@
                       data-target=".navbar-collapse" role="search">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" ng-model="selected"
+                            <input type="text" ng-model="stationPhyNum"
                                    typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                    class="form-control input-sm bg-light no-border searchInput padder"
                                    placeholder="基站编号查询">
                                  <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-sm bg-light searchInput"><i
+                                    <button ng-click="goSearch()" class="btn btn-sm bg-light searchInput"><i
                                             class="fa fa-search margin-right"></i></button>
                                 </span>
                         </div>
@@ -26,7 +26,7 @@
                 <a href="">
                     <b class="border-dashed-left"></b>
                     <i class="glyphicon glyphicon-trash"></i>
-                    <span>批量删除</span>
+                    <button ng-click="goDeleteStations()">批量删除</button>
                 </a>
             </li>
         </ul>
@@ -35,28 +35,24 @@
         <form class="form-inline">
             <div class="block-content">
                 <div class="form-group">
-                    <label for="importUser">基站所属区域&nbsp;&nbsp;&nbsp;</label>
-                    <select class="form-control" id="importUser">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>区域1</option>
-                        <option>区域2</option>
-                        <option>区域3</option>
-                        <option>区域4</option>
-                    </select>
+                    <label for="importUser">基站状态&nbsp;&nbsp;&nbsp;</label>
+                    <select id="" class="form-control"
+                                            ng-model="stationStatus" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllStationStatus"></select>
                 </div>
 
                 <div class="form-group datePicker">
                     <label>添加时间：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='alarmDateStart'>
-                        <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;"/>
+                        <input type='text' class="form-control" id="startTime" placeholder="选择开始时间" readonly style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                     --
                     <div class='input-group date' id='alarmDateEnd'>
-                        <input type='text' class="form-control" placeholder="选择结束时间" readonly style="width:200px;"/>
+                        <input type='text' class="form-control" id="endTime" placeholder="选择结束时间" readonly style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -64,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary">搜索</button>
+                    <button type="button" class="btn btn-primary" ng-click="goSearch()">搜索</button>
                 </div>
 
             </div>
@@ -74,7 +70,7 @@
 
 <!-- 表格操作区域开始 -->
 <div class="tableArea shadow countent no-padding">
-    <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+    <table class="table table-striped table-bordered" id="tableArea" ng-model="AllStations">
         <thead>
         <tr>
             <th>
@@ -83,7 +79,6 @@
                     <label for="allSecSon">全选</label>
                 </div>
             </th>
-            <th>序号</th>
             <th>基站名称</th>
             <th>基站编号</th>
             <th>基站地址</th>
@@ -93,25 +88,22 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in Allusers">
-            <td>
-                <input type="checkbox" ng-checked="exists(user, selected)"
-                       ng-click="toggle(user, selected)"/>
-            </td>
-            <!-- <td>{{user.sysUser.user_id}}</td> -->
-            <td>{{$index+1}}</td>
-            <td>{{user.sysUser.user_name}}</td>
-            <td>{{user.sysUser.user_tel}}</td>
-            <td>{{user.sysUser.company}}</td>
-            <td>{{user.projectName}}</td>
-            <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
-            <td>
-                <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                        ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                </button>
-            </td>
-        </tr>
+        <tr ng-repeat="station in AllStations">
+                    <td>
+                        <input type="checkbox" ng-checked="exists(station, selected)"
+                               ng-click="toggle(station, selected)"/>
+                    </td>
+                    <td>{{station.station_name}}</td>
+                    <td>{{station.station_phy_num}}</td>
+                    <td>{{station.station_address}}</td>
+                    <td ng-bind="getStatus(station.station_status)"></td>
+                    <td>{{station.install_date}}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" ng-click="goDeleteStation(station.station_id)">删除</button>
+                        <button class="btn btn-primary btn-sm" ng-click="goStationLocation(station.station_id)">查看</button>
+                        <button class="btn btn-primary btn-sm" ng-click="goStationUpdate(station.station_id)" data-toggle="modal" data-target="#updateStation">修改</button>
+                    </td>
+         </tr>
         </tbody>
     </table>
     <div class="page">
@@ -124,3 +116,205 @@
     </div>
 </div>
 <!-- 表格操作区域结束 -->
+<!--更新基站信息模态框-->
+<div class="modal fade" id="updateStation" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="modal-title" id="">
+                    修改基站
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="electForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    物理编号：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="addStationPhyNum" class="form-control"
+                                           ng-model="stationForUpdate.station_phy_num">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    安装时间：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <div class='input-group date' id='electAlarmDate'>
+                                        <input type='text' class="form-control" placeholder="选择安装时间" readonly
+                                               ng-model="stationForUpdate.install_date"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+						                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    经度：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="addStationLng" class="form-control" ng-model="stationForUpdate.longitude">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    纬度：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="addStationLat" class="form-control" ng-model="stationForUpdate.latitude">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    基站型号：
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="" class="form-control"
+                                            ng-model="stationForUpdate.station_type" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllStationType"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    基站状态：
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="" class="form-control"
+                                            ng-model="stationForUpdate.station_status" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllStationStatus"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    设备名称：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="stationForUpdate.station_name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    软件版本：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="stationForUpdate.soft_version">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    联系人：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="stationForUpdate.contact_person">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    联系电话：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="stationForUpdate.contact_tele">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    基站地址：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="addStationAddress"
+                                           ng-model="stationForUpdate.station_address">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row fileup">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label ">
+                                    安装图片：
+                                </label>
+
+                                <div class="col-sm-8 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                        <input type="file" id="installPic" ngf-select="addInstallPic()" ng-model="stationForUpdate.install_pic" name="installPic">
+                                        <output id="pic_list" class="pic_list">
+                                        <span>
+                                            <img ngf-src="stationForUpdate.install_pic">
+                                            <i ng-click="dropInstallPic(stationForUpdate.install_pic)">×</i>
+                                        </span>
+                                        </output>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="goUpdateStation()" class="btn btn-primary">
+                    修改
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--更新基站信息模态框 end-->

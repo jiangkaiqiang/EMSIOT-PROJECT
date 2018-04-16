@@ -194,25 +194,16 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     	}
     	return stationIDs;
     }
-    
-    $scope.getAudit = function(i){
-    	if(i==1)
-    		return '有效';
-        else{
-    		return '无效';
-    	}
-    }
-   
     $scope.AllStationType = [
         {id:"1",name:"SP-RFS-336-391"},
         {id:"2",name:"RG-RFS-336-392"}
     ];
     $scope.AllStationStatus = [
-        {id:"1",name:"正常"},
-        {id:"2",name:"故障"}
+        {id:"0",name:"正常"},
+        {id:"1",name:"故障"}
     ];
     $scope.addStationType = "1";
-    $scope.addStationStatus = "1";
+    $scope.addStationStatus = "0";
     function checkInput(){
         var flag = true;
         // 检查必须填写项
@@ -250,6 +241,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     				'contact_person' : $scope.addcontactPerson,
     				'contact_tele' : $scope.addcontactTele,
     				'stick_num' : "123123",
+    				'station_address' : $scope.addStationAddress,
     				'install_pic' : $scope.installPic
 	            };
 	       Upload.upload({
@@ -268,68 +260,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     	   alert("请填写基站编号和基站名!");
         }
     }
-    
-    
-    
-	 $scope.goUpdateUser = function(userID) {
-		    $scope.validforupdate  = false;
-	    	$http.get('/i/user/findUserByID', {
-	            params: {
-	                "spaceUserID": userID
-	            }
-	        }).success(function(data){
-			    if(data!=null&&data.user_id!=undefined){
-					 $scope.userForUpdate = data;
-					 if($scope.userForUpdate.valid_status==1)
-						 $scope.validforupdate = true;
-			    }
-		     });
-		};
-		function checkInputForUpdate(){
-	        var flag = true;
-	        // 检查必须填写项
-	        if ($scope.userForUpdate.user_name == undefined || $scope.userForUpdate.user_name == '') {
-	            flag = false;
-	        }
-	       /* if ($scope.userForUpdate.password == undefined ||  $scope.userForUpdate.password == '') {
-	            flag = false;
-	        }*/
-	        return flag;
-	    }
-		 $scope.update = function(){
-			 if (checkInputForUpdate()){
-		          /*if($scope.passwordForUpdate==$scope.passwordForUpdate1){*/
-		        	var valid;
-		        	if($scope.validforupdate)  valid = 1;
-		        	else  valid = 2;
-		            $http({
-		            	method : 'GET', 
-		    			url:'/i/user/updateUser',
-		    			params:{
-		    				'user_id': $scope.userForUpdate.user_id,
-		    				'user_name': $scope.userForUpdate.user_name,
-		    				'password': '',
-//		    				'password': null,
-		    				'user_role_id' : $scope.userForUpdate.user_role_id,
-		    				'company':  $scope.userForUpdate.company,
-		    				'pro_id' : $scope.userForUpdate.pro_id,
-		    				'comp_factory_id' : $scope.userForUpdate.comp_factory_id,
-		    				'valid_status' : valid,
-		    				'user_tel' : $scope.userForUpdate.user_tel
-		    			}
-		    		}).then(function (resp) {
-		    			 alert(resp.data.message);
-		                 $scope.getUsers();
-		                 $("#updateUser").modal("hide"); 
-		            });
-		          /* }
-		          else{
-		        	  alert("两次密码不一致!");
-		           }*/
-		          } else {
-		            alert("请填写用户名!");
-		        }
-		    }
 		 $('#datetimepicker1').datetimepicker({  
 		    	autoclose:true
 		    }).on('dp.change', function (e) {  

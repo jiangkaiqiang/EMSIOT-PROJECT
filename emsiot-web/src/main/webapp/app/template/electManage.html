@@ -3,27 +3,27 @@
         <div class="title-text">车辆管理</div>
         <ul class="title-nav flex align-items">
             <!--<li>-->
-                <!--<a href="">-->
+            <!--<a href="">-->
 
-                    <!--<img src="app/img/guijiIcon.png" alt=""/>-->
-                    <!--<span class="border-dashed">轨迹查询</span>-->
+            <!--<img src="app/img/guijiIcon.png" alt=""/>-->
+            <!--<span class="border-dashed">轨迹查询</span>-->
 
 
-                <!--</a>-->
+            <!--</a>-->
             <!--</li>-->
             <!--<li>-->
-                <!--<a href="">-->
-                    <!--<img src="app/img/dengjiIcon.png" alt=""/>-->
-                    <!--<span class="border-dashed">登记证打印</span>-->
-                <!--</a>-->
+            <!--<a href="">-->
+            <!--<img src="app/img/dengjiIcon.png" alt=""/>-->
+            <!--<span class="border-dashed">登记证打印</span>-->
+            <!--</a>-->
             <!--</li>-->
-            <li>
-                <a href="">
-                    <img src="app/img/baoxianIcon.png" alt=""/>
-                    <span class="border-dashed">保险打印</span>
+            <!--<li>-->
+            <!--<a href="">-->
+            <!--<img src="app/img/baoxianIcon.png" alt=""/>-->
+            <!--<span class="border-dashed">保险打印</span>-->
 
-                </a>
-            </li>
+            <!--</a>-->
+            <!--</li>-->
             <li>
                 <a href="">
                     <img src="app/img/daochuIcon.png" alt=""/>
@@ -131,13 +131,13 @@
 
 <!-- 表格操作区域开始 -->
 <div class="tableArea shadow countent no-padding">
-    <table class="table table-striped table-bordered" id="tableArea" ng-model="AllElects">
+    <table class="table table-striped " id="tableArea" ng-model="AllElects">
         <thead>
         <tr>
             <th>
                 <div>
                     <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
-                    <label for="allSecSon">全选</label>
+                    <label for="allSecSon"></label>
                 </div>
             </th>
             <!-- <th>序号</th> -->
@@ -172,12 +172,42 @@
             <td>{{electDto.electrombile.owner_id}}</td>
             <td>{{electDto.electrombile.owner_tele}}</td>
             <td>{{electDto.electrombile.record_time}}</td>
-            <td>
-                <button class="btn btn-primary btn-sm" ng-click="goDeleteElect(electDto.electrombile.elect_id)">删除
-                </button>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                        ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                </button>
+            <td class="flex-items flex-center">
+                <i class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
+                <i class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#viewModalElec"></i>
+
+                <div class="dropdown">
+                    <span data-toggle="dropdown">
+                        更多
+                        <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li >
+                            <a href="#" data-target="#viewModalElec"  data-toggle="modal">
+                                <i class="glyphicon glyphicon-eye-open"></i>
+                                查看详情
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="modal"data-target="#guijiModalElec">
+                                <img src="app/img/table-guiji.png" alt=""/>
+                                查看轨迹
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="app/img/baoxianIcon.png" alt=""/>
+                                保险打印
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#viewModalElec">
+                                <i class="glyphicon glyphicon-list-alt" ></i>
+                                登记证打印
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </td>
         </tr>
         </tbody>
@@ -364,7 +394,14 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addBuyDate">
+                                    <!--<input type="text" class="form-control" ng-model="addBuyDate">-->
+                                    <div class='input-group date' id='byCarDate'>
+                                        <input type='text' class="form-control" placeholder="选择安装时间" readonly
+                                               ng-model="addInstallDate"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+						                </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -557,3 +594,479 @@
     <!-- /.modal -->
 </div>
 <!--  添加车辆模态框 end -->
+
+
+
+
+<!--  操作查看模态框 -->
+<div class="modal fade" id="viewModalElec" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="modal-title" id="">
+                    查看车辆信息
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="electForm">
+                    <div class="myModalTitle flex margin-bottom">
+                        <img src="app/img/user-car-icon.png" alt="" class="modal-img"/>
+
+                        <div>车主信息</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label for="phoneNum" class="control-label col-md-4">
+                                    <i>*</i>
+                                    手机号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="phoneNum" ng-model="addOwnerTele" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    姓名：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addOwnerName" name="username">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    地址：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addOwnerAddress" name="address"
+                                           id="address">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id-user" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    身份证：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addOwnerID" name="id-user"
+                                           id="id-user">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider-line"></div>
+
+                    <div class="myModalTitle flex margin-top2 margin-bottom">
+                        <img src="app/img/car-icon.png" alt="" class="modal-img"/>
+
+                        <div>车辆信息</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    防盗芯片：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addGuaCardNum">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    车牌号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addPlateNum">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    车架号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addVeIdNum">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    投保明细：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addInsurDetail">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    车辆品牌：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addElectBrand">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    购车日期：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addBuyDate">
+                                    <!--<div class='input-group date' id='byCarDate'>-->
+                                        <!--<input type='text' class="form-control" placeholder="选择安装时间" readonly-->
+                                               <!--ng-model="addInstallDate"/>-->
+                                        <!--<span class="input-group-addon">-->
+                                            <!--<span class="glyphicon glyphicon-calendar"></span>-->
+						                <!--</span>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    车辆颜色：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addElectColor">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    电机号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addMotorNum">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group" id="viewArea">
+                                <label for="" class="col-sm-2 control-label">
+                                    <i>*</i>
+                                    所在区域：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" >
+                                    <!--<select id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"-->
+                                            <!--ng-change="getCitis()"-->
+                                            <!--ng-options="x.province_id as x.name for x in provinces"></select>-->
+                                    <!--<select id="" class="form-control" ng-model="addCityID" ng-disabled="editable"-->
+                                            <!--ng-change="getAreas(addCityID)"-->
+                                            <!--ng-options="x.city_id as x.name for x in citis"></select>-->
+                                    <!--<select id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"-->
+                                            <!--ng-options="x.area_id as x.name for x in areas"></select>-->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">
+                                    备注：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addNote">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 flex-items ">
+                            <div class="col-sm-2" style="text-align:center;">
+                                <span> 车辆类型：</span>
+                            </div>
+                            <div class="col-sm-10">
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
+                                           id="inlineRadio1">
+                                    两轮
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
+                                           id="inlineRadio2">
+                                    三轮
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
+                                           id="inlineRadio3">
+                                    四轮
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
+                                           id="inlineRadio4">
+                                    摩托车
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row fileup margin-top2">
+                        <div class="col-sm-12">
+                            <!--<div class="form-group fileup">-->
+                            <label for="" class="col-sm-2 control-label">
+                                上传照片：
+                            </label>
+
+                            <div class="col-sm-10">
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                        <input type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic"
+                                               name="electPic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="electPic" title="{{electPic.name}}">
+                                                <i ng-click="dropElectPic(electPic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>车辆照片(牌照)</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                        <input type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
+                                               ng-model="indentityCardPic" name="indentityCardPic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="indentityCardPic" title="{{indentityCardPic.name}}">
+                                            <i ng-click="dropIndentityCardPic(indentityCardPic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>身份证照片</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile"><input type="file" id="recordPic"
+                                                                                  ngf-select="addRecordPic()"
+                                                                                  ng-model="recordPic"
+                                                                                  name="recordPic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="recordPic" title="{{recordPic.name}}">
+                                                <i ng-click="dropRecordPic(recordPic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>备案登记表照片</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile"><input type="file"
+                                                                                  id="installCardPic"
+                                                                                  ngf-select="addInstallCardPic()"
+                                                                                  ng-model="installCardPic"
+                                                                                  name="installCardPic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="installCardPic" title="{{installCardPic.name}}">
+                                                <i ng-click="dropInstallCardPic(installCardPic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>安装芯片照片</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submit()" class="btn btn-primary">
+                    添加
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消
+                </button>
+                <button type="button" class="btn btn-guiji">
+                    <i class="glyphicon glyphicon-print"></i>
+                    登记证打印
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--  操作查看模态框 end -->
+
+
+
+
+
+<!--  操作查看轨迹模态框 -->
+<div class="modal fade" id="guijiModalElec" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="modal-title" id="">
+                    查看轨迹
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline" name="electForm">
+                    <div class="form-group datePicker">
+                        <label>报警时间：</label>
+                        <!--指定 date标记-->
+                        <div class='input-group date' id='guijiSearchStart'>
+                            <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        </div>
+                        --
+                        <div class='input-group date' id='guijiSearchEnd'>
+                            <input type='text' class="form-control" placeholder="选择结束时间" readonly style="width:200px;"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="padding:6px 12px;">搜索</button>
+
+                </form>
+
+                <!-- 表格操作区域开始 -->
+                <div class="tableArea no-padding margin-top2 shadow">
+                    <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+                        <thead>
+                        <tr>
+                            <th>
+                                <div>
+                                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                                    <label for="allSecSon">全选</label>
+                                </div>
+                            </th>
+                            <th>序号</th>
+                            <th>基站ID</th>
+                            <th>基站名称</th>
+                            <th>读取时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in Allusers">
+                            <td>
+                                <input type="checkbox" ng-checked="exists(user, selected)"
+                                       ng-click="toggle(user, selected)"/>
+                            </td>
+                            <td>{{$index+1}}</td>
+                            <td>{{user.sysUser.user_name}}</td>
+                            <td>{{user.sysUser.user_tel}}</td>
+                            <td>{{user.sysUser.company}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="page">
+                        <!-- 翻页功能 -->
+                        <div class="row" style="text-align:center">
+                            <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                                        ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                                        boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                        </div>
+                    </div>
+                </div>
+                <!-- 表格操作区域结束 -->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submit()" class="btn btn-primary">
+                    添加
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--  操作查看轨迹模态框 end -->

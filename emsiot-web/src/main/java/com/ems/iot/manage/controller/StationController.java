@@ -102,23 +102,75 @@ public class StationController extends BaseController {
 		}
 		return new BaseDto(0);
 	}
+	
 	/**
 	 * 更新基站信息
-	 * @param station
+	 * @param station_id
+	 * @param station_phy_num
+	 * @param station_name
+	 * @param longitude
+	 * @param latitude
+	 * @param station_type
+	 * @param station_status
+	 * @param install_date
+	 * @param soft_version
+	 * @param contact_person
+	 * @param contact_tele
+	 * @param install_pic
+	 * @param stick_num
+	 * @param station_address
 	 * @return
 	 * @throws UnsupportedEncodingException
+	 * @throws ParseException
 	 */
 	@RequestMapping(value = "/updateStation")
 	@ResponseBody
-	public Object updateStation(Station station) throws UnsupportedEncodingException {
-		if (station.getStation_phy_num() == null) {
+	public Object updateStation(
+			@RequestParam(required = false) Integer station_id,
+			@RequestParam(required = false) Integer station_phy_num,
+			@RequestParam(required = false) String station_name,
+			@RequestParam(required = false) String longitude,
+			@RequestParam(required = false) String latitude,
+			@RequestParam(required = false) String station_type,
+			@RequestParam(required = false) Integer station_status,
+			@RequestParam(required = false) String install_date,
+			@RequestParam(required = false) String soft_version,
+			@RequestParam(required = false) String contact_person,
+			@RequestParam(required = false) String contact_tele,
+			@RequestParam(required = false) MultipartFile install_pic,
+			@RequestParam(required = false) String stick_num,
+			@RequestParam(required = false) String station_address		
+			)throws UnsupportedEncodingException, ParseException{
+		if (null == station_phy_num) {
 			return new ResultDto(-1, "基站物理编号不能为空！");
 		}
-		if (station.getStation_name() == null) {
+		if (null == station_name) {
 			return new ResultDto(-1, "基站名称不能为空！");
 		}
-		stationMapper.updateByPrimaryKeySelective(station);
-		return new ResultDto(0,"更新成功");
+	    Station station = new Station();
+	    station.setStation_id(station_id);
+	    station.setContact_person(contact_person);
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    station.setInstall_date(sdf.parse(install_date));
+	    station.setContact_tele(contact_tele);
+	    station.setLatitude(latitude);
+	    station.setLongitude(longitude);
+	    station.setSoft_version(soft_version);
+	    station.setStation_name(station_name);
+	    station.setStation_phy_num(station_phy_num);
+	    station.setStation_status(station_status);
+	    station.setStation_type(station_type);
+	    station.setStick_num(stick_num);
+	    station.setStation_address(station_address);
+	    if (null!=install_pic) {
+			String dir = String.format("%s/station/stationPic", baseDir);
+			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			station.setInstall_pic(FtpService.READ_URL+"data/"+dir + "/" + station_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+	    stationMapper.updateByPrimaryKeySelective(station);
+	    return new ResultDto(0,"添加成功");
 	}
 	
 	/**
@@ -153,7 +205,8 @@ public class StationController extends BaseController {
 			@RequestParam(required = false) String contact_person,
 			@RequestParam(required = false) String contact_tele,
 			@RequestParam(required = false) MultipartFile install_pic,
-			@RequestParam(required = false) String stick_num			
+			@RequestParam(required = false) String stick_num,
+			@RequestParam(required = false) String station_address		
 			)throws UnsupportedEncodingException, ParseException{
 		if (null == station_phy_num) {
 			return new ResultDto(-1, "基站物理编号不能为空！");
@@ -174,6 +227,7 @@ public class StationController extends BaseController {
 	    station.setStation_status(station_status);
 	    station.setStation_type(station_type);
 	    station.setStick_num(stick_num);
+	    station.setStation_address(station_address);
 	    if (null!=install_pic) {
 			String dir = String.format("%s/station/stationPic", baseDir);
 			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");

@@ -518,7 +518,7 @@ a.list-group-item.hover {
 }
 
 .table-bordered {
-  border-color: #eaeff0;
+  border-color: transparent;
 }
 
 .table-bordered > tbody > tr > td {
@@ -5134,6 +5134,16 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
   justify-content: space-around;
 }
 
+.flex-center{
+  display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+  display: -moz-box; /* Firefox 17- */
+  display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+  display: -moz-flex; /* Firefox 18+ */
+  display: -ms-flexbox; /* IE 10 */
+  display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+  justify-content: center;
+}
+
 .flex-items{
   display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
   display: -moz-box; /* Firefox 17- */
@@ -5249,6 +5259,8 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 }
 
 .modal-content{
+  position:relative;
+  left:-30px;
   /*加载背景图 */
   background-image: url(../img/modal-bg.png);
 
@@ -5372,3 +5384,26 @@ position:absolute;
   background-color:#2C7DFA!important;
   border-color: #2C7DFA!important;
 }
+
+ .btn-guiji{
+  background:#fff;
+  border:1px solid #ddd;
+}
+.btn-guiji:hover,.btn-guiji:focus,.btn-guiji:active {
+  color: #409eff;
+  border:1px solid #c6e2ff!important;
+  background-color: #ecf5ff!important;
+}
+.tableArea td .glyphicon-trash{color:red;}
+.tableArea td .glyphicon-edit{margin:0px 5px;}
+.tableArea td .glyphicon-edit,.tableArea td .glyphicon-list-alt ,.tableArea td .glyphicon-eye-open{color:#2C7DFA;}
+td .dropdown span[data-toggle='dropdown']{
+  color:#2C7DFA;
+  font-size:13px;
+  cursor: pointer;
+}
+.dropdown-menu{
+  left: -115px;
+  text-align:left;
+}
+.text-center{text-align:center;}

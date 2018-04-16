@@ -219,7 +219,7 @@ input[type='checkbox']{
 }
 tbody tr td{
 	text-align: center;
-	padding:4px 0!important;
+	padding:10px!important;
 	position: relative;
 	vertical-align:middle!important;
 }
@@ -263,10 +263,7 @@ tbody tr td{
 .myGreen.pager .disabled { color: #A0A0A0 !important; text-shadow: 1px 1px 1px #FFFFFF; }
 /* 翻页按钮样式 */
 
-.dropdown-menu{
-	left: 20px;
-	text-align: center;
-}
+
 
 .three{
 	text-align:center;

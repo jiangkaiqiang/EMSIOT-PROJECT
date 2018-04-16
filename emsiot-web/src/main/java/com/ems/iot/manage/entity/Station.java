@@ -29,6 +29,8 @@ public class Station {
 
     private String install_pic;
 
+    private String station_address;
+
     public Integer getStation_id() {
         return station_id;
     }
@@ -131,5 +133,13 @@ public class Station {
 
     public void setInstall_pic(String install_pic) {
         this.install_pic = install_pic == null ? null : install_pic.trim();
+    }
+
+    public String getStation_address() {
+        return station_address;
+    }
+
+    public void setStation_address(String station_address) {
+        this.station_address = station_address == null ? null : station_address.trim();
     }
 }
