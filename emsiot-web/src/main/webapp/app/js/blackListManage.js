@@ -30,7 +30,7 @@ console.log("报警页面展示成功");
     
     $scope.load();
 	// 显示最大页数
-    $scope.maxSize = 7;
+    $scope.maxSize = 10;
     // 总条目数(默认每页十条)
     $scope.bigTotalItems = 10;
     // 当前页
@@ -71,6 +71,8 @@ console.log("报警页面展示成功");
 	}
 //    $scope.getBlackelects();
     $scope.getBlackelectsByOptions();
+    
+    $scope.selected = [];
     $scope.exists = function (blackelectDto, list) {
     	return list.indexOf(blackelectDto) > -1;
     };
@@ -96,4 +98,43 @@ console.log("报警页面展示成功");
   $scope.goSearch = function () {
 		$scope.getBlackelectsByOptions();
   }
+  function delcfm() {
+      if (!confirm("确认要删除？")) {
+          return false;
+      }
+      return true;
+}
+  //根据id删除黑名单 goDeleteBlackElect(blackelectDto.blackelect.black_id)
+  $scope.goDeleteBlackElect = function (blackID) {
+  	if(delcfm()){
+  	$http.get('/i/blackelect/deleteBlackelectByID', {
+          params: {
+              "blackID": blackID
+          }
+      }).success(function (data) {
+    	  $scope.getBlackelectsByOptions();
+      });
+  	}
+  }
+  //批量删除黑名单
+  $scope.goDeleteBlackElects = function(){
+  	if(delcfm()){
+  	var BlackIDs = [];
+  	for(i in $scope.selected){
+  		BlackIDs.push($scope.selected[i].blackelect.black_id);
+  	}
+  	if(BlackIDs.length >0 ){
+  		$http({
+  			method:'DELETE',
+  			url:'/i/blackelect/deleteBlackelectByIDs',
+  			params:{
+  				"BlackIDs": BlackIDs
+  			}
+  		}).success(function (data) {
+  			 $scope.getBlackelectsByOptions();
+          });
+  	}
+  	}
+  }
+  //
 });

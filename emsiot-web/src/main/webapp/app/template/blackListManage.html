@@ -1,6 +1,12 @@
 <nav class="page-title shadow electAlarm">
     <div class="title-brand flex-between align-items">
         <div class="title-text">车辆报警</div>
+        	
+               
+           <a href="">
+                    <img src="app/img/delectIcon.png" alt=""/>
+                    <span class="border-dashed" ng-click="goDeleteBlackElects()">批量删除</span>
+           </a>
         <ul class="title-nav flex align-items">
             <li>
                 <a href="" data-toggle="modal" data-target="#addAlarm">
@@ -78,7 +84,7 @@
 			<td ng-bind="getState(blackelectDto.blackelect.deal_status)"></td>
             <td>{{blackelectDto.blackelect.case_occur_time}}</td>
             <td>
-                <button class="btn btn-primary btn-sm" ng-click="goDeleteElect(electDto.electrombile.elect_id)">删除
+                <button class="btn btn-primary btn-sm" ng-click="goDeleteBlackElect(blackelectDto.blackelect.black_id)">删除
                 </button>
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
                         ng-click="goUpdateUser(user.sysUser.user_id)">编辑

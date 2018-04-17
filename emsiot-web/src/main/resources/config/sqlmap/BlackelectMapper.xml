@@ -180,13 +180,13 @@
    <select id="findAllBlackelectByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
         SELECT * FROM `blackelect` 
         <where>
-			<if test="blackID != null">
+			<if test="blackID != null and blackID != ''">
 				black_id = #{blackID}
 			</if>
-			<if test="ownerTele != null">
+			<if test="ownerTele != null and ownerTele != ''">
 				AND owner_tele = #{ownerTele}
 			</if>
-			<if test="DealStatus != null">
+			<if test="DealStatus != null and DealStatus != ''">
 				AND deal_status = #{DealStatus}
 			</if>
 			</where>

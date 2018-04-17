@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ems.iot.manage.dao.BlackelectMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
+import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.BlackelectDto;
 import com.ems.iot.manage.entity.Blackelect;
 import com.github.pagehelper.Page;
@@ -92,5 +93,31 @@ public class BlackelectController extends BaseController {
 		blackelectDtos.setPages(blackelets.getPages());
 		blackelectDtos.setTotal(blackelets.getTotal());
 		return new PageInfo<BlackelectDto>(blackelectDtos);
+	}
+	
+	 /**
+     * 根据ID删除黑名单
+     * @param electID
+     * @return
+     */
+	@RequestMapping(value = "/deleteBlackelectByID")
+	@ResponseBody
+	public Object deleteElectByID(@RequestParam(value="blackID",required=false)Integer blackID) {
+		 blackelectMapper.deleteByPrimaryKey(blackID);
+		 return new BaseDto(0);
+	}
+	
+	/**
+	 * 根据多个ID删除黑名单
+	 * @param electIDs
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteBlackelectByIDs")
+	@ResponseBody
+	public Object deleteElectByIDs(@RequestParam(value="BlackIDs",required=false)Integer[] blackIDs) {
+		for(Integer blackID:blackIDs){
+			blackelectMapper.deleteByPrimaryKey(blackID);
+		}
+		return new BaseDto(0);
 	}
 }
