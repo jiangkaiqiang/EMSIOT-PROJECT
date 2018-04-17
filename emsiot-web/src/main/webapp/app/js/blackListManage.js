@@ -38,18 +38,62 @@ console.log("报警页面展示成功");
 	$scope.AllBlackelects = [];
 	
     //加载用户所有的黑名单
-    $scope.getBlackelects = function() {
+//    $scope.getBlackelects = function() {
+//		$http({
+//			method : 'POST',
+//			url : '/i/blackelect/findAllBlackelectForMap',
+//			params : {
+//				pageNum : $scope.bigCurrentPage,
+//				pageSize : $scope.maxSize,
+//			}
+//		}).success(function(data) {
+//			$scope.bigTotalItems = data.total;
+//			$scope.AllBlackelects = data.list;
+//		});
+//	}
+    //根据条件加载用户所有的黑名单
+    $scope.getBlackelectsByOptions = function() {
 		$http({
 			method : 'POST',
-			url : '/i/blackelect/findAllBlackelectForMap',
+			url : '/i/blackelect/findAllBlackelectByOptions',
 			params : {
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
+				blackID : $scope.blackID,
+				ownerTele: $scope.ownerTele,
+				plateNum: $scope.plateNum,
+				DealStatus: $scope.DealStatus
 			}
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
-			$scope.AllStations = data.list;
+			$scope.AllBlackelects = data.list;
 		});
 	}
-    $scope.getBlackelects();
+//    $scope.getBlackelects();
+    $scope.getBlackelectsByOptions();
+    $scope.exists = function (blackelectDto, list) {
+    	return list.indexOf(blackelectDto) > -1;
+    };
+    $scope.toggle = function (blackelectDto, list) {
+		  var idx = list.indexOf(blackelectDto);
+		  if (idx > -1) {
+		    list.splice(idx, 1);
+		  }
+		  else {
+		    list.push(blackelectDto);
+		  }
+  };
+  $scope.getState = function(deal_status){
+  	if(deal_status==1)
+  		return '已处理';
+      else{
+      	return '未处理';
+      }
+  }
+  $scope.pageChanged = function() {
+	  $scope.getBlackelectsByOptions();
+ }
+  $scope.goSearch = function () {
+		$scope.getBlackelectsByOptions();
+  }
 });
