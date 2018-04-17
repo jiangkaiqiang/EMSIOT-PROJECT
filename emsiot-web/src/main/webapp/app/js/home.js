@@ -23,7 +23,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        // 获取基站
 			   	    $http.get('/i/station/findAllStationsForMap').success(function (data) {
 			   	        $scope.stations = data;
-			   	        
 			   	        showStation();
 			   	    });
 			        	 function showStation(){
@@ -31,15 +30,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        		 var marker2;
 			        		 //var stationIcon = new BMap.Icon("../app/img/station.jpg", new BMap.Size(43,50));
 			        		 var sContent ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>显示的是一个基站！</h4>";
-
 			        		 var markers = [];
-			        	  for(var i=0;i<100;i++){
+			        	     for(var i=0;i<100;i++){
 			        		  //console.log($scope.stations[i].longitude+","+$scope.stations[i].latitude);
 				        	   pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
 				        	  // marker2 = new BMap.Marker(pt,{icon:stationIcon}); 
 				        	   marker2 = new BMap.Marker(pt); 
-				        	   var infoWindow = new BMap.InfoWindow(sContent); 
-				        	   
+				        	   var infoWindow = new BMap.InfoWindow(sContent); 				        	   
 				        	   marker2.addEventListener("click", function(){          
 				        	        this.openInfoWindow(infoWindow);
 				        	         //图片加载完毕重绘infowindow
@@ -65,7 +62,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	 
 			        	 //var points = [beijingPosition,hangzhouPosition, taiwanPosition];
 			        	 drawLine(p1,p2);
-			        	drawLine(p2,p3);
+			        	 drawLine(p2,p3);
 			        	 //drawLine(line3);
 			        	 
 			        	 function drawLine(p1,p2){
@@ -79,22 +76,62 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	 }
 			 			        	 
 			 });
-	 });	 
-	 //根据车牌号定位车辆
-	 $scope.findElecLocation = function(keyword, type) {
-		if (type == 1) {
-			$http.get('/i/electrombile/findElecLocationByPlateNum', {
+	 });	
+	 //
+	 $scope.AllKeywordType = [
+	    {id:"0",name:"防盗芯片ID"},
+	    {id:"1",name:"车牌号"}
+	 ];
+	 $scope.keywordTypeForLocation = "0";
+	 $scope.keywordTypeForTrace = "0";
+	 //清除定位
+	 $scope.clearElectLocation = function() {
+		 
+	 }
+	 //根据条件定位车辆
+	 $scope.findElectLocation = function() {
+		if ($scope.keywordTypeForLocation == "1") {	
+			$scope.plateNum = $scope.keywordForLocation;
+		}
+		else if($scope.keywordTypeForLocation == "0"){
+			$scope.guaCardNum = $scope.keywordForLocation;
+		}
+		else{
+			
+		}
+		$http.get('/i/elect/findElectLocation', {
 				params : {
-					"PlateNum" : PlateNum
+					"plateNum" : $scope.plateNum,
+					"guaCardNum" : $scope.guaCardNum
 				}
 			}).success(function(data) {
 				$scope.longitude = data.longitude;
-				$scope.latitude = data.latitude;
-				
-				
+				$scope.latitude = data.latitude;	
 				alert($scope.longitude);
 			});
-		}
+	 }
+	 //根据条件查询车辆轨迹
+	 $scope.findElectTrace = function() {
+		 if ($scope.keywordTypeForTrace == "1") {	
+				$scope.plateNum = $scope.keywordForTrace;
+			}
+			else if($scope.keywordTypeForTrace == "0"){
+				$scope.guaCardNum = $scope.keywordForTrace;
+			}
+			else{
+				
+			}
+			$http.get('/i/elect/findElectTrace', {
+					params : {
+						"plateNum" : $scope.plateNum,
+						"guaCardNum" : $scope.guaCardNum,
+						"startTimeForTrace" : $scope.startTimeForTrace,
+						"endTimeForTrace" : $scope.endTimeForTrace
+					}
+				}).success(function(data) {
+					$scope.traceStations = data;
+					alert($scope.traceStations);
+				});
 	 }
 	 $scope.goHome=function(){
 		 $state.reload();

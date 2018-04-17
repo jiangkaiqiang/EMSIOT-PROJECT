@@ -1,10 +1,15 @@
 package com.ems.iot.manage.controller;
 
+import static org.mockito.Mockito.ignoreStubs;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +23,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
+import com.ems.iot.manage.dao.ElectrombileStationMapper;
+import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectrombileDto;
 import com.ems.iot.manage.dto.NgRemoteValidateDTO;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.SysUserDto;
+import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.ElectrombileStation;
+import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.service.FtpService;
@@ -48,11 +58,15 @@ public class ElectController extends BaseController {
 	@Autowired
 	private ElectrombileMapper electrombileMapper;
 	@Autowired
+	private ElectrombileStationMapper electrombileStationMapper;
+	@Autowired
 	private FtpService ftpService;
 	@Autowired
 	private CityMapper cityMapper;
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	@Autowired
+	private StationMapper stationMapper;
 	/**
 	 * 根据电动车的ID寻找电动车
 	 * @param electID
@@ -261,24 +275,47 @@ public class ElectController extends BaseController {
 		}
 		return new BaseDto(0);
 	}
-	/*@RequestMapping(value = "/updatePhoto")
+	
+	/**
+	 * 根据关键字定位车辆
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectLocation")
 	@ResponseBody
-	public Object updatePhoto(HttpServletRequest request, @RequestParam(required = false) MultipartFile userphoto) {
-		SysUserEntity user = new SysUserEntity();
-		SysUserEntity old_user = (SysUserEntity)request.getSession().getAttribute("user");
-		user.setUser_id(old_user.getUser_id());
-		if(userphoto!=null){
-			String dir = String.format("%s/user/photo/%s", baseDir, user.getUser_id());
-			String fileName = String.format("user%s_%s.%s", user.getUser_id(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(fileName, userphoto, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			user.setPhoto(FtpService.READ_URL+"data/"+dir + "/" + fileName);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-			this.userDao.updateUser(user);
-			SysUserEntity ol_user = this.userDao.findUserById(user.getUser_id());
-			ol_user.setPassword("********");
-			request.getSession().setAttribute("user",ol_user);
-			return ResponseData.newSuccess(ol_user);
+	public Object findElectLocation(
+			@RequestParam(value="plateNum", required=false) String plateNum,
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum) throws UnsupportedEncodingException {
+		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
+		Station station = new Station();
+		if (null!=electrombile) {
+			ElectrombileStation electrombileStation =  electrombileStationMapper.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
+			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
 		}
-		return ResponseData.newFailure();
-	}*/
+		return station;
+	}
+	
+	@RequestMapping(value = "/findElectTrace")
+	@ResponseBody
+	public Object findElectTrace(
+			@RequestParam(value="plateNum", required=false) String plateNum,
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
+			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
+			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace) throws UnsupportedEncodingException {
+		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
+		List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
+		if (null!=electrombile) {
+			List<ElectrombileStation> electrombileStations = electrombileStationMapper.
+					selectByGuaCardNumForTrace(guaCardNum, startTimeForTrace, endTimeForTrace);
+			for (ElectrombileStation electrombileStation : electrombileStations) {
+				TraceStationDto traceStationDto = new TraceStationDto();
+				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
+				traceStationDto.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
+				traceStationDtos.add(traceStationDto);
+			}
+		}
+		return traceStationDtos;
+	}
 }

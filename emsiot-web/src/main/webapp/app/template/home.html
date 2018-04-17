@@ -69,13 +69,10 @@
                                     <option value="">电动车</option>
                                     <option value="">摩托车</option>
                                 </select>
-
-                                <select name="" id="" class="form-control">
-                                    <option value="">防盗芯片ID</option>
-                                    <option value="">车牌号</option>
-                                </select>
-
-                                <input type="text" placeholder="请输入关键词" class="form-control"/>
+                                <select id="" class="form-control"
+                                            ng-model="keywordTypeForTrace" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
+                                <input type="text" placeholder="请输入关键词" class="form-control" ng-model="keywordForTrace"/>
 
                             </div>
                         </div>
@@ -86,7 +83,7 @@
 
                             <div class="col-sm-7 flex">
                                 <div class='input-group date' id='homeDateStart'>
-                                    <input type='text' class="form-control" placeholder="选择开始时间" readonly/>
+                                    <input type='text' class="form-control" ng-model="startTimeForTrace" placeholder="选择开始时间" readonly/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
 						            </span>
@@ -95,7 +92,7 @@
                                 至
                                 &nbsp;
                                 <div class='input-group date' id='homeDateEnd'>
-                                    <input type='text' class="form-control" placeholder="选择结束时间" readonly/>
+                                    <input type='text' class="form-control" ng-model="endTimeForTrace" placeholder="选择结束时间" readonly/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
 						            </span>
@@ -111,7 +108,7 @@
 
                             <div class="col-sm-7 flex">
                                 <div class="flex-items">
-                                    <input type="checkbox"/>今日轨迹
+                                    <input type="checkbox" ng-model=""/>今日轨迹
                                 </div>
                                 <div class="flex-items">
                                     <div class="swichWrap">
@@ -127,7 +124,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" ng-click="findElectTrace()" class="btn btn-primary">
                         查询轨迹
                     </button>
                     <button type="button" class="btn btn-guiji">
@@ -171,12 +168,11 @@
                                     <option value="">摩托车</option>
                                 </select>
 
-                                <select name="" id="" class="form-control">
-                                    <option value="">防盗芯片ID</option>
-                                    <option value="">车牌号</option>
-                                </select>
+                                <select id="" class="form-control"
+                                            ng-model="keywordTypeForLocation" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
 
-                                <input type="text" placeholder="请输入关键词" class="form-control"/>
+                                <input type="text" placeholder="请输入关键词" class="form-control" ng-model="keywordForLocation"/>
 
                             </div>
                         </div>
@@ -184,10 +180,10 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" ng-click="findElectLocation()" class="btn btn-primary">
                         确定
                     </button>
-                    <button type="button" class="btn btn-guiji">
+                    <button type="button" ng-click="clearElectLocation()" class="btn btn-guiji">
                         清除定位
                     </button>
 

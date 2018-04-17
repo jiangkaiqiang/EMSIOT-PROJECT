@@ -221,4 +221,10 @@
 		</where>
 		order by `install_date` desc
 	</select>
+	<select id="selectByStationPhyNum" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from station
+    where station_phy_num = #{stationPhyNum,jdbcType=INTEGER}
+  </select>
 </mapper>

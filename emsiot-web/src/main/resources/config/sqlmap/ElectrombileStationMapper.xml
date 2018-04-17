@@ -90,4 +90,28 @@
       update_time = #{update_time,jdbcType=TIMESTAMP}
     where ele_sta_id = #{ele_sta_id,jdbcType=INTEGER}
   </update>
+  <select id="selectByGuaCardNumForLocation" parameterType="map" resultType="com.ems.iot.manage.entity.ElectrombileStation">
+		SELECT *, ABS(NOW() - update_time)  AS diffTime FROM `electrombile_station`
+		<where>
+			<if test="guaCardNum != null">
+				ele_gua_card_num = #{guaCardNum}
+			</if>
+		</where>
+		ORDER BY diffTime ASC LIMIT 0, 1
+	</select>
+	<select id="selectByGuaCardNumForTrace" parameterType="map" resultType="com.ems.iot.manage.entity.ElectrombileStation">
+		SELECT * FROM `electrombile_station`
+		<where>
+			<if test="guaCardNum != null">
+				ele_gua_card_num = #{guaCardNum}
+			</if>
+			<if test="startTimeForTrace!=null and startTimeForTrace!=''">
+				AND update_time &gt;= #{startTimeForTrace}
+			</if>
+			<if test="endTimeForTrace!=null and endTimeForTrace!=''">
+				AND update_time &lt;= #{endTimeForTrace}
+			</if>
+		</where>
+		order by `update_time` ASC
+	</select>
 </mapper>

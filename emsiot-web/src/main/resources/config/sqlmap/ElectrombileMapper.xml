@@ -403,5 +403,16 @@
     <select id="findElectrombiles" parameterType="map" resultType="com.ems.iot.manage.entity.Electrombile">
         SELECT *
         FROM `electrombile` LIMIT #{num}
-    </select>
+    </select> 
+    <select id="findElectrombileForLocation" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="guaCardNum != null">
+				gua_card_num = #{guaCardNum}
+			</if>
+			<if test="plateNum != null">
+				AND plate_num = #{plateNum}
+			</if>
+		</where>
+	</select>
 </mapper>

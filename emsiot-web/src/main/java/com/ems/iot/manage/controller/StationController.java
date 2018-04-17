@@ -150,7 +150,7 @@ public class StationController extends BaseController {
 	    Station station = new Station();
 	    station.setStation_id(station_id);
 	    station.setContact_person(contact_person);
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	    station.setInstall_date(sdf.parse(install_date));
 	    station.setContact_tele(contact_tele);
 	    station.setLatitude(latitude);
@@ -216,7 +216,7 @@ public class StationController extends BaseController {
 		}
 	    Station station = new Station();
 	    station.setContact_person(contact_person);
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	    station.setInstall_date(sdf.parse(install_date));
 	    station.setContact_tele(contact_tele);
 	    station.setLatitude(latitude);

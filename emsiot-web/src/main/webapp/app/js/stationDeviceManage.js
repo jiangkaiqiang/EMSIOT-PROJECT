@@ -195,11 +195,14 @@ $scope.dropInstallPic = function(installPic){
         }
         if ($scope.stationForUpdate.station_name == undefined || $scope.stationForUpdate.station_name == '') {
             flag = false;
-        return flag;
        }
+        return flag;
 	}   
     $scope.goUpdateStation = function(){
-	    if (checkInputForUpdate()){
+	        if (!checkInputForUpdate()){
+	    	  alert("请填写基站编号和基站名!");
+    	      return;
+            }
 	    	var stationType="";
 	    	if($scope.stationForUpdate.station_type=="1")  
 	    		stationType = "SP-RFS-336-391";
@@ -231,10 +234,6 @@ $scope.dropInstallPic = function(installPic){
 	             $("#updateStation").modal("hide"); 
 	        }
 	    });
-	   }
-	   else {
-		   alert("请填写基站编号和基站名!");
-	    }
 	  }
 	
     //选择日期
