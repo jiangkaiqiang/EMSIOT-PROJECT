@@ -64,9 +64,12 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	        }).success(function (data) {
 	        	$scope.locationStation = data;
 	        	//这里我得到了基站的信息包括经纬度等，需要将其显示在地图上
-	        	alert($scope.locationStation.longitude);
+	        	var findStationPt = new BMap.Point(data.longitude,data.latitude);
+	     	   	var findStationMarker = new BMap.Marker(findStationPt); 
+	     	   	mapStation.addOverlay(findStationMarker);
+	     	   	mapStation.centerAndZoom(findStationPt,17);
+	        	
 	        });
-	    	
 	}
 	 
 	$('#electAlarmDate').datetimepicker({
