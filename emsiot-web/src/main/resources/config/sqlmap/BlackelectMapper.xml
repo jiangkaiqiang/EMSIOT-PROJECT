@@ -177,5 +177,19 @@
   <select id="findAllBlackelect" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
         SELECT * FROM `blackelect` 
    </select>
+   <select id="findAllBlackelectByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
+        SELECT * FROM `blackelect` 
+        <where>
+			<if test="blackID != null">
+				black_id = #{blackID}
+			</if>
+			<if test="ownerTele != null">
+				AND owner_tele = #{ownerTele}
+			</if>
+			<if test="DealStatus != null">
+				AND deal_status = #{DealStatus}
+			</if>
+			</where>
+   </select>
     
 </mapper>

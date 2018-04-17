@@ -28,27 +28,65 @@ public class BlackelectController extends BaseController {
 	private ElectrombileMapper electrombileMapper;
 	@Autowired
 	private BlackelectMapper blackelectMapper;
+//	
+//	/**
+//	 * 查询所有黑名单车辆
+//	 * 
+//	 * @return
+//	 * @throws UnsupportedEncodingException
+//	 */
+//	@RequestMapping(value = "/findAllBlackelectForMap",method = RequestMethod.POST)
+//	@ResponseBody
+//	public Object findAllBlackelectForMap(@RequestParam(value="pageNum",required=false) Integer pageNum,
+//			@RequestParam(value="pageSize") Integer pageSize) throws UnsupportedEncodingException {
+//		pageNum = pageNum == null? 1:pageNum;
+//		pageSize = pageSize==null? 12:pageSize;
+//		PageHelper.startPage(pageNum, pageSize);
+//		Page<Blackelect> blackelets=blackelectMapper.findAllBlackelect();
+//		Page<BlackelectDto> blackelectDtos = new Page<BlackelectDto>();
+//		for(Blackelect blackelect:blackelets){
+//			BlackelectDto blackelectDto = new BlackelectDto();
+//			blackelectDto.setBlackelect(blackelect);
+//			blackelectDto.setPlateNum(electrombileMapper.findPlateNumByGuaCardNum(blackelect.getGua_card_num()).getPlate_num());
+//			blackelectDtos.add(blackelectDto);
+//		}		
+//		blackelectDtos.setPageSize(blackelets.getPageSize());
+//		blackelectDtos.setPages(blackelets.getPages());
+//		blackelectDtos.setTotal(blackelets.getTotal());
+//		return new PageInfo<BlackelectDto>(blackelectDtos);
+//	}
 	
 	/**
-	 * 查询所有黑名单车辆
+	 * 根据条件查询所有黑名单车辆
 	 * 
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findAllBlackelectForMap",method = RequestMethod.POST)
+	@RequestMapping(value = "/findAllBlackelectByOptions",method = RequestMethod.POST)
 	@ResponseBody
-	public Object findAllBlackelectForMap(@RequestParam(value="pageNum",required=false) Integer pageNum,
-			@RequestParam(value="pageSize") Integer pageSize) throws UnsupportedEncodingException {
+	public Object findAllBlackelectByOptions(@RequestParam(value="pageNum",required=false) Integer pageNum,
+			@RequestParam(value="pageSize",required=false) Integer pageSize,
+			@RequestParam(value="blackID",required=false) Integer blackID,
+			@RequestParam(value="ownerTele",required=false) String ownerTele,
+			@RequestParam(value="plateNum",required=false) String plateNum,
+			@RequestParam(value="DealStatus",required=false) Integer DealStatus) throws UnsupportedEncodingException {
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<Blackelect> blackelets=blackelectMapper.findAllBlackelect();
+		Page<Blackelect> blackelets=blackelectMapper.findAllBlackelectByOptions(blackID,ownerTele,DealStatus);
 		Page<BlackelectDto> blackelectDtos = new Page<BlackelectDto>();
 		for(Blackelect blackelect:blackelets){
 			BlackelectDto blackelectDto = new BlackelectDto();
 			blackelectDto.setBlackelect(blackelect);
 			blackelectDto.setPlateNum(electrombileMapper.findPlateNumByGuaCardNum(blackelect.getGua_card_num()).getPlate_num());
-			blackelectDtos.add(blackelectDto);
+			if(plateNum!=null){
+				if(blackelectDto.getPlateNum().equals(plateNum)){
+					blackelectDtos.add(blackelectDto);
+					break;
+				}
+			} else {
+				blackelectDtos.add(blackelectDto);
+			}
 		}		
 		blackelectDtos.setPageSize(blackelets.getPageSize());
 		blackelectDtos.setPages(blackelets.getPages());
