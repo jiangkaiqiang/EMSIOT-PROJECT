@@ -92,8 +92,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
        		 	map.addOverlay(elecMarker); 
        		 	map.centerAndZoom(elecPt, 17);
        		 	//console.log(elecMarker);
-	        	
 			});
+		 $("#dingweiModal").modal("hide");
 	 }
 	 //根据条件查询车辆轨迹
 	 var walking;
@@ -135,6 +135,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 						}
 					
 				});
+			$("#guijiModal").modal("hide");
 	 }
 	 $scope.clearElectTrace = function(){
 		 //walking.clearResults();

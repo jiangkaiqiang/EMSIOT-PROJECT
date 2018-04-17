@@ -1,5 +1,6 @@
 package com.ems.iot.manage.controller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.ignoreStubs;
 
 import java.io.UnsupportedEncodingException;
@@ -8,7 +9,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +43,7 @@ import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.service.FtpService;
+import com.ems.iot.manage.util.ExcelImportUtil;
 import com.ems.iot.manage.util.ResponseData;
 import com.ems.iot.manage.util.StringUtil;
 import com.github.pagehelper.Page;
@@ -119,6 +123,18 @@ public class ElectController extends BaseController {
 			@RequestParam(value="plateNum", required=false) String plateNum,
 			@RequestParam(value="guaCardNum", required=false) String guaCardNum,
 			@RequestParam(value="ownerName", required=false) String ownerName) throws UnsupportedEncodingException {
+		if (null==recorderID||recorderID==0) {
+			recorderID = null;
+		}
+		if (null==electState||electState==8) {
+			electState = null;
+		}
+		if (null==insurDetail||insurDetail==8) {
+			insurDetail = null;
+		}
+		if (null==proID||proID==-1) {
+			proID = null;
+		}
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
@@ -274,6 +290,43 @@ public class ElectController extends BaseController {
 			electrombileMapper.deleteByPrimaryKey(electID);
 		}
 		return new BaseDto(0);
+	}
+	
+	/**
+	 * 导出车辆为excel
+	 * @param electIDs
+	 * @return
+	 */
+	@RequestMapping(value = "/exportElectByIDs")
+	@ResponseBody
+	public Object exportElectByIDs(Integer[] electIDs) {
+		List<Electrombile> electrombiles = new ArrayList<Electrombile>();	
+		for(Integer electID:electIDs){
+			Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
+			electrombiles.add(electrombile);
+		}		
+		Map<String, Object> dataExel = new HashMap<String, Object>();
+		List<String> titles = new ArrayList<String>();
+		titles.add("车牌号");
+		titles.add("防盗芯片编号");
+		titles.add("联系电话");
+		titles.add("车辆状态");
+		titles.add("车主姓名");
+		titles.add("身份证号");
+		List<Map<String, Object>> varList = new ArrayList<Map<String,Object>>();
+		for (Electrombile electrombile : electrombiles) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("var1", electrombile.getPlate_num());
+			map.put("var2", electrombile.getGua_card_num().toString());
+			map.put("var3", electrombile.getOwner_tele());
+			map.put("var4", electrombile.getElect_state().toString());
+			map.put("var5", electrombile.getOwner_name());
+			map.put("var6", electrombile.getOwner_id());
+			varList.add(map);
+		}
+		dataExel.put("titles", titles);
+		dataExel.put("varList", varList);
+		return ExcelImportUtil.exportExcel(dataExel);
 	}
 	
 	/**

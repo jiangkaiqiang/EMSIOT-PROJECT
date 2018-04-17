@@ -27,13 +27,13 @@
             <li>
                 <a href="">
                     <img src="app/img/daochuIcon.png" alt=""/>
-                    <span class="border-dashed">批量导出</span>
+                    <span class="border-dashed" ng-click="goExportElects()">批量导出</span>
                 </a>
             </li>
             <li>
                 <a href="">
                     <img src="app/img/delectIcon.png" alt=""/>
-                    <span class="border-dashed" ng-click="godeleteElects()">批量删除</span>
+                    <span class="border-dashed" ng-click="goDeleteElects()">批量删除</span>
                 </a>
             </li>
             <li>
@@ -55,23 +55,20 @@
                 </div>
                 <div class="form-group">
                     <label for="area">车辆状态</label>
-                    <select class="form-control" id="area">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>正常</option>
-                        <option>黑名单</option>
-                    </select>
+                    <select id="" class="form-control"
+                                            ng-model="electState" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllElectState"></select>
                 </div>
                 <div class="form-group">
                     <label for="">是否投保</label>
-                    <select class="form-control">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>已投保</option>
-                        <option>未投保</option>
-                    </select>
+                    <select id="" class="form-control"
+                                            ng-model="insurDetail" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllInsurStatus"></select>
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary">搜索</button>
+                    <button type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
+                    <button type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
                 </div>
                 <a href="" class="text-blue pull-right margin-top" ng-click="searchBlock()">
                     更多搜索条件
@@ -81,34 +78,28 @@
             </div>
             <div class="unblock-content no-block">
                 <div class="form-group">
-                    <label for="area">所属区域</label> <select class="form-control" id="">
-                    <option value="" disabled selected style="display:none;">-请选择-</option>
-                    <option>上海</option>
-                    <option>黑名单</option>
-                </select> <select class="form-control" id="">
-                    <option value="" disabled selected style="display:none;">-请选择-</option>
-                    <option>上海</option>
-                    <option>上海</option>
-                </select> <select class="form-control" id="">
-                    <option value="" disabled selected style="display:none;">-请选择-</option>
-                    <option>徐汇</option>
-                </select>
+                    <label for="area">所属区域</label>   
+                    <select id="" class="form-control" ng-model="proID" ng-disabled="editable"
+                                            ng-change="getCitis()"
+                                            ng-options="x.province_id as x.name for x in provincesForSearch"></select>
+                    <select id="" class="form-control" ng-model="cityID" ng-disabled="editable"
+                                            ng-change="getAreas(addCityID)"
+                                            ng-options="x.city_id as x.name for x in citis"></select>
+                   <select id="" class="form-control" ng-model="areaID" ng-disabled="editable"
+                                            ng-options="x.area_id as x.name for x in areas"></select>
                 </div>
                 <div class="form-group">
-                    <select class="form-control">
-                        <option>车主手机号</option>
-                        <option>身份证号</option>
-                        <option>车牌号</option>
-                        <option>防盗芯片编号</option>
-                        <option>车主姓名</option>
-                    </select> <input type="text" class="form-control" placeholder="请输入关键词"/>
+                    <select id="" class="form-control"
+                                            ng-model="searchKeyType" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllSearchKeyType"></select>
+                    <input type="text" class="form-control" ng-model="searchKey" placeholder="请输入关键词"/>
                 </div>
 
                 <div class="form-group datePicker">
                     <label>选择日期：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='electDateStart'>
-                        <input type='text' class="form-control" placeholder="选择开始时间"
+                        <input type='text' class="form-control" placeholder="选择开始时间" ng-model="startTime"
                                readonly/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -116,7 +107,7 @@
                     </div>
                     --
                     <div class='input-group date' id='electDateEnd'>
-                        <input type='text' class="form-control" placeholder="选择结束时间"
+                        <input type='text' class="form-control" placeholder="选择结束时间" ng-model="endTime"
                                readonly/> <span class="input-group-addon"> <span
                             class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -171,7 +162,7 @@
             <td>{{electDto.electrombile.owner_name}}</td>
             <td>{{electDto.electrombile.owner_id}}</td>
             <td>{{electDto.electrombile.owner_tele}}</td>
-            <td>{{electDto.electrombile.record_time}}</td>
+            <td>{{electDto.electrombile.recorder_time}}</td>
             <td class="flex-items flex-center">
                 <i class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
                 <i class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#viewModalElec"></i>
@@ -335,13 +326,9 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
 
                     <div class="row">
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
@@ -368,11 +355,8 @@
                             </div>
                         </div>
                     </div>
-
-
+                 
                     <div class="row">
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
@@ -410,8 +394,6 @@
 
 
                     <div class="row">
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
@@ -1010,7 +992,7 @@
                         </span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" style="padding:6px 12px;">搜索</button>
+                    <button class="btn btn-primary" ng-click="goSearch()" style="padding:6px 12px;">搜索</button>
 
                 </form>
 

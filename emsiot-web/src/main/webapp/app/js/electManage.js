@@ -79,7 +79,27 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     // 当前页
     $scope.bigCurrentPage = 1;
 	$scope.AllElectDtos = [];
-	$scope.optAudit = '8';
+	$scope.electState = "8";
+	$scope.AllElectState = [
+        {id:"1",name:"正常"},
+        {id:"2",name:"黑名单"},
+        {id:"8",name:"全部"}
+    ];
+	$scope.insurDetail = "8";
+	$scope.AllInsurStatus = [
+        {id:"1",name:"已投保"},
+        {id:"2",name:"未投保"},
+        {id:"8",name:"全部"}
+    ];
+	$scope.searchKeyType = "1";
+	$scope.AllSearchKeyType = [
+        {id:"1",name:"车主手机号"},
+        {id:"2",name:"身份证号"},
+        {id:"3",name:"车牌号"},
+        {id:"4",name:"防盗芯片编号"},
+        {id:"5",name:"车主姓名"}
+    ];
+	
 	 // 获取当前车辆的列表
     $scope.getElects = function() {
 		$http({
@@ -118,7 +138,28 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	}
     
 	$scope.goSearch = function () {
+		if($scope.searchKeyType=="1"){
+			$scope.ownerTele = $scope.searchKey;
+		}
+		else if($scope.searchKeyType=="2"){
+			$scope.ownerID = $scope.searchKey;
+		}
+		else if($scope.searchKeyType=="3"){
+			$scope.plateNum = $scope.searchKey;
+		}
+		else if($scope.searchKeyType=="4"){
+			$scope.guaCardNum = $scope.searchKey;
+		}
+		else if($scope.searchKeyType=="5"){
+			$scope.ownerName = $scope.searchKey;
+		}
+		else{
+			
+		}
 		$scope.getElects();
+    }
+	$scope.showAll = function () {
+		$scope.reload();
     }
 	
 	$scope.showAll = function () {
@@ -131,18 +172,24 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	        }
 	        return true;
 	}
-    //获取全部省
-    $http.get('/i/city/findProvinceList').success(function (data) {
-        $scope.provinces = data;
-        $scope.addProvinceID = data[0].province_id;
-    });
-	
     //获取全部管理员
     $http.get('/i/user/findAllUsers').success(function (data) {
         $scope.sysUsers = data;
-        $scope.sysUserID = data[0].user_id;
+        var user = {"user_id":"0","user_name":"全部"};
+        $scope.sysUsers.push(user);
+        $scope.sysUserID = "0";
     });
     
+    //获取全部省
+    $http.get('/i/city/findProvinceList').success(function (data) {
+        $scope.provinces = data;
+        $scope.provincesForSearch = data;
+        var province = {"province_id":"-1","name":"全部"};
+        $scope.provincesForSearch.push(province);
+        $scope.addProvinceID = data[0].province_id;
+        $scope.proID = "-1";
+    });
+	
     $scope.getCitis = function () {
     	$http.get('/i/city/findCitysByProvinceId', {
             params: {
@@ -176,7 +223,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         });
     	}
     }
-    $scope.godeleteElects = function(){
+    $scope.goDeleteElects = function(){
     	if(delcfm()){
     	var electIDs = [];
     	for(i in $scope.selected){
@@ -193,6 +240,19 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			$scope.getElects();
             });
     	}
+    	}
+    }
+    
+    $scope.goExportElects = function(){
+    	var electIDs = [];
+    	for(i in $scope.selected){
+    		electIDs.push($scope.selected[i].electrombile.elect_id);
+    	}
+    	if(electIDs.length >0 ){
+    		window.location.href="/i/elect/exportElectByIDs?electIDs="+electIDs;
+    	}
+    	else{
+    		alert("请先选择要导出的车辆！");
     	}
     }
    
@@ -367,14 +427,14 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		//选择日期
 
 		 $('#electDateStart').datetimepicker({
-		     format: 'yyyy-mm-dd',
+		     format: 'yyyy-mm-dd - hh:mm:ss',
 		     minView: "month",
 		     autoclose:true,
 		     maxDate:new Date(),
 		     pickerPosition: "bottom-left"
 		 });
 		 $("#electDateEnd").datetimepicker({
-		     format : 'yyyy-mm-dd',
+		     format : 'yyyy-mm-dd - hh:mm:ss',
 		     minView: 'month',
 		     autoclose:true,
 		     maxDate:new Date(),
