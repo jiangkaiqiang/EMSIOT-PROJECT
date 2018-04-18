@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.ElectAlarmMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.ElectAlarm">
+    <id column="elect_alarm_id" jdbcType="INTEGER" property="elect_alarm_id" />
+    <result column="alarm_gua_card_num" jdbcType="INTEGER" property="alarm_gua_card_num" />
+    <result column="alarm_station_phy_num" jdbcType="INTEGER" property="alarm_station_phy_num" />
+    <result column="alarm_time" jdbcType="TIMESTAMP" property="alarm_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    elect_alarm_id, alarm_gua_card_num, alarm_station_phy_num, alarm_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from elect_alarm
+    where elect_alarm_id = #{elect_alarm_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from elect_alarm
+    where elect_alarm_id = #{elect_alarm_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.ElectAlarm">
+    insert into elect_alarm (elect_alarm_id, alarm_gua_card_num, 
+      alarm_station_phy_num, alarm_time)
+    values (#{elect_alarm_id,jdbcType=INTEGER}, #{alarm_gua_card_num,jdbcType=INTEGER}, 
+      #{alarm_station_phy_num,jdbcType=INTEGER}, #{alarm_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.ElectAlarm">
+    insert into elect_alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="elect_alarm_id != null">
+        elect_alarm_id,
+      </if>
+      <if test="alarm_gua_card_num != null">
+        alarm_gua_card_num,
+      </if>
+      <if test="alarm_station_phy_num != null">
+        alarm_station_phy_num,
+      </if>
+      <if test="alarm_time != null">
+        alarm_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="elect_alarm_id != null">
+        #{elect_alarm_id,jdbcType=INTEGER},
+      </if>
+      <if test="alarm_gua_card_num != null">
+        #{alarm_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="alarm_station_phy_num != null">
+        #{alarm_station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="alarm_time != null">
+        #{alarm_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.ElectAlarm">
+    update elect_alarm
+    <set>
+      <if test="alarm_gua_card_num != null">
+        alarm_gua_card_num = #{alarm_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="alarm_station_phy_num != null">
+        alarm_station_phy_num = #{alarm_station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="alarm_time != null">
+        alarm_time = #{alarm_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where elect_alarm_id = #{elect_alarm_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.ElectAlarm">
+    update elect_alarm
+    set alarm_gua_card_num = #{alarm_gua_card_num,jdbcType=INTEGER},
+      alarm_station_phy_num = #{alarm_station_phy_num,jdbcType=INTEGER},
+      alarm_time = #{alarm_time,jdbcType=TIMESTAMP}
+    where elect_alarm_id = #{elect_alarm_id,jdbcType=INTEGER}
+  </update>
+</mapper>
