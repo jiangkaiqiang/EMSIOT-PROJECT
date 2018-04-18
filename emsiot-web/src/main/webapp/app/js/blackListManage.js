@@ -36,21 +36,6 @@ console.log("报警页面展示成功");
     // 当前页
     $scope.bigCurrentPage = 1;
 	$scope.AllBlackelects = [];
-	
-    //加载用户所有的黑名单
-//    $scope.getBlackelects = function() {
-//		$http({
-//			method : 'POST',
-//			url : '/i/blackelect/findAllBlackelectForMap',
-//			params : {
-//				pageNum : $scope.bigCurrentPage,
-//				pageSize : $scope.maxSize,
-//			}
-//		}).success(function(data) {
-//			$scope.bigTotalItems = data.total;
-//			$scope.AllBlackelects = data.list;
-//		});
-//	}
     //根据条件加载用户所有的黑名单
     $scope.getBlackelectsByOptions = function() {
 		$http({
@@ -135,6 +120,93 @@ console.log("报警页面展示成功");
           });
   	}
   	}
+  }
+  //获取省市区
+  //获取全部省
+  $http.get('/i/city/findProvinceList').success(function (data) {
+      $scope.provinces = data;
+      $scope.addProvinceID = data[0].province_id;
+  });
+	
+  //获取全部管理员
+  $http.get('/i/user/findAllUsers').success(function (data) {
+      $scope.sysUsers = data;
+      $scope.sysUserID = data[0].user_id;
+  });
+  $scope.getCitis = function () {
+  	$http.get('/i/city/findCitysByProvinceId', {
+          params: {
+              "provinceID": $scope.addProvinceID
+          }
+      }).success(function (data) {
+      	$scope.citis = data;
+          $scope.addCityID = data[0].city_id;
+      });
+  }
+  
+  $scope.getAreas = function () {
+  	$http.get('/i/city/findAreasByCityId', {
+          params: {
+              "cityID": $scope.addCityID
+          }
+      }).success(function (data) {
+      	$scope.areas = data;
+          $scope.addAreaID = data[0].area_id;
+      });
+  }
+  //添加黑名单
+  function checkInput(){
+      var flag = true;
+      // 检查必须填写项
+      if ($scope.addGuaCardNum == undefined || $scope.addGuaCardNum == '') {
+          flag = false;
+      }
+      if ($scope.addProvinceID == undefined || $scope.addProvinceID == '') {
+          flag = false;
+      }
+      if ($scope.addAddressType == undefined || $scope.addAddressType == '') {
+          flag = false;
+      }
+      return flag;
+  }
+  $scope.submit = function(){
+      if (checkInput()){
+    	  $http({
+  			method : 'POST',
+  			url : '/i/blackelect/addBlackelect',
+  			params : {
+      			gua_card_num: $scope.addGuaCardNum,
+  			    case_occur_time : $scope.addOccurDate,
+  			    owner_tele : $scope.addOwnerTele,
+  			    owner_name : $scope.addOwnerName,
+  			    pro_id : $scope.addProvinceID,
+  			    city_id : $scope.addCityID,
+  			    area_id : $scope.addAreaID,
+  			    case_address_type : $scope.addAddressType,
+  			    case_detail : $scope.addCaseDetail,
+  			    deal_status : 0
+//    			'gua_card_num': $scope.addGuaCardNum,
+//  			    'case_occur_time' : $scope.addOccurDate,
+//  			    'owner_tele' : $scope.addOwnerTele,
+//  			    'elect_brand' : $scope.addOwnerName,
+//  			    'pro_id' : $scope.addProvinceID,
+//  			    'city_id' : $scope.addCityID,
+//  			    'area_id' : $scope.addAreaID,
+//  			    'case_address_type' : $scope.addAddressType,
+//  			    'case_detail' : $scope.addCaseDetail,
+//  			    'deal_status' : 0
+  			}
+	            }).success(function (data) {
+          if(data.success){
+          	 alert(data.message);
+          	 $scope.getBlackelectsByOptions();
+               $("#addBlackelect").modal("hide"); 
+          }
+      });
+        }
+     else {
+          alert("防盗芯片编号、案发区域、案发地不能为空");
+      }
   }
   //
 });

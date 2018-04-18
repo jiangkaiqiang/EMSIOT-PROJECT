@@ -9,7 +9,7 @@
            </a>
         <ul class="title-nav flex align-items">
             <li>
-                <a href="" data-toggle="modal" data-target="#addAlarm">
+                <a href="" data-toggle="modal" data-target="#addBlackelect">
                     <i class="glyphicon glyphicon-plus"></i>
                     新增车辆报警并加入黑名单
                 </a>
@@ -105,8 +105,8 @@
 <!-- 表格操作区域结束 -->
 
 
-<!--  添加车辆模态框 -->
-<div class="modal fade" id="addAlarm" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--  添加黑名单模态框 -->
+<div class="modal fade" id="addBlackelect" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,7 +114,7 @@
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <div class="modal-title" id="">
+                <div class="modal-title" id="" >
                     新增车辆并加入黑名单
                 </div>
             </div>
@@ -129,7 +129,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" ng-model="addGuaCardNum">
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
 
                                 <div class="col-sm-8">
                                     <div class='input-group date' id='electAlarmDate'>
-                                        <input type='text' class="form-control" placeholder="选择开始时间" readonly/>
+                                        <input type='text' class="form-control" placeholder="选择开始时间" readonly ng-model="addOccurDate"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
 						                </span>
@@ -163,7 +163,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" >
+                                    <input type="text" class="form-control" ng-model="addOwnerTele">
                                 </div>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" >
+                                    <input type="text" class="form-control" ng-model="addOwnerName">
                                 </div>
                             </div>
                         </div>
@@ -215,17 +215,17 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <select name="" id="" class="form-control">
-                                        <option value="">社区</option>
-                                        <option value="">地铁站</option>
-                                        <option value="">商场</option>
-                                        <option value="">超市</option>
-                                        <option value="">沿街商铺</option>
-                                        <option value="">办公楼</option>
-                                        <option value="">医院</option>
-                                        <option value="">车站</option>
-                                        <option value="">学校</option>
-                                        <option value="">其他</option>
+                                    <select name="" id="" class="form-control" ng-model="addAddressType">
+                                        <option value="社区">社区</option>
+                                        <option value="地铁站">地铁站</option>
+                                        <option value="商场">商场</option>
+                                        <option value="超市">超市</option>
+                                        <option value="沿街商铺">沿街商铺</option>
+                                        <option value="办公楼">办公楼</option>
+                                        <option value="医院">医院</option>
+                                        <option value="车站">车站</option>
+                                        <option value="学校">学校</option>
+                                        <option value="其他">其他</option>
                                     </select>
                                 </div>
                             </div>
@@ -243,7 +243,8 @@
 
                                 <div class="col-sm-10">
                                     <!--<textarea name="" id="" cols="30" rows="10"></textarea>-->
-                                    <textarea rows="3" style="border:1px solid #ddd;width:100%" class="form-control"></textarea>
+                                    <textarea rows="3" style="border:1px solid #ddd;width:100%" class="form-control" 
+                                    ng-model="addCaseDetail"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -257,7 +258,7 @@
                                 </label>
 
                                 <div class="col-sm-10 flex">
-                                    <input type="checkbox" style="margin-right:5px;"/>我们已经与车主联系或者车主已主动110报警，并已确定车辆被盗
+                                    <input type="checkbox" style="margin-right:5px;" ng-model="addConfirm"/>我们已经与车主联系或者车主已主动110报警，并已确定车辆被盗
                                 </div>
                             </div>
                         </div>

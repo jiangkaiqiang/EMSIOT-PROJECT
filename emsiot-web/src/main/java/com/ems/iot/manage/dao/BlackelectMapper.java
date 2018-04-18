@@ -12,7 +12,7 @@ public interface BlackelectMapper {
 
     int insertSelective(Blackelect record);
 
-    Blackelect selectByPrimaryKey(Integer black_id);
+    Blackelect ç(Integer black_id);
 
     int updateByPrimaryKeySelective(Blackelect record);
 

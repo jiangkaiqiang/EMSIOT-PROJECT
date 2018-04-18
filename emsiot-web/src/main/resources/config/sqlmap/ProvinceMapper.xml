@@ -8,5 +8,8 @@
         SELECT *
         FROM `province` 
     </select>
-
+	<select id="selectByProID" parameterType="map" resultType="com.ems.iot.manage.entity.Province">
+			SELECT * 
+			FROM `province` WHERE province_id = #{pro_id}
+	</select>
 </mapper>
