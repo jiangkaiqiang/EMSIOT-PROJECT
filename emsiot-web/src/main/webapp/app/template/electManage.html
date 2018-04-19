@@ -174,7 +174,7 @@
                     </span>
                     <ul class="dropdown-menu">
                         <li >
-                            <a href="#" data-target="#viewModalElec"  data-toggle="modal">
+                            <a href="#" ng-click="goViewElect(electDto.electrombile.elect_id)" data-target="#viewModalElec"  data-toggle="modal">
                                 <i class="glyphicon glyphicon-eye-open"></i>
                                 查看详情
                             </a>
@@ -350,7 +350,9 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addInsurDetail">
+                                    <select id="" class="form-control"
+                                            ng-model="addInsurDetail" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllInsurType"></select>
                                 </div>
                             </div>
                         </div>
@@ -377,11 +379,11 @@
                                     购车日期：
                                 </label>
 
-                                <div class="col-sm-8">
+                                <div class="col-sm-8" id='electBuyDate'>
                                     <!--<input type="text" class="form-control" ng-model="addBuyDate">-->
                                     <div class='input-group date' id='byCarDate'>
-                                        <input type='text' class="form-control" placeholder="选择安装时间" readonly
-                                               ng-model="addInstallDate"/>
+                                        <input type='text' class="form-control" placeholder="选择购买时间" readonly
+                                               ng-model="addBuyDate"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
 						                </span>
@@ -466,23 +468,19 @@
                             </div>
                             <div class="col-sm-10">
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio1">
+                                    <input type="radio" name="addElectType" value="2" checked>
                                     两轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio2">
+                                    <input type="radio" name="addElectType" value="3">
                                     三轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio3">
+                                    <input type="radio"  name="addElectType" value="4">
                                     四轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio4">
+                                    <input type="radio"  name="addElectType" value="1">
                                     摩托车
                                 </label>
                             </div>
@@ -608,22 +606,19 @@
                                     <i>*</i>
                                     手机号：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="phoneNum" ng-model="addOwnerTele" disabled>
+                                    {{viewElect.electrombile.owner_tele}}
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     <i>*</i>
                                     姓名：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addOwnerName" name="username">
+                                    {{viewElect.electrombile.owner_name}}
                                 </div>
                             </div>
                         </div>
@@ -636,10 +631,8 @@
                                     <i>*</i>
                                     地址：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addOwnerAddress" name="address"
-                                           id="address">
+                                    {{viewElect.electrombile.owner_address}}
                                 </div>
                             </div>
                         </div>
@@ -650,10 +643,8 @@
                                     <i>*</i>
                                     身份证：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addOwnerID" name="id-user"
-                                           id="id-user">
+                                    {{viewElect.electrombile.owner_id}}
                                 </div>
                             </div>
                         </div>
@@ -663,7 +654,6 @@
 
                     <div class="myModalTitle flex margin-top2 margin-bottom">
                         <img src="app/img/car-icon.png" alt="" class="modal-img"/>
-
                         <div>车辆信息</div>
                     </div>
 
@@ -674,20 +664,19 @@
                                     <i>*</i>
                                     防盗芯片：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addGuaCardNum">
+                                      {{viewElect.electrombile.gua_card_num}}
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     车牌号：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addPlateNum">
+                                     {{viewElect.electrombile.plate_num}}
                                 </div>
                             </div>
                         </div>
@@ -696,17 +685,14 @@
                     </div>
 
                     <div class="row">
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     <i>*</i>
                                     车架号：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addVeIdNum">
+                                    {{viewElect.electrombile.ve_id_num}}
                                 </div>
                             </div>
                         </div>
@@ -717,9 +703,8 @@
                                     <i>*</i>
                                     投保明细：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addInsurDetail">
+                                    {{viewElect.electrombile.insur_detail}}
                                 </div>
                             </div>
                         </div>
@@ -727,17 +712,14 @@
 
 
                     <div class="row">
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     <i>*</i>
                                     车辆品牌：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addElectBrand">
+                                  {{viewElect.electrombile.elect_brand}}
                                 </div>
                             </div>
                         </div>
@@ -748,16 +730,8 @@
                                     <i>*</i>
                                     购车日期：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addBuyDate">
-                                    <!--<div class='input-group date' id='byCarDate'>-->
-                                        <!--<input type='text' class="form-control" placeholder="选择安装时间" readonly-->
-                                               <!--ng-model="addInstallDate"/>-->
-                                        <!--<span class="input-group-addon">-->
-                                            <!--<span class="glyphicon glyphicon-calendar"></span>-->
-						                <!--</span>-->
-                                    <!--</div>-->
+                                     {{viewElect.electrombile.buy_date}}
                                 </div>
                             </div>
                         </div>
@@ -774,9 +748,8 @@
                                     <i>*</i>
                                     车辆颜色：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addElectColor">
+                                    {{viewElect.electrombile.elect_color}}
                                 </div>
                             </div>
                         </div>
@@ -788,7 +761,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addMotorNum">
+                                   {{viewElect.electrombile.motor_num}}
                                 </div>
                             </div>
                         </div>
@@ -803,17 +776,8 @@
                                     <i>*</i>
                                     所在区域：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" >
-                                    <!--<select id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"-->
-                                            <!--ng-change="getCitis()"-->
-                                            <!--ng-options="x.province_id as x.name for x in provinces"></select>-->
-                                    <!--<select id="" class="form-control" ng-model="addCityID" ng-disabled="editable"-->
-                                            <!--ng-change="getAreas(addCityID)"-->
-                                            <!--ng-options="x.city_id as x.name for x in citis"></select>-->
-                                    <!--<select id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"-->
-                                            <!--ng-options="x.area_id as x.name for x in areas"></select>-->
+                                    {{viewElect.provinceName}}_{{viewElect.cityName}}_{{viewElect.areaName}}
                                 </div>
                             </div>
                         </div>
@@ -828,7 +792,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addNote">
+                                    {{viewElect.electrombile.note}}
                                 </div>
                             </div>
                         </div>
@@ -840,28 +804,8 @@
                                 <span> 车辆类型：</span>
                             </div>
                             <div class="col-sm-10">
-                                <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio1">
-                                    两轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio2">
-                                    三轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio3">
-                                    四轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" ng-model="addElectType" name="inlineRadioOptions"
-                                           id="inlineRadio4">
-                                    摩托车
-                                </label>
+                               {{viewElect.electrombile.elect_type}}
                             </div>
-
                         </div>
                     </div>
 
@@ -869,47 +813,35 @@
                         <div class="col-sm-12">
                             <!--<div class="form-group fileup">-->
                             <label for="" class="col-sm-2 control-label">
-                                上传照片：
+                                照片：
                             </label>
 
                             <div class="col-sm-10">
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic"
-                                               name="electPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
-                                                <img ngf-src="electPic" title="{{electPic.name}}">
-                                                <i ng-click="dropElectPic(electPic)">&times;</i>
+                                                <img ngf-src="viewElect.electrombile.elect_pic">
                                             </span>
                                         </output>
                                     </a>
-
                                     <p>车辆照片(牌照)</p>
                                 </div>
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
-                                               ng-model="indentityCardPic" name="indentityCardPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
-                                                <img ngf-src="indentityCardPic" title="{{indentityCardPic.name}}">
-                                            <i ng-click="dropIndentityCardPic(indentityCardPic)">&times;</i>
+                                               <img ngf-src="viewElect.electrombile.indentity_card_pic">
                                             </span>
                                         </output>
                                     </a>
-
                                     <p>身份证照片</p>
                                 </div>
                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input type="file" id="recordPic"
-                                                                                  ngf-select="addRecordPic()"
-                                                                                  ng-model="recordPic"
-                                                                                  name="recordPic">
+                                    <a href="javascript:;" class="picfile">
                                         <output id="pic_list" class="pic_list">
                                             <span>
-                                                <img ngf-src="recordPic" title="{{recordPic.name}}">
-                                                <i ng-click="dropRecordPic(recordPic)">&times;</i>
+                                               <img ngf-src="viewElect.electrombile.record_pic">
                                             </span>
                                         </output>
                                     </a>
@@ -917,19 +849,13 @@
                                     <p>备案登记表照片</p>
                                 </div>
                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input type="file"
-                                                                                  id="installCardPic"
-                                                                                  ngf-select="addInstallCardPic()"
-                                                                                  ng-model="installCardPic"
-                                                                                  name="installCardPic">
+                                    <a href="javascript:;" class="picfile">
                                         <output id="pic_list" class="pic_list">
                                             <span>
-                                                <img ngf-src="installCardPic" title="{{installCardPic.name}}">
-                                                <i ng-click="dropInstallCardPic(installCardPic)">&times;</i>
+                                                 <img ngf-src="viewElect.electrombile.install_card_pic">
                                             </span>
                                         </output>
                                     </a>
-
                                     <p>安装芯片照片</p>
                                 </div>
                             </div>

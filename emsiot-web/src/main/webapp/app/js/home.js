@@ -122,7 +122,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 				}).success(function(data) {
 					$scope.traceStations = data;
 					if(data.length == 1)
-						alert("该车辆仅经过一个基站："+data.station_name);
+						alert("该车辆仅经过一个基站："+data[0].station.station_name);
 					else if(data.length == 0)
 						alert("该车辆没有经过任何基站！");
 					else

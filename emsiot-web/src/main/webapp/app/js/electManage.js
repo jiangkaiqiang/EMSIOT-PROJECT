@@ -8,34 +8,6 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				}
 		   });
 	};
-	//文件上传
-	var uploadUrl = 'https://xxxxxxx';
-	function upfile(event) {
-		var event = event || window.event,
-			dom = '',
-			upfile = $("#upfile").get(0).files[0],
-			otype = upfile.type || '获取失败',
-			osize = upfile.size / 1054000,
-			ourl = window.URL.createObjectURL(upfile); //文件临时地址
-			console.log(upfile);
-			console.log(otype);
-		//$('#file_type').text("选择上传文件类型：" + otype);
-		//$('#file_size').text("选择上传文件大小，共" + osize.toFixed(2) + "MB。");
-        //
-		//console.log("文件类型：" + otype); //文件类型
-		//console.log("文件大小：" + osize); //文件大小
-        //
-		//if ('video/mp4' == otype || 'video/avi' == otype || 'video/x-msvideo' == otype) {
-		//	dom = '<video id="video" width="100%" height="100%" controls="controls" autoplay="autoplay" src=' + ourl + '></video>';
-		//}
-		//if ('audio/mp3' == otype || 'audio/wav' == otype  || 'audio/x-m4a' == otype) {
-		//	dom = '<audio id="audio" width="100%" height="100%" controls="controls" autoplay="autoplay" loop="loop" src=' + ourl + ' ></audio>';
-		//}
-		if ('image/jpeg' == otype || 'image/png' == otype || 'image/gif' == otype) {
-			dom = '<img id="photo" width="100%" height="100%" alt="我是image图片文件" src=' + ourl + ' title="" />';
-		}
-		$('#carPhoto').html(dom);
-	};
 	
 	$scope.addElectPic = function () {
 		
@@ -320,7 +292,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         }
         return flag;
     }
-
+    
+    $scope.AllInsurType = [
+        {id:"1",name:"投保"},
+        {id:"2",name:"未投保"}
+    ];
+    $scope.addInsurDetail = "2";
     $scope.submit = function(){
         if (checkInput()){
         	data = {
@@ -335,7 +312,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'pro_id' : $scope.addProvinceID,
     			    'city_id' : $scope.addCityID,
     			    'area_id' : $scope.addAreaID,
-    			    'elect_type' : $scope.addElectType,
+    			    'elect_type' : $("input[name='addElectType']:checked").val(),
     			    'insur_detail' : $scope.addInsurDetail,
     			    'elect_pic' : $scope.electPic,
     			    'indentity_card_pic' : $scope.indentityCardPic,
@@ -364,6 +341,37 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             alert("防盗芯片编号和车牌号不能为空");
         }
     }
+    
+    $scope.goViewElect = function(electID) {
+    	for (var i=0;i<$scope.AllElectDtos.length;i++)
+    	{
+    		if($scope.AllElectDtos[i].electrombile.elect_id == electID){
+    		   $scope.viewElect = $scope.AllElectDtos[i];
+    		   if($scope.viewElect.electrombile.elect_type=="1"){
+    			   $scope.viewElect.electrombile.elect_type = "摩托车";
+    		   }
+    		   else if($scope.viewElect.electrombile.elect_type=="2"){
+    			   $scope.viewElect.electrombile.elect_type = "两轮";
+    		   }
+    		   else if($scope.viewElect.electrombile.elect_type=="3"){
+    			   $scope.viewElect.electrombile.elect_type = "三轮";
+    		   }
+    		   else if($scope.viewElect.electrombile.elect_type=="4"){
+    			   $scope.viewElect.electrombile.elect_type = "四轮";
+    		   }
+    		   else{
+    			   
+    		   }
+    		   if($scope.viewElect.electrombile.insur_detail=="1"){
+    			   $scope.viewElect.electrombile.insur_detail = "已投保";
+    		   }
+    		   else if($scope.viewElect.electrombile.insur_detail=="2"){
+    			   $scope.viewElect.electrombile.insur_detail = "未投保";
+    		   }
+    		   break;
+    		}
+    	}
+	};
     
 	 $scope.goUpdateUser = function(userID) {
 		    $scope.validforupdate  = false;
@@ -426,6 +434,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    }
 		//选择日期
 
+		 $('#byCarDate').datetimepicker({
+		        format: 'yyyy-mm-dd',
+		        autoclose:true,
+		        maxDate:new Date(),
+		        pickerPosition: "bottom-left"
+	    });
 		 $('#electDateStart').datetimepicker({
 		     format: 'yyyy-mm-dd - hh:mm:ss',
 		     minView: "month",
