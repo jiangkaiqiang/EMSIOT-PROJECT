@@ -454,5 +454,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		     maxDate:new Date(),
 		     pickerPosition: "bottom-left"
 		 }); 
+		 $scope.Preview=function(){ //打印预览
+			   $("#viewModalElec").jqprint();
+			};
 });
 

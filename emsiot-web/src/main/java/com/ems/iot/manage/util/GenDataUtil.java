@@ -30,7 +30,7 @@ public class GenDataUtil {
 	Calendar buy_calendar = Calendar.getInstance();
 	buy_calendar.add(Calendar.DATE, rand.nextInt(before_interval));
 	Date buy_date=buy_calendar.getTime();
-	electrombile.setBuy_date(buy_date);
+	electrombile.setBuy_date(buy_date.toString());
 	electrombile.setElect_color(color[rand.nextInt(10)]);
 	electrombile.setMotor_num(String.valueOf(gua_card_num));
 	electrombile.setNote("XXX");
@@ -42,7 +42,7 @@ public class GenDataUtil {
 	electrombile.setOwner_address("新疆喀什"+String.valueOf(gua_card_num));
 	electrombile.setOwner_id("65310119601111"+String.valueOf(1000+rand.nextInt(8999)));
 	electrombile.setRecorder_id(123456);
-	electrombile.setRecorder_time(new Date());
+	electrombile.setRecorder_time(new Date().toString());
 	electrombile.setElect_state(1);
 	electrombile.setElect_brand("小鸟"+rand.nextInt(10));
 	
@@ -59,7 +59,7 @@ public class GenDataUtil {
 	Calendar install_calendar = Calendar.getInstance();
 	install_calendar.add(Calendar.DATE, rand.nextInt(before_interval));
 	Date install_date=install_calendar.getTime();
-	station.setInstall_date(install_date);
+	station.setInstall_date(install_date.toString());
 	
 	station.setSoft_version("1.0");
 	station.setContact_person(firstName[rand.nextInt(10)]+lastName[rand.nextInt(10)]);

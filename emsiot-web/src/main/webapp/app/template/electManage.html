@@ -1,3 +1,6 @@
+<!-- 打印 -->
+<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="../../assets/js/jquery.jqprint-0.3.js"></script>
 <nav class="page-title shadow electManage">
     <div class="title-brand flex-between align-items">
         <div class="title-text">车辆管理</div>
@@ -121,7 +124,7 @@
 
 
 <!-- 表格操作区域开始 -->
-<div class="tableArea shadow countent no-padding">
+<div class="tableArea shadow countent no-padding" id="tableAreatest">
     <table class="table table-striped " id="tableArea" ng-model="AllElects">
         <thead>
         <tr>
@@ -870,7 +873,7 @@
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">取消
                 </button>
-                <button type="button" class="btn btn-guiji">
+                <button type="button" class="btn btn-guiji" ng-click="Preview()" >
                     <i class="glyphicon glyphicon-print"></i>
                     登记证打印
                 </button>

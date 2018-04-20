@@ -13,7 +13,7 @@ public class Electrombile {
 
     private String elect_brand;
 
-    private Date buy_date;
+    private String buy_date;
 
     private String elect_color;
 
@@ -49,13 +49,13 @@ public class Electrombile {
 
     private Integer recorder_id;
 
-    private Date recorder_time;
+    private String recorder_time;
 
     private Integer elect_state;
 
     private Integer black_list_recorder;
 
-    private Date black_list_time;
+    private String black_list_time;
 
     public Integer getElect_id() {
         return elect_id;
@@ -97,11 +97,11 @@ public class Electrombile {
         this.elect_brand = elect_brand == null ? null : elect_brand.trim();
     }
 
-    public Date getBuy_date() {
+    public String getBuy_date() {
         return buy_date;
     }
 
-    public void setBuy_date(Date buy_date) {
+    public void setBuy_date(String buy_date) {
         this.buy_date = buy_date;
     }
 
@@ -241,11 +241,11 @@ public class Electrombile {
         this.recorder_id = recorder_id;
     }
 
-    public Date getRecorder_time() {
+    public String getRecorder_time() {
         return recorder_time;
     }
 
-    public void setRecorder_time(Date recorder_time) {
+    public void setRecorder_time(String recorder_time) {
         this.recorder_time = recorder_time;
     }
 
@@ -265,11 +265,11 @@ public class Electrombile {
         this.black_list_recorder = black_list_recorder;
     }
 
-    public Date getBlack_list_time() {
+    public String getBlack_list_time() {
         return black_list_time;
     }
 
-    public void setBlack_list_time(Date black_list_time) {
+    public void setBlack_list_time(String black_list_time) {
         this.black_list_time = black_list_time;
     }
 }

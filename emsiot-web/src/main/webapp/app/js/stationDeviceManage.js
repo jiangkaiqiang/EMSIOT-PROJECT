@@ -221,6 +221,7 @@ $scope.dropInstallPic = function(installPic){
 					'contact_person' : $scope.stationForUpdate.contact_person,
 					'contact_tele' : $scope.stationForUpdate.contact_tele,
 					'stick_num' : "123123",
+					'station_address' : $scope.stationForUpdate.station_address,
 					'install_pic' : $scope.stationForUpdate.install_pic
 	            };
 	       Upload.upload({

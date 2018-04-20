@@ -17,7 +17,7 @@ public class Station {
 
     private Integer station_status;
 
-    private Date install_date;
+    private String install_date;
 
     private String soft_version;
 
@@ -87,11 +87,11 @@ public class Station {
         this.station_status = station_status;
     }
 
-    public Date getInstall_date() {
+    public String getInstall_date() {
         return install_date;
     }
 
-    public void setInstall_date(Date install_date) {
+    public void setInstall_date(String install_date) {
         this.install_date = install_date;
     }
 

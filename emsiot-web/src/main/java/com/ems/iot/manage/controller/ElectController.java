@@ -189,8 +189,9 @@ public class ElectController extends BaseController {
 		electrombile.setPlate_num(plate_num);
 		electrombile.setVe_id_num(ve_id_num);
 		electrombile.setElect_brand(elect_brand);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		electrombile.setBuy_date(sdf.parse(buy_date));
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		//electrombile.setBuy_date(sdf.parse(buy_date));
+		electrombile.setBuy_date(buy_date);
 		electrombile.setElect_color(elect_color);
 		electrombile.setMotor_num(motor_num);
 		electrombile.setNote(note);
