@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.NgRemoteValidateDTO;
@@ -42,6 +44,8 @@ public class UserController extends BaseController {
 	private CookieService cookieService;
 	@Autowired
 	private FtpService ftpService;
+	@Autowired
+	private CityMapper cityMapper;
 	
 	@RequestMapping(value = "/login")
 	@ResponseBody
@@ -132,6 +136,14 @@ public class UserController extends BaseController {
 		}
 		Page<SysUser> sysUsers = userDao.findAllUser(keyword,startTime, endTime);
 		Page<SysUserDto> sysUserDtos = new Page<SysUserDto>();
+		for (SysUser sysUser : sysUsers) {
+			SysUserDto sysUserDto = new SysUserDto();
+			sysUserDto.setSysUser(sysUser);
+			sysUserDto.setPro_name(cityMapper.findProvinceById(Integer.parseInt(sysUser.getPro_power())).getName());
+			sysUserDto.setCity_name(cityMapper.findCityById(Integer.parseInt(sysUser.getCity_power())).getName());
+			sysUserDto.setArea_name(cityMapper.findAreaNameByAreaID(Integer.parseInt(sysUser.getArea_power())).getName());
+			sysUserDtos.add(sysUserDto);
+		}
 		sysUserDtos.setPageSize(sysUsers.getPageSize());
 		sysUserDtos.setPages(sysUsers.getPages());
 		sysUserDtos.setTotal(sysUsers.getTotal());
@@ -208,24 +220,4 @@ public class UserController extends BaseController {
 		}
 		return new BaseDto(0);
 	}
-	/*@RequestMapping(value = "/updatePhoto")
-	@ResponseBody
-	public Object updatePhoto(HttpServletRequest request, @RequestParam(required = false) MultipartFile userphoto) {
-		SysUserEntity user = new SysUserEntity();
-		SysUserEntity old_user = (SysUserEntity)request.getSession().getAttribute("user");
-		user.setUser_id(old_user.getUser_id());
-		if(userphoto!=null){
-			String dir = String.format("%s/user/photo/%s", baseDir, user.getUser_id());
-			String fileName = String.format("user%s_%s.%s", user.getUser_id(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(fileName, userphoto, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			user.setPhoto(FtpService.READ_URL+"data/"+dir + "/" + fileName);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-			this.userDao.updateUser(user);
-			SysUserEntity ol_user = this.userDao.findUserById(user.getUser_id());
-			ol_user.setPassword("********");
-			request.getSession().setAttribute("user",ol_user);
-			return ResponseData.newSuccess(ol_user);
-		}
-		return ResponseData.newFailure();
-	}*/
 }

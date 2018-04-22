@@ -171,7 +171,7 @@ public class StationController extends BaseController {
 			station.setInstall_pic(FtpService.READ_URL+"data/"+dir + "/" + station_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 	    stationMapper.updateByPrimaryKeySelective(station);
-	    return new ResultDto(0,"添加成功");
+	    return new ResultDto(0,"修改成功");
 	}
 	
 	/**

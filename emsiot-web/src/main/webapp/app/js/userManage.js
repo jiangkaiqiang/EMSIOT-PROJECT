@@ -10,9 +10,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	};
 	$scope.load();
 	// 显示最大页数
-    $scope.maxSize = 12;
+    $scope.maxSize = 10;
     // 总条目数(默认每页十条)
-    $scope.bigTotalItems = 12;
+    $scope.bigTotalItems = 10;
     // 当前页
     $scope.bigCurrentPage = 1;
 	$scope.Allusers = [];
@@ -60,12 +60,6 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        }
 	        return true;
 	}
-    
-    // 获取角色
-    $http.get('/i/userrole/findAllUserRole').success(function (data) {
-        $scope.userRoles = data;
-        $scope.addUserRoleid = data[0].user_role_id;
-    });
 	
     $scope.goDeleteUser = function (userID) {
     	if(delcfm()){

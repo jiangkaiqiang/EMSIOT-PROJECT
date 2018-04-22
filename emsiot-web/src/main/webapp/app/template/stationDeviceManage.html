@@ -100,7 +100,7 @@
                     <td>{{station.install_date}}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" ng-click="goDeleteStation(station.station_id)">删除</button>
-                        <button class="btn btn-primary btn-sm" ng-click="goStationLocation(station.station_id)">查看</button>
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewStation" ng-click="goStationView(station.station_id)">查看</button>
                         <button class="btn btn-primary btn-sm" ng-click="goStationUpdate(station.station_id)" data-toggle="modal" data-target="#updateStation">修改</button>
                     </td>
          </tr>
@@ -318,3 +318,186 @@
     <!-- /.modal -->
 </div>
 <!--更新基站信息模态框 end-->
+
+<!--查看基站信息模态框-->
+<div class="modal fade" id="viewStation" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="modal-title" id="">
+                    查看基站
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="electForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    物理编号：
+                                </label>
+                                <div class="col-sm-8">
+                                {{viewStation.station_phy_num}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    安装时间：
+                                </label>
+
+                                <div class="col-sm-8">
+                                 {{viewStation.install_date}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    经度：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    {{viewStation.longitude}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    纬度：
+                                </label>
+
+                                <div class="col-sm-8">
+                                 {{viewStation.latitude}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    基站型号：
+                                </label>
+                                <div class="col-sm-8">
+                                {{viewStation.station_type}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    基站状态：
+                                </label>
+                                <div class="col-sm-8">
+                                 {{viewStation.station_status}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    设备名称：
+                                </label>
+
+                                <div class="col-sm-8">
+                                {{viewStation.station_name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    软件版本：
+                                </label>
+
+                                <div class="col-sm-8">
+                                 {{viewStation.soft_version}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    联系人：
+                                </label>
+
+                                <div class="col-sm-8">
+                                {{viewStation.contact_person}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    联系电话：
+                                </label>
+
+                                <div class="col-sm-8">
+                                {{viewStation.contact_tele}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    基站地址：
+                                </label>
+
+                                <div class="col-sm-8">
+                                {{viewStation.station_address}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row fileup">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label ">
+                                    安装图片：
+                                </label>
+
+                                <div class="col-sm-8 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                        <output id="pic_list" class="pic_list">
+                                        <span>
+                                            <img ngf-src="viewStation.install_pic">
+                                        </span>
+                                        </output>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--查看基站信息模态框 end-->

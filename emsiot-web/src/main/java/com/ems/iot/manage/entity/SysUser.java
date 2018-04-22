@@ -14,8 +14,12 @@ public class SysUser {
     private Integer opt_power;
 
     private String menu_power;
+    
+    private String area_power;
+    
+    private String pro_power;
 
-    private Integer area_power;
+    private String city_power;
 
     private Date login_time;
 
@@ -71,11 +75,11 @@ public class SysUser {
         this.menu_power = menu_power == null ? null : menu_power.trim();
     }
 
-    public Integer getArea_power() {
+    public String getArea_power() {
         return area_power;
     }
 
-    public void setArea_power(Integer area_power) {
+    public void setArea_power(String area_power) {
         this.area_power = area_power;
     }
 
@@ -102,4 +106,22 @@ public class SysUser {
     public void setUser_tel(String user_tel) {
         this.user_tel = user_tel == null ? null : user_tel.trim();
     }
+
+	public String getPro_power() {
+		return pro_power;
+	}
+
+	public void setPro_power(String pro_power) {
+		this.pro_power = pro_power;
+	}
+
+	public String getCity_power() {
+		return city_power;
+	}
+
+	public void setCity_power(String city_power) {
+		this.city_power = city_power;
+	}
+    
+    
 }

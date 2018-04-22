@@ -15,12 +15,18 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $scope.dropElectPic = function(electPic){
     	$scope.electPic = null;
     };
+    $scope.dropElectPicForUpdate = function(electPic){
+    	$scope.updateElect.electrombile.elect_pic = null;
+    };
 
     $scope.addIndentityCardPic = function () {
 		
     };
     $scope.dropIndentityCardPic = function(indentityCardPic){
     	$scope.indentityCardPic = null;
+    };
+    $scope.dropIndentityCardPicForUpdate = function(recordPic){
+    	$scope.updateElect.electrombile.indentity_card_pi = null;
     };
     
     $scope.addRecordPic = function () {
@@ -29,12 +35,19 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $scope.dropRecordPic = function(recordPic){
     	$scope.recordPic = null;
     };
+    $scope.dropRecordPicForUpdate = function(recordPic){
+    	$scope.updateElect.electrombile.record_pic = null;
+    };
+    
     
     $scope.addInstallCardPic = function () {
 		
     };
     $scope.dropInstallCardPic = function(installCardPic){
     	$scope.installCardPic = null;
+    };
+    $scope.dropInstallCardPicForUpdate = function(installCardPic){
+    	$scope.updateElect.electrombile.install_card_pic = null;
     };
     
 	//显示下拉搜索条件
@@ -183,6 +196,29 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             $scope.addAreaID = data[0].area_id;
         });
     }
+    
+    $scope.getCitisForUpdate = function () {
+    	$http.get('/i/city/findCitysByProvinceId', {
+            params: {
+                "provinceID": $scope.updateElect.electrombile.pro_id
+            }
+        }).success(function (data) {
+        	$scope.citisForUpdate = data;
+            $scope.updateElect.electrombile.city_id = data[0].city_id;
+        });
+    }
+    
+    $scope.getAreasForUpdate = function () {
+    	$http.get('/i/city/findAreasByCityId', {
+            params: {
+                "cityID": $scope.updateElect.electrombile.city_id
+            }
+        }).success(function (data) {
+        	$scope.areasForUpdate = data;
+            $scope.updateElect.electrombile.area_id = data[0].area_id;
+        });
+    }
+    
     
     $scope.goDeleteElect = function (electID) {
     	if(delcfm()){
@@ -373,73 +409,139 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     	}
 	};
     
-	 $scope.goUpdateUser = function(userID) {
-		    $scope.validforupdate  = false;
-	    	$http.get('/i/user/findUserByID', {
-	            params: {
-	                "spaceUserID": userID
-	            }
-	        }).success(function(data){
-			    if(data!=null&&data.user_id!=undefined){
-					 $scope.userForUpdate = data;
-					 if($scope.userForUpdate.valid_status==1)
-						 $scope.validforupdate = true;
-			    }
-		     });
+	 $scope.goUpdateElect = function(electID) {
+		 for (var i=0;i<$scope.AllElectDtos.length;i++)
+	    	{
+	    		if($scope.AllElectDtos[i].electrombile.elect_id == electID){
+	    		   $scope.updateElect = $scope.AllElectDtos[i];
+	    		   $scope.updateElect.electrombile.pro_id = $scope.updateElect.electrombile.pro_id+"";
+	    		   $scope.updateElect.electrombile.city_id = $scope.updateElect.electrombile.city_id+"";
+	    		   $scope.updateElect.electrombile.area_id = $scope.updateElect.electrombile.area_id+"";
+	    		   $scope.updateElect.electrombile.insur_detail = $scope.updateElect.electrombile.insur_detail+"";
+	    		   $http.get('/i/city/findCitysByProvinceId', {
+	    	            params: {
+	    	                "provinceID": $scope.updateElect.electrombile.pro_id
+	    	            }
+	    	        }).success(function (data) {
+	    	        	$scope.citisForUpdate = data;
+	    	        });
+	    		   $http.get('/i/city/findAreasByCityId', {
+	    	            params: {
+	    	                "cityID": $scope.updateElect.electrombile.city_id
+	    	            }
+	    	        }).success(function (data) {
+	    	        	$scope.areasForUpdate = data;
+	    	        });
+	    		   $(":radio[name='updateElectType'][value='" + $scope.updateElect.electrombile.elect_type + "']").prop("checked", "checked");
+	    		   break;
+	    		}
+	    	}
 		};
 		function checkInputForUpdate(){
-	        var flag = true;
-	        // 检查必须填写项
-	        if ($scope.userForUpdate.user_name == undefined || $scope.userForUpdate.user_name == '') {
-	            flag = false;
-	        }
-	       /* if ($scope.userForUpdate.password == undefined ||  $scope.userForUpdate.password == '') {
-	            flag = false;
-	        }*/
-	        return flag;
+			 var flag = true;
+		        // 检查必须填写项
+		        if ($scope.updateElect.electrombile.gua_card_num == undefined || $scope.updateElect.electrombile.gua_card_num == '') {
+		            flag = false;
+		        }
+		        if ($scope.updateElect.electrombile.plate_num == undefined || $scope.updateElect.electrombile.plate_num == '') {
+		            flag = false;
+		        }
+		        return flag;
 	    }
 		 $scope.update = function(){
 			 if (checkInputForUpdate()){
-		          /*if($scope.passwordForUpdate==$scope.passwordForUpdate1){*/
-		        	var valid;
-		        	if($scope.validforupdate)  valid = 1;
-		        	else  valid = 2;
-		            $http({
-		            	method : 'GET', 
-		    			url:'/i/user/updateUser',
-		    			params:{
-		    				'user_id': $scope.userForUpdate.user_id,
-		    				'user_name': $scope.userForUpdate.user_name,
-		    				'password': '',
-//		    				'password': null,
-		    				'user_role_id' : $scope.userForUpdate.user_role_id,
-		    				'company':  $scope.userForUpdate.company,
-		    				'pro_id' : $scope.userForUpdate.pro_id,
-		    				'comp_factory_id' : $scope.userForUpdate.comp_factory_id,
-		    				'valid_status' : valid,
-		    				'user_tel' : $scope.userForUpdate.user_tel
-		    			}
-		    		}).then(function (resp) {
-		    			 alert(resp.data.message);
-		                 $scope.getUsers();
-		                 $("#updateUser").modal("hide"); 
-		            });
-		          /* }
-		          else{
-		        	  alert("两次密码不一致!");
-		           }*/
+				 data = {
+						    'elect_id':$scope.updateElect.electrombile.elect_id,
+		        			'gua_card_num': $scope.updateElect.electrombile.gua_card_num,
+		    			    'plate_num' : $scope.updateElect.electrombile.plate_num,
+		    			    've_id_num' : $scope.updateElect.electrombile.ve_id_num,
+		    			    'elect_brand' : $scope.updateElect.electrombile.elect_brand,
+		    			    'buy_date' : $scope.updateElect.electrombile.buy_date,
+		    			    'elect_color' : $scope.updateElect.electrombile.elect_color,
+		    			    'motor_num' : $scope.updateElect.electrombile.motor_num,
+		    			    'note' : $scope.updateElect.electrombile.note,
+		    			    'pro_id' : $scope.updateElect.electrombile.pro_id,
+		    			    'city_id' : $scope.updateElect.electrombile.city_id,
+		    			    'area_id' : $scope.updateElect.electrombile.area_id,
+		    			    'elect_type' : $("input[name='updateElectType']:checked").val(),
+		    			    'insur_detail' : $scope.updateElect.electrombile.insur_detail,
+		    			    'elect_pic' : $scope.updateElect.electrombile.elect_pic,
+		    			    'indentity_card_pic' : $scope.updateElect.electrombile.indentity_card_pic,
+		    			    'record_pic' : $scope.updateElect.electrombile.record_pic,
+		    			    'install_card_pic' : $scope.updateElect.electrombile.install_card_pic,
+		    			    'owner_tele' : $scope.updateElect.electrombile.owner_tele,
+		    			    'owner_name' : $scope.updateElect.electrombile.owner_name,
+		    			    'owner_address' : $scope.updateElect.electrombile.owner_address,
+		    			    'owner_id' : $scope.updateElect.electrombile.owner_id,
+		    			    'recorder_id' : $rootScope.admin.user_id,
+		    			    'elect_state' : 1
+			            };
+			       Upload.upload({
+			                url: '/i/elect/updateElect',
+			                headers :{ 'Content-Transfer-Encoding': 'utf-8' },
+			                data: data
+			            }).success(function (data) {
+		            if(data.success){
+		            	 alert(data.message);
+		    			 $scope.getElects();
+		                 $("#updateCar").modal("hide"); 
+		            }
+		        });
 		          } else {
-		            alert("请填写用户名!");
+		        	  alert("防盗芯片编号和车牌号不能为空");
 		        }
 		    }
-		//选择日期
-
+		 
+		$scope.goSearchForTrace = function(gua_card_num) {
+			    $scope.gua_card_numForTrace = gua_card_num;
+				$http.get('/i/elect/findElectTrace', {
+						params : {
+//							'pageNum' : $scope.bigTotalItemsForTrace,
+//							'pageSize' : $scope.maxSizeForTrace,
+							"plateNum" : null,
+							"guaCardNum" : gua_card_num,
+							"startTimeForTrace" : $scope.searchTraceStart,
+							"endTimeForTrace" : $scope.searchTraceEnd
+						}
+					}).success(function(data) {
+						$scope.traceStations = data;
+						//$scope.bigTotalItemsForTrace = data.total;
+					});
+		 }
+		$scope.goSearchForTraceWithTime = function() {
+			$scope.goSearchForTrace($scope.gua_card_numForTrace);
+		}
+//		$scope.pageChangedForTrace = function() {
+//			$scope.goSearchForTrace($scope.gua_card_numForTrace);
+//		}
+		 
+		 //选择日期
+		 $('#buyCarDateUpdate').datetimepicker({
+		        format: 'yyyy-mm-dd',
+		        autoclose:true,
+		        maxDate:new Date(),
+		        pickerPosition: "bottom-left"
+	    });
 		 $('#byCarDate').datetimepicker({
 		        format: 'yyyy-mm-dd',
 		        autoclose:true,
 		        maxDate:new Date(),
 		        pickerPosition: "bottom-left"
 	    });
+		 $('#guijiSearchStart').datetimepicker({
+		     format: 'yyyy-mm-dd - hh:mm:ss',
+		     //minView: "month",
+		     autoclose:true,
+		     maxDate:new Date(),
+		     pickerPosition: "bottom-left"
+		 });
+		 $("#guijiSearchEnd").datetimepicker({
+		     format : 'yyyy-mm-dd - hh:mm:ss',
+		     //minView: 'month',
+		     autoclose:true,
+		     maxDate:new Date(),
+		     pickerPosition: "bottom-left"
+		 }); 
 		 $('#electDateStart').datetimepicker({
 		     format: 'yyyy-mm-dd - hh:mm:ss',
 		     minView: "month",

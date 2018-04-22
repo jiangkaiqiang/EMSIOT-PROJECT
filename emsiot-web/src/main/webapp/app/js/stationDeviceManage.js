@@ -187,6 +187,26 @@ $scope.dropInstallPic = function(installPic){
 		    }
 	     });
 	};
+	
+	$scope.goStationView = function(stationID) {
+		for (var i=0;i<$scope.AllStations.length;i++)
+    	{
+    		if($scope.AllStations[i].station_id == stationID){
+    		   $scope.viewStation = $scope.AllStations[i];
+    		   if($scope.viewStation.station_status=="0"){
+    			   $scope.viewStation.station_status = "正常"
+    		   }
+    		   else if($scope.viewStation.station_status=="1"){
+    			   $scope.viewStation.station_status = "故障"
+    		   }
+    		   else{
+    			   
+    		   }
+    		   break;
+    		}
+    	}
+	};
+	
 	function checkInputForUpdate(){
         var flag = true;
         // 检查必须填写项
