@@ -80,7 +80,21 @@ font-weight:bold;
     background-color: #ecf5ff;
 }
 #dingweiModal .modal-body form>div:first-child select,#dingweiModal .modal-body form>div:first-child input{margin:0 2px;}
-
+#positionTable{
+    /*position:absolute;*/
+    /*top:100px;*/
+    /*right:20px;*/
+    /*width:35%;*/
+    padding:10px;
+    /*background:#fff;*/
+}
+#positionTable>ul:first-child>li:last-child{
+    background:#3C7ADA;
+    color:#fff;
+    /*text-align:center;*/
+    padding:3px 15px;
+    border-radius:8px;
+}
 
 
 
