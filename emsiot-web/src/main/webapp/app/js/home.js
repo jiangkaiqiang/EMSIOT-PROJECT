@@ -29,21 +29,35 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			 });
 	 });
 	 function showStation(){
+		 
+		 var opts = {
+					width : 250,     // 信息窗口宽度
+					height: 80,     // 信息窗口高度
+					title : "信息窗口" , // 信息窗口标题
+					enableMessage:true//设置允许信息窗发送短息
+				   };
 		 var pt;
 		 var marker2;
-		 var sContent ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>显示的是一个基站！</h4>";
+		 var sContent ="<h4>显示的是一个基站！</h4>";
 		 var markers = [];
-	     for(var i=0;i<1000;i++){
-    	   pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
-    	   marker2 = new BMap.Marker(pt); 
-    	   var infoWindow = new BMap.InfoWindow(sContent); 				        	   
-    	   marker2.addEventListener("click", function(){          
-    	        this.openInfoWindow(infoWindow);
+	     for(var i=0;i<100;i++){
+	    	 	pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
+	    	 	marker2 = new BMap.Marker(pt); 
+    	   
+	    	 	var infoWindow = new BMap.InfoWindow(sContent,opts); 				        	   
+	    	 	marker2.addEventListener("click", function(e){  
+	    	 		var p = e.target;
+	    			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+	    	 		map.openInfoWindow(infoWindow,point);
     	   });
     	   //map.addOverlay(marker2); 
     	   markers.push(marker2);
     	  }
     	  var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+	 }
+	 
+	 function openInfo(){
+		 
 	 }
 	 
 	 
