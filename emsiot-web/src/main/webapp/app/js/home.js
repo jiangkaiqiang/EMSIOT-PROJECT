@@ -28,23 +28,122 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	 
 			 });
 	 });
+	 function G(id) {
+		    return document.getElementById(id);
+	 }
+	 var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+			    {
+			        "input": "suggestId"
+			        , "location": map
+			    });
+
+			ac.addEventListener("onhighlight", function (e) {  //鼠标放在下拉列表上的事件
+			    var str = "";
+			    var _value = e.fromitem.value;
+			    var value = "";
+			    if (e.fromitem.index > -1) {
+			        value = _value.province + _value.city + _value.district + _value.street + _value.business;
+			    }
+			    str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+			    value = "";
+			    if (e.toitem.index > -1) {
+			        _value = e.toitem.value;
+			        value = _value.province + _value.city + _value.district + _value.street + _value.business;
+			    }
+			    str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+			    G("searchResultPanel").innerHTML = str;
+			});
+
+			var myValue;
+			ac.addEventListener("onconfirm", function (e) {    //鼠标点击下拉列表后的事件
+			    var _value = e.item.value;
+			    myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+			    G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+			    setPlace();
+			});
+
+			function setPlace() {
+			    map.clearOverlays();    //清除地图上
+			    function myFun() {
+			        var pp = local.getResults().getPoi(0).point;//获取第一个智能搜索信息
+			        map.centerAndZoom(pp, 18);
+			        map.addOverlay(new BMap.Marker(pp));
+
+			    }
+
+			    var local = new BMap.LocalSearch(map, {
+			        onSearchComplete: myFun
+			    });
+			    local.search(myValue);
+			}
+
+
+			map.centerAndZoom($scope.cityName, 10);  // 初始化地图,设置中心点坐标和地图级别
+			map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+			//map.setMapStyle({style:'dark'})
+			map.disableDoubleClickZoom();
+			// 获取基站
+			$http.get('/i/station/findAllStationsForMap').success(function (data) {
+			    $scope.stations = data;
+
+			    showStation();
+			});
 	 function showStation(){
-		 
-		 var opts = {
-					width : 250,     // 信息窗口宽度
-					height: 80,     // 信息窗口高度
-					title : "信息窗口" , // 信息窗口标题
-					enableMessage:true//设置允许信息窗发送短息
-				   };
+		 var sHtml=`
+			   <div id="positionTable" class="shadow">
+			   <ul class="flex-between">
+			      <li class="flex-items">
+			         <img src="app/img/station.png"/>
+			         <h4>基站SHKF124589</h4>
+			      </li>
+			      <li>21辆</li>
+			   </ul>
+			   <p class="flex-items">
+			      <i class="glyphicon glyphicon-map-marker"></i>
+			      <span>喀什地区金地路128号喀什市农经局2号门</span>
+			   </p >
+			   <ul class="flex flex-time">
+			      <li class="active">1分钟</li>
+			      <li>5分钟</li>
+			      <li>1小时</li>
+			   </ul>
+			   <hr/>
+			   <div class="tableArea margin-top2">
+			      <table class="table table-striped " id="tableArea" ng-model="AllElects">
+			         <thead>
+			            <tr>
+			                  <th>序号</th>
+			                  <th>车辆编号</th>
+			                  <th>经过时间</th>
+			               </tr>
+			            </thead>
+			            <tbody>
+			               <tr ng-repeat="electDto in AllElectDtos">
+			                  <td></td>
+			                  <td></td>
+			                  <td></td>
+			               </tr>
+			            </tbody>
+			         </table>
+			      </div>
+			   </div>
+			`;
+//		 var opts = {
+//					width : 250,     // 信息窗口宽度
+//					height: 80,     // 信息窗口高度
+//					title : "信息窗口" , // 信息窗口标题
+//					enableMessage:true//设置允许信息窗发送短息
+//				   };
 		 var pt;
 		 var marker2;
-		 var sContent ="<h4>显示的是一个基站！</h4>";
+		 var sContent = sHtml;
 		 var markers = [];
 	     for(var i=0;i<100;i++){
 	    	 	pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
 	    	 	marker2 = new BMap.Marker(pt); 
     	   
-	    	 	var infoWindow = new BMap.InfoWindow(sContent,opts); 				        	   
+	    	 	var infoWindow = new BMap.InfoWindow(sContent); 				        	   
 	    	 	marker2.addEventListener("click", function(e){  
 	    	 		var p = e.target;
 	    			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);

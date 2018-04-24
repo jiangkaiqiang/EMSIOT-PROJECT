@@ -80,13 +80,14 @@ font-weight:bold;
     background-color: #ecf5ff;
 }
 #dingweiModal .modal-body form>div:first-child select,#dingweiModal .modal-body form>div:first-child input{margin:0 2px;}
+
 #positionTable{
     /*position:absolute;*/
     /*top:100px;*/
     /*right:20px;*/
-    /*width:35%;*/
+    width:500px;
     padding:10px;
-    /*background:#fff;*/
+    background:#fff;
 }
 #positionTable>ul:first-child>li:last-child{
     background:#3C7ADA;
@@ -95,6 +96,51 @@ font-weight:bold;
     padding:3px 15px;
     border-radius:8px;
 }
+#positionTable>ul:first-child>li>img{width:20px;margin-right:3.5px;}
+#positionTable>p{margin-top:5px;color:#707070;}
+#positionTable>p>i{margin-right:5px;margin-left:3px;}
+#positionTable>ul.flex-time li{
+    padding:8px 15px;
+    border:1px solid #ddd;
+    border-left:0;
+}
+#positionTable>ul.flex-time li:first-child{
+    border-left:1px solid #ddd;
+}
+#positionTable>ul.flex-time {
+    /*margin-left:10px;*/
+    margin-top:12px;
+    margin-left:5px;
+}
+#positionTable>ul.flex-time li.active{
+    background:#E8F1FF;
+    color:#2C7DFA;
+    font-weight:bold;
+}
+#positionTable hr{width:100%;height:1px;border-top:1px solid #ddd;margin-top:20px;}
+#positionTable table thead tr>th:first-child div{margin-left:10px;}
+#positionTable thead tr th{background:transparent;}
+#positionTable table tbody td{text-align:left;}
+
+#r-result{width:100%;}
+#r-result input{
+    width:250px;
+    background:rgba(255,255,255,0.9)
+}
+
+#mapSearch{
+    position: absolute;
+    top: 80px;
+    left: 10px;
+}
+
+#mapSearch #r-result span.form-control-feedback {
+    top: 1px;
+    left:210px!important;
+    color: #2D7CF9;
+}
+
+
 
 
 
