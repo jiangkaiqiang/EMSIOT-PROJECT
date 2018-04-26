@@ -1,36 +1,42 @@
 <div class="station-content shadow">
     <nav class="page-title no-margin no-padding full-width">
-        <div class="title-brand flex align-items no-border">
-            <div class="title-text margin-left-md">双击地图——添加基站</div>
+      <div class="title-brand flex align-items no-border">
+    <!--<div class="title-text margin-left-md">显示基站</div>-->
+    <select name="" id="" class="form-control" style="width:25%;margin-left:5px;">
+        <option value="">显示基站</option>
+        <option value="">显示不正常基站</option>
+    </select>
 
-            <ul class="title-nav flex-around align-items margin-left">
-                <li>
-                    <form class="navbar-form navbar-form-sm" ui-shift="prependTo" data-target=".navbar-collapse"
-                          role="search">
-                        <div class="form-group border-bottom">
-                            <div class="input-group">
-                                <input type="text" ng-model="stationPhyNum"
-                                       typeahead="state for state in states | filter:$viewValue | limitTo:8"
-                                       class="form-control input-sm bg-light no-border searchInput no-padding"
-                                       placeholder="请输入基站编号搜索" style="color:#333;">
-                        <span class="input-group-btn">
-                             <button ng-click="goSearch()" class="btn btn-sm bg-light searchInput text-right">
-                                 <img src="app/img/search .png" alt="" class="pull-right"/>
-                             </button>
-                        </span>
-                            </div>
-                        </div>
-                    </form>
-                </li>
-                <li class="border-dashed" style="height:15px;color:#2C7DFA;"></li>
-                <li>
-                    <a href="">
-                        <i class="glyphicon glyphicon-trash" style="color:#2C7DFA;"></i>
-                        <button ng-click="goDeleteStations()">批量删除</button>
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <ul class="title-nav flex-around align-items margin-left">
+        <li>
+            <form class="navbar-form navbar-form-sm" ui-shift="prependTo" data-target=".navbar-collapse"
+                  role="search">
+                <div class="form-group border-bottom">
+                    <div class="input-group">
+                        <input type="text" ng-model="stationPhyNum"
+                               typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                               class="form-control input-sm bg-light no-border searchInput no-padding"
+                               placeholder="请输入基站编号搜索" style="color:#333;">
+                <span class="input-group-btn">
+                     <button ng-click="goSearch()" class="btn btn-sm bg-light searchInput text-right">
+                         <img src="app/img/search .png" alt="" class="pull-right"/>
+                     </button>
+                </span>
+                    </div>
+                </div>
+            </form>
+        </li>
+        <li class="border-dashed" style="height:15px;color:#2C7DFA;"></li>
+        <li>
+            <a href="">
+                <button ng-click="goDeleteStations()" class="btn btn-guiji">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    批量删除
+                </button>
+            </a >
+        </li>
+    </ul>
+</div>
 
         <!-- 表格操作区域开始 -->
         <div class="tableArea no-padding full-width no-margin">
@@ -75,6 +81,8 @@
         </div>
         <!-- 表格操作区域结束 -->
     </nav>
+    <div class="dismis closeStationPosition glyphicon glyphicon-chevron-left"></div>
+<div class="stationAlert shadow">双击地图添加基站</div>
 </div>
 
 <!--以下市可视化内容-->
@@ -283,3 +291,10 @@
     <!-- /.modal -->
 </div>
 <!--添加基站信息模态框 end-->
+<div id="mapSearchStation" >
+    <div id="r-result" class="form-group has-feedback">
+        <input type="text" id="suggestId" size="20" value="百度"  class="form-control" placeholder="搜索地址、区域"/>
+        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+</div>

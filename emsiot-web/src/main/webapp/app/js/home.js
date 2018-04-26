@@ -269,4 +269,49 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		   console.log("点击了一次");
 
 		});
+	//轨迹选择日期
+	 $('#homeDateStart').datetimepicker({
+	     format: 'yyyy-mm-dd',
+	     minView: "month",
+	     autoclose: true,
+	     maxDate: new Date(),
+	     pickerPosition: "bottom-left"
+	 });
+
+	 $('#homeDateEnd').datetimepicker({
+	     format: 'yyyy-mm-dd',
+	     minView: "month",
+	     autoclose: true,
+	     maxDate: new Date(),
+	     pickerPosition: "bottom-left"
+	 });
+
+
+	 //轨迹开关选项控制
+	 $('.guijiCircle').click(function () {
+	     $(this).toggleClass("active");
+
+	     var left = $(this).css('left');
+	     left = parseInt(left);
+	     if (left == 0) {
+
+	         $(this).css('background-color', '#66b3ff'),
+	             $(this).parent().css('background-color', '#66b3ff');
+	         $(this).parent().parent().addClass("active");
+	     } else {
+	         $(this).css('background-color', '#fff'),
+	             $(this).parent().css('background-color', '#ccc');
+	         $(this).parent().parent().removeClass("active");
+	     }
+
+	 });
+
+	 $(".dismis").click(function () {
+	     $(this).parents('#positionTable').toggleClass("rightToggle");
+	     if ($(this).hasClass("glyphicon-chevron-left")) {
+	         $(this).removeClass("glyphicon-chevron-left").addClass("glyphicon-chevron-right")
+	     } else {
+	         $(this).removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-left")
+	     }
+	 });
 });

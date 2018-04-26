@@ -1,20 +1,23 @@
 <nav class="page-title shadow electAlarm">
     <div class="title-brand flex-between align-items">
         <div class="title-text">车辆报警</div>
-        	
-               
-           <a href="">
-                    <img src="app/img/delectIcon.png" alt=""/>
-                    <span class="border-dashed" ng-click="goDeleteBlackElects()">批量删除</span>
-           </a>
         <ul class="title-nav flex align-items">
-            <li>
-                <a href="" data-toggle="modal" data-target="#addBlackelect">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    新增车辆报警并加入黑名单
-                </a>
-            </li>
-        </ul>
+    <li>
+        <a href="">
+            <button class=" btn btn-guiji" ng-click="goDeleteBlackElects()">
+                <i class="glyphicon glyphicon-trash"></i>
+                批量删除
+            </button>
+        </a >
+    </li>
+    <li class="border-dashed" style="height:15px;margin-right:15px;"></li>
+    <li>
+        <a href="" data-toggle="modal" data-target="#addBlackelect">
+            <i class="glyphicon glyphicon-plus"></i>
+            新增车辆报警并加入黑名单
+        </a >
+    </li>
+</ul>
     </div>
     <div class="search-container">
         <form class="form-inline">

@@ -3,7 +3,7 @@
     .electAlarm .search-container .form-group{margin:5px 0;}
 }
 
-.electAlarm .title-nav a{
+.electAlarm .title-nav>li:last-child a{
 background-image: url(../img/addCarBlue-xlg.png)!important;
 
 /* 背景图垂直、水平均居中 */

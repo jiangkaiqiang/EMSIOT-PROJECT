@@ -9,10 +9,60 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 		   });	 
 		 
 	};
+	
 	 var mapStation = new BMap.Map("stationMap",{
    	  minZoom:5,
    	  maxZoom:30
    	 });    // 创建Map实例
+	 function G(id) {
+		    return document.getElementById(id);
+	 }
+	 var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+			    {
+			        "input": "suggestId"
+			        , "location": mapStation
+			    });
+
+			ac.addEventListener("onhighlight", function (e) {  //鼠标放在下拉列表上的事件
+			    var str = "";
+			    var _value = e.fromitem.value;
+			    var value = "";
+			    if (e.fromitem.index > -1) {
+			        value = _value.province + _value.city + _value.district + _value.street + _value.business;
+			    }
+			    str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+			    value = "";
+			    if (e.toitem.index > -1) {
+			        _value = e.toitem.value;
+			        value = _value.province + _value.city + _value.district + _value.street + _value.business;
+			    }
+			    str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+			    G("searchResultPanel").innerHTML = str;
+			});
+
+			var myValue;
+			ac.addEventListener("onconfirm", function (e) {    //鼠标点击下拉列表后的事件
+			    var _value = e.item.value;
+			    myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+			    G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+			    setPlace();
+			});
+
+			function setPlace() {
+				mapStation.clearOverlays();    //清除地图上
+			    function myFun() {
+			        var pp = local.getResults().getPoi(0).point;//获取第一个智能搜索信息
+			        mapStation.centerAndZoom(pp, 18);
+			        mapStation.addOverlay(new BMap.Marker(pp));
+
+			    }
+
+			    var local = new BMap.LocalSearch(mapStation, {
+			        onSearchComplete: myFun
+			    });
+			    local.search(myValue);
+			}
 	 mapStation.centerAndZoom("喀什", 10);  // 初始化地图,设置中心点坐标和地图级别
 	 mapStation.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 	 mapStation.disableDoubleClickZoom();
@@ -271,4 +321,14 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 		    	autoclose:true
 		    }).on('dp.change', function (e) {  
 		    });  
+		//----------------基站收缩功能-----------------
+
+		 $(".closeStationPosition").click(function(){
+		    $(this).parents('.station-content').toggleClass("leftToggle");
+		    if($(this).hasClass("glyphicon-chevron-left")){
+		       $(this).removeClass("glyphicon-chevron-left").addClass("glyphicon-chevron-right")
+		    }else{
+		       $(this).removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-left");
+		    }
+		 });
 });

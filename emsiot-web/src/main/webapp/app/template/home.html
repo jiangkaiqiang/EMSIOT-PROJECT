@@ -1,48 +1,87 @@
 <div class="home-title flex flex-between shadow">
     <ul class="flex home-nav">
-        <li>
-            <a href="">
-                <div>{{stations.length}}</div>
-                <span>登记车辆</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <div>62423</div>
-                <span>黑名单车辆</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <div>65817</div>
-                <span>在线车辆</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <div>13223</div>
-                <span>报警车辆</span>
-            </a>
-        </li>
-    </ul>
+    <li>
+        <a href="">
+            <div>62423</div>
+            <span class="blue">
+                <i class="glyphicon glyphicon-list-alt"></i>
+                登记车辆
+            </span>
+        </a >
+    </li>
+    <li>
+        <a href="">
+            <div>62423</div>
+            <span class="black">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                黑名单车辆
+            </span>
+        </a >
+    </li>
+    <li>
+        <a href="">
+            <div>65817</div>
+            <span class="green">
+                <i class="glyphicon glyphicon-th-large"></i>
+                在线车辆
+            </span>
+        </a >
+    </li>
+    <li>
+        <a href="">
+            <div>13223</div>
+            <span class="red">
+                <i class="glyphicon glyphicon-bell"></i>
+                报警车辆
+            </span>
+        </a >
+    </li>
+</ul>
 
     <ul class="flex home-nav-right">
-        <li><i class="border-dashed"></i></li>
-        <li>
-            <a href="" data-toggle="modal" data-target="#guijiModal">
-                <img src="app/img/guijiSearch.png" alt=""/>
-                <span>轨迹查询</span>
-            </a>
-        </li>
-        <li><i class="border-dashed"></i></li>
-        <li>
-            <a href="#" data-toggle="modal" data-target="#dingweiModal">
-                <img src="app/img/dingweiIcon.png" alt=""/>
-                <span>定位</span>
-            </a>
-        </li>
-        <li><i class="border-dashed"></i></li>
-    </ul>
+
+    <li><i class="border-dashed"></i></li>
+    <li class="flex-items">
+        <div class="swichWrap">
+            <div class="guijiCircle"></div>
+        </div>
+        显示基站
+    </li>
+
+
+    <li><i class="border-dashed"></i></li>
+    <li class="flex-items">
+        <div class="swichWrap">
+            <div class="guijiCircle"></div>
+        </div>
+        车辆热力图
+    </li>
+
+
+    <li><i class="border-dashed"></i></li>
+    <li class="flex-items">
+        <div class="swichWrap">
+            <div class="guijiCircle"></div>
+        </div>
+        基站聚合
+    </li>
+
+    <li><i class="border-dashed"></i></li>
+    <li>
+        <a href="" data-toggle="modal" data-target="#guijiModal">
+            <img src="app/img/guijiSearch.png" alt=""/>
+            <span>轨迹查询</span>
+        </a >
+    </li>
+    <li><i class="border-dashed"></i></li>
+    <li>
+        <a href=" " data-toggle="modal" data-target="#dingweiModal">
+            <img src="app/img/dingweiIcon.png" alt=""/>
+            <span>定位</span>
+        </a >
+    </li>
+    <li><i class="border-dashed"></i></li>
+</ul>
 
     <!--轨迹查询模态框-->
     <div class="modal fade" id="guijiModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -204,4 +243,34 @@
     </div>
     <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
 </div>
-
+<!--车辆经过的基站-->
+<div id="positionTable" class="shadow" style="position:absolute;top:150px;right:20px;">
+    <ul class="flex-between">
+        <li class="flex-items">
+            <img src="app/img/config-car.png" style="width:25px;"/>
+            <h4>车辆&nbsp;YM_12012</h4>
+        </li>
+        <li>3个&nbsp;基站</li>
+    </ul>
+    <div class="tableArea" style="margin-top:5%;">
+        <table class="table table-striped " id="tableArea" ng-model="AllElects">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>基站编号</th>
+                <th>基站名称</th>
+                <th>经过时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="electDto in AllElectDtos">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="dismis dismisPosition glyphicon glyphicon-chevron-right"></div>
+</div>

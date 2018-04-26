@@ -6,6 +6,8 @@
     position:absolute;
     top:20px;left:20px;
     z-index:500;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
 }
 
 .countWarp .searchInput{
@@ -16,9 +18,49 @@
     color:#333;
 }
 .station-content .title-nav{margin-left:15px;}
-@media screen and (max-width : 1024px){
-    .countWarp .station-content{width:80%;}
+
+.station-content.leftToggle{
+    left:-48.5%!important;
 }
+.stationAlert{
+    position:absolute;
+    width: 25px;
+    height: 183px;
+    padding: 10px 5px;
+    right: -10px;
+    top: 40px;
+    color: #409eff;
+    border:1px solid #c6e2ff!important;
+    background-color: #ecf5ff!important;
+}
+
+#addStation .modal-content{
+    left:-5%;
+}
+
 .station-content .row{margin-left:0!important;margin-right:0!important;}
 
 .station-content .title-nav .border-dashed{padding:0;margin:0 5px;}
+.closeStationPosition{
+    top:-10px;
+    right:-10px;
+}
+@media screen and (max-width : 1024px){
+    .countWarp .station-content{width:80%;}
+}
+@media screen and (min-width : 1024px) and (max-width:1150px){
+    .station-content.leftToggle{
+        left:-77%!important;
+    }
+}
+#mapSearchStation{
+    position: absolute;
+    top: 20px;
+    right: 10px;
+}
+
+#mapSearchStation #r-result span.form-control-feedback {
+    top: 1px;
+    left:210px!important;
+    color: #2D7CF9;
+}

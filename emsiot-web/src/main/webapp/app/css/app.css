@@ -1012,6 +1012,7 @@ body {
   .app-aside-folded .app-header .navbar-brand {
     display: block;
     padding: 0;
+    margin: 12px 0 0 6px;
   }
   .app-aside-fixed .app-header .navbar-header {
     position: fixed;
@@ -5361,7 +5362,7 @@ position:absolute;
 .pagination > .active > a, .pagination > .active > span,
 .pagination > .active > a:hover, .pagination > .active > span:hover,
 .pagination > .active > a:focus, .pagination > .active > span:focus {
-  z-index: 2;
+  z-index: 0;
   color: #fff!important;
   cursor: default;
   background-color:#2C7DFA!important;
@@ -5407,3 +5408,26 @@ td .dropdown span[data-toggle='dropdown']{
   text-align:left;
 }
 .text-center{text-align:center;}
+.dismis{
+  width:20px;
+  height:20px;
+  text-align:center;
+  border-radius:50px;
+  background:#fff;
+  position:absolute;
+  border:1px solid #ddd;
+  cursor:pointer;
+  line-height:16px;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.dismisPosition{
+  left:-15px;
+  top:-10px;
+}
+.green{color:#71A743;}
+.red{color:#FF0089;}
+.black{color:#8E00FF;}
+.blue{color:#3C7ADA;}
+

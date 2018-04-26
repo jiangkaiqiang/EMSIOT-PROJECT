@@ -432,7 +432,7 @@
                                     所在区域：
                                 </label>
 
-                                <div class="col-sm-8">
+                                <div class="col-sm-8 flex">
                                     <select id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"
                                             ng-change="getCitis()"
                                             ng-options="x.province_id as x.name for x in provinces"></select>
@@ -1100,7 +1100,7 @@
                                     所在区域：
                                 </label>
 
-                                <div class="col-sm-8">
+                                <div class="col-sm-8 flex">
                                     <select id="" class="form-control" ng-model="updateElect.electrombile.pro_id" ng-disabled="editable"
                                             ng-change="getCitisForUpdate()"
                                             ng-options="x.province_id as x.name for x in provinces"></select>
