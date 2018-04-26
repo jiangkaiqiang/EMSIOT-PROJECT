@@ -35,4 +35,13 @@ public interface ElectrombileStationMapper {
      */
     List<ElectrombileStation> selectByGuaCardNumForTrace(@Param("guaCardNum") int guaCardNum,
     		@Param("startTimeForTrace") String startTimeForTrace, @Param("endTimeForTrace") String endTimeForTrace);
+    /**
+     * 根据基站的物理编号和时间，查询某个基站下的车辆
+     * @param station_phy_num
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<ElectrombileStation> selectElectsByStationPhyNumAndTime(@Param("stationPhyNum") int stationPhyNum,
+    		@Param("startTime") String startTime, @Param("endTime") String endTime);
 }

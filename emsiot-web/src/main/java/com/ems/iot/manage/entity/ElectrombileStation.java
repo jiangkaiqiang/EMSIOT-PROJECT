@@ -9,9 +9,9 @@ public class ElectrombileStation {
 
     private Integer station_phy_num;
 
-    private Date hard_read_time;
+    private String hard_read_time;
 
-    private Date update_time;
+    private String update_time;
 
     public Integer getEle_sta_id() {
         return ele_sta_id;
@@ -37,19 +37,19 @@ public class ElectrombileStation {
         this.station_phy_num = station_phy_num;
     }
 
-    public Date getHard_read_time() {
+    public String getHard_read_time() {
         return hard_read_time;
     }
 
-    public void setHard_read_time(Date hard_read_time) {
+    public void setHard_read_time(String hard_read_time) {
         this.hard_read_time = hard_read_time;
     }
 
-    public Date getUpdate_time() {
+    public String getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(Date update_time) {
+    public void setUpdate_time(String update_time) {
         this.update_time = update_time;
     }
 }

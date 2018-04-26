@@ -25,4 +25,6 @@ public interface StationMapper {
     		@Param("stationPhyNum")Integer stationPhyNum, @Param("stationName")String stationName, @Param("stationStatus")Integer stationStatus);
     
     Station selectByStationPhyNum(Integer stationPhyNum);
+    
+    List<Station> findStationsByStatus(@Param("stationStatus")Integer stationStatus);
 }

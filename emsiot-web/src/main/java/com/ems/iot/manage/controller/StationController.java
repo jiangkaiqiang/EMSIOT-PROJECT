@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -239,5 +240,20 @@ public class StationController extends BaseController {
 		}
 	    stationMapper.insert(station);
 	    return new ResultDto(0,"添加成功");
+	}
+	
+	/**
+	 * 显示所有异常基站，为基站管理里面的显示异常基站按钮提供服务
+	 * @param stationStatus
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findStationsByStatus")
+	@ResponseBody
+	public Object findStationsByStatus(
+			@RequestParam(value = "stationStatus", required = false) Integer stationStatus
+			) throws UnsupportedEncodingException {	
+		List<Station> staions= stationMapper.findStationsByStatus(stationStatus);
+		return staions;
 	}
 }

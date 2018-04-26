@@ -227,4 +227,13 @@
     from station
     where station_phy_num = #{stationPhyNum,jdbcType=INTEGER}
   </select>
+    <select id="findStationsByStatus" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
+		SELECT * FROM `station`
+		<where>
+			<if test="stationStatus != null">
+				station_status = #{stationStatus}
+			</if>
+		</where>
+		order by `install_date` desc
+	</select>
 </mapper>

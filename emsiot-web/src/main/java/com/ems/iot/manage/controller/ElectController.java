@@ -29,6 +29,7 @@ import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectrombileDto;
 import com.ems.iot.manage.dto.NgRemoteValidateDTO;
 import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.dto.SysUserDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
@@ -80,6 +81,34 @@ public class ElectController extends BaseController {
 			) throws UnsupportedEncodingException {
 		 Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
 	     return electrombile;
+	}
+	
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectsByStationIdAndTime")
+	@ResponseBody
+	public Object findElectsByStationIdAndTime(
+			@RequestParam(value="startTime", required=false) String startTime,
+			@RequestParam(value="endTime", required=false) String endTime,
+			@RequestParam(value="stationPhyNum", required=false) Integer stationPhyNum
+			) throws UnsupportedEncodingException {
+		 List<ElectrombileStation> electrombileStations = electrombileStationMapper.selectElectsByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+		 List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
+		 for (ElectrombileStation electrombileStation : electrombileStations) {
+			StationElectDto stationElectDto = new StationElectDto();
+			stationElectDto.setCorssTime(electrombileStation.getUpdate_time());
+			Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(electrombileStation.getEle_gua_card_num());
+			stationElectDto.setOwner_name(electrombile.getOwner_name());
+			stationElectDto.setPlate_num(electrombile.getPlate_num());
+			stationElectDtos.add(stationElectDto);
+		 }
+	     return stationElectDtos;
 	}
 	
 	/**

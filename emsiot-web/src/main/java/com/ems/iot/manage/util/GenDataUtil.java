@@ -69,8 +69,8 @@ public class GenDataUtil {
 //	Electrombile_Station数据生成
 	electrombileStation.setEle_gua_card_num(electrombile.getGua_card_num());
 	electrombileStation.setStation_phy_num(station.getStation_phy_num());
-	electrombileStation.setHard_read_time(new Date());
-	electrombileStation.setUpdate_time(new Date());
+	electrombileStation.setHard_read_time(new Date().toString());
+	electrombileStation.setUpdate_time(new Date().toString());
 	}
 	
 	public static void genBlackelect(Electrombile electrombile,Blackelect blackelect){
