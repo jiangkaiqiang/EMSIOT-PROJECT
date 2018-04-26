@@ -150,7 +150,33 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         return flag;
     }
 
+    //获取全部省
+    $http.get('/i/city/findProvinceList').success(function (data) {
+        $scope.provinces = data;
+        $scope.addProvinceID = data[0].province_id;
+    });
+	
+    $scope.getCitis = function () {
+    	$http.get('/i/city/findCitysByProvinceId', {
+            params: {
+                "provinceID": $scope.addProvinceID
+            }
+        }).success(function (data) {
+        	$scope.citis = data;
+            $scope.addCityID = data[0].city_id;
+        });
+    }
     
+    $scope.getAreas = function () {
+    	$http.get('/i/city/findAreasByCityId', {
+            params: {
+                "cityID": $scope.addCityID
+            }
+        }).success(function (data) {
+        	$scope.areas = data;
+            $scope.addAreaID = data[0].area_id;
+        });
+    }
     
     $scope.submit = function(){
         if (checkInput()){
