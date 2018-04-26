@@ -280,3 +280,178 @@
     <!-- /.modal -->
 </div>
 <!--  添加车辆模态框 end -->
+
+<!-- 编辑黑名单模态框 -->
+<div class="modal fade" id="editBlackelect" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="modal-title" id="" >
+                    新增车辆并加入黑名单
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="electForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    防盗芯片：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addGuaCardNum">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    案发时间：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <div class='input-group date' id='electAlarmDate'>
+                                        <input type='text' class="form-control" placeholder="选择开始时间" readonly ng-model="addOccurDate"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+						                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    车主手机：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addOwnerTele">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    车主姓名：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="addOwnerName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group" id="electAlarmArea">
+                                <label for="" class="col-sm-2 control-label">
+                                    <i>*</i>
+                                    案发区域：
+                                </label>
+
+                                <div class="col-sm-10 flex">
+                                    <select id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"
+                                            ng-change="getCitis()"
+                                            ng-options="x.province_id as x.name for x in provinces"></select>
+                                    <select id="" class="form-control" ng-model="addCityID" ng-disabled="editable"
+                                            ng-change="getAreas(addCityID)"
+                                            ng-options="x.city_id as x.name for x in citis"></select>
+                                    <select id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"
+                                            ng-options="x.area_id as x.name for x in areas"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
+                                    案发地点类型：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <select name="" id="" class="form-control" ng-model="addAddressType">
+                                        <option value="社区">社区</option>
+                                        <option value="地铁站">地铁站</option>
+                                        <option value="商场">商场</option>
+                                        <option value="超市">超市</option>
+                                        <option value="沿街商铺">沿街商铺</option>
+                                        <option value="办公楼">办公楼</option>
+                                        <option value="医院">医院</option>
+                                        <option value="车站">车站</option>
+                                        <option value="学校">学校</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">
+                                    备注：
+                                </label>
+
+                                <div class="col-sm-10">
+                                    <!--<textarea name="" id="" cols="30" rows="10"></textarea>-->
+                                    <textarea rows="3" style="border:1px solid #ddd;width:100%" class="form-control" 
+                                    ng-model="addCaseDetail"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">
+
+                                </label>
+
+                                <div class="col-sm-10 flex">
+                                    <input type="checkbox" style="margin-right:5px;" ng-model="addConfirm"/>我们已经与车主联系或者车主已主动110报警，并已确定车辆被盗
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submit()" class="btn btn-primary">
+                    添加
+                </button>
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
