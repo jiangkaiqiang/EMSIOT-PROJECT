@@ -129,4 +129,11 @@
 		</where>
 		order by `update_time` ASC
 	</select>
+	<select id="selectElectsByStationPhyNumNow" parameterType="map" resultType="com.ems.iot.manage.dto.Thermodynamic">
+	SELECT electrombile_station.station_phy_num as station_phy_num, COUNT(*) as num,
+    station.longitude as longitude, station.latitude as latitude
+    FROM `electrombile_station` 
+    left join station on electrombile_station.station_phy_num = station.station_phy_num
+    where update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by station_phy_num   
+	</select>
 </mapper>

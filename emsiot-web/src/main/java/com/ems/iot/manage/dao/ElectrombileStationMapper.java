@@ -1,9 +1,11 @@
 package com.ems.iot.manage.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.entity.ElectrombileStation;
 
 public interface ElectrombileStationMapper {
@@ -44,4 +46,11 @@ public interface ElectrombileStationMapper {
      */
     List<ElectrombileStation> selectElectsByStationPhyNumAndTime(@Param("stationPhyNum") int stationPhyNum,
     		@Param("startTime") String startTime, @Param("endTime") String endTime);
+    
+    /**
+     * 根据基站的物理编号来获取该基站下当前一分钟之内存在的车辆，如果需要修改时间的大小，如改成一秒，则直接改此方法对应的SQL即可
+     * @param stationPhyNum
+     * @return
+     */
+    List<Thermodynamic> selectElectsByStationPhyNumNow();
 }

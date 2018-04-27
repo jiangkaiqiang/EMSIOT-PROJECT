@@ -79,16 +79,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			}
 
 
-			map.centerAndZoom($scope.cityName, 10);  // 初始化地图,设置中心点坐标和地图级别
-			map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-			//map.setMapStyle({style:'dark'})
-			map.disableDoubleClickZoom();
-			// 获取基站
-			$http.get('/i/station/findAllStationsForMap').success(function (data) {
-			    $scope.stations = data;
-
-			    showStation();
-			});
+//			map.centerAndZoom($scope.cityName, 10);  // 初始化地图,设置中心点坐标和地图级别
+//			map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+//			//map.setMapStyle({style:'dark'})
+//			map.disableDoubleClickZoom();
+//			// 获取基站
+//			$http.get('/i/station/findAllStationsForMap').success(function (data) {
+//			    $scope.stations = data;
+//			    showStation();
+//			});
 	 function showStation(){
 		 var sHtml=`
 			   <div id="positionTable" class="shadow">
@@ -146,7 +145,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	    	 	var infoWindow = new BMap.InfoWindow(sContent); 				        	   
 	    	 	marker2.addEventListener("click", function(e){  
 	    	 		var p = e.target;
-	    			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+	    			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);		
 	    	 		map.openInfoWindow(infoWindow,point);
     	   });
     	   //map.addOverlay(marker2); 
@@ -154,13 +153,32 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     	  }
     	  var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	 }
+	 //根据时间和基站id获取基站下面的当前所有车辆
+     function showElectsInStation(startTime,endTime,stationPhyNum){
+    	 $http.get('/i/elect/findElectsByStationIdAndTime', {
+ 			params : {
+ 				"startTime" : startTime,
+ 				"endTime" : endTime,
+ 				"stationPhyNum" : stationPhyNum
+ 			}
+ 		}).success(function(data) {
+ 			$scope.electsInStation = data;
+ 		});
+	 }
 	 
 	 function openInfo(){
 		 
 	 }
 	 
+	 $scope.showReLiTu = function(){
+		 $http.get('/i/elect/findElectsNumByStations').success(function (data) {
+	   	        $scope.thermodynamics = data;
+	   	        alert($scope.thermodynamics);
+	   	        //reLituShow();
+	   	    });
+	 }
 	 
-	 //
+	 //定义轨迹及定位查询条件的类型
 	 $scope.AllKeywordType = [
 	    {id:"0",name:"防盗芯片ID"},
 	    {id:"1",name:"车牌号"}
@@ -218,9 +236,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 $scope.findElectTrace = function() {
 		 if ($scope.keywordTypeForTrace == "1") {	
 				$scope.plateNum = $scope.keywordForTrace;
+				$scope.electNumForTraceTable = $scope.plateNum;
 			}
 			else if($scope.keywordTypeForTrace == "0"){
 				$scope.guaCardNum = $scope.keywordForTrace;
+				$scope.electNumForTraceTable = $scope.keywordForTrace;
 			}
 			else{
 				
@@ -234,6 +254,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 					}
 				}).success(function(data) {
 					$scope.traceStations = data;
+					$scope.traceStationsLength = data.length;
 					if(data.length == 1)
 						alert("该车辆仅经过一个基站："+data[0].station.station_name);
 					else if(data.length == 0)

@@ -16,7 +16,7 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 public class RecStart{
 	
 	static int count = 0;
-	@PostConstruct
+	//@PostConstruct
 	public void executeRfid() throws Exception {
 //		StartActivity act = new StartActivity();
         //监听秀派读卡器 触发器判断进出

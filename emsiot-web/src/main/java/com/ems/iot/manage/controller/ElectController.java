@@ -31,6 +31,7 @@ import com.ems.iot.manage.dto.NgRemoteValidateDTO;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.dto.SysUserDto;
+import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
 import com.ems.iot.manage.entity.Cookies;
@@ -109,6 +110,18 @@ public class ElectController extends BaseController {
 			stationElectDtos.add(stationElectDto);
 		 }
 	     return stationElectDtos;
+	}
+	
+	/**
+	 * 返回所有基站下，当前所拥有的车辆数量，为车辆热力图提供支持
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectsNumByStations")
+	@ResponseBody
+	public Object findElectsNumByStations() throws UnsupportedEncodingException {
+		 List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow();		
+		 return thermodynamics;
 	}
 	
 	/**

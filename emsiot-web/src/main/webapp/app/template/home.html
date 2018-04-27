@@ -54,7 +54,9 @@
         <div class="swichWrap">
             <div class="guijiCircle"></div>
         </div>
-        车辆热力图
+        <button type="button" ng-click="showReLiTu()" class="btn btn-guiji">
+                          车辆热力图
+                    </button>
     </li>
 
 
@@ -248,26 +250,24 @@
     <ul class="flex-between">
         <li class="flex-items">
             <img src="app/img/config-car.png" style="width:25px;"/>
-            <h4>车辆&nbsp;YM_12012</h4>
+            <h4>车辆&nbsp;{{electNumForTraceTable}}</h4>
         </li>
-        <li>3个&nbsp;基站</li>
+        <li>{{traceStationsLength}}个&nbsp;基站</li>
     </ul>
     <div class="tableArea" style="margin-top:5%;">
-        <table class="table table-striped " id="tableArea" ng-model="AllElects">
+        <table class="table table-striped " id="tableArea" ng-model="traceStations">
             <thead>
             <tr>
-                <th>编号</th>
-                <th>基站编号</th>
+                <th>基站物理编号</th>
                 <th>基站名称</th>
                 <th>经过时间</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="electDto in AllElectDtos">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+            <tr ng-repeat="traceStation in traceStations">
+                <td>{{traceStation.station.station_phy_num}}</td>
+                <td>{{traceStation.station.station_name}}</td>
+                <td>{{traceStation.crossTime}}</td>
             </tr>
             </tbody>
         </table>

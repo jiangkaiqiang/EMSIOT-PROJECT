@@ -247,6 +247,31 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     	}
     	return stationIDs;
     }
+    
+    $scope.AllStationStatusForShow = [
+        {id:"1",name:"隐藏基站"},
+        {id:"2",name:"显示异常基站"}
+    ];
+    $scope.stationStatusForShow = "1";
+    $scope.stationStatusShow = function () {
+    	if($scope.stationStatusForShow =="2"){
+    		$http.get('/i/station/findStationsByStatus', {
+                params: {
+                    "stationStatus": "1"
+                }
+            }).success(function (data) {
+            	$scope.errorStation = data;
+                alert($scope.errorStation);
+                //在地图上显示异常基站
+            });
+    	}
+    	else{
+    		//隐藏显示的异常基站
+    		alert("异常基站");
+    	}
+    }
+    
+   
     $scope.AllStationType = [
         {id:"1",name:"SP-RFS-336-391"},
         {id:"2",name:"RG-RFS-336-392"}

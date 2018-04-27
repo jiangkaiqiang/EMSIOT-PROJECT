@@ -2,11 +2,9 @@
     <nav class="page-title no-margin no-padding full-width">
       <div class="title-brand flex align-items no-border">
     <!--<div class="title-text margin-left-md">显示基站</div>-->
-    <select name="" id="" class="form-control" style="width:25%;margin-left:5px;">
-        <option value="">显示基站</option>
-        <option value="">显示不正常基站</option>
-    </select>
-
+    <select id="" class="form-control" style="width:25%;margin-left:5px;"
+        ng-model="stationStatusForShow" ng-disabled="editable" ng-change="stationStatusShow()"
+        ng-options="x.id as x.name for x in AllStationStatusForShow"></select>
     <ul class="title-nav flex-around align-items margin-left">
         <li>
             <form class="navbar-form navbar-form-sm" ui-shift="prependTo" data-target=".navbar-collapse"
