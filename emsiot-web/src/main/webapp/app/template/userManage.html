@@ -158,13 +158,19 @@
                             </div>
                         </div>
 
-                        <!--监控台权限管理开始-->
+                       
+                       <!--监控台权限管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items">
                                 <div class="title-text">
                                     <img src="app/img/config-home.png" alt=""/>
                                     <span>监控台</span>
                                 </div>
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
+                                    </li>
+                                </ul>
                             </div>
                             <div class="search-container">
                                 <button class="btn btn-white" type="button">
@@ -190,91 +196,170 @@
                                     <img src="app/img/config-car.png" alt=""/>
                                     <span>车辆管理</span>
                                 </div>
-                                <ul class="title-nav flex align-items">
-                                    <li class="tabs">
-                                        <input type="radio" id="tab1" name="tab-control" checked>
-                                        <input type="radio" id="tab2" name="tab-control">
-                                        <ul>
-                                            <li title="车辆备案登记">
-                                                <label for="tab1" role="">
-                                                    <span>车辆备案登记</span>
-                                                </label>
-                                            </li>
-                                            <li title="车辆报警">
-                                                <label for="tab2" role="">
-                                                    <span>车辆报警</span>
-                                                </label>
-                                            </li>
-                                        </ul>
-
-                                        <div class="slider">
-                                            <div class="indicator"></div>
-                                        </div>
-
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
                                     </li>
                                 </ul>
                             </div>
 
-                            <ul class="search-container" id="content">
+                            <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        注册车辆--添加
+                                        车辆管理--添加
                                         <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        注册车辆--查看
+                                        黑名单管理--查看
                                         <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        注册车辆--查看
+                                        报警追钟--查看
                                         <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        注册车辆--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        注册车辆--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        注册车辆--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                </li>
-
-                                <li class="tab2-car">
-                                    <button class="btn btn-white" type="button">
-                                        报警车辆--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警车辆--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警车辆--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警车辆--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警车辆--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警车辆--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-
                                 </li>
                             </ul>
-
-
                         </nav>
                         <!--车辆管理开始结束-->
+
+                        <!--基站管理开始-->
+                        <nav class="page-title">
+                            <div class="title-brand flex-between align-items inputParent">
+                                <div class="title-text">
+                                    <img src="app/img/stations-title.png" alt=""/>
+                                    <span>基站管理</span>
+                                </div>
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="search-container">
+                                <li class="tab1-car">
+                                    <button class="btn btn-white" type="button">
+                                        基站管理--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        基站设备管理--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--基站管理开始结束-->
+
+                        <!--特殊区域管理开始-->
+                        <nav class="page-title">
+                            <div class="title-brand flex-between align-items inputParent">
+                                <div class="title-text">
+                                    <img src="app/img/teshu.png" alt=""/>
+                                    <span>特殊区域管理</span>
+                                </div>
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="search-container">
+                                <li class="tab1-car">
+                                    <button class="btn btn-white" type="button">
+                                        限制区域管理--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        敏感区域管理--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--特殊区域管理开始结束-->
+
+                        <!--区域报警管理开始-->
+                        <nav class="page-title">
+                            <div class="title-brand flex-between align-items inputParent">
+                                <div class="title-text">
+                                    <img src="app/img/teshu.png" alt=""/>
+                                    <span>特殊区域管理</span>
+                                </div>
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="search-container">
+                                <li class="tab1-car">
+                                    <button class="btn btn-white" type="button">
+                                        限制区域报警管理--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        敏感区域报警管理--查看
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--区域报警管理结束-->
+
+
+                        <!--图标统计开始-->
+                        <nav class="page-title">
+                            <div class="title-brand flex-between align-items inputParent">
+                                <div class="title-text">
+                                    <img src="app/img/charts.png" alt=""/>
+                                    <span>图表统计</span>
+                                </div>
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="search-container">
+                                <li class="tab1-car">
+                                    <button class="btn btn-white" type="button">
+                                        图表统计--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--图标统计结束-->
+
+                        <!--用户管理开始-->
+                        <nav class="page-title">
+                            <div class="title-brand flex-between align-items inputParent">
+                                <div class="title-text">
+                                    <img src="app/img/userIcon.png" alt=""/>
+                                    <span>用户管理</span>
+                                </div>
+                                <ul class="title-nav flex flex-items">
+                                    <li>
+                                        <input type="checkbox" class="form-control">
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="search-container">
+                                <li class="tab1-car">
+                                    <button class="btn btn-white" type="button">
+                                        用户管理--添加
+                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--用户管理结束-->
+                       
 
                         <div class="divider-line"></div>
 

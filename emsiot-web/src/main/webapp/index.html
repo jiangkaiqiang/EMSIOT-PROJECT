@@ -70,7 +70,7 @@
             <!-- nabar right -->
             <ul class="nav navbar-nav navbar-right">
                 <li style="height:70px;line-height:70px;">
-                    <span style="color:red;">警报：基站SA2546985发现可疑车辆！</span>
+                    <span id="message" style="color:red;"></span>
                 </li>
                 <li>
                     <a href="#" style="height:70px;line-height:40px;">
@@ -227,7 +227,7 @@
                         <li ui-sref-active="active">
                             <a href="http://datav.aliyun.com/share/61d385a6dfd42ad65b2a09428c625df3" target="_blank">
                                 <img src="app/img/asideIcon05.png" alt=""/>
-                                <span>图表信息统计</span>
+                                <span class="font-bold">图表信息统计</span>
                             </a>
                         </li>
 
@@ -357,6 +357,8 @@
 <script src="bower_components/angular/ngRemoteValidate.0.6.1.min.js"></script>
 <!-- 打印.js -->
 <script type="text/javascript" src="assets/js/printThis.js"></script>
+<!--comet4j 监听  -->
+<script type="text/javascript" src="assets/js/comet4j.js"></script>
 <!--map js  -->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ihX9xLalNGbE3p1r1xE1D3ESRBUYgouO"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>

@@ -53,7 +53,43 @@
 	   <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>   
 
 	</listener>
+     
+     
+      <listener>
 
+        <description>Comet4J容器侦听</description>
+
+        <listener-class>org.comet4j.core.CometAppListener</listener-class>
+
+    </listener>
+
+    
+
+    <listener>
+
+        <description>监听我们自己的推送类</description>
+
+        <listener-class>com.ems.iot.manage.util.CometUtil</listener-class>
+
+    </listener>
+
+    <servlet>
+
+        <description>客户端访问入口</description>
+
+        <servlet-name>CometServlet</servlet-name>
+
+        <servlet-class>org.comet4j.core.CometServlet</servlet-class>
+
+    </servlet>
+
+    <servlet-mapping>
+
+        <servlet-name>CometServlet</servlet-name>
+
+        <url-pattern>/conn</url-pattern>
+
+    </servlet-mapping>  
 
 
 	<servlet>

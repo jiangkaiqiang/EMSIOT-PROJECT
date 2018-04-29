@@ -250,7 +250,13 @@
     <artifactId>jedis</artifactId>
     <version>2.7.2</version>
 </dependency>
-      
+      <dependency> 
+            <groupId>comet4j-tomcat7</groupId> 
+            <artifactId>comet4j-tomcat7</artifactId> 
+            <version>1.0</version> 
+            <scope>system</scope> 
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/comet4j-tomcat7.jar</systemPath>
+    </dependency> 
 	</dependencies>
 
 	<build>

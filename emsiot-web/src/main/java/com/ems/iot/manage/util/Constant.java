@@ -13,5 +13,5 @@ public class Constant {
     public static String CHANNEL_MSGCOUNT= "msgCount";
     public static String CHANNEL_MSG_DATA= "msgData";
     public static String separator = File.separator;
-    public static String url = separator+"shfb";
+    public static String url = separator+"emsiot";
 }

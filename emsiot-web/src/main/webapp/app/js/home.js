@@ -170,14 +170,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 
 	 }
 	 
-	 $scope.showReLiTu = function(){
-		 $http.get('/i/elect/findElectsNumByStations').success(function (data) {
-	   	        $scope.thermodynamics = data;
-	   	        alert($scope.thermodynamics);
-	   	        //reLituShow();
-	   	    });
-	 }
-	 
 	 //定义轨迹及定位查询条件的类型
 	 $scope.AllKeywordType = [
 	    {id:"0",name:"防盗芯片ID"},
@@ -255,6 +247,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 				}).success(function(data) {
 					$scope.traceStations = data;
 					$scope.traceStationsLength = data.length;
+					$("#positionTable").addClass("rightToggle");
 					if(data.length == 1)
 						alert("该车辆仅经过一个基站："+data[0].station.station_name);
 					else if(data.length == 0)
@@ -262,12 +255,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 					else
 						for(var i = 0;i<data.length-1;i++){
 							walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-
 							var p1 = new BMap.Point(data[i].station.longitude,data[i].station.latitude);
 							var p2 = new BMap.Point(data[i+1].station.longitude,data[i+1].station.latitude);
 							drawLine(p1,p2);
 						}
-					
 				});
 			$("#guijiModal").modal("hide");
 	 }
@@ -275,9 +266,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 //walking.clearResults();
 		 $("#guijiModal").modal("hide");
 		 map.clearOverlays();
-		 showStation();
-		 
-		 
+		 showStation(); 
 	 }
 	 $scope.goHome=function(){
 		 $state.reload();
@@ -308,25 +297,40 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 });
 
 
+	 $scope.showReLiTu = function(){
+		 $http.get('/i/elect/findElectsNumByStations').success(function (data) {
+	   	        $scope.thermodynamics = data;
+	   	        alert($scope.thermodynamics);
+	   	        //reLituShow();
+	   	    });
+	 }
+	 $scope.relituFlag = 0;
 	 //轨迹开关选项控制
-	 $('.guijiCircle').click(function () {
-	     $(this).toggleClass("active");
-
-	     var left = $(this).css('left');
-	     left = parseInt(left);
-	     if (left == 0) {
-
-	         $(this).css('background-color', '#66b3ff'),
-	             $(this).parent().css('background-color', '#66b3ff');
-	         $(this).parent().parent().addClass("active");
-	     } else {
-	         $(this).css('background-color', '#fff'),
-	             $(this).parent().css('background-color', '#ccc');
-	         $(this).parent().parent().removeClass("active");
+	 $('#relitu').click(function () {
+	     if($scope.relituFlag==0){
+	    	 $scope.showReLiTu();
+	    	 $scope.relituFlag=1;
 	     }
-
+	     else if($scope.relituFlag==1){
+	    	 alert("隐藏热力图");
+	    	 $scope.relituFlag=0;
+	     }
+	     showCssFlag('#relitu');
 	 });
-
+	 function showCssFlag(param){
+		  $(param).toggleClass("active");
+		     var left = $(param).css('left');
+		     left = parseInt(left);
+		     if (left == 0) {
+		         $(param).css('background-color', '#66b3ff'),
+		             $(param).parent().css('background-color', '#66b3ff');
+		         $(param).parent().parent().addClass("active");
+		     } else {
+		         $(param).css('background-color', '#fff'),
+		             $(param).parent().css('background-color', '#ccc');
+		         $(param).parent().parent().removeClass("active");
+		     }
+	 }
 	 $(".dismis").click(function () {
 	     $(this).parents('#positionTable').toggleClass("rightToggle");
 	     if ($(this).hasClass("glyphicon-chevron-left")) {

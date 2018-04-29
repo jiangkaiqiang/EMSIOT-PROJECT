@@ -2,7 +2,7 @@
     <ul class="flex home-nav">
     <li>
         <a href="">
-            <div>62423</div>
+            <div>{{stations.length}}</div>
             <span class="blue">
                 <i class="glyphicon glyphicon-list-alt"></i>
                 登记车辆
@@ -52,11 +52,9 @@
     <li><i class="border-dashed"></i></li>
     <li class="flex-items">
         <div class="swichWrap">
-            <div class="guijiCircle"></div>
+            <div class="guijiCircle" id="relitu"></div>
         </div>
-        <button type="button" ng-click="showReLiTu()" class="btn btn-guiji">
-                          车辆热力图
-                    </button>
+         车辆热力图
     </li>
 
 
@@ -77,7 +75,7 @@
     </li>
     <li><i class="border-dashed"></i></li>
     <li>
-        <a href=" " data-toggle="modal" data-target="#dingweiModal">
+        <a href="" data-toggle="modal" data-target="#dingweiModal">
             <img src="app/img/dingweiIcon.png" alt=""/>
             <span>定位</span>
         </a >
@@ -217,7 +215,6 @@
 
                             </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -234,7 +231,6 @@
         </div>
         <!-- /.modal -->
     </div>
-
 </div>
 <!--以下市可视化地图的内容-->
 <div id="allmap" style="width:100%;height:800px;"> </div>
@@ -246,7 +242,7 @@
     <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
 </div>
 <!--车辆经过的基站-->
-<div id="positionTable" class="shadow" style="position:absolute;top:150px;right:20px;">
+<div id="positionTable" class="shadow" style="position:absolute;top:150px;right:-490px;">
     <ul class="flex-between">
         <li class="flex-items">
             <img src="app/img/config-car.png" style="width:25px;"/>
@@ -272,5 +268,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dismis dismisPosition glyphicon glyphicon-chevron-right"></div>
+    <div class="dismis dismisPosition glyphicon glyphicon-chevron-left"></div>
 </div>

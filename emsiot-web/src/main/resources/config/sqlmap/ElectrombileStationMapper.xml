@@ -25,7 +25,7 @@
     insert into electrombile_station (ele_sta_id, ele_gua_card_num, station_phy_num, 
       hard_read_time, update_time)
     values (#{ele_sta_id,jdbcType=INTEGER}, #{ele_gua_card_num,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER}, 
-      #{hard_read_time,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP})
+      #{hard_read_time,jdbcType=TIMESTAMP}, now())
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.ElectrombileStation">
     insert into electrombile_station

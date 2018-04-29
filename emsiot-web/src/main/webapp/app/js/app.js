@@ -100,3 +100,11 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         templateUrl: 'app/template/stationDeviceManage.html'
     });
 });
+JS.Engine.start('conn');
+JS.Engine.on(
+        { 
+           msgData : function(msgData){
+        	   $("#message").text(msgData);  
+           },
+       }
+   );

@@ -66,6 +66,7 @@ font-weight:bold;
 }
 .countWarp  #guijiModal .active{
     background:none;
+    left:25px;
 }
  .modal-footer .btn-guiji{
     background:#fff;
@@ -166,7 +167,7 @@ font-weight:bold;
     left:25px;
 }
 #positionTable.rightToggle{
-    right:-490px!important;
+    right:20px!important;
 }
 @media screen and (min-width:1024px) and (max-width:1152px){
     .countWarp .home-title .home-nav>li>a{
