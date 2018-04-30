@@ -136,19 +136,6 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
     		return '无效';
     	}
     }
-    
-    
-    function checkInput(){
-        var flag = true;
-        // 检查必须填写项
-        if ($scope.username == undefined || $scope.username == '') {
-            flag = false;
-        }
-        if ($scope.password == undefined || $scope.password == '') {
-            flag = false;
-        }
-        return flag;
-    }
 
     //获取全部省
     $http.get('/i/city/findProvinceList').success(function (data) {
@@ -178,24 +165,36 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         });
     }
     
+    function checkInput(){
+        var flag = true;
+        // 检查必须填写项
+        if ($scope.username == undefined || $scope.username == '') {
+            flag = false;
+        }
+        if ($scope.password1 == undefined || $scope.password1 == '') {
+            flag = false;
+        }
+        return flag;
+    }
     $scope.submit = function(){
         if (checkInput()){
-          if($scope.password==$scope.password1){
-        	var valid;
-        	if($scope.validforadd)  valid = 1;
-        	else  valid = 2;
+          if($scope.password2==$scope.password1){
+        	  if($("#optPower").is(":checked")== true){
+        		  var optPower = 1;
+        	  }
             $http({
             	method : 'GET', 
     			url:'/i/user/addUser',
     			params:{
     				'user_name': $scope.username,
-    				'password': $scope.password,
-    				'user_role_id' : $scope.addUserRoleid,
-    				'company': $scope.company,
-    				'pro_id' : $scope.addProjectid,
-    				'comp_factory_id' : $scope.addcompfactoryid,
-    				'valid_status' : valid,
-    				'user_tel' : $scope.telephone
+    				'nickname': $scope.nickname,
+    				'password': $scope.password1,
+    				'opt_power' : optPower,
+    				'user_tel' : $scope.telephone,
+    				'pro_power' : $scope.addProvinceID,
+    				'city_power' : $scope.addCityID,
+    				'area_power' : $scope.addAreaID,
+    				'menu_power' : 1
     			}
     		}).then(function (resp) {
     			 alert(resp.data.message);

@@ -422,19 +422,35 @@ public class ElectController extends BaseController {
 		List<String> titles = new ArrayList<String>();
 		titles.add("车牌号");
 		titles.add("防盗芯片编号");
+		titles.add("所属地区");
 		titles.add("联系电话");
 		titles.add("车辆状态");
 		titles.add("车主姓名");
 		titles.add("身份证号");
+		titles.add("添加时间");
 		List<Map<String, Object>> varList = new ArrayList<Map<String,Object>>();
 		for (Electrombile electrombile : electrombiles) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("var1", electrombile.getPlate_num());
 			map.put("var2", electrombile.getGua_card_num().toString());
-			map.put("var3", electrombile.getOwner_tele());
-			map.put("var4", electrombile.getElect_state().toString());
-			map.put("var5", electrombile.getOwner_name());
-			map.put("var6", electrombile.getOwner_id());
+			String area = "";
+			area = area + cityMapper.findProvinceById(electrombile.getPro_id()).getName();
+			area = area + cityMapper.findCityById(electrombile.getCity_id()).getName();
+			area = area + cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName();
+			map.put("var3", area);
+			map.put("var4", electrombile.getOwner_tele());
+			if (electrombile.getElect_state()==1) {
+				map.put("var5", "正常");
+			}
+			else if (electrombile.getElect_state()==2) {
+				map.put("var5", "黑名单");
+			}
+			else{
+			    map.put("var5", "未知");
+			}
+			map.put("var6", electrombile.getOwner_name());
+			map.put("var7", electrombile.getOwner_id());
+			map.put("var8", electrombile.getRecorder_time());
 			varList.add(map);
 		}
 		dataExel.put("titles", titles);

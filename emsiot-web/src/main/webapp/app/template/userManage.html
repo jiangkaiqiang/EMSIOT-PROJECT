@@ -116,18 +116,20 @@
                                     <button class="btn btn-white" type="button">
                                         <i class="glyphicon glyphicon-search"></i>
                                         查询权限
-                                        <div class="swichWrap">
-                                            <div class="btnCircle"></div>
-                                        </div>
+                                       <!--  <div class="swichWrap">
+                                            <div class="btnCircle" ></div>
+                                        </div> -->
+                                        <input type="checkbox" class="form-control" checked="checked" disabled>
                                     </button>
                                 </li>
                                 <li>
                                     <button class="btn btn-white margin-left-md" type="button">
                                         <i class="glyphicon glyphicon-edit"></i>
                                         操作权限
-                                        <div class="swichWrap">
+                                        <!-- <div class="swichWrap">
                                             <div class="btnCircle"></div>
-                                        </div>
+                                        </div> -->
+                                        <input type="checkbox" class="form-control" id="optPower">
                                     </button>
                                 </li>
                             </ul>
@@ -138,8 +140,6 @@
                                     <i>*</i>
                                     地区：
                                 </label>
-
-
                                 <select id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"
                                         ng-change="getCitis()"
                                         ng-options="x.province_id as x.name for x in provinces"></select>
@@ -148,13 +148,6 @@
                                         ng-options="x.city_id as x.name for x in citis"></select>
                                 <select id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"
                                         ng-options="x.area_id as x.name for x in areas"></select>
-
-
-                                <!--<button class="btn btn-white margin-left-md" type="button">-->
-                                <!--<i class="glyphicon glyphicon-map-marker"></i>-->
-                                <!--请选择地区-->
-                                <!--<i class="glyphicon glyphicon-triangle-bottom"></i>-->
-                                <!--</button>-->
                             </div>
                         </div>
 
@@ -174,16 +167,14 @@
                             </div>
                             <div class="search-container">
                                 <button class="btn btn-white" type="button">
-                                    监控台
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                </button>
-                                <button class="btn btn-white" type="button">
                                     轨迹查询
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                    <input type="checkbox" class="form-control">
+                                    <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                 </button>
                                 <button class="btn btn-white" type="button">
                                     定位
-                                    <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                     <input type="checkbox" class="form-control">
+                                    <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                 </button>
                             </div>
                         </nav>
@@ -206,16 +197,59 @@
                             <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        车辆管理--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        车辆管理
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                       <input type="checkbox" class="form-control">
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        黑名单管理--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        黑名单管理
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        报警追钟--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        报警追踪
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                     <button class="btn btn-white" type="button">
+                                        车辆管理-添加车辆
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                       <input type="checkbox" class="form-control">
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        车辆管理-删除车辆
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        车辆管理-批量导出
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        车辆管理-编辑车辆
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        黑名单管理-添加黑名单
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        黑名单管理-删除黑名单
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        黑名单管理-编辑黑名单
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        报警追踪-删除报警
+                                         <input type="checkbox" class="form-control">
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                     </button>
                                 </li>
                             </ul>
@@ -235,16 +269,37 @@
                                     </li>
                                 </ul>
                             </div>
-
                             <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        基站管理--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        基站管理
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                         <input type="checkbox" class="form-control">
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        基站设备管理--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        基站设备管理
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        基站管理-添加基站
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                         <input type="checkbox" class="form-control">
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        基站管理-删除基站
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
+                                    </button>
+                                     <button class="btn btn-white" type="button">
+                                        基站设备管理-删除基站
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                         <input type="checkbox" class="form-control">
+                                    </button>
+                                    <button class="btn btn-white" type="button">
+                                        基站设备管理-修改基站
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
                                     </button>
                                 </li>
                             </ul>
@@ -268,12 +323,14 @@
                             <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        限制区域管理--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        限制区域管理
+                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        敏感区域管理--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        敏感区域管理
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                         <input type="checkbox" class="form-control">
                                     </button>
                                 </li>
                             </ul>
@@ -285,7 +342,7 @@
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
                                     <img src="app/img/teshu.png" alt=""/>
-                                    <span>特殊区域管理</span>
+                                    <span>区域报警管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
                                     <li>
@@ -297,12 +354,14 @@
                             <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        限制区域报警管理--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        限制区域报警管理
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
                                     </button>
                                     <button class="btn btn-white" type="button">
-                                        敏感区域报警管理--查看
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        敏感区域报警管理
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                        <input type="checkbox" class="form-control">
                                     </button>
                                 </li>
                             </ul>
@@ -324,14 +383,15 @@
                                 </ul>
                             </div>
 
-                            <ul class="search-container">
+                            <!-- <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        图表统计--添加
+                                        图表统计
+                                        <input type="checkbox" class="form-control">
                                         <i class="glyphicon glyphicon-ok btn-ok"></i>
                                     </button>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </nav>
                         <!--图标统计结束-->
 
@@ -348,12 +408,22 @@
                                     </li>
                                 </ul>
                             </div>
-
                             <ul class="search-container">
                                 <li class="tab1-car">
                                     <button class="btn btn-white" type="button">
-                                        用户管理--添加
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
+                                        用户管理-添加用户
+                                        <input type="checkbox" class="form-control">
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                     <button class="btn btn-white" type="button">
+                                        用户管理-删除用户
+                                        <input type="checkbox" class="form-control">
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    </button>
+                                     <button class="btn btn-white" type="button">
+                                        用户管理-编辑用户
+                                        <input type="checkbox" class="form-control">
+                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                     </button>
                                 </li>
                             </ul>
@@ -372,12 +442,8 @@
                                         <i>*</i>
                                         登陆账户：
                                     </label>
-
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="">
-                                        <em style="text-align: right;" ng-show="">
-                                            <i color="red">登陆账户不能空！</i>
-                                        </em>
+                                        <input type="text" class="form-control" ng-model="username">
                                     </div>
                                 </div>
                             </div>
@@ -387,16 +453,10 @@
                                 <div class="form-group">
                                     <label for="" class="col-sm-4 control-label">
                                         <i>*</i>
-                                        平台昵称：
+                                        昵称：
                                     </label>
-
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="username" name="username"
-                                               ng-remote-validate="/i/user/checkUserName" ng-remote-method="GET">
-                                        <em style="text-align: right;"
-                                            ng-show="userForm.username.$error.ngRemoteValidate">
-                                            <i color="red">平台昵称不能为空</i>
-                                        </em>
+                                        <input type="text" class="form-control" ng-model="nickname">
                                     </div>
                                 </div>
                             </div>
@@ -408,41 +468,42 @@
                                 <div class="form-group ">
                                     <label for="" class="control-label col-md-4">
                                         <i>*</i>
-                                        昵称：
+                                        密码：
                                     </label>
-
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="">
-                                        <em style="text-align: right;" ng-show="">
-                                            <i color="red">昵称不能空！</i>
-                                        </em>
+                                        <input type="text" class="form-control" ng-model="password1">
                                     </div>
                                 </div>
                             </div>
-
-
+                            
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="" class="col-sm-4 control-label">
                                         <i>*</i>
-                                        密码：
+                                        确认密码：
                                     </label>
-
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="username" name="username"
-                                               ng-remote-validate="/i/user/checkUserName" ng-remote-method="GET">
-                                        <em style="text-align: right;"
-                                            ng-show="userForm.username.$error.ngRemoteValidate">
-                                            <i color="red">密码不能为空</i>
-                                        </em>
+                                        <input type="text" class="form-control" ng-model="password2">
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
+                    
+                    <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label for="" class="control-label col-md-4">
+                                        <i>*</i>
+                                        手机号：
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="telephone">
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    
                 </form>
             </div>
             <div class="modal-footer">

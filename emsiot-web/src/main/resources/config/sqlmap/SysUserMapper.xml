@@ -6,7 +6,7 @@
 	<insert id="insert" parameterType="SysUser">
 		insert into sys_user (user_id,
 		user_name, nickname,
-		password, opt_power, menu_power,
+		password, opt_power, menu_power,pro_power,city_power,
 		area_power,
 		login_time, create_time,
 		user_tel)
@@ -14,7 +14,7 @@
 		#{user_name,jdbcType=VARCHAR},
 		#{nickname,jdbcType=VARCHAR},
 		#{password,jdbcType=VARCHAR}, #{opt_power,jdbcType=INTEGER},
-		#{menu_power,jdbcType=VARCHAR},
+		#{menu_power,jdbcType=VARCHAR},#{pro_power,jdbcType=INTEGER},#{city_power,jdbcType=INTEGER},
 		#{area_power,jdbcType=INTEGER}, now(),
 		now(),
 		#{user_tel,jdbcType=VARCHAR})
