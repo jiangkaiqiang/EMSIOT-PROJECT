@@ -1,0 +1,9 @@
+.noprint{display : none }
+.app-header{display : none ;}
+.app-aside{display : none ;}
+nav.electManage{display : none ;}
+#tableAreatest{display:none;}
+.modal-content{box-shadow:0;border:0;left:0;}
+.modal-footer{border:0;}
+#viewModalElec .modal-body .form-control{margin:20px 0;}
+#viewModalElec i{color:red;}

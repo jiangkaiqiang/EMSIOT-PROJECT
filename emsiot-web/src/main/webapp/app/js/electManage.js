@@ -432,7 +432,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	    	        }).success(function (data) {
 	    	        	$scope.areasForUpdate = data;
 	    	        });
-	    		   $(":radio[name='updateElectType'][value='" + $scope.updateElect.electrombile.elect_type + "']").prop("checked", "checked");
+	    		    if($scope.updateElect.electrombile.elect_type!=undefined){
+	    		        $(":radio[name='updateElectType'][value='" + $scope.updateElect.electrombile.elect_type + "']").prop("checked", "checked");
+	    		    }
 	    		   break;
 	    		}
 	    	}
@@ -556,10 +558,13 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		     maxDate:new Date(),
 		     pickerPosition: "bottom-left"
 		 }); 
-		 $scope.Preview=function(){ //打印预览
-			   $("#viewModalElec").printThis({loadCSS: ["emsiot-web/src/main/webapp/assets/css/bootstrap.css","emsiot-web/src/main/webapp/app/css/home.css",
-"emsiot-web/src/main/webapp/app/css/app.css", "emsiot-web/src/main/webapp/app/css/electManage.css"],importCSS: false,importStyle: false,  pageTitle: "车辆登记证",
-printContainer: true,  removeInline: false, formValues: true});//  loadCSS: "/Content/Themes/Default/style.css"
-		 };
+//		 $scope.Preview=function(){ //打印预览
+//			   $("#viewModalElec").printThis({loadCSS: ["emsiot-web/src/main/webapp/assets/css/bootstrap.css","emsiot-web/src/main/webapp/app/css/home.css",
+//"emsiot-web/src/main/webapp/app/css/app.css", "emsiot-web/src/main/webapp/app/css/electManage.css"],importCSS: false,importStyle: false,  pageTitle: "车辆登记证",
+//printContainer: true,  removeInline: false, formValues: true});//  loadCSS: "/Content/Themes/Default/style.css"
+//		 };
+		 $("#djPrint").on('click',function(){
+			    window.print();
+			})
 });
 

@@ -2,7 +2,10 @@ package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +75,118 @@ public class UserController extends BaseController {
 	public Object findUserByID(
 			@RequestParam(value="spaceUserID", required=false) Integer spaceUserID
 			) throws UnsupportedEncodingException {
-	     SysUser userEntity = userDao.findUserById(spaceUserID);
-	     return userEntity;
+	     SysUser sysUser = userDao.findUserById(spaceUserID);
+	     SysUserDto sysUserDto = new SysUserDto();
+	     sysUserDto.setSysUser(sysUser);
+	     String menuPowers = sysUser.getMenu_power();
+	     String[] menuPowerArray = menuPowers.split(";");
+	     List<String> menuPowerList = new ArrayList<String>();
+	     for (String menuPower : menuPowerArray) {
+	    	 menuPowerList.add(menuPower);
+		 }
+	     if (menuPowerList.contains("console")) {
+			sysUserDto.setConsole("1");
+		 }
+	     if (menuPowerList.contains("traceSearch")) {
+			sysUserDto.setTraceSearch("1");
+		 }
+	     if (menuPowerList.contains("location")) {
+			sysUserDto.setLocation("1");
+		 }
+	     if (menuPowerList.contains("electManage")) {
+			sysUserDto.setElectManage("1");
+	     }
+	     if (menuPowerList.contains("electRecord")) {
+			sysUserDto.setElectRecord("1");
+		 }
+	     if (menuPowerList.contains("blackManage")) {
+			sysUserDto.setBlackManage("1");
+		 }
+	     if (menuPowerList.contains("alarmTrack")) {
+			sysUserDto.setAlarmTrack("1");
+		 }
+	     if (menuPowerList.contains("electAdd")) {
+			sysUserDto.setElectAdd("1");
+		 }
+	     if (menuPowerList.contains("electDelete")) {
+	    	 sysUserDto.setElectDelete("1");
+		 }
+	     if (menuPowerList.contains("electExport")) {
+			sysUserDto.setElectExport("1");
+		 }
+	     if (menuPowerList.contains("electEdit")) {
+	    	 sysUserDto.setElectEdit("1");
+		 }
+	     if (menuPowerList.contains("blackAdd")) {
+			sysUserDto.setBlackAdd("1");
+		 }
+	     if (menuPowerList.contains("blackDelete")) {
+			sysUserDto.setBlackDelete("1");
+		 }
+	     if (menuPowerList.contains("blackEdit")) {
+			sysUserDto.setBlackEdit("1");
+		 }
+	     if (menuPowerList.contains("alarmDelete")) {
+			sysUserDto.setAlarmDelete("1");
+		 }
+	     if (menuPowerList.contains("stationManageWhole")) {
+			sysUserDto.setStationManageWhole("1");
+		 }
+	     if (menuPowerList.contains("stationManage")) {
+	    	 sysUserDto.setStationManage("1");
+		 }
+	     if (menuPowerList.contains("stationDeviceManage")) {
+	    	 sysUserDto.setStationDeviceManage("1");
+		 }
+	     if (menuPowerList.contains("stationAdd")) {
+	    	 sysUserDto.setStationAdd("1");
+		 }
+	     if (menuPowerList.contains("stationDelete")) {
+	    	 sysUserDto.setStationDelete("1");
+		 }
+	     if (menuPowerList.contains("stationDeviceDelete")) {
+			sysUserDto.setStationDeviceDelete("1");
+		 }
+	     if (menuPowerList.contains("stationDeviceUpdate")) {
+			sysUserDto.setStationDeviceUpdate("1");
+		 }
+	     if (menuPowerList.contains("specialAreaManage")) {
+	    	 sysUserDto.setSpecialAreaManage("1");
+		 }
+	     if (menuPowerList.contains("limitAreaManage")) {
+	    	 sysUserDto.setLimitAreaManage("1");
+		 }
+	     if (menuPowerList.contains("sensitiveAreaManage")) {
+	    	 sysUserDto.setSensitiveAreaManage("1");
+		 }
+	     if (menuPowerList.contains("AreaAlarmManage")) {
+	    	 sysUserDto.setAreaAlarmManage("1");
+		 }
+	     if (menuPowerList.contains("limitAlarmManage")) {
+	    	 sysUserDto.setLimitAlarmManage("1");
+		 }
+	     if (menuPowerList.contains("sensitiveAlarmManage")) {
+			sysUserDto.setSensitiveAlarmManage("1");
+		 }
+	     if (menuPowerList.contains("dataAnalysis")) {
+	    	 sysUserDto.setDataAnalysis("1");
+		 }
+	     if (menuPowerList.contains("userManage")) {
+	    	 sysUserDto.setUserManage("1");
+	     }
+	     if (menuPowerList.contains("userAdd")) {
+	    	 sysUserDto.setUserAdd("1");
+		 }
+	     if (menuPowerList.contains("userDelete")) {
+	    	 sysUserDto.setUserDelete("1");
+		 }
+	     if (menuPowerList.contains("userEdit")) {
+	    	 sysUserDto.setUserEdit("1");
+		 }
+	     sysUserDto.setPro_name(cityMapper.findProvinceById(Integer.parseInt(sysUser.getPro_power())).getName());
+	     sysUserDto.setCity_name(cityMapper.findCityById(Integer.parseInt(sysUser.getCity_power())).getName());
+		 sysUserDto.setArea_name(cityMapper.findAreaNameByAreaID(Integer.parseInt(sysUser.getArea_power())).getName());
+	     return sysUserDto;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
