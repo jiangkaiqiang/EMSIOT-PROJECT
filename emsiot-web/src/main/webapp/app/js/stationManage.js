@@ -69,28 +69,20 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
    	 //通过双击地图添加基站，弹出窗口
 	 var geoc = new BMap.Geocoder();    
 
-	 mapStation.addEventListener("dblclick",function(e){
-		 //var stationInfo = "<div style=\"width:300px;height:400px;\">";
-		 //var stationWin;
+	 mapStation.addEventListener("dblclick",function(e){  //双击添加基站，显示图标
+		 mapStation.clearOverlays();
 		 var currentpt = new BMap.Point(e.point.lng,e.point.lat);
 		 $scope.addStationLng = e.point.lng;
 		 $scope.addStationLat = e.point.lat;
-		 //stationInfo += "此处的经度为："+e.point.lng+"<br>此处的纬度为："+e.point.lat+"<br>";
 		 geoc.getLocation(e.point, function(rs){
 			 	if(rs==null){
-			 		//stationInfo+="获取不到具体位置";
-			 		//console.log("null++++++");
-					//stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
+			 		
 					$scope.addStationAddress = "获取不到具体位置";
 			 	}
 			 	else{
 			 		var addComp = rs.addressComponents;
-			 		//console.log(addComp.province);
-			 		//stationInfo += addComp.province;
-			 		//stationInfo += addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
 			 		$scope.addStationAddress = addComp.province +"," + addComp.city +"," + addComp.district + ", " + addComp.street + "," + addComp.streetNumber;
 			 	}
-		    //stationWin = new BMap.InfoWindow(stationInfo+"<div>"); 
 		    $("#addStation").modal("show");
 		    $("#addStationLng").val($scope.addStationLng);
 		    $("#addStationLat").val($scope.addStationLat);
@@ -259,16 +251,25 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
                 params: {
                     "stationStatus": "1"
                 }
-            }).success(function (data) {
-            	$scope.errorStation = data;
-                alert($scope.errorStation);
-                //在地图上显示异常基站
+            }).success(function (data) {  //在地图上显示异常基站
+	            	$scope.errorStation = data;
+	            	var len=data.length;
+	            	if(len>0){
+	            		for(var i=0;i<len;i++){
+	            		 	var abnormalPt = new BMap.Point(data[i].longitude,data[i].latitude);
+	        	     	   	var abnormalMarker = new BMap.Marker(abnormalPt); 
+	        	     	   	mapStation.addOverlay(abnormalMarker);
+	            		}
+	            	}
+	            	else{
+	            		alert("没有异常基站！");
+	            	}
             });
     	}
     	else{
     		//隐藏显示的异常基站
-    		alert("异常基站");
-    	}
+    		mapStation.clearOverlays();
+    		}
     }
     
    

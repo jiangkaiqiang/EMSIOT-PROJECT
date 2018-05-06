@@ -19,7 +19,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        	 map.centerAndZoom($scope.cityName, 10);  // 初始化地图,设置中心点坐标和地图级别
 			        	 map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 			        	 //map.setMapStyle({style:'light'})
-			        	 map.disableDoubleClickZoom();
+			        	 //map.disableDoubleClickZoom();
 			        // 获取基站
 			   	    $http.get('/i/station/findAllStationsForMap').success(function (data) {
 			   	        $scope.stations = data;
@@ -77,7 +77,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			    });
 			    local.search(myValue);
 			}
-
+	var markerClusterer;
 	 function showStation(){
 		 var sHtml=`
 			   <div id="positionTable" class="shadow">
@@ -121,7 +121,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 var pt;
 		 var marker2;
 		 var sContent = sHtml;
-		 var markers = [];
+		 var markers = [];   //存放聚合的基站
+		 
 	     for(var i=0;i<100;i++){
 	    	 	pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
 	    	 	marker2 = new BMap.Marker(pt); 
@@ -135,8 +136,25 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     	   //map.addOverlay(marker2); 
     	   markers.push(marker2);
     	  }
-    	  var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+	     console.log(markers[0]);
+	     //map.addOverlay(markers); 
+	     if($scope.jizhanjuheFlag==0){
+	    	 markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+	     }
+	     else if($scope.jizhanjuheFlag==1){
+	    	 map.clearOverlays();
+	    	 for(var i=0;i<markers.length;i++){
+	    		 map.addOverlay(markers[i]); 
+	    	 }
+	     }
+	     	//clusterStation(markers);
+    	  //var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	 }
+	 function clusterStation(){  //对基站进行聚合
+   	  	var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+
+	 }
+	 
 	 //根据时间和基站id获取基站下面的当前所有车辆
      function showElectsInStation(startTime,endTime,stationPhyNum){
     	 $http.get('/i/elect/findElectsByStationIdAndTime', {
@@ -279,12 +297,21 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	     maxDate: new Date(),
 	     pickerPosition: "bottom-left"
 	 });
+	 
+	 function heatmap(){
+		 heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+		 map.addOverlay(heatmapOverlay);
+		 heatmapOverlay.setDataSet({data:points,max:100});
+		 heatmapOverlay.show();
+	 }
 
 
 	 $scope.showReLiTu = function(){
 		 $http.get('/i/elect/findElectsNumByStations').success(function (data) {
 	   	        $scope.thermodynamics = data;
-	   	        alert($scope.thermodynamics);
+	   	        heatmap();
+	   	        console.log(data);
+	   	        //alert($scope.thermodynamics);
 	   	        //reLituShow();
 	   	    });
 	 }
@@ -304,29 +331,47 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 //显示基站开关选项控制
 	 $scope.jizhanFlag = 1;
 	 $('#xsjizhan').click(function () {
-	     if($scope.jizhanFlag==0){
-	    	 alert("显示基站");
-	    	 $scope.jizhanFlag=1;
-	     }
-	     else if($scope.jizhanFlag==1){
-	    	 alert("隐藏基站");
+	     if($scope.jizhanFlag==1){
+	    	 //alert("显示基站");
+	    	 showStation();
 	    	 $scope.jizhanFlag=0;
+	     }
+	     else if($scope.jizhanFlag==0){
+	    	 //alert("隐藏基站");
+	    	 map.clearOverlays();
+	    	 $scope.jizhanFlag=1;
 	     }
 	     showCssFlag('#xsjizhan');
 	 });
 	 //基站聚合开关选项控制
 	 $scope.jizhanjuheFlag = 1;
 	 $('#jizhanjuhe').click(function () {
-	     if($scope.jizhanjuheFlag==0){
-	    	 alert("显示基站聚合");
-	    	 $scope.jizhanjuheFlag=1;
-	     }
-	     else if($scope.jizhanjuheFlag==1){
-	    	 alert("隐藏基站集聚合");
+	     if($scope.jizhanjuheFlag==1){
+	    	map.clearOverlays();
 	    	 $scope.jizhanjuheFlag=0;
+	    	 showStation();
+	    	// clusterStation();
+	     }
+	     else if($scope.jizhanjuheFlag==0){
+	    	 //markers=null;
+	    	 map.clearOverlays();
+	    	 $scope.jizhanjuheFlag=1;
+
+	    	 showStation();
+	    	 
 	     }
 	     showCssFlag('#jizhanjuhe');
 	 });
+	 map.addEventListener("dragend",function(e){
+		 if($scope.jizhanjuheFlag==1){
+		    	map.clearOverlays();
+		    	 $scope.jizhanjuheFlag=1;
+		    	 showStation();
+		    	// clusterStation();
+		     }
+	    
+	 });
+	 
 	 function showCssFlag(param){
 		  $(param).toggleClass("active");
 		     var left = $(param).css('left');
