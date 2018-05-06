@@ -94,25 +94,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in Allusers">
-            <td>
-                <input type="checkbox" ng-checked="exists(user, selected)"
-                       ng-click="toggle(user, selected)"/>
-            </td>
+        <tr ng-repeat="electAlarmDto in AllElectalarms">
+  			<td><input type="checkbox"
+					ng-checked="exists(electAlarmDto, selected)"
+					ng-click="toggle(electAlarmDto, selected)" /></td>
             <!-- <td>{{user.sysUser.user_id}}</td> -->
-            <td>{{$index+1}}</td>
-            <td>{{user.sysUser.user_name}}</td>
-            <td>{{user.sysUser.user_tel}}</td>
-            <td>{{user.sysUser.company}}</td>
-            <td>{{user.projectName}}</td>
-            <td>{{user.compFactoryName}}</td>
-            <td>{{user.userRoleName}}</td>
-            <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
+            <td>{{electAlarmDto.electAlarm.elect_alarm_id}}</td>
+            <td>{{electAlarmDto.electAlarm.alarm_station_phy_num}}</td>
+            <td>{{electAlarmDto.electAlarm.alarm_gua_card_num}}</td>
+            <td>{{electAlarmDto.statioAddress}}</td>
+            <td>{{electAlarmDto.ownerName}}</td>
+            <td>{{electAlarmDto.ownerTele}}</td>
+            <td>{{electAlarmDto.electAlarm.alarm_time}}</td> 
             <td>
-                <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                        ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                </button>
+                <button class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
             </td>
         </tr>
         </tbody>

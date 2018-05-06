@@ -1,6 +1,7 @@
 package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ems.iot.manage.dao.BlackelectMapper;
+import com.ems.iot.manage.dao.ElectAlarmMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.Blackelect;
+import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
@@ -29,6 +32,8 @@ public class genDataController extends BaseController {
 	private ElectrombileStationMapper electrombileStationMapper;
 	@Autowired
 	private BlackelectMapper blackelectMapper;
+	@Autowired
+	private ElectAlarmMapper electAlarmMapper;
 	/**
 	 * 查询所有基站
 	 * @return
@@ -59,6 +64,21 @@ public class genDataController extends BaseController {
 			GenDataUtil.genBlackelect(electrombile,blackelect);
 			blackelectMapper.insert(blackelect);
 		}
+		return new ResultDto(1, "gen Success");
+	}
+	@RequestMapping(value = "/genAlarm")
+	@ResponseBody
+	public Object genAlarm() throws UnsupportedEncodingException {
+		int genNum=12;
+		Date date = new Date();
+		for(int i=1;i<=genNum;i++){
+			ElectAlarm electAlarm = new ElectAlarm();
+			electAlarm.setAlarm_gua_card_num(101010);
+			electAlarm.setAlarm_station_phy_num(202020);
+			date.setMonth(i);
+			electAlarm.setAlarm_time(date);
+			electAlarmMapper.insert(electAlarm);
+		}				
 		return new ResultDto(1, "gen Success");
 	}
 }
