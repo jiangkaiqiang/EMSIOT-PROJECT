@@ -84,6 +84,9 @@
 			<if test="endTime!=null and endTime!=''">
 				AND create_time &lt;= #{endTime}
 			</if>
+			<if test="adminId != null">
+				AND user_id != #{adminId}
+			</if>
 			<if test="proPower != null">
 				AND pro_power = #{proPower}
 			</if>

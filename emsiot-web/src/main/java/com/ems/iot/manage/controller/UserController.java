@@ -1,7 +1,5 @@
 package com.ems.iot.manage.controller;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -253,6 +251,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Object findUserList(@RequestParam(value="pageNum",required=false) Integer pageNum,
 			@RequestParam(value="pageSize") Integer pageSize, 
+			@RequestParam(required = false) Integer adminId,
 			@RequestParam(required = false) Integer proPower,
 			@RequestParam(required = false) Integer cityPower,
 			@RequestParam(required = false) Integer areaPower,
@@ -276,7 +275,7 @@ public class UserController extends BaseController {
 		else{
 		keyword = URLDecoder.decode(keyword, "UTF-8");
 		}
-		Page<SysUser> sysUsers = userDao.findAllUser(keyword,startTime, endTime, proPower, cityPower, areaPower);
+		Page<SysUser> sysUsers = userDao.findAllUser(keyword,startTime, endTime, proPower, cityPower, areaPower,adminId);
 		Page<SysUserDto> sysUserDtos = new Page<SysUserDto>();
 		for (SysUser sysUser : sysUsers) {
 			SysUserDto sysUserDto = new SysUserDto();
@@ -311,7 +310,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/findAllUsers")
 	@ResponseBody
 	public Object findAllUsers() throws UnsupportedEncodingException {
-		return userDao.findAllUser(null, null, null,null,null,null);
+		return userDao.findAllUser(null, null, null,null,null,null,null);
 	}
 	
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
