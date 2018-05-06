@@ -301,7 +301,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 function heatmap(){
 		 heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
 		 map.addOverlay(heatmapOverlay);
-		 heatmapOverlay.setDataSet({data:points,max:100});
+		 heatmapOverlay.setDataSet({data:$scope.thermodynamics,max:5});
 		 heatmapOverlay.show();
 	 }
 
