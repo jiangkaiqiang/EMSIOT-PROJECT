@@ -19,17 +19,6 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 	return {
 		setAdmin: function(admin){
 	    	$rootScope.admin = admin;
-//	    	if(admin != null && admin.user_id != 0 && admin.user_id!=undefined){
-//	    	$http.get('/i/userrole/findUserRoleByUserID', {
-//	            params: {
-//	                "userID": $rootScope.admin.user_id
-//	            }
-//	        }).success(function(data){
-//			    if(data!=null&&data.userRole.user_role_id!=undefined){
-//			    	$rootScope.adminRoleDto = data;
-//			    }
-//		     });
-//	    	}
 	    	$rootScope.logout = function () {
 	        	$http.get('/i/user/logout').success(function(data){
 	        		$rootScope.admin = null;

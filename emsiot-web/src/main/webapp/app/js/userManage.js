@@ -6,6 +6,48 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
 				}
+				$http.get('/i/user/findUserByID', {
+		            params: {
+		                "spaceUserID": $rootScope.admin.user_id
+		            }
+		        }).success(function(data){
+				    	$scope.userPowerDto = data;
+				    	//获取全部省For add；要首先确定该用户是不是具有分配省权限用户的能力
+				    	if($scope.userPowerDto.sysUser.pro_power == "-1") {
+				    		$http.get('/i/city/findProvinceList').success(function(data) {
+				    			$scope.provinces = data;
+				    			var province = {
+				    				"province_id" : "-1",
+				    				"name" : "不限"
+				    			};
+				    			$scope.provinces.push(province);
+				    			$scope.addProvinceID = "-1";
+				    		});
+				    	}
+				    	if($scope.userPowerDto.sysUser.pro_power != "-1"){
+				    		$http.get('/i/city/findCitysByProvinceId', {
+				                params: {
+				                    "provinceID": $scope.userPowerDto.sysUser.pro_power
+				                }
+				            }).success(function (data) {
+				            	$scope.citis = data;
+				            	var city = {"city_id":"-1","name":"不限"};
+				            	$scope.citis.push(city);
+				            });
+				    	}
+				    	if($scope.userPowerDto.sysUser.city_power != "-1"){
+				    		$http.get('/i/city/findAreasByCityId', {
+				                params: {
+				                    "cityID": $scope.userPowerDto.sysUser.city_power
+				                }
+				            }).success(function (data) {
+				            	$scope.areas = data;
+				            	var area = {"area_id":"-1","name":"不限"};
+				            	$scope.areas.push(area);
+				            });
+				    	}
+				    	$scope.getUsers();
+			    });
 		   });
 	};
 	$scope.load();
@@ -25,6 +67,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 			method : 'POST',
 			url : '/i/user/findUserList',
 			params : {
+				proPower : $scope.userPowerDto.sysUser.pro_power,
+				cityPower : $scope.userPowerDto.sysUser.city_power,
+				areaPower : $scope.userPowerDto.sysUser.area_power,
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
 				startTime : $scope.startTime,
@@ -40,7 +85,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	$scope.pageChanged = function() {
 		$scope.getUsers();
 	}
-	$scope.getUsers();
+	
 	// 获取当前冷库的列表
 	$scope.auditChanged = function(optAudiet) {
 		$scope.getUsers();
@@ -136,16 +181,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
     		return '无效';
     	}
     }
-
-    //获取全部省For add
-    $http.get('/i/city/findProvinceList').success(function (data) {
-        $scope.provinces = data;
-        var province = {"province_id":"-1","name":"不限"};
-        $scope.provinces.push(province);
-        $scope.addProvinceID = "-1";
-    });
-    //根据省id获取全部市For add
-    $scope.getCitis = function () {
+    
+	//根据省id获取全部市For add
+	$scope.getCitis = function () {
     	$http.get('/i/city/findCitysByProvinceId', {
             params: {
                 "provinceID": $scope.addProvinceID
@@ -155,6 +193,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	var city = {"city_id":"-1","name":"不限"};
         	$scope.citis.push(city);
             $scope.addCityID = "-1";
+            $scope.addAreaID = "-1";
         });
     }
    //根据市id获取全部区For add
@@ -171,7 +210,14 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         });
     }
     
-    
+    $http.get('/i/city/findProvinceList').success(function(data) {
+		$scope.provincesForUpdate = data;
+		var province = {
+			"province_id" : "-1",
+			"name" : "不限"
+		};
+		$scope.provincesForUpdate.push(province);
+	});
     //根据省id获取全部市For update
     $scope.getCitisForUpdate = function () {
     	$http.get('/i/city/findCitysByProvinceId', {
@@ -321,6 +367,15 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  }
         	  if($("#userEdit").is(":checked")){
         		  menuPower = menuPower+"userEdit";
+        	  }
+        	  if($scope.addProvinceID==undefined || $scope.addProvinceID==null){
+        		  $scope.addProvinceID = $scope.userPowerDto.sysUser.pro_power;
+        	  }
+        	  if($scope.addCityID==undefined || $scope.addCityID==null){
+        		  $scope.addCityID = $scope.userPowerDto.sysUser.city_power;
+        	  }
+        	  if($scope.addAreaID==undefined || $scope.addAreaID==null){
+        		  $scope.addAreaID = $scope.userPowerDto.sysUser.area_power;
         	  }
               $http({
             	method : 'GET', 

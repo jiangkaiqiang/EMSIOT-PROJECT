@@ -1,5 +1,7 @@
 package com.ems.iot.manage.controller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -183,9 +185,24 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("userEdit")) {
 	    	 sysUserDto.setUserEdit("1");
 		 }
-	     sysUserDto.setPro_name(cityMapper.findProvinceById(Integer.parseInt(sysUser.getPro_power())).getName());
-	     sysUserDto.setCity_name(cityMapper.findCityById(Integer.parseInt(sysUser.getCity_power())).getName());
-		 sysUserDto.setArea_name(cityMapper.findAreaNameByAreaID(Integer.parseInt(sysUser.getArea_power())).getName());
+	     if (sysUser.getPro_power().equals("-1")) {
+				sysUserDto.setPro_name("不限");
+			}
+			else {
+				sysUserDto.setPro_name(cityMapper.findProvinceById(Integer.parseInt(sysUser.getPro_power())).getName());
+			}
+			if (sysUser.getCity_power().equals("-1")) {
+				sysUserDto.setCity_name("不限");
+			}
+			else {
+				sysUserDto.setCity_name(cityMapper.findCityById(Integer.parseInt(sysUser.getCity_power())).getName());
+			}
+			if (sysUser.getArea_power().equals("-1")) {
+				sysUserDto.setArea_name("不限");
+			}
+			else {
+				sysUserDto.setArea_name(cityMapper.findAreaNameByAreaID(Integer.parseInt(sysUser.getArea_power())).getName());
+			}
 	     return sysUserDto;
 	}
 	
@@ -236,25 +253,52 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Object findUserList(@RequestParam(value="pageNum",required=false) Integer pageNum,
 			@RequestParam(value="pageSize") Integer pageSize, 
+			@RequestParam(required = false) Integer proPower,
+			@RequestParam(required = false) Integer cityPower,
+			@RequestParam(required = false) Integer areaPower,
 			@RequestParam(value="startTime", required=false) String startTime,
 			@RequestParam(value="endTime", required=false) String endTime,
 			@RequestParam(value="keyword", required=false) String keyword) throws UnsupportedEncodingException {
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
 		if(keyword.equals("undefined"))
 			keyword = null;
 		else{
 		keyword = URLDecoder.decode(keyword, "UTF-8");
 		}
-		Page<SysUser> sysUsers = userDao.findAllUser(keyword,startTime, endTime);
+		Page<SysUser> sysUsers = userDao.findAllUser(keyword,startTime, endTime, proPower, cityPower, areaPower);
 		Page<SysUserDto> sysUserDtos = new Page<SysUserDto>();
 		for (SysUser sysUser : sysUsers) {
 			SysUserDto sysUserDto = new SysUserDto();
 			sysUserDto.setSysUser(sysUser);
-			sysUserDto.setPro_name(cityMapper.findProvinceById(Integer.parseInt(sysUser.getPro_power())).getName());
-			sysUserDto.setCity_name(cityMapper.findCityById(Integer.parseInt(sysUser.getCity_power())).getName());
-			sysUserDto.setArea_name(cityMapper.findAreaNameByAreaID(Integer.parseInt(sysUser.getArea_power())).getName());
+			if (sysUser.getPro_power().equals("-1")) {
+				sysUserDto.setPro_name("不限");
+			}
+			else {
+				sysUserDto.setPro_name(cityMapper.findProvinceById(Integer.parseInt(sysUser.getPro_power())).getName());
+			}
+			if (sysUser.getCity_power().equals("-1")) {
+				sysUserDto.setCity_name("不限");
+			}
+			else {
+				sysUserDto.setCity_name(cityMapper.findCityById(Integer.parseInt(sysUser.getCity_power())).getName());
+			}
+			if (sysUser.getArea_power().equals("-1")) {
+				sysUserDto.setArea_name("不限");
+			}
+			else {
+				sysUserDto.setArea_name(cityMapper.findAreaNameByAreaID(Integer.parseInt(sysUser.getArea_power())).getName());
+			}
 			sysUserDtos.add(sysUserDto);
 		}
 		sysUserDtos.setPageSize(sysUsers.getPageSize());
@@ -267,7 +311,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/findAllUsers")
 	@ResponseBody
 	public Object findAllUsers() throws UnsupportedEncodingException {
-		return userDao.findAllUser(null, null, null);
+		return userDao.findAllUser(null, null, null,null,null,null);
 	}
 	
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)

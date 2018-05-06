@@ -437,7 +437,7 @@
                                             ng-change="getCitis()"
                                             ng-options="x.province_id as x.name for x in provinces"></select>
                                     <select id="" class="form-control" ng-model="addCityID" ng-disabled="editable"
-                                            ng-change="getAreas(addCityID)"
+                                            ng-click="getAreas(addCityID)"
                                             ng-options="x.city_id as x.name for x in citis"></select>
                                     <select id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"
                                             ng-options="x.area_id as x.name for x in areas"></select>
@@ -1099,7 +1099,7 @@
                                             ng-change="getCitisForUpdate()"
                                             ng-options="x.province_id as x.name for x in provinces"></select>
                                     <select id="" class="form-control" ng-model="updateElect.electrombile.city_id" ng-disabled="editable"
-                                            ng-change="getAreasForUpdate(addCityID)"
+                                            ng-click="getAreasForUpdate(addCityID)"
                                             ng-options="x.city_id as x.name for x in citisForUpdate"></select>
                                     <select id="" class="form-control" ng-model="updateElect.electrombile.area_id" ng-disabled="editable"
                                             ng-options="x.area_id as x.name for x in areasForUpdate"></select>

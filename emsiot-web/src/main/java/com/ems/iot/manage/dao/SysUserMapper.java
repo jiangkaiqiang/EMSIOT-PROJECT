@@ -23,5 +23,6 @@ public interface SysUserMapper {
 	
 	void updateUser(SysUser userEntity);
 		
-	Page<SysUser> findAllUser(@Param("keyword")String keyword,@Param("startTime")String startTime, @Param("endTime")String endTime);
+	Page<SysUser> findAllUser(@Param("keyword")String keyword,@Param("startTime")String startTime, @Param("endTime")String endTime,
+			@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
 }
