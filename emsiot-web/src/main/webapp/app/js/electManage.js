@@ -165,16 +165,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         $scope.sysUserID = "0";
     });
     
-    //获取全部省
+    //获取全部省For ADD
     $http.get('/i/city/findProvinceList').success(function (data) {
         $scope.provinces = data;
-        $scope.provincesForSearch = data;
-        var province = {"province_id":"-1","name":"全部"};
-        $scope.provincesForSearch.push(province);
         $scope.addProvinceID = data[0].province_id;
-        $scope.proID = "-1";
     });
-	
+    //根据省ID获取全部市For ADD
     $scope.getCitis = function () {
     	$http.get('/i/city/findCitysByProvinceId', {
             params: {
@@ -185,7 +181,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             $scope.addCityID = data[0].city_id;
         });
     }
-    
+   //根据市ID获取全部区For ADD
     $scope.getAreas = function () {
     	$http.get('/i/city/findAreasByCityId', {
             params: {
@@ -196,6 +192,41 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             $scope.addAreaID = data[0].area_id;
         });
     }
+    
+    //获取全部省For Search；并添加上不限的权限
+    $http.get('/i/city/findProvinceList').success(function (data) {
+        $scope.provincesForSearch = data;
+        var province = {"province_id":"-1","name":"不限"};
+        $scope.provincesForSearch.push(province);
+        $scope.proID = "-1";
+    });
+    //根据省ID获取全部市For Search；并添加上不限的权限
+    $scope.getCitisForSearch = function () {
+    	$http.get('/i/city/findCitysByProvinceId', {
+            params: {
+                "provinceID": $scope.proID
+            }
+        }).success(function (data) {
+        	$scope.citisForSearch = data;
+        	var city = {"city_id":"-1","name":"不限"};
+        	$scope.citisForSearch.push(city);
+            $scope.cityID = "-1";
+        });
+    }
+    //根据市ID获取全部省For Search；并添加上不限的权限
+    $scope.getAreasForSearch = function () {
+    	$http.get('/i/city/findAreasByCityId', {
+            params: {
+                "cityID": $scope.cityID
+            }
+        }).success(function (data) {
+        	$scope.areasForSearch = data;
+        	var area = {"area_id":"-1","name":"不限"};
+        	$scope.areasForSearch.push(area);
+            $scope.areaID = "-1";
+        });
+    }
+    
     
     $scope.getCitisForUpdate = function () {
     	$http.get('/i/city/findCitysByProvinceId', {

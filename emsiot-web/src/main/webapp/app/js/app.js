@@ -36,6 +36,38 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 	            });
 	        	window.location.reload();
 	        };
+	        function checkInput(){
+		        var flag = true;
+		        // 检查必须填写项
+		        if ($rootScope.newPassword == undefined || $rootScope.newPassword2 == '' ||
+		        		$rootScope.newPassword2 == undefined || $rootScope.newPassword == ''||  
+		        		$rootScope.newPassword2!= $rootScope.newPassword) {
+		            flag = false;
+		        }
+		        return flag;
+		    }
+	        $rootScope.changePassword = function(){
+		        if (checkInput()){
+		            $http({
+		            	method : 'GET',
+		            	url:'/i/user/changePwd',
+		    			params:{
+		    				'password': $rootScope.newPassword,
+		    				'userID': $rootScope.admin.user_id
+		    				}
+		    		}).then(function (resp) {
+		    			 alert("修改成功");
+		                 window.location.reload();
+		            }, function (resp) {
+		                console.log('Error status: ' + resp.status);
+		            }, function (evt) {
+		                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+		                console.log('progress: ' + progressPercentage + '% ' + evt.name);
+		            });
+		          } else {
+		            alert("密码输入有误!");
+		        }
+		    }
 	    },
 	}
 }])

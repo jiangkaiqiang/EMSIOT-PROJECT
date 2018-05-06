@@ -576,10 +576,10 @@
                                     地区：
                                 </label>
                                 <select id="" class="form-control" ng-model="userForUpdate.sysUser.pro_power" ng-disabled="editable"
-                                        ng-change="changeCitis()"
+                                        ng-change="getCitisForUpdate()"
                                         ng-options="x.province_id as x.name for x in provinces"></select>
                                 <select id="" class="form-control" ng-model="userForUpdate.sysUser.city_power" ng-disabled="editable"
-                                        ng-change="changeAreas(userForUpdate.sysUser.city_power)"
+                                        ng-change="getAreasForUpdate()"
                                         ng-options="x.city_id as x.name for x in citisForUpdate"></select>
                                 <select id="" class="form-control" ng-model="userForUpdate.sysUser.area_power" ng-disabled="editable"
                                         ng-options="x.area_id as x.name for x in areasForUpdate"></select>
@@ -898,7 +898,7 @@
                         </div>
 
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label for="" class="control-label col-md-4">
@@ -923,7 +923,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <div class="row">
                             <div class="col-md-6">
@@ -942,7 +942,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="submit()" class="btn btn-primary">
+                <button type="button" ng-click="update()" class="btn btn-primary">
                     提交
                 </button>
                 <button type="button" class="btn btn-default"
