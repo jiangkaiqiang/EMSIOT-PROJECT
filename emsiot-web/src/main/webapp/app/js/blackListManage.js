@@ -1,7 +1,7 @@
 /**
  * Created by SAIHE01 on 2018/4/8.
  */
-coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Upload,$cookies, $http, $location) {
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
@@ -20,6 +20,12 @@ console.log("报警页面展示成功");
         $state.reload();
     }
     $('#electAlarmDate').datetimepicker({
+        format: 'yyyy-mm-dd  hh:mm:ss',
+        autoclose:true,
+        maxDate:new Date(),
+        pickerPosition: "bottom-left"
+    });
+    $('#electAlarmDateUpdate').datetimepicker({
         format: 'yyyy-mm-dd  hh:mm:ss',
         autoclose:true,
         maxDate:new Date(),
@@ -154,6 +160,28 @@ console.log("报警页面展示成功");
           $scope.addAreaID = data[0].area_id;
       });
   }
+  
+  $scope.getCitisForUpdate = function () {
+  	$http.get('/i/city/findCitysByProvinceId', {
+          params: {
+              "provinceID": $scope.blackElectForUpdate.blackelect.pro_id
+          }
+      }).success(function (data) {
+      	  $scope.citisForUpdate = data;
+      	  $scope.blackElectForUpdate.blackelect.city_id = data[0].city_id;
+      });
+  }
+  
+  $scope.getAreasForUpdate = function () {
+  	$http.get('/i/city/findAreasByCityId', {
+          params: {
+              "cityID": $scope.blackElectForUpdate.blackelect.city_id
+          }
+      }).success(function (data) {
+      	$scope.areasForUpdate = data;
+      	$scope.blackElectForUpdate.blackelect.area_id = data[0].area_id;
+      });
+  }
   //添加黑名单
   function checkInput(){
       var flag = true;
@@ -208,5 +236,62 @@ console.log("报警页面展示成功");
           alert("防盗芯片编号、案发区域、案发地不能为空");
       }
   }
-  //
+  //弹出黑名单
+  $scope.goUpdateBlackelect = function(black_id) {
+  	$http.get('/i/blackelect/findBlackelectByID', {
+          params: {
+              "BlakcID": black_id
+          }
+      }).success(function(data){
+		    $scope.blackElectForUpdate = data;
+		    $scope.blackElectForUpdate.blackelect.pro_id = $scope.blackElectForUpdate.blackelect.pro_id+"";
+		    $scope.blackElectForUpdate.blackelect.city_id = $scope.blackElectForUpdate.blackelect.city_id+"";
+		    $scope.blackElectForUpdate.blackelect.area_id = $scope.blackElectForUpdate.blackelect.area_id+"";
+		    $scope.blackElectForUpdate.blackelect.deal_status = $scope.blackElectForUpdate.blackelect.deal_status+"";
+		    
+		    $http.get('/i/city/findCitysByProvinceId', {
+	            params: {
+	                "provinceID": $scope.blackElectForUpdate.blackelect.pro_id
+	            }
+	        }).success(function (data) {
+	        	$scope.citisForUpdate = data;
+	        });
+		   $http.get('/i/city/findAreasByCityId', {
+	            params: {
+	                "cityID": $scope.blackElectForUpdate.blackelect.city_id
+	            }
+	        }).success(function (data) {
+	        	$scope.areasForUpdate = data;
+	        });
+	     });
+	$scope.statusForUpdate = [{deal_status:"0",name:"未处理"},{deal_status:"1",name:"已处理"}];
+  };
+	//更新黑名单  goUpdateBlackelectConfirm()
+	$scope.goUpdateBlackelectConfirm = function(){
+    	data = {
+    			'black_id':$scope.blackElectForUpdate.blackelect.black_id,
+    			'gua_card_num': $scope.blackElectForUpdate.blackelect.gua_card_num,
+    			'case_occur_time':$scope.blackElectForUpdate.blackelect.case_occur_time,
+    			'owner_tele':$scope.blackElectForUpdate.blackelect.owner_tele,
+    			'owner_name':$scope.blackElectForUpdate.blackelect.owner_name,
+    			'pro_id':$scope.blackElectForUpdate.blackelect.pro_id,
+    			'city_id':$scope.blackElectForUpdate.blackelect.city_id,
+    			'area_id':$scope.blackElectForUpdate.blackelect.area_id,
+    			'case_address_type':$scope.blackElectForUpdate.blackelect.case_address_type,
+    			'case_detail':$scope.blackElectForUpdate.blackelect.case_detail,
+    			'deal_status':$scope.blackElectForUpdate.blackelect.deal_status
+            };
+       Upload.upload({
+                url: '/i/blackelect/updateBlackelect',
+                headers :{ 'Content-Transfer-Encoding': 'utf-8' },
+                data: data
+            }).success(function (data) {
+        if(data.success){
+        	 alert(data.message);
+			 $scope.getBlackelectsByOptions();
+             $("#updateBlackelect").modal("hide"); 
+        }
+    });
+  }
+	//
 });

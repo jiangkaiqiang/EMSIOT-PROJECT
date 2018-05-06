@@ -3,6 +3,7 @@ package com.ems.iot.manage.controller;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -144,7 +145,62 @@ public class BlackelectController extends BaseController {
 		if (blackelect.getGua_card_num() == null) {
 			return new ResultDto(-1, "防盗芯片编号不能为空！");
 		}
+		if(electrombileMapper.findElectrombileForLocation(gua_card_num, null)==null){
+			return new ResultDto(-1,"防盗芯片编号不存在！");
+		}
 		blackelectMapper.insert(blackelect);
 		return new ResultDto(0,"添加成功");
+	}
+	
+	 /**
+     * 根据ID删除黑名单
+     * @param electID
+     * @return
+     */
+	@RequestMapping(value = "/findBlackelectByID")
+	@ResponseBody
+	public Object findBlackElectByID(@RequestParam(value="BlakcID")Integer blackID) {
+		Page<Blackelect> blackelets=blackelectMapper.findAllBlackelectByOptions(blackID,null,null);
+		BlackelectDto blackelectDto = new BlackelectDto();
+		blackelectDto.setBlackelect(blackelets.get(0));
+		blackelectDto.setPlateNum(electrombileMapper.findPlateNumByGuaCardNum(blackelets.get(0).getGua_card_num()).getPlate_num());
+		return blackelectDto;
+	}
+	 /**
+     * 更新黑名单
+     * @param electID
+     * @return
+     */
+	
+
+	@RequestMapping(value = "/updateBlackelect")
+	@ResponseBody
+	public Object updateBlackElect(
+			@RequestParam(value="black_id",required = false)Integer  black_id,
+			@RequestParam(value="gua_card_num",required = false)Integer  gua_card_num,
+			@RequestParam(value="case_occur_time",required = false)Date  case_occur_time,
+			@RequestParam(value="owner_tele",required = false)String  owner_tele,
+			@RequestParam(value="owner_name",required = false)String  owner_name,
+			@RequestParam(value="pro_id",required = false)Integer  pro_id,
+			@RequestParam(value="city_id",required = false)Integer  city_id,
+			@RequestParam(value="area_id",required = false)Integer  area_id,
+			@RequestParam(value="case_address_type",required = false)String  case_address_type,
+			@RequestParam(value="case_detail",required = false)String  case_detail,
+			@RequestParam(value="deal_status",required = false)Integer  deal_status
+			){
+				Blackelect blackelect = new Blackelect();
+				blackelect.setBlack_id(black_id);
+				blackelect.setGua_card_num(gua_card_num);
+				blackelect.setCase_occur_time(case_occur_time);
+				blackelect.setOwner_tele(owner_tele);
+				blackelect.setOwner_name(owner_name);
+				blackelect.setPro_id(pro_id);
+				blackelect.setCity_id(city_id);
+				blackelect.setArea_id(area_id);
+				blackelect.setCase_address_type(case_address_type);
+				blackelect.setCase_detail(case_detail);
+				blackelect.setDeal_status(deal_status);
+				blackelectMapper.updateByPrimaryKeySelective(blackelect);		
+		return  new ResultDto(0,"修改成功");
 	}
 }
