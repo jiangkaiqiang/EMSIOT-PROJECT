@@ -84,6 +84,15 @@
 			<if test="endTime!=null and endTime!=''">
 				AND create_time &lt;= #{endTime}
 			</if>
+			<if test="proPower != null">
+				AND pro_power = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_power = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_power = #{areaPower}
+			</if>
 		</where>
 		order by `create_time` desc
 	</select>

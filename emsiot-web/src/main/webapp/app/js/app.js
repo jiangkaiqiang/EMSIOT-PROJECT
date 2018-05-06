@@ -19,23 +19,44 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 	return {
 		setAdmin: function(admin){
 	    	$rootScope.admin = admin;
-//	    	if(admin != null && admin.user_id != 0 && admin.user_id!=undefined){
-//	    	$http.get('/i/userrole/findUserRoleByUserID', {
-//	            params: {
-//	                "userID": $rootScope.admin.user_id
-//	            }
-//	        }).success(function(data){
-//			    if(data!=null&&data.userRole.user_role_id!=undefined){
-//			    	$rootScope.adminRoleDto = data;
-//			    }
-//		     });
-//	    	}
 	    	$rootScope.logout = function () {
 	        	$http.get('/i/user/logout').success(function(data){
 	        		$rootScope.admin = null;
 	            });
 	        	window.location.reload();
 	        };
+	        function checkInput(){
+		        var flag = true;
+		        // 检查必须填写项
+		        if ($rootScope.newPassword == undefined || $rootScope.newPassword2 == '' ||
+		        		$rootScope.newPassword2 == undefined || $rootScope.newPassword == ''||  
+		        		$rootScope.newPassword2!= $rootScope.newPassword) {
+		            flag = false;
+		        }
+		        return flag;
+		    }
+	        $rootScope.changePassword = function(){
+		        if (checkInput()){
+		            $http({
+		            	method : 'GET',
+		            	url:'/i/user/changePwd',
+		    			params:{
+		    				'password': $rootScope.newPassword,
+		    				'userID': $rootScope.admin.user_id
+		    				}
+		    		}).then(function (resp) {
+		    			 alert("修改成功");
+		                 window.location.reload();
+		            }, function (resp) {
+		                console.log('Error status: ' + resp.status);
+		            }, function (evt) {
+		                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+		                console.log('progress: ' + progressPercentage + '% ' + evt.name);
+		            });
+		          } else {
+		            alert("密码输入有误!");
+		        }
+		    }
 	    },
 	}
 }])

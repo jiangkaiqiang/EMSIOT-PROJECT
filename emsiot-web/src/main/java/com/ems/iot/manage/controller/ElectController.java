@@ -173,6 +173,12 @@ public class ElectController extends BaseController {
 		if (null==proID||proID==-1) {
 			proID = null;
 		}
+		if (null==cityID||cityID==-1) {
+			cityID = null;
+		}
+		if (null==areaID||areaID==-1) {
+			areaID = null;
+		}
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);

@@ -256,7 +256,7 @@
     </div>
     <!-- / menu -->
      <!--修改密码模态框-->
-<div class="modal fade" id="passwordEdit" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="passwordEdit" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -270,19 +270,16 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="psdEditForm">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="" class="control-label col-md-3">
                             <i>*</i>
                             当前密码：
                         </label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control">
-                            <em style="text-align: right;" ng-show="">
-                                <i color="red">密码不能为空不能空！</i>
-                            </em>
+                            <input type="text" class="form-control" ng-model="password">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="" class="control-label col-md-3">
                             <i>*</i>
@@ -290,10 +287,7 @@
                         </label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control">
-                            <em style="text-align: right;" ng-show="">
-                                <i color="red">密码不能为空不能空！</i>
-                            </em>
+                            <input type="text" class="form-control" ng-model="newPassword">
                         </div>
                     </div>
 
@@ -302,21 +296,14 @@
                             <i>*</i>
                             确认新密码：
                         </label>
-
-                        </label>
-
                         <div class="col-sm-7">
-                            <input type="text" class="form-control">
-                            <em style="text-align: right;" ng-show="">
-                                <i color="red">密码不能为空不能空！</i>
-                            </em>
+                            <input type="text" class="form-control" ng-model="newPassword2">
                         </div>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="submit()" class="btn btn-primary">
+                <button type="button" ng-click="changePassword()" class="btn btn-primary">
                     提交
                 </button>
                 <button type="button" class="btn btn-default"
