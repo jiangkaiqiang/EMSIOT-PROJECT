@@ -82,8 +82,14 @@
      <select id="findAllElectalarmByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
         SELECT * FROM `elect_alarm` 
         <where>
-			<if test="alarmTime != null and alarmTime != ''">
-				alarmTime = #{alarmTime}
+        	<if test="plateNum != null and plateNum != ''">
+				alarm_gua_card_num = #{plateNum}
+			</if>
+			<if test="alarmDateStart != null and alarmDateStart != ''">
+				AND alarm_time  &gt;= #{alarmDateStart}
+			</if>
+			<if test="alarmDateEnd != null and alarmDateEnd != ''">
+				AND alarm_time &lt;= #{alarmDateEnd}
 			</if>
 			</where>
    </select>

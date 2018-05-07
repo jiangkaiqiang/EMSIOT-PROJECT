@@ -1,6 +1,8 @@
 package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +45,29 @@ public class ElectAlarmController extends BaseController {
 	 * 
 	 * @returnx
 	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
 	 */
 	@RequestMapping(value = "/findAllElectAlarmByOptions",method = RequestMethod.POST)
 	@ResponseBody
 	public Object findAllBlackelectByOptions(@RequestParam(value="pageNum",required=false) Integer pageNum,
 			@RequestParam(value="pageSize",required=false) Integer pageSize,
-			@RequestParam(value="alarmTime",required=false) Date alarmTime
-			) throws UnsupportedEncodingException {
+			@RequestParam(value="plateNum",required=false) Integer plateNum,
+			@RequestParam(value="alarmDateStart",required=false) String alarmDateStartStr,
+			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr
+			) throws UnsupportedEncodingException, ParseException {
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<ElectAlarm> electAlarms=electAlarmMapper.findAllElectalarmByOptions(alarmTime);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd - HH:mm:ss");
+		Date alarmDateStart=null;
+		Date alarmDateEnd=null;
+		if(alarmDateStartStr!="" && alarmDateStartStr!=null){
+			alarmDateStart=sdf.parse(alarmDateStartStr);
+		}
+		if(alarmDateEndStr!="" && alarmDateEndStr!=null){
+			alarmDateEnd=sdf.parse(alarmDateEndStr);
+		}
+		Page<ElectAlarm> electAlarms=electAlarmMapper.findAllElectalarmByOptions(plateNum,alarmDateStart,alarmDateEnd);
 		Page<ElectAlarmDto> electAlarmDtos = new Page<ElectAlarmDto>();
 		for(ElectAlarm electAlarm:electAlarms){
 			ElectAlarmDto electAlarmDto = new ElectAlarmDto();
@@ -75,11 +89,11 @@ public class ElectAlarmController extends BaseController {
      * @param electID
      * @return
      */
-	@RequestMapping(value = "/deleteBlackelectByID")
+	@RequestMapping(value = "/deleteElectAlarmByID")
 	@ResponseBody
-	public Object deleteElectByID(@RequestParam(value="blackID",required=false)Integer blackID) {
-		 blackelectMapper.deleteByPrimaryKey(blackID);
-		 return new BaseDto(0);
+	public Object deleteElectByID(@RequestParam(value="elect_alarm_id",required=false)Integer elect_alarm_id) {
+		electAlarmMapper.deleteByPrimaryKey(elect_alarm_id);
+		return new BaseDto(0);
 	}
 	
 	/**
@@ -87,11 +101,11 @@ public class ElectAlarmController extends BaseController {
 	 * @param electIDs
 	 * @return
 	 */
-	@RequestMapping(value = "/deleteBlackelectByIDs")
+	@RequestMapping(value = "/deleteElectAlarmByIDs")
 	@ResponseBody
-	public Object deleteElectByIDs(@RequestParam(value="BlackIDs",required=false)Integer[] blackIDs) {
-		for(Integer blackID:blackIDs){
-			blackelectMapper.deleteByPrimaryKey(blackID);
+	public Object deleteElectByIDs(@RequestParam(value="ElectAlarmIDs",required=false)Integer[] ElectAlarmIDs) {
+		for(Integer ElectAlarmID:ElectAlarmIDs){
+			electAlarmMapper.deleteByPrimaryKey(ElectAlarmID);
 		}
 		return new BaseDto(0);
 	}

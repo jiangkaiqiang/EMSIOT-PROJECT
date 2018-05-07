@@ -5,7 +5,7 @@
             报警追踪
         </div>
         <ul class="title-nav flex align-items">
-            <li>
+      <!--       <li>
                 <form class="navbar-form navbar-form-sm navbar-left" ui-shift="prependTo"
                       data-target=".navbar-collapse" role="search">
                     <div class="form-group">
@@ -21,12 +21,12 @@
                         </div>
                     </div>
                 </form>
-            </li>
+            </li> -->
             <li ng-show="rootUserPowerDto.alarmDelete==1">
                 <a href="">
-                    <b class="border-dashed-left"></b>
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span>批量删除</span>
+					<button class=" btn btn-guiji" ng-click="goDeleteElectAlarms()">
+						<i class="glyphicon glyphicon-trash"></i> 批量删除
+					</button>
                 </a>
             </li>
         </ul>
@@ -44,19 +44,22 @@
                         <option>区域4</option>
                     </select>
                 </div>-->
-
+				<div class="form-group">
+					<label for="">车牌号</label> <input type="text" placeholder="车牌号查询"
+						ng-model="plateNum" class="form-control" />
+				</div>
                 <div class="form-group datePicker">
                     <label>报警时间：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='alarmDateStart'>
-                        <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;"/>
+                        <input type='text' class="form-control" ng-model="alarmDateStart" placeholder="选择开始时间" readonly style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                     --
                     <div class='input-group date' id='alarmDateEnd'>
-                        <input type='text' class="form-control" placeholder="选择结束时间" readonly style="width:200px;"/>
+                        <input type='text' class="form-control" ng-model="alarmDateEnd" placeholder="选择结束时间" readonly style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -64,7 +67,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary">搜索</button>
+                    <button type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
                 </div>
 
             </div>
@@ -107,7 +110,8 @@
             <td>{{electAlarmDto.ownerTele}}</td>
             <td>{{electAlarmDto.electAlarm.alarm_time}}</td> 
             <td>
-                <button ng-show="rootUserPowerDto.alarmDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
+                <button ng-show="rootUserPowerDto.alarmDelete==1" class="btn btn-primary btn-sm" 
+                ng-click="goDeleteElectAlarm(electAlarmDto.electAlarm.elect_alarm_id)">删除</button>
             </td>
         </tr>
         </tbody>
