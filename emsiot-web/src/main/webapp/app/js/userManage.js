@@ -5,6 +5,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 				if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
+					return;
 				}
 				$http.get('/i/user/findUserByID', {
 		            params: {
@@ -767,7 +768,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		    				'user_id': $scope.userForUpdate.sysUser.user_id,
 		    				'user_name': $scope.userForUpdate.sysUser.user_name,
 		    				'nickname': $scope.userForUpdate.sysUser.nickname,
-		    				'password': '',
+		    				'password': null,
 		    				'opt_power' : optPower,
 		    				'area_power' : $scope.userForUpdate.sysUser.area_power,
 		    				'pro_power' : $scope.userForUpdate.sysUser.pro_power,

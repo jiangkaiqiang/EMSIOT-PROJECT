@@ -372,6 +372,15 @@
 			<if test="areaID != null">
 				AND area_id = #{areaID}
 			</if>
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
 			<if test="ownerTele != null">
 				AND owner_tele = #{ownerTele}
 			</if>

@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ems.iot.manage.dao.ElectAlarmMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
+import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.MessageEntity;
@@ -26,6 +28,8 @@ public class HardAcceptController extends BaseController {
 	private ElectrombileStationMapper electrombileStationMapper;
 	@Autowired
 	private ElectrombileMapper electrombileMapper;
+	@Autowired
+	private ElectAlarmMapper electAlarmMapper;
 	/**
 	 * 接收硬件数据，并判断是否报警
 	 * @param eleGuaCardNum
@@ -52,6 +56,10 @@ public class HardAcceptController extends BaseController {
 			CometUtil cometUtil = new CometUtil();
 			cometUtil.pushToAll(messageEntity);
 			//插入报警表中
+			ElectAlarm electAlarm = new ElectAlarm();
+			electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
+			electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
+			electAlarmMapper.insert(electAlarm);
 		}
 		//插入车辆基站关系表中
 		electrombileStationMapper.insert(electrombileStation);

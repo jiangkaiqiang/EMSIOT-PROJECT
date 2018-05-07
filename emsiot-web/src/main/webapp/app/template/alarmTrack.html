@@ -22,7 +22,7 @@
                     </div>
                 </form>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.alarmDelete==1">
                 <a href="">
                     <b class="border-dashed-left"></b>
                     <i class="glyphicon glyphicon-trash"></i>
@@ -34,7 +34,7 @@
     <div class="search-container">
         <form class="form-inline">
             <div class="block-content">
-                <div class="form-group">
+               <!-- <div class="form-group">
                     <label for="importUser">报警区域&nbsp;&nbsp;&nbsp;</label>
                     <select class="form-control" id="importUser">
                         <option value="" disabled selected style="display:none;">-请选择-</option>
@@ -43,7 +43,7 @@
                         <option>区域3</option>
                         <option>区域4</option>
                     </select>
-                </div>
+                </div>-->
 
                 <div class="form-group datePicker">
                     <label>报警时间：</label>
@@ -107,7 +107,7 @@
             <td>{{electAlarmDto.ownerTele}}</td>
             <td>{{electAlarmDto.electAlarm.alarm_time}}</td> 
             <td>
-                <button class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
+                <button ng-show="rootUserPowerDto.alarmDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
             </td>
         </tr>
         </tbody>

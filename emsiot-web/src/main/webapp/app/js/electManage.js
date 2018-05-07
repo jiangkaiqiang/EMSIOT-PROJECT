@@ -5,7 +5,50 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
+					return;
 				}
+				$http.get('/i/user/findUserByID', {
+		            params: {
+		                "spaceUserID": $rootScope.admin.user_id
+		            }
+		        }).success(function(data){
+				    	$scope.userPowerDto = data;
+				    	//获取全部省For add；要首先确定该用户是不是具有分配省权限用户的能力
+				    	if($scope.userPowerDto.sysUser.pro_power == "-1") {
+				    		$http.get('/i/city/findProvinceList').success(function(data) {
+				    			$scope.provincesForSearch = data;
+				    			var province = {
+				    				"province_id" : "-1",
+				    				"name" : "不限"
+				    			};
+				    			$scope.provincesForSearch.push(province);
+				    			$scope.proID = "-1";
+				    		});
+				    	}
+				    	if($scope.userPowerDto.sysUser.pro_power != "-1"){
+				    		$http.get('/i/city/findCitysByProvinceId', {
+				                params: {
+				                    "provinceID": $scope.userPowerDto.sysUser.pro_power
+				                }
+				            }).success(function (data) {
+				            	$scope.citisForSearch = data;
+				            	var city = {"city_id":"-1","name":"不限"};
+				            	$scope.citisForSearch.push(city);
+				            });
+				    	}
+				    	if($scope.userPowerDto.sysUser.city_power != "-1"){
+				    		$http.get('/i/city/findAreasByCityId', {
+				                params: {
+				                    "cityID": $scope.userPowerDto.sysUser.city_power
+				                }
+				            }).success(function (data) {
+				            	$scope.areasForSearch = data;
+				            	var area = {"area_id":"-1","name":"不限"};
+				            	$scope.areasForSearch.push(area);
+				            });
+				    	}
+				    	$scope.getElects();
+			    });
 		   });
 	};
 	
@@ -98,6 +141,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				recorderID : $scope.recorderID,
 				electState : $scope.electState,
 				insurDetail : $scope.insurDetail,
+				proPower : $scope.userPowerDto.sysUser.pro_power,
+				cityPower : $scope.userPowerDto.sysUser.city_power,
+				areaPower : $scope.userPowerDto.sysUser.area_power,
 				proID : $scope.proID,
 				cityID : $scope.cityID,
 				areaID : $scope.areaID,
@@ -116,7 +162,6 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	$scope.pageChanged = function() {
 		$scope.getElects();
 	}
-	$scope.getElects();
 	// 获取当前冷库的列表
 	$scope.auditChanged = function(optAudiet) {
 		$scope.getElects();
@@ -194,12 +239,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     }
     
     //获取全部省For Search；并添加上不限的权限
-    $http.get('/i/city/findProvinceList').success(function (data) {
-        $scope.provincesForSearch = data;
-        var province = {"province_id":"-1","name":"不限"};
-        $scope.provincesForSearch.push(province);
-        $scope.proID = "-1";
-    });
+//    $http.get('/i/city/findProvinceList').success(function (data) {
+//        $scope.provincesForSearch = data;
+//        var province = {"province_id":"-1","name":"不限"};
+//        $scope.provincesForSearch.push(province);
+//        $scope.proID = "-1";
+//    });
     //根据省ID获取全部市For Search；并添加上不限的权限
     $scope.getCitisForSearch = function () {
     	$http.get('/i/city/findCitysByProvinceId', {

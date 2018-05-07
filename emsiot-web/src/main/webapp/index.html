@@ -128,7 +128,7 @@
                                 <span class="font-bold">监控台</span>
                             </a>
                         </li>
-                        <li id="userManage">
+                        <li id="userManage" ng-show="rootUserPowerDto.electManage==1">
                             <a href class="auto">
                                 <span class="pull-right text-muted">
                                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -138,17 +138,17 @@
                                 <span class="font-bold" translate="aside.nav.DASHBOARD">车辆管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.electManage==1 && rootUserPowerDto.electRecord==1">
                                     <a href="#/electManage">
                                         <span>车辆备案</span>
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.electManage==1 && rootUserPowerDto.blackManage==1">
                                     <a  href="#/blackListManage">
                                         <span>黑名单管理</span>
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.electManage==1 && rootUserPowerDto.alarmTrack==1">
                                     <a href="#/alarmTrack">
                                         <span>报警追踪</span>
                                     </a>
@@ -156,7 +156,7 @@
                             </ul>
                         </li>
                         
-                         <li>
+                         <li ng-show="rootUserPowerDto.stationManageWhole==1">
                             <a class="auto">
                                 <span class="pull-right text-muted">
                                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -166,12 +166,12 @@
                                 <span class="font-bold">基站管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.stationManageWhole==1 && rootUserPowerDto.stationManage==1">
                                     <a href="#/stationManage">
                                         <span>基站管理</span>
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.stationManageWhole==1 && rootUserPowerDto.stationDeviceManage==1">
                                     <a href="#/stationDeviceManage">
                                         <span>基站设备管理</span>
                                     </a>
@@ -179,7 +179,7 @@
                             </ul>
                         </li>
                         
-                        <li>
+                        <li ng-show="rootUserPowerDto.specialAreaManage==1">
                             <a class="auto">
                                 <span class="pull-right text-muted">
                                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -189,12 +189,12 @@
                                 <span class="font-bold">特殊区域管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.specialAreaManage==1 && rootUserPowerDto.limitAreaManage==1">
                                     <a href="#/limitArea">
                                         <span>限制区域管理</span>
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.specialAreaManage==1 && rootUserPowerDto.sensitiveAreaManage==1">
                                     <a href="#/sensitiveArea">
                                         <span>敏感区域管理</span>
                                     </a>
@@ -202,7 +202,7 @@
                             </ul>
                         </li>
                         
-                        <li>
+                        <li ng-show="rootUserPowerDto.AreaAlarmManage==1">
                             <a class="auto">
                                 <span class="pull-right text-muted">
                                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -212,27 +212,27 @@
                                 <span class="font-bold">区域报警管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.AreaAlarmManage==1 && rootUserPowerDto.limitAlarmManage==1">
                                     <a href="#/limitAreaAlarm">
                                         <span>限制区域报警管理</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
-                                    <a href="#/sensitiveAreaAlarm">
+                                    <a href="#/sensitiveAreaAlarm" ng-show="rootUserPowerDto.AreaAlarmManage==1 && rootUserPowerDto.sensitiveAlarmManage==1">
                                         <span>敏感区域报警管理</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         
-                        <li ui-sref-active="active">
+                        <li ui-sref-active="active" ng-show="rootUserPowerDto.dataAnalysis==1">
                             <a href="http://datav.aliyun.com/share/61d385a6dfd42ad65b2a09428c625df3" target="_blank">
                                 <img src="app/img/asideIcon05.png" alt=""/>
                                 <span class="font-bold">图表信息统计</span>
                             </a>
                         </li>
 
-                         <li ui-sref-active="active">
+                         <li ui-sref-active="active" ng-show="rootUserPowerDto.userManage==1">
                             <a href="#/userManage">
                                 <img src="app/img/asideIcon07.png" alt=""/>
                                 <span class="font-bold">用户管理</span>

@@ -24,19 +24,19 @@
 
             <!--</a>-->
             <!--</li>-->
-            <li>
+            <li ng-show="rootUserPowerDto.electExport==1">
                 <a href="">
                     <img src="app/img/daochuIcon.png" alt=""/>
                     <span class="border-dashed" ng-click="goExportElects()">批量导出</span>
                 </a>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.electDelete==1">
                 <a href="">
                     <img src="app/img/delectIcon.png" alt=""/>
                     <span class="border-dashed" ng-click="goDeleteElects()">批量删除</span>
                 </a>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.electAdd==1">
                 <a href="" data-toggle="modal" data-target="#addCar">
                     <i class="glyphicon glyphicon-plus"></i>
                     添加车辆
@@ -79,14 +79,17 @@
             <div class="unblock-content no-block">
                 <div class="form-group">
                     <label for="area">所属区域</label>   
-                    <select id="" class="form-control" ng-model="proID" ng-disabled="editable"
+                    <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID" ng-disabled="editable"
                                             ng-change="getCitisForSearch()"
                                             ng-options="x.province_id as x.name for x in provincesForSearch"></select>
-                    <select id="" class="form-control" ng-model="cityID" ng-disabled="editable"
+                    <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
+                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  id="" class="form-control" ng-model="cityID" ng-disabled="editable"
                                             ng-change="getAreasForSearch()"
                                             ng-options="x.city_id as x.name for x in citisForSearch"></select>
-                   <select id="" class="form-control" ng-model="areaID" ng-disabled="editable"
+                   <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
+                   <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="areaID" ng-disabled="editable"
                                             ng-options="x.area_id as x.name for x in areasForSearch"></select>
+                   <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
                 </div>
                 <div class="form-group">
                     <select id="" class="form-control"
@@ -164,8 +167,8 @@
             <td>{{electDto.electrombile.owner_tele}}</td>
             <td>{{electDto.electrombile.recorder_time}}</td>
             <td class="flex-items flex-center">
-                <i class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
-                <i class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#updateCar"></i>
+                <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
+                <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#updateCar"></i>
 
                 <div class="dropdown">
                     <span data-toggle="dropdown">

@@ -70,6 +70,10 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	 var geoc = new BMap.Geocoder();    
 
 	 mapStation.addEventListener("dblclick",function(e){  //双击添加基站，显示图标
+		 if($rootScope.rootUserPowerDto.stationAdd!="1"){
+			alert("没有添加基站权限！");
+			return;
+		 }
 		 mapStation.clearOverlays();
 		 var currentpt = new BMap.Point(e.point.lng,e.point.lat);
 		 $scope.addStationLng = e.point.lng;

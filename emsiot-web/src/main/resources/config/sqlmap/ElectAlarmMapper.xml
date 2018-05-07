@@ -24,7 +24,7 @@
     insert into elect_alarm (elect_alarm_id, alarm_gua_card_num, 
       alarm_station_phy_num, alarm_time)
     values (#{elect_alarm_id,jdbcType=INTEGER}, #{alarm_gua_card_num,jdbcType=INTEGER}, 
-      #{alarm_station_phy_num,jdbcType=INTEGER}, #{alarm_time,jdbcType=TIMESTAMP})
+      #{alarm_station_phy_num,jdbcType=INTEGER}, now())
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.ElectAlarm">
     insert into elect_alarm

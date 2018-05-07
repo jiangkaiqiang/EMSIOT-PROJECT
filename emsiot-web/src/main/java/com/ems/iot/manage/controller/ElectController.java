@@ -156,6 +156,9 @@ public class ElectController extends BaseController {
 			@RequestParam(value="proID", required=false) Integer proID,
 			@RequestParam(value="cityID", required=false) Integer cityID,
 			@RequestParam(value="areaID", required=false) Integer areaID,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
 			@RequestParam(value="ownerTele", required=false) String ownerTele,
 			@RequestParam(value="ownerID", required=false) String ownerID,
 			@RequestParam(value="plateNum", required=false) String plateNum,
@@ -179,11 +182,20 @@ public class ElectController extends BaseController {
 		if (null==areaID||areaID==-1) {
 			areaID = null;
 		}
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
 		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombiles(startTime, endTime, recorderID, electState, insurDetail, proID, 
-				cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName);
+				cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName,proPower,cityPower,areaPower);
 		Page<ElectrombileDto> electrombileDtos = new Page<ElectrombileDto>();
 		for (Electrombile electrombile : electrombiles) {
 			ElectrombileDto electrombileDto = new ElectrombileDto();
