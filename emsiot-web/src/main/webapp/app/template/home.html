@@ -2,7 +2,7 @@
     <ul class="flex home-nav">
     <li>
         <a href="">
-            <div>{{stations.length}}</div>
+            <div>{{elects.length}}</div>
             <span class="blue">
                 <i class="glyphicon glyphicon-list-alt"></i>
                 登记车辆
@@ -11,7 +11,7 @@
     </li>
     <li>
         <a href="">
-            <div>62423</div>
+            <div>{{blackElects.length}}</div>
             <span class="black">
                 <i class="glyphicon glyphicon-ban-circle"></i>
                 黑名单车辆
@@ -20,7 +20,7 @@
     </li>
     <li>
         <a href="">
-            <div>65817</div>
+            <div>{{elects.length - blackElects.length}}</div>
             <span class="green">
                 <i class="glyphicon glyphicon-th-large"></i>
                 在线车辆
@@ -29,10 +29,10 @@
     </li>
     <li>
         <a href="">
-            <div>13223</div>
+            <div>{{electAlarms.length}}</div>
             <span class="red">
                 <i class="glyphicon glyphicon-bell"></i>
-                报警车辆
+                报警数量
             </span>
         </a >
     </li>
@@ -140,7 +140,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="" class="control-label col-md-3">
 
                             </label>
@@ -158,7 +158,7 @@
 
 
                             </div>
-                        </div>
+                        </div> -->
 
                     </form>
                 </div>

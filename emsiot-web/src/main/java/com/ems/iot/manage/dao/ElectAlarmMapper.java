@@ -1,6 +1,7 @@
 package com.ems.iot.manage.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,6 @@ public interface ElectAlarmMapper {
     int updateByPrimaryKey(ElectAlarm record);
     
     Page<ElectAlarm> findAllElectalarmByOptions(@Param("plateNum")Integer plateNum,@Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd);
+    
+    List<ElectAlarm> findElectalarmsList();
 }

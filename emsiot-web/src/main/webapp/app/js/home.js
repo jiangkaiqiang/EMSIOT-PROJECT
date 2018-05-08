@@ -10,23 +10,53 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 				window.location.href = url;
 			}
 		     // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
-			 $http.get('/i/city/findCityNameByAreaID', {
+			 $http.get('/i/city/findCityNameByUserPower', {
 			            params: {
-			                "AreaID": $scope.user.area_power
+			                "areaID": $scope.user.area_power,
+			                "cityID": $scope.user.city_power,
+			                "proID": $scope.user.pro_power
 			            }
 			  }).success(function (data) {
-			             $scope.cityName = data.name;
-			        	 map.centerAndZoom($scope.cityName, 10);  // 初始化地图,设置中心点坐标和地图级别
-			        	 map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-			        	 //map.setMapStyle({style:'light'})
-			        	 //map.disableDoubleClickZoom();
-			        // 获取基站
-			   	    $http.get('/i/station/findAllStationsForMap').success(function (data) {
-			   	        $scope.stations = data;
-			   	        showStation();
-			   	    });
-			        	 
-			 });
+				$scope.cityName = data.name;
+				map.centerAndZoom($scope.cityName, 10); // 初始化地图,设置中心点坐标和地图级别
+				map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+				//map.setMapStyle({style:'light'})
+				//map.disableDoubleClickZoom();
+				showCssFlag('#xsjizhan');
+				// 获取基站
+				$http.get('/i/station/findAllStationsForMap').success(function(data) {
+					$scope.stations = data;
+					showStation();
+				});
+				// 获取登记车辆数量
+				$http.get('/i/elect/findElectsList', {
+					params : {
+						"areaPower" : $scope.user.area_power,
+						"cityPower" : $scope.user.city_power,
+						"proPower" : $scope.user.pro_power
+					}
+				}).success(function(data) {
+					$scope.elects = data;
+				});
+			    // 获取黑名单车辆数量
+				$http.get('/i/blackelect/findBlackelectsList', {
+					params : {
+						"areaPower" : $scope.user.area_power,
+						"cityPower" : $scope.user.city_power,
+						"proPower" : $scope.user.pro_power
+					}
+				}).success(function(data) {
+					$scope.blackElects = data;
+				});
+			    // 获取在线车辆数量
+			    // 获取报警数量
+				$http.get('/i/electalarm/findElectAlarmsList', {
+					params : {
+					}
+				}).success(function(data) {
+					$scope.electAlarms = data;
+				});
+			});
 	 });
 	 function G(id) {
 		    return document.getElementById(id);
@@ -123,7 +153,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 var sContent = sHtml;
 		 var markers = [];   //存放聚合的基站
 		 
-	     for(var i=0;i<100;i++){
+	     for(var i=0;i<$scope.stations.length;i++){
 	    	 	pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
 	    	 	marker2 = new BMap.Marker(pt); 
     	   
@@ -333,15 +363,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 //显示基站开关选项控制
 	 $scope.jizhanFlag = 1;
 	 $('#xsjizhan').click(function () {
-	     if($scope.jizhanFlag==1){
+	     if($scope.jizhanFlag==0){
 	    	 //alert("显示基站");
 	    	 showStation();
-	    	 $scope.jizhanFlag=0;
+	    	 $scope.jizhanFlag=1;
 	     }
-	     else if($scope.jizhanFlag==0){
+	     else if($scope.jizhanFlag==1){
 	    	 //alert("隐藏基站");
 	    	 map.clearOverlays();
-	    	 $scope.jizhanFlag=1;
+	    	 $scope.jizhanFlag=0;
 	     }
 	     showCssFlag('#xsjizhan');
 	 });

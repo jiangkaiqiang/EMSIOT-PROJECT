@@ -93,4 +93,7 @@
 			</if>
 			</where>
    </select>
+   <select id="findElectalarmsList" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+        SELECT * FROM `elect_alarm` 
+   </select>
 </mapper>

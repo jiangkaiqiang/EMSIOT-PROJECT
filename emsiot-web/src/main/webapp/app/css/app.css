@@ -5066,6 +5066,10 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
   margin-left:5px;
   display:inline-block;
 }
+.margin-left-block{
+  margin-left:10px;
+  display:block;
+}
 
 .margin-left-md{
   margin-left:15px;
@@ -5074,6 +5078,10 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 .margin-right{
   margin-right:5px;
   display:inline-block;
+}
+.margin-right-block{
+  margin:0 5px;
+  display:block;
 }
 .margin-bottom{
   margin-bottom:1%;
@@ -5163,6 +5171,16 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
   display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
   justify-content: flex-end;
 }
+.flex-wrap{
+  display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+  display: -moz-box; /* Firefox 17- */
+  display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+  display: -moz-flex; /* Firefox 18+ */
+  display: -ms-flexbox; /* IE 10 */
+  display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+  flex-wrap:wrap;
+}
+
 
 .title-text{
   font-size:15px;
@@ -5284,7 +5302,7 @@ display: -webkit-box;  /* 老版本语法: Safari, iOS, Android browser, older W
 .modal-footer{text-align:center;
 }
 .modal .btn{
-  padding:8px 35px;
+  padding:6px 12px;
 }
 
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2,
@@ -5391,6 +5409,16 @@ position:absolute;
   border:1px solid #ddd;
 }
 .btn-guiji:hover,.btn-guiji:focus,.btn-guiji:active {
+  color: #409eff;
+  border:1px solid #c6e2ff!important;
+  background-color: #ecf5ff!important;
+}
+.btn-guiji-after{
+  color: #409eff;
+  border:1px solid #c6e2ff!important;
+  background-color: #ecf5ff!important;
+}
+.btn-guiji-after:hover,.btn-guiji-after:focus,.btn-guiji-after:active,.btn-guiji-after:visited {
   color: #409eff;
   border:1px solid #c6e2ff!important;
   background-color: #ecf5ff!important;

@@ -51,7 +51,16 @@
     background:#fff;
     border:1px solid #ddd;
     border-radius:20px;
-    padding:6px 0 6px 15px!important;
+    /*padding:6px 0 6px 15px!important;*/
+}
+
+.countWarp .btn-white.searchRoule{
+    border:1px solid #2D7DF6!important;
+    color:#2D7DF6;
+}
+#updateUser .btn-white.active{
+    border:1px solid #2D7DF6!important;
+    color:#2D7DF6;
 }
 .countWarp .userModalSwitch .btn-white{padding:7px 12px!important;}
 .countWarp .btn-white:hover,.countWarp .btn-white:focus,
@@ -115,13 +124,17 @@
 #addUser .search-container{
     padding:5px 0;
 }
-#addUser .search-container button{
+#addUser .search-container button,#updateUser .search-container button{
     margin:5px;
 }
-ul.search-container li{
-    display:none;
-}
-ul.search-container li:first-child{
+/*ul.search-container li{*/
+    /*display:none;*/
+/*}*/
+
+/*ul.search-container li:first-child{*/
+    /*display:block;*/
+/*}*/
+ul.search-container .search-container{
     display:block;
 }
 .userManage .title-brand{padding:10px 0;}
@@ -238,6 +251,9 @@ ul.search-container li:first-child{
 .tabs input[name="tab-control"]:nth-of-type(2):checked ~ .slider {
     -webkit-transform: translateX(100%);
     transform: translateX(100%);
+}
+#userAreaSelect button{
+    margin-left:5px;
 }
 
 

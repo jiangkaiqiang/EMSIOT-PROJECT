@@ -497,6 +497,15 @@ public class ElectController extends BaseController {
 		return station;
 	}
 	
+	/**
+	 * 查询车辆轨迹
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @param startTimeForTrace
+	 * @param endTimeForTrace
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping(value = "/findElectTrace")
 	@ResponseBody
 	public Object findElectTrace(
@@ -518,6 +527,35 @@ public class ElectController extends BaseController {
 		}
 		return traceStationDtos;
 	}
+	
+	/**
+	 * 获取所有备案登记车辆
+	 * @param proPower
+	 * @param cityPower
+	 * @param areaPower
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectsList")
+	@ResponseBody
+	public Object findElectsList(
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower
+			) throws UnsupportedEncodingException {
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
+		return electrombiles;
+	}
+
 //	@RequestMapping(value = "/findElectTracePages")
 //	@ResponseBody
 //	public Object findElectTracePages(@RequestParam(value="pageNum",required=false) Integer pageNum,

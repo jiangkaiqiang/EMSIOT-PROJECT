@@ -12,14 +12,15 @@
                                    class="form-control input-sm bg-light no-border searchInput padder"
                                    placeholder="账户查询">
                                  <span class="input-group-btn">
-                                    <button ng-click="goSearch()" type="submit" class="btn btn-sm bg-light searchInput"><i
-                                            class="fa fa-search margin-right"></i></button>
+                                    <button ng-click="goSearch()" type="submit" class="btn btn-sm bg-light searchInput">
+                                        <i
+                                                class="fa fa-search margin-right"></i></button>
                                 </span>
                         </div>
                     </div>
                 </form>
             </li>
-            <li ng-show="rootUserPowerDto.userDelete==1">
+            <li>
                 <a href="">
                     <b class="border-dashed-left"></b>
                     <i class="glyphicon glyphicon-trash"></i>
@@ -27,7 +28,7 @@
                     <b class="border-dashed"></b>
                 </a>
             </li>
-            <li ng-show="rootUserPowerDto.userAdd==1">
+            <li>
                 <a href="" data-toggle="modal" data-target="#addUser">
                     <i class="glyphicon glyphicon-plus"></i>
                     添加用户
@@ -71,8 +72,8 @@
             <td>{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}</td>
             <td>{{user.sysUser.create_time}}</td>
             <td>
-                <button ng-show="rootUserPowerDto.userDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
-                <button ng-show="rootUserPowerDto.userEdit==1" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
+                <button class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
                         ng-click="goUpdateUser(user.sysUser.user_id)">编辑
                 </button>
             </td>
@@ -113,19 +114,16 @@
                         <div class="userModalSwitch flex-between margin-top2">
                             <ul class="flex ">
                                 <li>
-                                    <button class="btn btn-white" type="button">
+                                    <button class="btn btn-white flex-items searchRoule" type="button">
                                         <i class="glyphicon glyphicon-search"></i>
-                                        查询权限
-                                       <!--  <div class="swichWrap">
-                                            <div class="btnCircle" ></div>
-                                        </div> -->
+                                        <span class=" margin-right-block">查询权限</span>
                                         <input type="checkbox" class="form-control" checked="checked" disabled>
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-white margin-left-md" type="button">
+                                    <button class="btn btn-white margin-left-md flex-items" type="button">
                                         <i class="glyphicon glyphicon-edit"></i>
-                                        操作权限
+                                        <span class=" margin-right-block">操作权限</span>
                                         <!-- <div class="swichWrap">
                                             <div class="btnCircle"></div>
                                         </div> -->
@@ -140,24 +138,33 @@
                                     <i>*</i>
                                     地区：
                                 </label>
-                                <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="addProvinceID" ng-disabled="editable"
+                                <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control"
+                                        ng-model="addProvinceID" ng-disabled="editable"
                                         ng-change="getCitis()"
                                         ng-options="x.province_id as x.name for x in provinces"></select>
-                                <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
-                                
-                                <select ng-show="userPowerDto.sysUser.city_power==-1" id="" class="form-control" ng-model="addCityID" ng-disabled="editable"
+                                <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-guiji-after">
+                                    {{userPowerDto.pro_name}}
+                                </button>
+
+                                <select ng-show="userPowerDto.sysUser.city_power==-1" id="" class="form-control"
+                                        ng-model="addCityID" ng-disabled="editable"
                                         ng-change="getAreas(addCityID)"
                                         ng-options="x.city_id as x.name for x in citis"></select>
-                                <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
-                                
-                                <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="addAreaID" ng-disabled="editable"
+                                <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-guiji-after">
+                                    {{userPowerDto.city_name}}
+                                </button>
+
+                                <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control"
+                                        ng-model="addAreaID" ng-disabled="editable"
                                         ng-options="x.area_id as x.name for x in areas"></select>
-                                <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
+                                <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-guiji-after">
+                                    {{userPowerDto.area_name}}
+                                </button>
                             </div>
                         </div>
 
-                       
-                       <!--监控台权限管理开始-->
+
+                        <!--监控台权限管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items">
                                 <div class="title-text">
@@ -170,16 +177,15 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="search-container">
-                                <button class="btn btn-white" type="button">
-                                    轨迹查询
+                            <div class="search-container flex-items">
+                                <button class="btn btn-white flex-items" type="button">
+                                    <span class="margin-right-block">轨迹查询</span>
                                     <input type="checkbox" class="form-control" id="traceSearch">
                                     <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                 </button>
-                                <button class="btn btn-white" type="button">
-                                    定位
-                                     <input type="checkbox" class="form-control" id="location">
-                                    <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <button class="btn btn-white flex-items" type="button">
+                                    <span class="margin-right-block">定位</span>
+                                    <input type="checkbox" class="form-control" id="location">
                                 </button>
                             </div>
                         </nav>
@@ -200,61 +206,50 @@
                             </div>
 
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        车辆备案
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                       <input type="checkbox" class="form-control" id="electRecord">
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆备案</span>
+                                        <input type="checkbox" class="form-control" id="electRecord">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理</span>
                                         <input type="checkbox" class="form-control" id="blackManage">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警追踪
-                                         <input type="checkbox" class="form-control" id="alarmTrack">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">报警追踪</span>
+                                        <input type="checkbox" class="form-control" id="alarmTrack">
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        车辆管理-添加车辆
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                       <input type="checkbox" class="form-control" id="electAdd">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-添加车辆</span>
+                                        <input type="checkbox" class="form-control" id="electAdd">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        车辆管理-删除车辆
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-删除车辆</span>
                                         <input type="checkbox" class="form-control" id="electDelete">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        车辆管理-批量导出
-                                         <input type="checkbox" class="form-control" id="electExport">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-批量导出</span>
+                                        <input type="checkbox" class="form-control" id="electExport">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        车辆管理-编辑车辆
-                                         <input type="checkbox" class="form-control" id="electEdit">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-编辑车辆</span>
+                                        <input type="checkbox" class="form-control" id="electEdit">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理-添加黑名单
-                                         <input type="checkbox" class="form-control" id="blackAdd">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理-添加黑名单</span>
+                                        <input type="checkbox" class="form-control" id="blackAdd">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理-删除黑名单
-                                         <input type="checkbox" class="form-control" id="blackDelete">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理-删除黑名单</span>
+                                        <input type="checkbox" class="form-control" id="blackDelete">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理-编辑黑名单
-                                         <input type="checkbox" class="form-control" id="blackEdit">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理-编辑黑名单</span>
+                                        <input type="checkbox" class="form-control" id="blackEdit">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警追踪-删除报警
-                                         <input type="checkbox" class="form-control" id="alarmDelete">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">报警追踪-删除报警</span>
+                                        <input type="checkbox" class="form-control" id="alarmDelete">
                                     </button>
                                 </li>
                             </ul>
@@ -275,35 +270,29 @@
                                 </ul>
                             </div>
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        基站管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="stationManage">
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站管理</span>
+                                        <input type="checkbox" class="form-control" id="stationManage">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站设备管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站设备管理</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceManage">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站管理-添加基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="stationAdd">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站管理-添加基站</span>
+                                        <input type="checkbox" class="form-control" id="stationAdd">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站管理-删除基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block"> 基站管理-删除基站</span>
                                         <input type="checkbox" class="form-control" id="stationDelete">
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        基站设备管理-删除基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="stationDeviceDelete">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站设备管理-删除基站</span>
+                                        <input type="checkbox" class="form-control" id="stationDeviceDelete">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站设备管理-修改基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站设备管理-修改基站</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceUpdate">
                                     </button>
                                 </li>
@@ -326,16 +315,14 @@
                             </div>
 
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        限制区域管理
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">限制区域管理</span>
                                         <input type="checkbox" class="form-control" id="limitAreaManage">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        敏感区域管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="sensitiveAreaManage">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block"> 敏感区域管理</span>
+                                        <input type="checkbox" class="form-control" id="sensitiveAreaManage">
                                     </button>
                                 </li>
                             </ul>
@@ -357,15 +344,13 @@
                             </div>
 
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        限制区域报警管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">限制区域报警管理</span>
                                         <input type="checkbox" class="form-control" id="limitAlarmManage">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        敏感区域报警管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">敏感区域报警管理</span>
                                         <input type="checkbox" class="form-control" id="sensitiveAlarmManage">
                                     </button>
                                 </li>
@@ -387,16 +372,6 @@
                                     </li>
                                 </ul>
                             </div>
-
-                            <!-- <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        图表统计
-                                        <input type="checkbox" class="form-control">
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                </li>
-                            </ul> -->
                         </nav>
                         <!--图标统计结束-->
 
@@ -414,27 +389,24 @@
                                 </ul>
                             </div>
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        用户管理-添加用户
-                                        <input type="checkbox" class="form-control"  id="userAdd">
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">用户管理-添加用户</span>
+                                        <input type="checkbox" class="form-control" id="userAdd">
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        用户管理-删除用户
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">用户管理-删除用户</span>
                                         <input type="checkbox" class="form-control" id="userDelete">
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        用户管理-编辑用户
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">用户管理-编辑用户</span>
                                         <input type="checkbox" class="form-control" id="userEdit">
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                     </button>
                                 </li>
                             </ul>
                         </nav>
                         <!--用户管理结束-->
-                       
+
 
                         <div class="divider-line"></div>
 
@@ -447,6 +419,7 @@
                                         <i>*</i>
                                         登陆账户：
                                     </label>
+
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" ng-model="username">
                                     </div>
@@ -460,6 +433,7 @@
                                         <i>*</i>
                                         昵称：
                                     </label>
+
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" ng-model="nickname">
                                     </div>
@@ -475,18 +449,20 @@
                                         <i>*</i>
                                         密码：
                                     </label>
+
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" ng-model="password1">
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="" class="col-sm-4 control-label">
                                         <i>*</i>
                                         确认密码：
                                     </label>
+
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" ng-model="password2">
                                     </div>
@@ -494,21 +470,22 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group ">
-                                    <label for="" class="control-label col-md-4">
-                                        <i>*</i>
-                                        手机号：
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="telephone">
-                                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label for="" class="control-label col-md-4">
+                                    <i>*</i>
+                                    手机号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="telephone">
                                 </div>
                             </div>
+                        </div>
                     </div>
-                    
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -526,8 +503,6 @@
     <!-- /.modal -->
 </div>
 <!--  添加用户模态框 end -->
-
-
 
 
 <!--  更新用户模态框 -->
@@ -553,22 +528,17 @@
                         <div class="userModalSwitch flex-between margin-top2">
                             <ul class="flex ">
                                 <li>
-                                    <button class="btn btn-white" type="button">
+                                    <button class="btn btn-white flex-items" type="button">
                                         <i class="glyphicon glyphicon-search"></i>
-                                        查询权限
-                                       <!--  <div class="swichWrap">
-                                            <div class="btnCircle" ></div>
-                                        </div> -->
+                                        <span class="margin-right-block">查询权限</span>
+
                                         <input type="checkbox" class="form-control" checked="checked" disabled>
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-white margin-left-md" type="button">
+                                    <button class="btn btn-white margin-left-md flex-items" type="button">
                                         <i class="glyphicon glyphicon-edit"></i>
-                                        操作权限
-                                        <!-- <div class="swichWrap">
-                                            <div class="btnCircle"></div>
-                                        </div> -->
+                                        <span class="margin-right-block">操作权限</span>
                                         <input type="checkbox" class="form-control" id="optPowerChange">
                                     </button>
                                 </li>
@@ -580,24 +550,33 @@
                                     <i>*</i>
                                     地区：
                                 </label>
-                                <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="userForUpdate.sysUser.pro_power" ng-disabled="editable"
+                                <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control"
+                                        ng-model="userForUpdate.sysUser.pro_power" ng-disabled="editable"
                                         ng-change="getCitisForUpdate()"
                                         ng-options="x.province_id as x.name for x in provincesForUpdate"></select>
-                                <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
-                                
-                                <select ng-show="userPowerDto.sysUser.city_power==-1" id="" class="form-control" ng-model="userForUpdate.sysUser.city_power" ng-disabled="editable"
+                                <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-guiji-after">
+                                    {{userPowerDto.pro_name}}
+                                </button>
+
+                                <select ng-show="userPowerDto.sysUser.city_power==-1" id="" class="form-control"
+                                        ng-model="userForUpdate.sysUser.city_power" ng-disabled="editable"
                                         ng-change="getAreasForUpdate()"
                                         ng-options="x.city_id as x.name for x in citisForUpdate"></select>
-                                <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
-                                
-                                <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="userForUpdate.sysUser.area_power" ng-disabled="editable"
+                                <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-guiji-after">
+                                    {{userPowerDto.city_name}}
+                                </button>
+
+                                <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control"
+                                        ng-model="userForUpdate.sysUser.area_power" ng-disabled="editable"
                                         ng-options="x.area_id as x.name for x in areasForUpdate"></select>
-                                <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
+                                <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-guiji-after">
+                                    {{userPowerDto.area_name}}
+                                </button>
                             </div>
                         </div>
 
-                       
-                       <!--监控台权限管理开始-->
+
+                        <!--监控台权限管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items">
                                 <div class="title-text">
@@ -610,16 +589,14 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="search-container">
-                                <button class="btn btn-white" type="button">
-                                    轨迹查询
+                            <div class="search-container flex-wrap">
+                                <button class="btn btn-white flex-items" type="button">
+                                    <span class="margin-right-block">轨迹查询</span>
                                     <input type="checkbox" class="form-control" id="traceSearchChange">
-                                    <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                 </button>
-                                <button class="btn btn-white" type="button">
-                                    定位
-                                     <input type="checkbox" class="form-control" id="locationChange">
-                                    <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <button class="btn btn-white flex-items" type="button">
+                                    <span class="margin-right-block">定位</span>
+                                    <input type="checkbox" class="form-control" id="locationChange">
                                 </button>
                             </div>
                         </nav>
@@ -640,61 +617,50 @@
                             </div>
 
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        车辆备案
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                       <input type="checkbox" class="form-control" id="electRecordChange">
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆备案</span>
+                                        <input type="checkbox" class="form-control" id="electRecordChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理</span>
                                         <input type="checkbox" class="form-control" id="blackManageChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警追踪
-                                         <input type="checkbox" class="form-control" id="alarmTrackChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">报警追踪</span>
+                                        <input type="checkbox" class="form-control" id="alarmTrackChange">
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        车辆管理-添加车辆
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                       <input type="checkbox" class="form-control" id="electAddChange">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-添加车辆</span>
+                                        <input type="checkbox" class="form-control" id="electAddChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        车辆管理-删除车辆
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-删除车辆</span>
                                         <input type="checkbox" class="form-control" id="electDeleteChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        车辆管理-批量导出
-                                         <input type="checkbox" class="form-control" id="electExportChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-批量导出</span>
+                                        <input type="checkbox" class="form-control" id="electExportChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        车辆管理-编辑车辆
-                                         <input type="checkbox" class="form-control" id="electEditChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">车辆管理-编辑车辆</span>
+                                        <input type="checkbox" class="form-control" id="electEditChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理-添加黑名单
-                                         <input type="checkbox" class="form-control" id="blackAddChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理-添加黑名单</span>
+                                        <input type="checkbox" class="form-control" id="blackAddChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理-删除黑名单
-                                         <input type="checkbox" class="form-control" id="blackDeleteChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理-删除黑名单</span>
+                                        <input type="checkbox" class="form-control" id="blackDeleteChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        黑名单管理-编辑黑名单
-                                         <input type="checkbox" class="form-control" id="blackEditChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">黑名单管理-编辑黑名单</span>
+                                        <input type="checkbox" class="form-control" id="blackEditChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        报警追踪-删除报警
-                                         <input type="checkbox" class="form-control" id="alarmDeleteChange">
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">报警追踪-删除报警</span>
+                                        <input type="checkbox" class="form-control" id="alarmDeleteChange">
                                     </button>
                                 </li>
                             </ul>
@@ -715,35 +681,29 @@
                                 </ul>
                             </div>
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        基站管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="stationManageChange">
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站管理</span>
+                                        <input type="checkbox" class="form-control" id="stationManageChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站设备管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站设备管理</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceManageChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站管理-添加基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="stationAddChange">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站管理-添加基站</span>
+                                        <input type="checkbox" class="form-control" id="stationAddChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站管理-删除基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站管理-删除基站</span>
                                         <input type="checkbox" class="form-control" id="stationDeleteChange">
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        基站设备管理-删除基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="stationDeviceDeleteChange">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站设备管理-删除基站</span>
+                                        <input type="checkbox" class="form-control" id="stationDeviceDeleteChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        基站设备管理-修改基站
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">基站设备管理-修改基站</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceUpdateChange">
                                     </button>
                                 </li>
@@ -766,16 +726,14 @@
                             </div>
 
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        限制区域管理
-                                       <!--  <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">限制区域管理</span>
                                         <input type="checkbox" class="form-control" id="limitAreaManageChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        敏感区域管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
-                                         <input type="checkbox" class="form-control" id="sensitiveAreaManageChange">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">敏感区域管理</span>
+                                        <input type="checkbox" class="form-control" id="sensitiveAreaManageChange">
                                     </button>
                                 </li>
                             </ul>
@@ -797,15 +755,13 @@
                             </div>
 
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        限制区域报警管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">限制区域报警管理</span>
                                         <input type="checkbox" class="form-control" id="limitAlarmManageChange">
                                     </button>
-                                    <button class="btn btn-white" type="button">
-                                        敏感区域报警管理
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">敏感区域报警管理</span>
                                         <input type="checkbox" class="form-control" id="sensitiveAlarmManageChange">
                                     </button>
                                 </li>
@@ -828,15 +784,6 @@
                                 </ul>
                             </div>
 
-                            <!-- <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        图表统计
-                                        <input type="checkbox" class="form-control">
-                                        <i class="glyphicon glyphicon-ok btn-ok"></i>
-                                    </button>
-                                </li>
-                            </ul> -->
                         </nav>
                         <!--图标统计结束-->
 
@@ -854,27 +801,24 @@
                                 </ul>
                             </div>
                             <ul class="search-container">
-                                <li class="tab1-car">
-                                    <button class="btn btn-white" type="button">
-                                        用户管理-添加用户
-                                        <input type="checkbox" class="form-control"  id="userAddChange">
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
+                                <li class="tab1-car flex-wrap">
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">用户管理-添加用户</span>
+                                        <input type="checkbox" class="form-control" id="userAddChange">
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        用户管理-删除用户
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block"> 用户管理-删除用户</span>
                                         <input type="checkbox" class="form-control" id="userDeleteChange">
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                     </button>
-                                     <button class="btn btn-white" type="button">
-                                        用户管理-编辑用户
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">用户管理-编辑用户</span>
                                         <input type="checkbox" class="form-control" id="userEditChange">
-                                        <!-- <i class="glyphicon glyphicon-ok btn-ok"></i> -->
                                     </button>
                                 </li>
                             </ul>
                         </nav>
                         <!--用户管理结束-->
-                       
+
 
                         <div class="divider-line"></div>
 
@@ -887,8 +831,10 @@
                                         <i>*</i>
                                         登陆账户：
                                     </label>
+
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="userForUpdate.sysUser.user_name">
+                                        <input type="text" class="form-control"
+                                               ng-model="userForUpdate.sysUser.user_name">
                                     </div>
                                 </div>
                             </div>
@@ -900,8 +846,10 @@
                                         <i>*</i>
                                         昵称：
                                     </label>
+
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="userForUpdate.sysUser.nickname">
+                                        <input type="text" class="form-control"
+                                               ng-model="userForUpdate.sysUser.nickname">
                                     </div>
                                 </div>
                             </div>
@@ -934,21 +882,23 @@
                             </div>
                         </div>
                     </div> -->
-                    
-                    <div class="row">
+
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label for="" class="control-label col-md-4">
                                         <i>*</i>
                                         手机号：
                                     </label>
+
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="userForUpdate.sysUser.user_tel">
+                                        <input type="text" class="form-control"
+                                               ng-model="userForUpdate.sysUser.user_tel">
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                    
+                        </div>
+
                 </form>
             </div>
             <div class="modal-footer">

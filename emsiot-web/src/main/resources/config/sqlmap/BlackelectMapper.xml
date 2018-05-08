@@ -192,4 +192,19 @@
 			</where>
    </select>
     
+    <select id="findBlackelectsList" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
+        SELECT * FROM `blackelect` 
+        <where>
+			<if test="proPower != null">
+			    pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+			</where>
+   </select>
+    
 </mapper>

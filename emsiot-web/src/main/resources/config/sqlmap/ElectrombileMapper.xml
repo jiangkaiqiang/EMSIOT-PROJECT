@@ -424,4 +424,102 @@
 			</if>
 		</where>
 	</select>
+	<select id="findElectsList" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="proPower != null">
+			    pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
+ <update id="updateByGuaCardNumSelective" parameterType="com.ems.iot.manage.entity.Electrombile">
+    update electrombile
+    <set>
+      <if test="plate_num != null">
+        plate_num = #{plate_num,jdbcType=VARCHAR},
+      </if>
+      <if test="ve_id_num != null">
+        ve_id_num = #{ve_id_num,jdbcType=VARCHAR},
+      </if>
+      <if test="elect_brand != null">
+        elect_brand = #{elect_brand,jdbcType=VARCHAR},
+      </if>
+      <if test="buy_date != null">
+        buy_date = #{buy_date,jdbcType=DATE},
+      </if>
+      <if test="elect_color != null">
+        elect_color = #{elect_color,jdbcType=VARCHAR},
+      </if>
+      <if test="motor_num != null">
+        motor_num = #{motor_num,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        pro_id = #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="elect_type != null">
+        elect_type = #{elect_type,jdbcType=INTEGER},
+      </if>
+      <if test="insur_detail != null">
+        insur_detail = #{insur_detail,jdbcType=INTEGER},
+      </if>
+      <if test="elect_pic != null">
+        elect_pic = #{elect_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="indentity_card_pic != null">
+        indentity_card_pic = #{indentity_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record_pic != null">
+        record_pic = #{record_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="install_card_pic != null">
+        install_card_pic = #{install_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_tele != null">
+        owner_tele = #{owner_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_name != null">
+        owner_name = #{owner_name,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_address != null">
+        owner_address = #{owner_address,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id != null">
+        owner_id = #{owner_id,jdbcType=VARCHAR},
+      </if>
+      <if test="recorder_id != null">
+        recorder_id = #{recorder_id,jdbcType=INTEGER},
+      </if>
+      <if test="recorder_time != null">
+        recorder_time = #{recorder_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="elect_state != null">
+        elect_state = #{elect_state,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_recorder != null">
+        black_list_recorder = #{black_list_recorder,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_time != null">
+        black_list_time = #{black_list_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where gua_card_num = #{gua_card_num,jdbcType=INTEGER}
+  </update>
+	
 </mapper>

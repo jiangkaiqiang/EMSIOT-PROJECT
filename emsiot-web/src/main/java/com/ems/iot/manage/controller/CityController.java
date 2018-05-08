@@ -1,4 +1,5 @@
 package com.ems.iot.manage.controller;
+import org.apache.tools.ant.taskdefs.Sleep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,8 @@ import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ProvinceMapper;
 import com.ems.iot.manage.entity.Area;
 import com.ems.iot.manage.entity.City;
+import com.ems.iot.manage.entity.Province;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 /**
  * @author Barry
  * @date 2018年3月20日下午3:32:09  
@@ -86,12 +89,27 @@ public class CityController {
     	}
     }
     
-    @RequestMapping(value = "/findCityNameByAreaID", method = RequestMethod.GET)
+    @RequestMapping(value = "/findCityNameByUserPower")
     @ResponseBody
-    public Object findCityNameByAreaID(@RequestParam Integer AreaID) {
-        Area area = cityMapper.findAreaNameByAreaID(AreaID);
-        City city = cityMapper.findCityById(Integer.parseInt(area.getCity_id()));
-        return city;
+    public Object findCityNameByUserPower(@RequestParam Integer areaID,@RequestParam Integer cityID,@RequestParam Integer proID) {
+    	if (proID==-1 || proID==null) {
+    		Province province = new Province();
+    		province.setName("上海");
+			return province;
+		}
+    	else {
+			if (cityID==-1||cityID==null) {
+				return cityMapper.findProvinceById(proID);
+			}
+			else {
+				if (areaID==-1||areaID==null) {
+					return cityMapper.findCityById(cityID);
+				}
+				else {
+					return cityMapper.findAreaNameByAreaID(areaID);
+				}
+			}
+		}
     }
     
 }

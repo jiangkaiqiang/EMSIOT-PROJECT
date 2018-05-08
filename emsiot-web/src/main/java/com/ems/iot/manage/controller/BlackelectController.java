@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.BlackelectDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.Blackelect;
+import com.ems.iot.manage.entity.Electrombile;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -148,6 +150,11 @@ public class BlackelectController extends BaseController {
 		if(electrombileMapper.findElectrombileForLocation(gua_card_num, null)==null){
 			return new ResultDto(-1,"防盗芯片编号不存在！");
 		}
+		//更新elect表中车辆的状态为黑名单状态
+		Electrombile electrombile = new Electrombile();
+		electrombile.setGua_card_num(blackelect.getGua_card_num());
+		electrombile.setElect_state(2);
+		electrombileMapper.updateByGuaCardNumSelective(electrombile);
 		blackelectMapper.insert(blackelect);
 		return new ResultDto(0,"添加成功");
 	}
@@ -202,5 +209,31 @@ public class BlackelectController extends BaseController {
 				blackelect.setDeal_status(deal_status);
 				blackelectMapper.updateByPrimaryKeySelective(blackelect);		
 		return  new ResultDto(0,"修改成功");
+	}
+	
+	/**
+	 * 获取该管理员权限下的所有车辆，不分页
+	 * @param proPower
+	 * @param cityPower
+	 * @param areaPower
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findBlackelectsList")
+	@ResponseBody
+	public Object findBlackelectsList(@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower) throws UnsupportedEncodingException {
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		List<Blackelect> blackelects = blackelectMapper.findBlackelectsList(proPower, cityPower, areaPower);
+		return blackelects;
 	}
 }

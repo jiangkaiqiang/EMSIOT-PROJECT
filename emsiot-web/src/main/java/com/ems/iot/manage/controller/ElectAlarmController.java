@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,5 +109,15 @@ public class ElectAlarmController extends BaseController {
 			electAlarmMapper.deleteByPrimaryKey(ElectAlarmID);
 		}
 		return new BaseDto(0);
+	}
+	/**
+	 * 返回所有报警，不分页
+	 * @return
+	 */
+	@RequestMapping(value = "/findElectAlarmsList")
+	@ResponseBody
+	public Object findElectAlarmsList() {
+		List<ElectAlarm> electAlarms = electAlarmMapper.findElectalarmsList();
+		return electAlarms;
 	}
 }

@@ -1,5 +1,7 @@
 package com.ems.iot.manage.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.ems.iot.manage.entity.Blackelect;
@@ -22,4 +24,6 @@ public interface BlackelectMapper {
     
     Page<Blackelect> findAllBlackelectByOptions(@Param("blackID")Integer blackID,@Param("ownerTele")String ownerTele,
     		@Param("DealStatus")Integer DealStatus);
+    
+    List<Blackelect> findBlackelectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }

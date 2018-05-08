@@ -21,6 +21,8 @@ public interface ElectrombileMapper {
     List<Electrombile> findElectrombiles(@Param("num") int num);
 
     int updateByPrimaryKeySelective(Electrombile record);
+    
+    int updateByGuaCardNumSelective(Electrombile record);
 
     int updateByPrimaryKey(Electrombile record);
     
@@ -35,4 +37,12 @@ public interface ElectrombileMapper {
      * @return
      */
     Electrombile findElectrombileForLocation(@Param("guaCardNum") int guaCardNum,@Param("plateNum") String plateNum);
+    /**
+     * 获取某个管理员权限之内的所有车辆，不分页
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @return
+     */
+    List<Electrombile> findElectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }

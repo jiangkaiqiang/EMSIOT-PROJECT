@@ -45,6 +45,12 @@
 			<if test="area_power != null">
 				area_power = #{area_power,jdbcType=INTEGER},
 			</if>
+			<if test="pro_power != null">
+				pro_power = #{pro_power,jdbcType=INTEGER},
+			</if>
+			<if test="city_power != null">
+				city_power = #{city_power,jdbcType=INTEGER},
+			</if>
 			<if test="login_time != null">
 				login_time = #{login_time,jdbcType=TIMESTAMP},
 			</if>
