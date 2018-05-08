@@ -24,7 +24,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 				//map.disableDoubleClickZoom();
 				showCssFlag('#xsjizhan');
 				// 获取基站
-				$http.get('/i/station/findAllStationsForMap').success(function(data) {
+				$http.get('/i/station/findAllStationsForMap', {
+	                params: {
+	                     "proPower" : $scope.user.pro_power,
+	        			 "cityPower" : $scope.user.city_power,
+	        			 "areaPower" : $scope.user.area_power
+	                }
+	            }).success(function (data) { 
 					$scope.stations = data;
 					showStation();
 				});
