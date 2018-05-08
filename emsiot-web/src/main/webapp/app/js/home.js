@@ -1,11 +1,7 @@
 coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http, $location) {
-	 var map = new BMap.Map("allmap",{
-   	  minZoom:5,
-   	  maxZoom:30
-   	 });    // 创建Map实例
 	 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 		    $scope.user = data;
-		    if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
+		    if($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id==undefined){
 				url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 				window.location.href = url;
 			}
@@ -58,6 +54,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 				});
 			});
 	 });
+	 var map = new BMap.Map("allmap",{
+	   	  minZoom:5,
+	   	  maxZoom:30
+	   	 });    // 创建Map实例
 	 function G(id) {
 		    return document.getElementById(id);
 	 }
@@ -151,20 +151,20 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 var pt;
 		 var marker2;
 		 var sContent = sHtml;
-		 var markers = [];   //存放聚合的基站
-		 
-	     for(var i=0;i<$scope.stations.length;i++){
-	    	 	pt = new BMap.Point($scope.stations[i].longitude,$scope.stations[i].latitude);
-	    	 	marker2 = new BMap.Marker(pt); 
-    	   
-	    	 	var infoWindow = new BMap.InfoWindow(sContent); 				        	   
-	    	 	marker2.addEventListener("click", function(e){  
-	    	 		var p = e.target;
-	    			var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);		
-	    	 		map.openInfoWindow(infoWindow,point);
-    	   });
-    	   //map.addOverlay(marker2); 
-    	   markers.push(marker2);
+		 var markers = []; //存放聚合的基站
+
+		for (var i = 0; i < $scope.stations.length; i++) {
+			pt = new BMap.Point($scope.stations[i].longitude, $scope.stations[i].latitude);
+			marker2 = new BMap.Marker(pt);
+
+			var infoWindow = new BMap.InfoWindow(sContent);
+			marker2.addEventListener("click", function(e) {
+				var p = e.target;
+				var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+				map.openInfoWindow(infoWindow, point);
+			});
+			//map.addOverlay(marker2); 
+			markers.push(marker2);
     	  }
 	     console.log(markers[0]);
 	     //map.addOverlay(markers); 
