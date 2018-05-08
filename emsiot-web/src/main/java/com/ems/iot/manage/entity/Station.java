@@ -30,7 +30,37 @@ public class Station {
     private String install_pic;
 
     private String station_address;
+    
+    private Integer pro_id;
+    
+    private Integer city_id;
+    
+    private Integer area_id;
+    
+    public Integer getPro_id() {
+        return pro_id;
+    }
 
+    public void setPro_id(Integer pro_id) {
+        this.pro_id = pro_id;
+    }
+    
+    public Integer getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(Integer city_id) {
+        this.city_id = city_id;
+    }
+    
+    public Integer getArea_id() {
+        return area_id;
+    }
+
+    public void setArea_id(Integer area_id) {
+        this.area_id = area_id;
+    }
+    
     public Integer getStation_id() {
         return station_id;
     }

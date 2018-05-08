@@ -25,9 +25,13 @@ public interface CityMapper {
 
 	Province findProvinceById(@Param("provinceID") int provinceID);
 
-	List<Province> findProvinceByName(@Param("provinceName") String provinceName);
-
 	List<City> findCityByNameAndProvinceId(@Param("cityName") String cityName, @Param("provinceID") Integer provinceID);
 
 	Area findAreaNameByAreaID(@Param("AreaID") int AreaID);
+	
+	Province findProvinceByName(@Param("provinceName") String provinceName);
+	
+	City findCityByNameAndProId(@Param("cityName") String cityName, @Param("proID") int proID);
+	
+	Area findAreaByNameAndCityId(@Param("areaName") String areaName, @Param("cityID") int cityID);
 }

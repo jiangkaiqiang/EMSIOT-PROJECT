@@ -1,5 +1,7 @@
 package com.ems.iot.manage.controller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,7 +75,7 @@ public class ElectAlarmController extends BaseController {
 		for(ElectAlarm electAlarm:electAlarms){
 			ElectAlarmDto electAlarmDto = new ElectAlarmDto();
 			electAlarmDto.setElectAlarm(electAlarm);
-			electAlarmDto.setStatioAddress(stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null).get(0).getStation_address());
+			electAlarmDto.setStatioAddress(stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null,null,null,null).get(0).getStation_address());
 			Electrombile electrombile=electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
 			electAlarmDto.setOwnerName(electrombile.getOwner_name());
 			electAlarmDto.setOwnerTele(electrombile.getOwner_tele());

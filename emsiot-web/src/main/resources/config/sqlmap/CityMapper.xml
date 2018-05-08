@@ -28,11 +28,6 @@
         SELECT *
         FROM `city` 
     </select>
-    
-      <select id="findProvinceByName" parameterType="map" resultType="Province">
-        SELECT *
-        FROM `province` WHERE `name` like "%"#{provinceName}"%"
-    </select>
 
     <select id="findCityByNameAndProvinceId" parameterType="map" resultType="com.ems.iot.manage.entity.City">
         SELECT *
@@ -44,8 +39,24 @@
 		  AND `name` like "%"#{cityName}"%"
 		 </where>
     </select>
+    
     <select id="findAreaNameByAreaID" parameterType="map" resultType="Area">
         SELECT *
         FROM `area` WHERE `area_id` = #{AreaID}
+    </select>
+    
+    <select id="findProvinceByName" parameterType="map" resultType="Province">
+        SELECT *
+        FROM `province` WHERE `name` = #{provinceName}
+    </select>
+    
+    <select id="findCityByNameAndProId" parameterType="map" resultType="City">
+        SELECT *
+        FROM `city` WHERE `name` = #{cityName} and `province_id` = #{proID}
+    </select>
+    
+    <select id="findAreaByNameAndCityId" parameterType="map" resultType="Area">
+        SELECT *
+        FROM `area` WHERE `name` = #{areaName} and `city_id` = #{cityID}
     </select>
 </mapper>

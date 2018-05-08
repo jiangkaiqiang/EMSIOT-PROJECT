@@ -37,12 +37,13 @@
       longitude, latitude, station_type, 
       station_status, install_date, soft_version, 
       contact_person, contact_tele, stick_num, 
-      install_pic, station_address)
+      install_pic, station_address, pro_id, city_id, area_id)
     values (#{station_id,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER}, #{station_name,jdbcType=VARCHAR}, 
       #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{station_type,jdbcType=VARCHAR}, 
       #{station_status,jdbcType=INTEGER}, #{install_date,jdbcType=TIMESTAMP}, #{soft_version,jdbcType=VARCHAR}, 
       #{contact_person,jdbcType=VARCHAR}, #{contact_tele,jdbcType=VARCHAR}, #{stick_num,jdbcType=VARCHAR}, 
-      #{install_pic,jdbcType=VARCHAR}, #{station_address,jdbcType=VARCHAR})
+      #{install_pic,jdbcType=VARCHAR}, #{station_address,jdbcType=VARCHAR}, #{pro_id,jdbcType=INTEGER},
+      #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Station">
     insert into station
@@ -177,6 +178,15 @@
       <if test="station_address != null">
         station_address = #{station_address,jdbcType=VARCHAR},
       </if>
+       <if test="pro_id != null">
+        pro_id = #{pro_id,jdbcType=INTEGER},
+      </if>
+       <if test="city_id != null">
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+       <if test="area_id != null">
+        area_id = #{area_id,jdbcType=INTEGER},
+      </if>
     </set>
     where station_id = #{station_id,jdbcType=INTEGER}
   </update>
@@ -217,6 +227,15 @@
 			</if>
 			<if test="endTime!=null and endTime!=''">
 				AND install_date &lt;= #{endTime}
+			</if>
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
 			</if>
 		</where>
 		order by `install_date` desc

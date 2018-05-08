@@ -22,7 +22,8 @@ public interface StationMapper {
     List<Station> findAllStations();
     
     Page<Station> findAllStationsByKey(@Param("startTime")String startTime, @Param("endTime")String endTime, 
-    		@Param("stationPhyNum")Integer stationPhyNum, @Param("stationName")String stationName, @Param("stationStatus")Integer stationStatus);
+    		@Param("stationPhyNum")Integer stationPhyNum, @Param("stationName")String stationName, @Param("stationStatus")Integer stationStatus,
+    		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
     
     Station selectByStationPhyNum(Integer stationPhyNum);
     

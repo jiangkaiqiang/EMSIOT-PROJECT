@@ -6,6 +6,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
 				}
+				$scope.getStations();
 		   });	 
 		 
 	};
@@ -145,6 +146,9 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 				endTime : $scope.endTime,
 				stationPhyNum : $scope.stationPhyNum,
 				stationName : $scope.stationName,
+				proPower : $rootScope.admin.pro_power,
+				cityPower : $rootScope.admin.city_power,
+				areaPower : $rootScope.admin.area_power,
 				stationStatus : $scope.stationStatus
 			}
 		}).success(function(data) {
@@ -156,7 +160,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	$scope.pageChanged = function() {
 		$scope.getStations();
 	}
-	$scope.getStations();
 	// 获取当前基站的列表
 	$scope.auditChanged = function(optAudiet) {
 		$scope.getStations();

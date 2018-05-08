@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
@@ -34,6 +35,8 @@ import com.github.pagehelper.Page;
 public class StationController extends BaseController {
 	@Autowired
 	private StationMapper stationMapper;
+	@Autowired
+	private CityMapper cityMapper;
 	private static String baseDir = "picture";
 	@Autowired
 	private FtpService ftpService;
@@ -51,12 +54,24 @@ public class StationController extends BaseController {
 			@RequestParam(value="endTime", required=false) String endTime,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum,
 			@RequestParam(value = "stationName", required = false) String stationName,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
 			@RequestParam(value = "stationStatus", required = false) Integer stationStatus
 			) throws UnsupportedEncodingException {
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 12 : pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<Station> staions= stationMapper.findAllStationsByKey(startTime, endTime, stationPhyNum, stationName, stationStatus);
+		Page<Station> staions= stationMapper.findAllStationsByKey(startTime, endTime, stationPhyNum, stationName, stationStatus, proPower, cityPower, areaPower);
 		return new PageInfo<Station>(staions);
 	}
 	
@@ -164,6 +179,12 @@ public class StationController extends BaseController {
 	    station.setStation_type(station_type);
 	    station.setStick_num(stick_num);
 	    station.setStation_address(station_address);
+	    if (station_address!=null) {
+	    	 String[] stationAddress = station_address.split(",");
+	    	 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
+	    	 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId(stationAddress[1], station.getPro_id()).getCity_id()));
+	    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+		}
 	    if (null!=install_pic) {
 			String dir = String.format("%s/station/stationPic", baseDir);
 			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
@@ -231,6 +252,12 @@ public class StationController extends BaseController {
 	    station.setStation_type(station_type);
 	    station.setStick_num(stick_num);
 	    station.setStation_address(station_address);
+	    if (station_address!=null) {
+	    	 String[] stationAddress = station_address.split(",");
+	    	 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
+	    	 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId(stationAddress[1], station.getPro_id()).getCity_id()));
+	    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+		}
 	    if (null!=install_pic) {
 			String dir = String.format("%s/station/stationPic", baseDir);
 			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
