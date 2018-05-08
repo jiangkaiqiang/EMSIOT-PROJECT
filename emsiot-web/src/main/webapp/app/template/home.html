@@ -66,15 +66,15 @@
         基站聚合
     </li>
 
-    <li><i class="border-dashed"></i></li>
-    <li>
+    <li ng-show="rootUserPowerDto.traceSearch==1"><i class="border-dashed"></i></li>
+    <li ng-show="rootUserPowerDto.traceSearch==1">
         <a href="" data-toggle="modal" data-target="#guijiModal">
             <img src="app/img/guijiSearch.png" alt=""/>
             <span>轨迹查询</span>
         </a >
     </li>
-    <li><i class="border-dashed"></i></li>
-    <li>
+    <li ng-show="rootUserPowerDto.location==1"><i class="border-dashed"></i></li>
+    <li ng-show="rootUserPowerDto.location==1">
         <a href="" data-toggle="modal" data-target="#dingweiModal">
             <img src="app/img/dingweiIcon.png" alt=""/>
             <span>定位</span>

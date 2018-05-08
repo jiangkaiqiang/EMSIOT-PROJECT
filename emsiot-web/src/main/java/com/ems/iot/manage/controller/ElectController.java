@@ -280,8 +280,8 @@ public class ElectController extends BaseController {
 			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		if (null!=indentity_card_pic) {
-			String dir = String.format("%s/elect/indentityCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indentityCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String dir = String.format("%s/elect/indCardPic", baseDir);
+			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
@@ -373,8 +373,8 @@ public class ElectController extends BaseController {
 			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		if (null!=indentity_card_pic) {
-			String dir = String.format("%s/elect/indentityCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indentityCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String dir = String.format("%s/elect/indCardPic", baseDir);
+			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png

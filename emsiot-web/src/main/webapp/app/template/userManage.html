@@ -20,7 +20,7 @@
                     </div>
                 </form>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.userDelete==1">
                 <a href="">
                     <b class="border-dashed-left"></b>
                     <i class="glyphicon glyphicon-trash"></i>
@@ -28,7 +28,7 @@
                     <b class="border-dashed"></b>
                 </a>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.userAdd==1">
                 <a href="" data-toggle="modal" data-target="#addUser">
                     <i class="glyphicon glyphicon-plus"></i>
                     添加用户
@@ -72,8 +72,8 @@
             <td>{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}</td>
             <td>{{user.sysUser.create_time}}</td>
             <td>
-                <button class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
+                <button ng-show="rootUserPowerDto.userDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
+                <button ng-show="rootUserPowerDto.userEdit==1" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
                         ng-click="goUpdateUser(user.sysUser.user_id)">编辑
                 </button>
             </td>
@@ -173,7 +173,7 @@
                                 </div>
                                 <ul class="title-nav flex flex-items">
                                     <li>
-                                        <input type="checkbox" class="form-control" id="console">
+                                        <input type="checkbox" class="form-control" id="console" checked="checked" disabled>
                                     </li>
                                 </ul>
                             </div>
@@ -585,7 +585,7 @@
                                 </div>
                                 <ul class="title-nav flex flex-items">
                                     <li>
-                                        <input type="checkbox" class="form-control" id="consoleChange">
+                                        <input type="checkbox" class="form-control" id="consoleChange" checked="checked" disabled>
                                     </li>
                                 </ul>
                             </div>
