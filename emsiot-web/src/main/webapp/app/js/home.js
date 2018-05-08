@@ -1,5 +1,9 @@
 coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http, $location) {
-	 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
+	 var map = new BMap.Map("allmap",{
+	   	  minZoom:5,
+	   	  maxZoom:30
+	   	 });    // 创建Map实例 
+	$.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 		    $scope.user = data;
 		    if($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id==undefined){
 				url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
@@ -54,10 +58,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 				});
 			});
 	 });
-	 var map = new BMap.Map("allmap",{
-	   	  minZoom:5,
-	   	  maxZoom:30
-	   	 });    // 创建Map实例
+
 	 function G(id) {
 		    return document.getElementById(id);
 	 }
@@ -99,7 +100,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			        var pp = local.getResults().getPoi(0).point;//获取第一个智能搜索信息
 			        map.centerAndZoom(pp, 18);
 			        map.addOverlay(new BMap.Marker(pp));
-
 			    }
 
 			    var local = new BMap.LocalSearch(map, {
@@ -109,18 +109,20 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			}
 	var markerClusterer;
 	 function showStation(){
-		 var sHtml=`
-			   <div id="positionTable" class="shadow">
+		 var sHtml=`<div id="positionTable" class="shadow">
 			   <ul class="flex-between">
 			      <li class="flex-items">
 			         <img src="app/img/station.png"/>
-			         <h4>基站SHKF124589</h4>
+			         <h4>`;
+	    var sHtml2 = `</h4>
 			      </li>
 			      <li>21辆</li>
 			   </ul>
 			   <p class="flex-items">
 			      <i class="glyphicon glyphicon-map-marker"></i>
-			      <span>喀什地区金地路128号喀什市农经局2号门</span>
+			      <span>`;
+		 
+		 var sHtml3= `
 			   </p >
 			   <ul class="flex flex-time">
 			      <li class="active">1分钟</li>
@@ -139,9 +141,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			            </thead>
 			            <tbody>
 			               <tr ng-repeat="electDto in AllElectDtos">
-			                  <td></td>
-			                  <td></td>
-			                  <td></td>
+			                  <td>1</td>
+			                  <td>2</td>
+			                  <td>3</td>
 			               </tr>
 			            </tbody>
 			         </table>
@@ -152,37 +154,42 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 var marker2;
 		 var sContent = sHtml;
 		 var markers = []; //存放聚合的基站
-
+		 //var infoWindow;
+		 var tmpStation;
 		for (var i = 0; i < $scope.stations.length; i++) {
-			pt = new BMap.Point($scope.stations[i].longitude, $scope.stations[i].latitude);
+			tmpStation=$scope.stations[i];
+			pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
 			marker2 = new BMap.Marker(pt);
-
-			var infoWindow = new BMap.InfoWindow(sContent);
+			marker2.setTitle(tmpStation.station_phy_num+'\t'+tmpStation.station_address);
+			
 			marker2.addEventListener("click", function(e) {
+				console.log(tmpStation);
+				var title_add = new Array();
+				title_add = this.getTitle().split('\t');
+				
+				var infoWindow = new BMap.InfoWindow(sHtml+title_add[0]+sHtml2+title_add[1]+sHtml3);
+
+				showElectsInStation(null,null,title_add[0]);
 				var p = e.target;
 				var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
 				map.openInfoWindow(infoWindow, point);
 			});
-			//map.addOverlay(marker2); 
 			markers.push(marker2);
     	  }
-	     console.log(markers[0]);
-	     //map.addOverlay(markers); 
 	     if($scope.jizhanjuheFlag==0){
-	    	 markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+	    	 	markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	     }
 	     else if($scope.jizhanjuheFlag==1){
-	    	 map.clearOverlays();
-	    	 for(var i=0;i<markers.length;i++){
-	    		 map.addOverlay(markers[i]); 
-	    	 }
+	    	 	map.clearOverlays();
+	    	 	for(var i=0;i<markers.length;i++){
+	    	 		map.addOverlay(markers[i]); 
+	    	 	}
 	     }
-	     	//clusterStation(markers);
-    	  //var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+	     //clusterStation(markers);
+    	     //var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	 }
 	 function clusterStation(){  //对基站进行聚合
    	  	var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
-
 	 }
 	 
 	 //根据时间和基站id获取基站下面的当前所有车辆
@@ -195,12 +202,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
  			}
  		}).success(function(data) {
  			$scope.electsInStation = data;
+ 			console.log($scope.electsInStation);
  		});
 	 }
 	 
-	 function openInfo(){
-		 
-	 }
 	 
 	 //定义轨迹及定位查询条件的类型
 	 $scope.AllKeywordType = [
@@ -341,7 +346,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	   	        $scope.thermodynamics = data;
 	   	        heatmap();
 	   	        
-	   	        console.log(data);
+	   	        //console.log(data);
 	   	        //alert($scope.thermodynamics);
 	   	        //reLituShow();
 	   	    });
@@ -394,15 +399,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	     }
 	     showCssFlag('#jizhanjuhe');
 	 });
-	 map.addEventListener("dragend",function(e){
-		 if($scope.jizhanjuheFlag==1){
-		    	map.clearOverlays();
-		    	 $scope.jizhanjuheFlag=1;
-		    	 showStation();
-		    	// clusterStation();
-		     }
-	    
-	 });
+//	 map.addEventListener("dragend",function(e){
+//		 if($scope.jizhanjuheFlag==1){
+//		    	map.clearOverlays();
+//		    	 $scope.jizhanjuheFlag=1;
+//		    	 showStation();
+//		    	// clusterStation();
+//		     }
+//	    
+//	 });
 	 
 	 function showCssFlag(param){
 		  $(param).toggleClass("active");
