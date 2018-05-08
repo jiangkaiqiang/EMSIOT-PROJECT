@@ -178,7 +178,7 @@
         SELECT * FROM `blackelect` 
    </select>
    <select id="findAllBlackelectByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
-        SELECT * FROM `blackelect` 
+        SELECT  blackelect.* FROM `blackelect` LEFT join  `electrombile` on blackelect.`gua_card_num` =electrombile.`gua_card_num`
         <where>
 			<if test="blackID != null and blackID != ''">
 				black_id = #{blackID}
@@ -189,20 +189,29 @@
 			<if test="DealStatus != null and DealStatus != ''">
 				AND deal_status = #{DealStatus}
 			</if>
-			</where>
+			<if test="proPower != null">
+			    AND electrombile.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.`area_id` = #{areaPower}
+			</if>
+		</where>
    </select>
     
     <select id="findBlackelectsList" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
-        SELECT * FROM `blackelect` 
+      SELECT  blackelect.* FROM `blackelect` LEFT join  `electrombile` on blackelect.`gua_card_num` =electrombile.`gua_card_num`
         <where>
 			<if test="proPower != null">
-			    pro_id = #{proPower}
+			    electrombile.`pro_id` = #{proPower}
 			</if>
 			<if test="cityPower != null">
-				AND city_id = #{cityPower}
+				AND electrombile.`city_id` = #{cityPower}
 			</if>
 			<if test="areaPower != null">
-				AND area_id = #{areaPower}
+				AND electrombile.`area_id` = #{areaPower}
 			</if>
 			</where>
    </select>

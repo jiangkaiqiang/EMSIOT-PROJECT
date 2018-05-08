@@ -80,7 +80,7 @@
     where elect_alarm_id = #{elect_alarm_id,jdbcType=INTEGER}
   </update>
      <select id="findAllElectalarmByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
-        SELECT * FROM `elect_alarm` 
+        SELECT  elect_alarm.* FROM `elect_alarm` LEFT join  `electrombile` on elect_alarm.`alarm_gua_card_num` =electrombile.`gua_card_num`
         <where>
         	<if test="plateNum != null and plateNum != ''">
 				alarm_gua_card_num = #{plateNum}
@@ -90,6 +90,15 @@
 			</if>
 			<if test="alarmDateEnd != null and alarmDateEnd != ''">
 				AND alarm_time &lt;= #{alarmDateEnd}
+			</if>
+			<if test="proPower != null">
+			    AND electrombile.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.`area_id` = #{areaPower}
 			</if>
 			</where>
    </select>

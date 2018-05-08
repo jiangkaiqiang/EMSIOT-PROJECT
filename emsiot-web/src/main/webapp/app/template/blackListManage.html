@@ -87,7 +87,7 @@
 				<td>{{blackelectDto.blackelect.case_occur_time}}</td>
 				<td>
 					<button ng-show="rootUserPowerDto.blackDelete==1" class="btn btn-primary btn-sm"
-						ng-click="goDeleteBlackElect(blackelectDto.blackelect.black_id)">删除
+						ng-click="goDeleteBlackElect(blackelectDto.blackelect.black_id,blackelectDto.blackelect.gua_card_num)">删除
 					</button>
 					<button ng-show="rootUserPowerDto.blackEdit==1" class="btn btn-primary btn-sm" data-toggle="modal"
 						data-target="#updateBlackelect"

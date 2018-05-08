@@ -23,7 +23,7 @@ public interface BlackelectMapper {
     Page<Blackelect> findAllBlackelect();
     
     Page<Blackelect> findAllBlackelectByOptions(@Param("blackID")Integer blackID,@Param("ownerTele")String ownerTele,
-    		@Param("DealStatus")Integer DealStatus);
+    		@Param("DealStatus")Integer DealStatus,@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     List<Blackelect> findBlackelectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }

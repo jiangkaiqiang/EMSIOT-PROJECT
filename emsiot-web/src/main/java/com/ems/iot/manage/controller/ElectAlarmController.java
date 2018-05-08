@@ -56,7 +56,10 @@ public class ElectAlarmController extends BaseController {
 			@RequestParam(value="pageSize",required=false) Integer pageSize,
 			@RequestParam(value="plateNum",required=false) Integer plateNum,
 			@RequestParam(value="alarmDateStart",required=false) String alarmDateStartStr,
-			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr
+			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower
 			) throws UnsupportedEncodingException, ParseException {
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
@@ -70,7 +73,16 @@ public class ElectAlarmController extends BaseController {
 		if(alarmDateEndStr!="" && alarmDateEndStr!=null){
 			alarmDateEnd=sdf.parse(alarmDateEndStr);
 		}
-		Page<ElectAlarm> electAlarms=electAlarmMapper.findAllElectalarmByOptions(plateNum,alarmDateStart,alarmDateEnd);
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		Page<ElectAlarm> electAlarms=electAlarmMapper.findAllElectalarmByOptions(plateNum,alarmDateStart,alarmDateEnd,proPower, cityPower, areaPower);
 		Page<ElectAlarmDto> electAlarmDtos = new Page<ElectAlarmDto>();
 		for(ElectAlarm electAlarm:electAlarms){
 			ElectAlarmDto electAlarmDto = new ElectAlarmDto();

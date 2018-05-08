@@ -61,6 +61,9 @@ coldWeb.controller('alarmTrack', function($rootScope, $scope, $state, $cookies, 
 				plateNum : $scope.plateNum,
 				alarmDateStart : $scope.alarmDateStart,
 				alarmDateEnd : $scope.alarmDateEnd,
+				proPower : $scope.admin.pro_power,
+				cityPower : $scope.admin.city_power,
+				areaPower : $scope.admin.area_power
 			}
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;

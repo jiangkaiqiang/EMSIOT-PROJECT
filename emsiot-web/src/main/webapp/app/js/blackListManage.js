@@ -53,7 +53,10 @@ console.log("报警页面展示成功");
 				blackID : $scope.blackID,
 				ownerTele: $scope.ownerTele,
 				plateNum: $scope.plateNum,
-				DealStatus: $scope.DealStatus
+				DealStatus: $scope.DealStatus,
+				proPower : $scope.admin.pro_power,
+				cityPower : $scope.admin.city_power,
+				areaPower : $scope.admin.area_power
 			}
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
@@ -96,11 +99,12 @@ console.log("报警页面展示成功");
       return true;
 }
   //根据id删除黑名单 goDeleteBlackElect(blackelectDto.blackelect.black_id)
-  $scope.goDeleteBlackElect = function (blackID) {
+  $scope.goDeleteBlackElect = function (blackID,gua_card_num) {
   	if(delcfm()){
   	$http.get('/i/blackelect/deleteBlackelectByID', {
           params: {
-              "blackID": blackID
+              "blackID": blackID,
+              "gua_card_num":gua_card_num
           }
       }).success(function (data) {
     	  $scope.getBlackelectsByOptions();
@@ -111,15 +115,18 @@ console.log("报警页面展示成功");
   $scope.goDeleteBlackElects = function(){
   	if(delcfm()){
   	var BlackIDs = [];
+  	var gua_card_nums = [];
   	for(i in $scope.selected){
   		BlackIDs.push($scope.selected[i].blackelect.black_id);
+  		gua_card_nums.push($scope.selected[i].blackelect.gua_card_num);
   	}
   	if(BlackIDs.length >0 ){
   		$http({
   			method:'DELETE',
   			url:'/i/blackelect/deleteBlackelectByIDs',
   			params:{
-  				"BlackIDs": BlackIDs
+  				"BlackIDs": BlackIDs,
+  				"gua_card_nums":gua_card_nums
   			}
   		}).success(function (data) {
   			 $scope.getBlackelectsByOptions();
