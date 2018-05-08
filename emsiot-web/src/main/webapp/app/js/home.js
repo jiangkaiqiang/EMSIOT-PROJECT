@@ -297,7 +297,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	     maxDate: new Date(),
 	     pickerPosition: "bottom-left"
 	 });
-	 
+	 var heatmapOverlay;
 	 function heatmap(){
 		 heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
 		 map.addOverlay(heatmapOverlay);
@@ -310,6 +310,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		 $http.get('/i/elect/findElectsNumByStations').success(function (data) {
 	   	        $scope.thermodynamics = data;
 	   	        heatmap();
+	   	        
 	   	        console.log(data);
 	   	        //alert($scope.thermodynamics);
 	   	        //reLituShow();
@@ -323,7 +324,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	    	 $scope.relituFlag=1;
 	     }
 	     else if($scope.relituFlag==1){
-	    	 alert("隐藏热力图");
+	    	 //alert("隐藏热力图");
+	    	 heatmapOverlay.hide();
 	    	 $scope.relituFlag=0;
 	     }
 	     showCssFlag('#relitu');
