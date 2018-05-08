@@ -34,6 +34,9 @@ $scope.getStations = function() {
 			endTime : $("#endTime").val(),
 			stationPhyNum : $scope.stationPhyNum,
 			stationName : $scope.stationName,
+			proPower : $rootScope.admin.pro_power,
+			cityPower : $rootScope.admin.city_power,
+			areaPower : $rootScope.admin.area_power,
 			stationStatus : $scope.stationStatus
 		}
 	}).success(function(data) {

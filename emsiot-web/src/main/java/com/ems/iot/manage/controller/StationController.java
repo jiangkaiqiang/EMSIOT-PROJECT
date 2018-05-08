@@ -83,8 +83,19 @@ public class StationController extends BaseController {
 	 */
 	@RequestMapping(value = "/findAllStationsForMap")
 	@ResponseBody
-	public Object findAllStationsForMap() throws UnsupportedEncodingException {
-		return stationMapper.findAllStations();
+	public Object findAllStationsForMap(@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower) throws UnsupportedEncodingException {
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		return stationMapper.findAllStations(proPower, cityPower, areaPower);
 	}
 	
 	/**
@@ -278,9 +289,21 @@ public class StationController extends BaseController {
 	@RequestMapping(value = "/findStationsByStatus")
 	@ResponseBody
 	public Object findStationsByStatus(
-			@RequestParam(value = "stationStatus", required = false) Integer stationStatus
+			@RequestParam(value = "stationStatus", required = false) Integer stationStatus,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower
 			) throws UnsupportedEncodingException {	
-		List<Station> staions= stationMapper.findStationsByStatus(stationStatus);
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		List<Station> staions= stationMapper.findStationsByStatus(stationStatus, proPower, cityPower, areaPower);
 		return staions;
 	}
 }

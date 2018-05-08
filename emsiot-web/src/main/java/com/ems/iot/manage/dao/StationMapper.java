@@ -19,7 +19,7 @@ public interface StationMapper {
 
     int updateByPrimaryKey(Station record);
     
-    List<Station> findAllStations();
+    List<Station> findAllStations(@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
     
     Page<Station> findAllStationsByKey(@Param("startTime")String startTime, @Param("endTime")String endTime, 
     		@Param("stationPhyNum")Integer stationPhyNum, @Param("stationName")String stationName, @Param("stationStatus")Integer stationStatus,
@@ -27,5 +27,6 @@ public interface StationMapper {
     
     Station selectByStationPhyNum(Integer stationPhyNum);
     
-    List<Station> findStationsByStatus(@Param("stationStatus")Integer stationStatus);
+    List<Station> findStationsByStatus(@Param("stationStatus")Integer stationStatus,
+    		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
 }

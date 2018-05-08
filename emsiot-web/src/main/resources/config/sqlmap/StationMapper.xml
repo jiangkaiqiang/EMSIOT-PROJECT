@@ -209,6 +209,17 @@
   </update>
   <select id="findAllStations" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
         SELECT * FROM `station` 
+        <where>
+            <if test="proPower != null">
+				pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+        </where>
     </select>
     <select id="findAllStationsByKey" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
 		SELECT * FROM `station`
@@ -251,6 +262,15 @@
 		<where>
 			<if test="stationStatus != null">
 				station_status = #{stationStatus}
+			</if>
+			 <if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
 			</if>
 		</where>
 		order by `install_date` desc

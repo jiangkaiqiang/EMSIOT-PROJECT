@@ -256,7 +256,10 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
     	if($scope.stationStatusForShow =="2"){
     		$http.get('/i/station/findStationsByStatus', {
                 params: {
-                    "stationStatus": "1"
+                    "stationStatus": "1",
+                     "proPower" : $rootScope.admin.pro_power,
+        			 "cityPower" : $rootScope.admin.city_power,
+        			 "areaPower" : $rootScope.admin.area_power
                 }
             }).success(function (data) {  //在地图上显示异常基站
 	            	$scope.errorStation = data;
