@@ -122,13 +122,14 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			         <h4>`;
 	    var sHtml2 = `</h4>
 			      </li>
-			      <li>21辆</li>
+			      <li>`;
+	    var sHtml3 = `</li>
 			   </ul>
 			   <p class="flex-items">
 			      <i class="glyphicon glyphicon-map-marker"></i>
 			      <span>`;
 		 
-		 var sHtml3= `
+		 var sHtml4= `
 			   </p >
 			   <ul class="flex flex-time">
 			      <li class="active">1分钟</li>
@@ -145,12 +146,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			                  <th>经过时间</th>
 			               </tr>
 			            </thead>
-			            <tbody>
-			               <tr ng-repeat="electDto in AllElectDtos">
-			                  <td>1</td>
-			                  <td>2</td>
-			                  <td>3</td>
-			               </tr>
+			            <tbody>`;
+
+		 var endHtml = `
 			            </tbody>
 			         </table>
 			      </div>
@@ -167,15 +165,22 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
 			marker2 = new BMap.Marker(pt);
 			marker2.setTitle(tmpStation.station_phy_num+'\t'+tmpStation.station_address);
-			
+			console.log($scope.stations.length);
+
 			marker2.addEventListener("click", function(e) {
-				console.log(tmpStation);
 				var title_add = new Array();
 				title_add = this.getTitle().split('\t');
+				showElectsInStation(null,null,title_add[0]);  //根据物理编号查找
+				var electInfo='';
+				for(var k=0; k<$scope.electsInStation.length;k++){
+					electInfo += `<tr>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`+(k+1)+`</td>`
+						+`<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`+$scope.electsInStation[k].plate_num+`</td>`
+						+`<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`+$scope.electsInStation[k].corssTime+`</td></tr>`;
+				}
 				
-				var infoWindow = new BMap.InfoWindow(sHtml+title_add[0]+sHtml2+title_add[1]+sHtml3);
+				var infoWindow = new BMap.InfoWindow(sHtml+title_add[0]+sHtml2+$scope.electsInStation.length+sHtml3+title_add[1]+sHtml4+electInfo+endHtml);
 
-				showElectsInStation(null,null,title_add[0]);
 				var p = e.target;
 				var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
 				map.openInfoWindow(infoWindow, point);
@@ -191,8 +196,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	    	 		map.addOverlay(markers[i]); 
 	    	 	}
 	     }
-	     //clusterStation(markers);
-    	     //var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	 }
 	 function clusterStation(){  //对基站进行聚合
    	  	var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
@@ -207,8 +210,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
  				"stationPhyNum" : stationPhyNum
  			}
  		}).success(function(data) {
- 			$scope.electsInStation = data;
- 			console.log($scope.electsInStation);
+ 			$scope.electsInStation = data.slice(2,8);
+ 			//console.log($scope.electsInStation);
  		});
 	 }
 	 
