@@ -521,5 +521,14 @@
     </set>
     where gua_card_num = #{gua_card_num,jdbcType=INTEGER}
   </update>
-	
+  
+  <select id="findElectsByTele" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="tele != null">
+			    owner_tele = #{tele}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
 </mapper>

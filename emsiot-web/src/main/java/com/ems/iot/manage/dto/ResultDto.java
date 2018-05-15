@@ -35,6 +35,13 @@ public class ResultDto {
 		this.success = success;
 	}
 	
+	public ResultDto(int status, String message, boolean success, Object data) {
+		super();
+		this.status = status;
+		this.message = message;
+		this.success = success;
+		this.data = data;
+	}
 
 	public ResultDto(Object data) {
 		super();

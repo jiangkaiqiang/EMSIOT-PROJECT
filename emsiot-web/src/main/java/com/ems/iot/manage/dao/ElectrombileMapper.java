@@ -45,4 +45,10 @@ public interface ElectrombileMapper {
      * @return
      */
     List<Electrombile> findElectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+     /**
+      * 根据车主的手机号获取车主所拥有的电动车（可能有多辆），为个人车主app提供服务
+      * @param tele
+      * @return
+      */
+    List<Electrombile> findElectsByTele(@Param("tele") Integer tele);
 }

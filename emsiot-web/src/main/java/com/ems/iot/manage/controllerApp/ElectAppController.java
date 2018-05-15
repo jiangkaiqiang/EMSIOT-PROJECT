@@ -1,21 +1,14 @@
 package com.ems.iot.manage.controllerApp;
+
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,31 +18,20 @@ import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
-import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectrombileDto;
-import com.ems.iot.manage.dto.NgRemoteValidateDTO;
 import com.ems.iot.manage.dto.ResultDto;
-import com.ems.iot.manage.dto.StationElectDto;
-import com.ems.iot.manage.dto.SysUserDto;
-import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
-import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
-import com.ems.iot.manage.entity.SysUser;
-import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.service.FtpService;
-import com.ems.iot.manage.util.ExcelImportUtil;
-import com.ems.iot.manage.util.ResponseData;
-import com.ems.iot.manage.util.StringUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 /**
  * @author Barry
- * @date 2018年3月20日下午3:33:14  
+ * @date 2018年3月20日下午3:33:14  app接口-车辆相关
  * @version 1.0
  * Copyright: Copyright (c) EMSIOT 2018
  */
@@ -80,48 +62,14 @@ public class ElectAppController extends AppBaseController {
 	public Object findElectByID(
 			@RequestParam(value="electID", required=false) Integer electID
 			) throws UnsupportedEncodingException {
-		 Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
-	     return electrombile;
-	}
-	
-	/**
-	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
-	 * @param startTime
-	 * @param endTime
-	 * @param station_phy_num
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	@RequestMapping(value = "/findElectsByStationIdAndTime")
-	@ResponseBody
-	public Object findElectsByStationIdAndTime(
-			@RequestParam(value="startTime", required=false) String startTime,
-			@RequestParam(value="endTime", required=false) String endTime,
-			@RequestParam(value="stationPhyNum", required=false) Integer stationPhyNum
-			) throws UnsupportedEncodingException {
-		 List<ElectrombileStation> electrombileStations = electrombileStationMapper.selectElectsByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
-		 List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
-		 for (ElectrombileStation electrombileStation : electrombileStations) {
-			StationElectDto stationElectDto = new StationElectDto();
-			stationElectDto.setCorssTime(electrombileStation.getUpdate_time());
-			Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(electrombileStation.getEle_gua_card_num());
-			stationElectDto.setOwner_name(electrombile.getOwner_name());
-			stationElectDto.setPlate_num(electrombile.getPlate_num());
-			stationElectDtos.add(stationElectDto);
+		 if (electID==null) {
+			return new ResultDto(-1, "要查找的车辆id不能为空",false);
 		 }
-	     return stationElectDtos;
-	}
-	
-	/**
-	 * 返回所有基站下，当前所拥有的车辆数量，为车辆热力图提供支持
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	@RequestMapping(value = "/findElectsNumByStations")
-	@ResponseBody
-	public Object findElectsNumByStations() throws UnsupportedEncodingException {
-		 List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow();		
-		 return thermodynamics;
+		 Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
+		 if (electrombile==null) {
+			return new ResultDto(0, "未查询到给车辆id对应的车辆信息");
+		 }
+	     return new ResultDto(electrombile);
 	}
 	
 	/**
@@ -144,7 +92,7 @@ public class ElectAppController extends AppBaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findElectList", method = RequestMethod.POST)
+	@RequestMapping(value = "/findElectList")
 	@ResponseBody
 	public Object findElectList(@RequestParam(value="pageNum",required=false) Integer pageNum,
 			@RequestParam(value="pageSize") Integer pageSize, 
@@ -156,14 +104,23 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(value="proID", required=false) Integer proID,
 			@RequestParam(value="cityID", required=false) Integer cityID,
 			@RequestParam(value="areaID", required=false) Integer areaID,
-			@RequestParam(value="proPower", required=false) Integer proPower,
-			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower,
 			@RequestParam(value="ownerTele", required=false) String ownerTele,
 			@RequestParam(value="ownerID", required=false) String ownerID,
 			@RequestParam(value="plateNum", required=false) String plateNum,
 			@RequestParam(value="guaCardNum", required=false) String guaCardNum,
-			@RequestParam(value="ownerName", required=false) String ownerName) throws UnsupportedEncodingException {
+			@RequestParam(value="ownerName", required=false) String ownerName,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower) throws UnsupportedEncodingException {
+		if (proPower==null) {
+			return new ResultDto(-1, "管理员的省权限不能为空", false);
+		}
+		if (cityPower==null) {
+			return new ResultDto(-1,"管理员的市权限不能为空", false);
+		}
+		if (areaPower==null) {
+			return new ResultDto(-1, "管理员的区/县权限不能为空", false);
+		}
 		if (null==recorderID||recorderID==0) {
 			recorderID = null;
 		}
@@ -182,13 +139,13 @@ public class ElectAppController extends AppBaseController {
 		if (null==areaID||areaID==-1) {
 			areaID = null;
 		}
-		if (null==proPower||proPower==-1) {
+		if (proPower==-1) {
 			proPower = null;
 		}
-		if (null==cityPower||cityPower==-1) {
+		if (cityPower==-1) {
 			cityPower = null;
 		}
-		if (null==areaPower||areaPower==-1) {
+		if (areaPower==-1) {
 			areaPower = null;
 		}
 		pageNum = pageNum == null? 1:pageNum;
@@ -196,6 +153,9 @@ public class ElectAppController extends AppBaseController {
 		PageHelper.startPage(pageNum, pageSize);
 		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombiles(startTime, endTime, recorderID, electState, insurDetail, proID, 
 				cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName,proPower,cityPower,areaPower);
+        if (electrombiles==null||electrombiles.size()==0) {
+        	return new ResultDto(0, "在该管理员所具有的权限区域内未查询到车辆信息");
+		}
 		Page<ElectrombileDto> electrombileDtos = new Page<ElectrombileDto>();
 		for (Electrombile electrombile : electrombiles) {
 			ElectrombileDto electrombileDto = new ElectrombileDto();
@@ -209,7 +169,9 @@ public class ElectAppController extends AppBaseController {
 		electrombileDtos.setPageSize(electrombiles.getPageSize());
 		electrombileDtos.setPages(electrombiles.getPages());
 		electrombileDtos.setTotal(electrombiles.getTotal());
-		return new PageInfo<ElectrombileDto>(electrombileDtos);
+		
+		PageInfo<ElectrombileDto> elePageInfo = new PageInfo<ElectrombileDto>(electrombileDtos);
+		return new ResultDto(elePageInfo);
 	}
 	
 	/**
@@ -244,13 +206,35 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id,
 			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+		if (gua_card_num == null) {
+			return new ResultDto(-1, "防盗芯片编号不能为空",false);
+		}
+		if (plate_num == null) {
+			return new ResultDto(-1, "车牌号不能为空", false);
+		}
+		if (pro_id==null) {
+			return new ResultDto(-1, "车牌号所属省不能为空", false);
+		}
+		if (city_id==null) {
+			return new ResultDto(-1, "车牌号所属市不能为空", false);
+		}
+		if (area_id==null) {
+			return new ResultDto(-1, "车牌号所属区/县不能为空", false);
+		}
+		if (owner_tele==null){
+			return new ResultDto(-1, "车主手机号不能为空", false);
+		}
+		if (owner_name==null){
+			return new ResultDto(-1, "车主姓名不能为空", false);
+		}
+		if (owner_id==null){
+			return new ResultDto(-1, "车主身份证号不能为空", false);
+		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
 		electrombile.setVe_id_num(ve_id_num);
 		electrombile.setElect_brand(elect_brand);
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//electrombile.setBuy_date(sdf.parse(buy_date));
 		electrombile.setBuy_date(buy_date);
 		electrombile.setElect_color(elect_color);
 		electrombile.setMotor_num(motor_num);
@@ -266,12 +250,6 @@ public class ElectAppController extends AppBaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
-		if (electrombile.getGua_card_num() == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空！");
-		}
-		if (electrombile.getPlate_num() == null) {
-			return new ResultDto(-1, "车牌号不能为空！");
-		}
 		if (null!=elect_pic) {
 			String dir = String.format("%s/elect/electPic", baseDir);
 			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
@@ -301,7 +279,7 @@ public class ElectAppController extends AppBaseController {
 			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.insert(electrombile);
-		return new ResultDto(0,"添加成功");
+		return new ResultDto(1,"添加成功");
 	}
 	
 	/**
@@ -336,14 +314,39 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id,
 			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+		if (elect_id == null) {
+			return new ResultDto(-1, "要更新的车辆id不能为空",false);
+		}
+		if (gua_card_num == null) {
+			return new ResultDto(-1, "防盗芯片编号不能为空",false);
+		}
+		if (plate_num == null) {
+			return new ResultDto(-1, "车牌号不能为空", false);
+		}
+		if (pro_id==null) {
+			return new ResultDto(-1, "车牌号所属省不能为空", false);
+		}
+		if (city_id==null) {
+			return new ResultDto(-1, "车牌号所属市不能为空", false);
+		}
+		if (area_id==null) {
+			return new ResultDto(-1, "车牌号所属区/县不能为空", false);
+		}
+		if (owner_tele==null){
+			return new ResultDto(-1, "车主手机号不能为空", false);
+		}
+		if (owner_name==null){
+			return new ResultDto(-1, "车主姓名不能为空", false);
+		}
+		if (owner_id==null){
+			return new ResultDto(-1, "车主身份证号不能为空", false);
+		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
 		electrombile.setVe_id_num(ve_id_num);
 		electrombile.setElect_brand(elect_brand);
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//electrombile.setBuy_date(sdf.parse(buy_date));
 		electrombile.setBuy_date(buy_date);
 		electrombile.setElect_color(elect_color);
 		electrombile.setMotor_num(motor_num);
@@ -359,12 +362,6 @@ public class ElectAppController extends AppBaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
-		if (electrombile.getGua_card_num() == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空！");
-		}
-		if (electrombile.getPlate_num() == null) {
-			return new ResultDto(-1, "车牌号不能为空！");
-		}
 		if (null!=elect_pic) {
 			String dir = String.format("%s/elect/electPic", baseDir);
 			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
@@ -394,7 +391,7 @@ public class ElectAppController extends AppBaseController {
 			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
-		return new ResultDto(0,"更新成功");
+		return new ResultDto(1, "更新成功");
 	}
 	
     /**
@@ -405,8 +402,11 @@ public class ElectAppController extends AppBaseController {
 	@RequestMapping(value = "/deleteElectByID")
 	@ResponseBody
 	public Object deleteElectByID(Integer electID) {
+		 if (electID==null) {
+			return new ResultDto(-1, "要删除的车辆id不能为空", false);
+		 }
 		 electrombileMapper.deleteByPrimaryKey(electID);
-		 return new BaseDto(0);
+		 return new ResultDto(1, "删除成功");
 	}
 	
 	/**
@@ -417,63 +417,13 @@ public class ElectAppController extends AppBaseController {
 	@RequestMapping(value = "/deleteElectByIDs")
 	@ResponseBody
 	public Object deleteElectByIDs(Integer[] electIDs) {
+		if (electIDs==null||electIDs.length==0) {
+			return new ResultDto(-1, "要删除的车辆id不能为空", false);
+		}
 		for(Integer electID:electIDs){
 			electrombileMapper.deleteByPrimaryKey(electID);
 		}
-		return new BaseDto(0);
-	}
-	
-	/**
-	 * 导出车辆为excel
-	 * @param electIDs
-	 * @return
-	 */
-	@RequestMapping(value = "/exportElectByIDs")
-	@ResponseBody
-	public Object exportElectByIDs(Integer[] electIDs) {
-		List<Electrombile> electrombiles = new ArrayList<Electrombile>();	
-		for(Integer electID:electIDs){
-			Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
-			electrombiles.add(electrombile);
-		}		
-		Map<String, Object> dataExel = new HashMap<String, Object>();
-		List<String> titles = new ArrayList<String>();
-		titles.add("车牌号");
-		titles.add("防盗芯片编号");
-		titles.add("所属地区");
-		titles.add("联系电话");
-		titles.add("车辆状态");
-		titles.add("车主姓名");
-		titles.add("身份证号");
-		titles.add("添加时间");
-		List<Map<String, Object>> varList = new ArrayList<Map<String,Object>>();
-		for (Electrombile electrombile : electrombiles) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("var1", electrombile.getPlate_num());
-			map.put("var2", electrombile.getGua_card_num().toString());
-			String area = "";
-			area = area + cityMapper.findProvinceById(electrombile.getPro_id()).getName();
-			area = area + cityMapper.findCityById(electrombile.getCity_id()).getName();
-			area = area + cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName();
-			map.put("var3", area);
-			map.put("var4", electrombile.getOwner_tele());
-			if (electrombile.getElect_state()==1) {
-				map.put("var5", "正常");
-			}
-			else if (electrombile.getElect_state()==2) {
-				map.put("var5", "黑名单");
-			}
-			else{
-			    map.put("var5", "未知");
-			}
-			map.put("var6", electrombile.getOwner_name());
-			map.put("var7", electrombile.getOwner_id());
-			map.put("var8", electrombile.getRecorder_time());
-			varList.add(map);
-		}
-		dataExel.put("titles", titles);
-		dataExel.put("varList", varList);
-		return ExcelImportUtil.exportExcel(dataExel);
+		return new ResultDto(1,"删除成功");
 	}
 	
 	/**
@@ -488,13 +438,19 @@ public class ElectAppController extends AppBaseController {
 	public Object findElectLocation(
 			@RequestParam(value="plateNum", required=false) String plateNum,
 			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum) throws UnsupportedEncodingException {
+		if (plateNum==null) {
+			return new ResultDto(-1, "车牌号不能为空", false);
+		}
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
 		Station station = new Station();
 		if (null!=electrombile) {
 			ElectrombileStation electrombileStation =  electrombileStationMapper.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
 			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
 		}
-		return station;
+		if (station==null||station.getLongitude()==null||station.getLatitude()==null) {
+			return new ResultDto(0, "未查询到车辆的位置信息");
+		}
+		return new ResultDto(station);
 	}
 	
 	/**
@@ -513,6 +469,9 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
 			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
 			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace) throws UnsupportedEncodingException {
+		if (plateNum==null) {
+			return new ResultDto(-1, "车牌号不能为空", false);
+		}
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
 		List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
 		if (null!=electrombile) {
@@ -525,7 +484,10 @@ public class ElectAppController extends AppBaseController {
 				traceStationDtos.add(traceStationDto);
 			}
 		}
-		return traceStationDtos;
+		if (traceStationDtos==null||traceStationDtos.size()==0) {
+			return new ResultDto(0, "未查询到该车辆的轨迹");
+		}
+		return new ResultDto(traceStationDtos);
 	}
 	
 	/**
@@ -543,41 +505,44 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(value="cityPower", required=false) Integer cityPower,
 			@RequestParam(value="areaPower", required=false) Integer areaPower
 			) throws UnsupportedEncodingException {
-		if (null==proPower||proPower==-1) {
+		if (proPower==null) {
+			return new ResultDto(-1, "管理员的省权限不能为空", false);
+		}
+		if (cityPower==null) {
+			return new ResultDto(-1,"管理员的市权限不能为空", false);
+		}
+		if (areaPower==null) {
+			return new ResultDto(-1, "管理员的区/县权限不能为空", false);
+		}
+		if (proPower==-1) {
 			proPower = null;
 		}
-		if (null==cityPower||cityPower==-1) {
+		if (cityPower==-1) {
 			cityPower = null;
 		}
-		if (null==areaPower||areaPower==-1) {
+		if (areaPower==-1) {
 			areaPower = null;
 		}
 		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
-		return electrombiles;
+		if (electrombiles==null||electrombiles.size()==0) {
+			return new ResultDto(0, "在该管理员所具有的权限区域内未查询到车辆信息");
+		}
+		return new ResultDto(electrombiles);
 	}
-
-//	@RequestMapping(value = "/findElectTracePages")
-//	@ResponseBody
-//	public Object findElectTracePages(@RequestParam(value="pageNum",required=false) Integer pageNum,
-//			@RequestParam(value="pageSize") Integer pageSize, 
-//			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
-//			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
-//			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace) throws UnsupportedEncodingException {
-//		pageNum = pageNum == null? 1:pageNum;
-//		pageSize = pageSize==null? 12:pageSize;
-//		PageHelper.startPage(pageNum, pageSize);
-//		Page<TraceStationDto> traceStationDtos = new Page<TraceStationDto>();
-//	    Page<ElectrombileStation> electrombileStations = (Page<ElectrombileStation>)electrombileStationMapper.
-//					selectByGuaCardNumForTrace(guaCardNum, startTimeForTrace, endTimeForTrace);
-//		for (ElectrombileStation electrombileStation : electrombileStations) {
-//				TraceStationDto traceStationDto = new TraceStationDto();
-//				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
-//				traceStationDto.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
-//				traceStationDtos.add(traceStationDto);
-//			}
-//		traceStationDtos.setPageSize(electrombileStations.getPageSize());
-//		traceStationDtos.setPages(electrombileStations.getPages());
-//		traceStationDtos.setTotal(electrombileStations.getTotal());
-//		return new PageInfo<TraceStationDto>(traceStationDtos);
-//	}
+	
+	
+	@RequestMapping(value = "/findElectByTele")
+	@ResponseBody
+	public Object findElectByTele(
+			@RequestParam(value="tele", required=false) Integer tele
+			) throws UnsupportedEncodingException {
+		 if (tele==null) {
+			return new ResultDto(-1,"手机号不能为空",false);
+		 }
+		 List<Electrombile> electrombiles = electrombileMapper.findElectsByTele(tele);
+		 if (electrombiles==null||electrombiles.size()==0) {
+			return new ResultDto(0, "未查询到该手机号绑定的车辆");
+		 }
+	     return new ResultDto(electrombiles);
+	}
 }
