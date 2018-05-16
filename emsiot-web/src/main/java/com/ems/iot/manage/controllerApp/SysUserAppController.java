@@ -161,6 +161,12 @@ public class SysUserAppController extends AppBaseController {
 	@ResponseBody
 	public Object changePwd(HttpServletRequest request,@RequestParam(value="password") String password,
 			@RequestParam(value="sysUserID", required=false) Integer sysUserID) {
+		if (password==null) {
+			return new ResultDto(-1, "密码不能为空", false);
+		}
+		if (sysUserID==null) {
+			return new ResultDto(-1,"用户id不能为空",false);
+		}
 		SysUser sysUser = new SysUser();
 		sysUser.setUser_id(sysUserID);
 		sysUser.setPassword(password);
