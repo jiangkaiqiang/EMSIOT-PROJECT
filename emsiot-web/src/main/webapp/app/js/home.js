@@ -385,6 +385,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	     else if($scope.jizhanFlag==1){
 	    	 //alert("隐藏基站");
 	    	 map.clearOverlays();
+	    	 if($scope.relituFlag==0){
+		    	 $scope.showReLiTu();
+		    	 $scope.relituFlag=1;
+		     }
 	    	 $scope.jizhanFlag=0;
 	     }
 	     showCssFlag('#xsjizhan');
@@ -393,7 +397,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 $scope.jizhanjuheFlag = 1;
 	 $('#jizhanjuhe').click(function () {
 	     if($scope.jizhanjuheFlag==1){
-	    	map.clearOverlays();
+	    //	map.clearOverlays();
 	    	 $scope.jizhanjuheFlag=0;
 	    	 showStation();
 	    	// clusterStation();
