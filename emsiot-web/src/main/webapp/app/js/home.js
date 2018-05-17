@@ -271,7 +271,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		walking.search(p1, p2);
 	 }
 	 
-	 $scope.findElectTrace = function() {
+	 $scope.findElectTrace = function() {            //显示车辆轨迹
 		 if ($scope.keywordTypeForTrace == "1") {	
 				$scope.plateNum = $scope.keywordForTrace;
 				$scope.electNumForTraceTable = $scope.plateNum;
@@ -385,9 +385,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	     else if($scope.jizhanFlag==1){
 	    	 //alert("隐藏基站");
 	    	 map.clearOverlays();
-	    	 if($scope.relituFlag==0){
+	    	 if($scope.relituFlag==1){
 		    	 $scope.showReLiTu();
-		    	 $scope.relituFlag=1;
+		    	 //$scope.relituFlag=0;
 		     }
 	    	 $scope.jizhanFlag=0;
 	     }

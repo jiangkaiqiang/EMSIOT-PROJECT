@@ -115,6 +115,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	        		var findStationPt = new BMap.Point(data.longitude,data.latitude);
 	     	   	var findStationMarker = new BMap.Marker(findStationPt); 
 	     	   	mapStation.addOverlay(findStationMarker);
+	     	   	findStationMarker.setAnimation(BMAP_ANIMATION_BOUNCE);
 	     	   	mapStation.centerAndZoom(findStationPt,17);
 	        	
 	        });
