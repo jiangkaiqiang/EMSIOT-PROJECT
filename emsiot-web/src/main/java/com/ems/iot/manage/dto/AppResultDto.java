@@ -8,22 +8,20 @@ package com.ems.iot.manage.dto;
  */
 public class AppResultDto {
 	private boolean success;
+	private int code;//状态码：（1001：成功并返回数据；2001：成功但返回数据为空；3001：请求失败；4001：token失效）
 	private String message;
-	private String token;
-	private String extra;
-	
-	public AppResultDto(boolean success, String message, String token, String extra) {
-		super();
-		this.success = success;
-		this.message = message;
-		this.token = token;
-		this.extra = extra;
-	}
+	private Object data;
 	public boolean isSuccess() {
 		return success;
 	}
 	public void setSuccess(boolean success) {
 		this.success = success;
+	}
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
 	}
 	public String getMessage() {
 		return message;
@@ -31,17 +29,37 @@ public class AppResultDto {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getToken() {
-		return token;
+	public Object getData() {
+		return data;
 	}
-	public void setToken(String token) {
-		this.token = token;
+	public void setData(Object data) {
+		this.data = data;
 	}
-	public String getExtra() {
-		return extra;
+	public AppResultDto(boolean success, int code, String message, Object data) {
+		super();
+		this.success = success;
+		this.code = code;
+		this.message = message;
+		this.data = data;
 	}
-	public void setExtra(String extra) {
-		this.extra = extra;
+	public AppResultDto(int code,String message,boolean success) {
+		super();
+		this.success = success;
+		this.code = code;
+		this.message = message;
+	}
+	public AppResultDto(int code, String message) {
+		super();
+		this.code = code;
+		this.message = message;
+		this.success = true;
+	}
+	public AppResultDto(Object data) {
+		super();
+		this.data = data;
+		this.success = true;
+		this.message = "查询成功";
+		this.code = 1001;
 	}
 	
 }

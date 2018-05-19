@@ -19,12 +19,14 @@ import com.ems.iot.manage.dao.ElectrombileStationMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.ElectrombileDto;
-import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
+import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.service.FtpService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -51,6 +53,8 @@ public class ElectAppController extends AppBaseController {
 	private SysUserMapper sysUserMapper;
 	@Autowired
 	private StationMapper stationMapper;
+	@Autowired
+	private CookieService cookieService;
 	/**
 	 * 根据电动车的ID寻找电动车
 	 * @param electID
@@ -60,16 +64,20 @@ public class ElectAppController extends AppBaseController {
 	@RequestMapping(value = "/findElectByID")
 	@ResponseBody
 	public Object findElectByID(
-			@RequestParam(value="electID", required=false) Integer electID
-			) throws UnsupportedEncodingException {
+			@RequestParam(value="electID", required=false) Integer electID, 
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
+		 Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		 if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+		 }
 		 if (electID==null) {
-			return new ResultDto(-1, "要查找的车辆id不能为空",false);
+			return new AppResultDto(3001, "要查找的车辆id不能为空",false);
 		 }
 		 Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
 		 if (electrombile==null) {
-			return new ResultDto(0, "未查询到给车辆id对应的车辆信息");
+			return new AppResultDto(2001, "未查询到给车辆id对应的车辆信息");
 		 }
-	     return new ResultDto(electrombile);
+	     return new AppResultDto(electrombile);
 	}
 	
 	/**
@@ -111,15 +119,20 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(value="ownerName", required=false) String ownerName,
 			@RequestParam(value="proPower", required=false) Integer proPower,
 			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower) throws UnsupportedEncodingException {
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (proPower==null) {
-			return new ResultDto(-1, "管理员的省权限不能为空", false);
+			return new AppResultDto(3001, "管理员的省权限不能为空", false);
 		}
 		if (cityPower==null) {
-			return new ResultDto(-1,"管理员的市权限不能为空", false);
+			return new AppResultDto(3001,"管理员的市权限不能为空", false);
 		}
 		if (areaPower==null) {
-			return new ResultDto(-1, "管理员的区/县权限不能为空", false);
+			return new AppResultDto(3001, "管理员的区/县权限不能为空", false);
 		}
 		if (null==recorderID||recorderID==0) {
 			recorderID = null;
@@ -154,7 +167,7 @@ public class ElectAppController extends AppBaseController {
 		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombiles(startTime, endTime, recorderID, electState, insurDetail, proID, 
 				cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName,proPower,cityPower,areaPower);
         if (electrombiles==null||electrombiles.size()==0) {
-        	return new ResultDto(0, "在该管理员所具有的权限区域内未查询到车辆信息");
+        	return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
 		Page<ElectrombileDto> electrombileDtos = new Page<ElectrombileDto>();
 		for (Electrombile electrombile : electrombiles) {
@@ -171,7 +184,7 @@ public class ElectAppController extends AppBaseController {
 		electrombileDtos.setTotal(electrombiles.getTotal());
 		
 		PageInfo<ElectrombileDto> elePageInfo = new PageInfo<ElectrombileDto>(electrombileDtos);
-		return new ResultDto(elePageInfo);
+		return new AppResultDto(elePageInfo);
 	}
 	
 	/**
@@ -205,30 +218,35 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(required = false) String owner_address,
 			@RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id,
-			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+			@RequestParam(required = false) Integer elect_state,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException, ParseException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (gua_card_num == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空",false);
+			return new AppResultDto(3001, "防盗芯片编号不能为空",false);
 		}
 		if (plate_num == null) {
-			return new ResultDto(-1, "车牌号不能为空", false);
+			return new AppResultDto(3001, "车牌号不能为空", false);
 		}
 		if (pro_id==null) {
-			return new ResultDto(-1, "车牌号所属省不能为空", false);
+			return new AppResultDto(3001, "车牌号所属省不能为空", false);
 		}
 		if (city_id==null) {
-			return new ResultDto(-1, "车牌号所属市不能为空", false);
+			return new AppResultDto(3001, "车牌号所属市不能为空", false);
 		}
 		if (area_id==null) {
-			return new ResultDto(-1, "车牌号所属区/县不能为空", false);
+			return new AppResultDto(3001, "车牌号所属区/县不能为空", false);
 		}
 		if (owner_tele==null){
-			return new ResultDto(-1, "车主手机号不能为空", false);
+			return new AppResultDto(3001, "车主手机号不能为空", false);
 		}
 		if (owner_name==null){
-			return new ResultDto(-1, "车主姓名不能为空", false);
+			return new AppResultDto(3001, "车主姓名不能为空", false);
 		}
 		if (owner_id==null){
-			return new ResultDto(-1, "车主身份证号不能为空", false);
+			return new AppResultDto(3001, "车主身份证号不能为空", false);
 		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
@@ -279,7 +297,7 @@ public class ElectAppController extends AppBaseController {
 			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.insert(electrombile);
-		return new ResultDto(1,"添加成功");
+		return new AppResultDto(1001,"添加成功");
 	}
 	
 	/**
@@ -313,33 +331,38 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(required = false) String owner_address,
 			@RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id,
-			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+			@RequestParam(required = false) Integer elect_state,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException, ParseException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (elect_id == null) {
-			return new ResultDto(-1, "要更新的车辆id不能为空",false);
+			return new AppResultDto(3001, "要更新的车辆id不能为空",false);
 		}
 		if (gua_card_num == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空",false);
+			return new AppResultDto(3001, "防盗芯片编号不能为空",false);
 		}
 		if (plate_num == null) {
-			return new ResultDto(-1, "车牌号不能为空", false);
+			return new AppResultDto(3001, "车牌号不能为空", false);
 		}
 		if (pro_id==null) {
-			return new ResultDto(-1, "车牌号所属省不能为空", false);
+			return new AppResultDto(3001, "车牌号所属省不能为空", false);
 		}
 		if (city_id==null) {
-			return new ResultDto(-1, "车牌号所属市不能为空", false);
+			return new AppResultDto(3001, "车牌号所属市不能为空", false);
 		}
 		if (area_id==null) {
-			return new ResultDto(-1, "车牌号所属区/县不能为空", false);
+			return new AppResultDto(3001, "车牌号所属区/县不能为空", false);
 		}
 		if (owner_tele==null){
-			return new ResultDto(-1, "车主手机号不能为空", false);
+			return new AppResultDto(3001, "车主手机号不能为空", false);
 		}
 		if (owner_name==null){
-			return new ResultDto(-1, "车主姓名不能为空", false);
+			return new AppResultDto(3001, "车主姓名不能为空", false);
 		}
 		if (owner_id==null){
-			return new ResultDto(-1, "车主身份证号不能为空", false);
+			return new AppResultDto(3001, "车主身份证号不能为空", false);
 		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);
@@ -391,7 +414,7 @@ public class ElectAppController extends AppBaseController {
 			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
-		return new ResultDto(1, "更新成功");
+		return new AppResultDto(1001, "更新成功");
 	}
 	
     /**
@@ -401,12 +424,17 @@ public class ElectAppController extends AppBaseController {
      */
 	@RequestMapping(value = "/deleteElectByID")
 	@ResponseBody
-	public Object deleteElectByID(Integer electID) {
+	public Object deleteElectByID(Integer electID,
+			@RequestParam(value="token", required=false) String token) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		 if (electID==null) {
-			return new ResultDto(-1, "要删除的车辆id不能为空", false);
+			return new AppResultDto(3001, "要删除的车辆id不能为空", false);
 		 }
 		 electrombileMapper.deleteByPrimaryKey(electID);
-		 return new ResultDto(1, "删除成功");
+		 return new AppResultDto(1001, "删除成功");
 	}
 	
 	/**
@@ -416,14 +444,19 @@ public class ElectAppController extends AppBaseController {
 	 */
 	@RequestMapping(value = "/deleteElectByIDs")
 	@ResponseBody
-	public Object deleteElectByIDs(Integer[] electIDs) {
+	public Object deleteElectByIDs(Integer[] electIDs,
+		@RequestParam(value="token", required=false) String token) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (electIDs==null||electIDs.length==0) {
-			return new ResultDto(-1, "要删除的车辆id不能为空", false);
+			return new AppResultDto(3001, "要删除的车辆id不能为空", false);
 		}
 		for(Integer electID:electIDs){
 			electrombileMapper.deleteByPrimaryKey(electID);
 		}
-		return new ResultDto(1,"删除成功");
+		return new AppResultDto(1001,"删除成功");
 	}
 	
 	/**
@@ -437,9 +470,14 @@ public class ElectAppController extends AppBaseController {
 	@ResponseBody
 	public Object findElectLocation(
 			@RequestParam(value="plateNum", required=false) String plateNum,
-			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum) throws UnsupportedEncodingException {
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (plateNum==null) {
-			return new ResultDto(-1, "车牌号不能为空", false);
+			return new AppResultDto(3001, "车牌号不能为空", false);
 		}
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
 		Station station = new Station();
@@ -448,9 +486,9 @@ public class ElectAppController extends AppBaseController {
 			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
 		}
 		if (station==null||station.getLongitude()==null||station.getLatitude()==null) {
-			return new ResultDto(0, "未查询到车辆的位置信息");
+			return new AppResultDto(0, "未查询到车辆的位置信息");
 		}
-		return new ResultDto(station);
+		return new AppResultDto(station);
 	}
 	
 	/**
@@ -468,9 +506,14 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(value="plateNum", required=false) String plateNum,
 			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
 			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
-			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace) throws UnsupportedEncodingException {
+			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (plateNum==null) {
-			return new ResultDto(-1, "车牌号不能为空", false);
+			return new AppResultDto(3001, "车牌号不能为空", false);
 		}
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
 		List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
@@ -485,9 +528,9 @@ public class ElectAppController extends AppBaseController {
 			}
 		}
 		if (traceStationDtos==null||traceStationDtos.size()==0) {
-			return new ResultDto(0, "未查询到该车辆的轨迹");
+			return new AppResultDto(2001, "未查询到该车辆的轨迹");
 		}
-		return new ResultDto(traceStationDtos);
+		return new AppResultDto(traceStationDtos);
 	}
 	
 	/**
@@ -503,16 +546,21 @@ public class ElectAppController extends AppBaseController {
 	public Object findElectsList(
 			@RequestParam(value="proPower", required=false) Integer proPower,
 			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
+			@RequestParam(value="token", required=false) String token
 			) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
 		if (proPower==null) {
-			return new ResultDto(-1, "管理员的省权限不能为空", false);
+			return new AppResultDto(3001, "管理员的省权限不能为空", false);
 		}
 		if (cityPower==null) {
-			return new ResultDto(-1,"管理员的市权限不能为空", false);
+			return new AppResultDto(3001,"管理员的市权限不能为空", false);
 		}
 		if (areaPower==null) {
-			return new ResultDto(-1, "管理员的区/县权限不能为空", false);
+			return new AppResultDto(3001, "管理员的区/县权限不能为空", false);
 		}
 		if (proPower==-1) {
 			proPower = null;
@@ -525,24 +573,29 @@ public class ElectAppController extends AppBaseController {
 		}
 		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
 		if (electrombiles==null||electrombiles.size()==0) {
-			return new ResultDto(0, "在该管理员所具有的权限区域内未查询到车辆信息");
+			return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
-		return new ResultDto(electrombiles);
+		return new AppResultDto(electrombiles);
 	}
 	
 	
 	@RequestMapping(value = "/findElectByTele")
 	@ResponseBody
 	public Object findElectByTele(
-			@RequestParam(value="tele", required=false) Integer tele
+			@RequestParam(value="tele", required=false) Integer tele,
+			@RequestParam(value="token", required=false) String token
 			) throws UnsupportedEncodingException {
+		 Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		 if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	     }
 		 if (tele==null) {
-			return new ResultDto(-1,"手机号不能为空",false);
+			return new AppResultDto(3001,"手机号不能为空",false);
 		 }
 		 List<Electrombile> electrombiles = electrombileMapper.findElectsByTele(tele);
 		 if (electrombiles==null||electrombiles.size()==0) {
-			return new ResultDto(0, "未查询到该手机号绑定的车辆");
+			return new AppResultDto(2001, "未查询到该手机号绑定的车辆");
 		 }
-	     return new ResultDto(electrombiles);
+	     return new AppResultDto(electrombiles);
 	}
 }
