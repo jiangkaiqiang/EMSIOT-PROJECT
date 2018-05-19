@@ -1,4 +1,5 @@
 package com.ems.iot.manage.controller;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -47,11 +48,11 @@ import com.ems.iot.manage.util.StringUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
 /**
  * @author Barry
- * @date 2018年3月20日下午3:33:14  
- * @version 1.0
- * Copyright: Copyright (c) EMSIOT 2018
+ * @date 2018年3月20日下午3:33:14
+ * @version 1.0 Copyright: Copyright (c) EMSIOT 2018
  */
 @Controller
 @RequestMapping(value = "/elect")
@@ -69,23 +70,25 @@ public class ElectController extends BaseController {
 	private SysUserMapper sysUserMapper;
 	@Autowired
 	private StationMapper stationMapper;
+
 	/**
 	 * 根据电动车的ID寻找电动车
+	 * 
 	 * @param electID
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
 	@RequestMapping(value = "/findElectByID")
 	@ResponseBody
-	public Object findElectByID(
-			@RequestParam(value="electID", required=false) Integer electID
-			) throws UnsupportedEncodingException {
-		 Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
-	     return electrombile;
+	public Object findElectByID(@RequestParam(value = "electID", required = false) Integer electID)
+			throws UnsupportedEncodingException {
+		Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
+		return electrombile;
 	}
-	
+
 	/**
 	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 
 	 * @param startTime
 	 * @param endTime
 	 * @param station_phy_num
@@ -94,122 +97,151 @@ public class ElectController extends BaseController {
 	 */
 	@RequestMapping(value = "/findElectsByStationIdAndTime")
 	@ResponseBody
-	public Object findElectsByStationIdAndTime(
-			@RequestParam(value="startTime", required=false) String startTime,
-			@RequestParam(value="endTime", required=false) String endTime,
-			@RequestParam(value="stationPhyNum", required=false) Integer stationPhyNum
-			) throws UnsupportedEncodingException {
-		 List<ElectrombileStation> electrombileStations = electrombileStationMapper.selectElectsByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
-		 List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
-		 for (ElectrombileStation electrombileStation : electrombileStations) {
+	public Object findElectsByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
+			throws UnsupportedEncodingException {
+		List<ElectrombileStation> electrombileStations = electrombileStationMapper
+				.selectElectsByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+		List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
+		for (ElectrombileStation electrombileStation : electrombileStations) {
 			StationElectDto stationElectDto = new StationElectDto();
 			stationElectDto.setCorssTime(electrombileStation.getUpdate_time());
-			Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(electrombileStation.getEle_gua_card_num());
+			Electrombile electrombile = electrombileMapper
+					.findPlateNumByGuaCardNum(electrombileStation.getEle_gua_card_num());
 			stationElectDto.setOwner_name(electrombile.getOwner_name());
 			stationElectDto.setPlate_num(electrombile.getPlate_num());
 			stationElectDtos.add(stationElectDto);
-		 }
-	     return stationElectDtos;
+		}
+		return stationElectDtos;
 	}
-	
+
 	/**
 	 * 返回所有基站下，当前所拥有的车辆数量，为车辆热力图提供支持
+	 * 
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
 	@RequestMapping(value = "/findElectsNumByStations")
 	@ResponseBody
 	public Object findElectsNumByStations() throws UnsupportedEncodingException {
-		 List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow();		
-		 return thermodynamics;
+		List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow();
+		return thermodynamics;
 	}
-	 /**
-	  * 找到最近一段时间的活跃车辆，为在线车辆功能提供服务
-	  * @return
-	  * @throws UnsupportedEncodingException
-	  */
+
+	/**
+	 * 找到最近一段时间的活跃车辆，为在线车辆功能提供服务
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping(value = "/findInlineElectsNum")
 	@ResponseBody
-	public Object findInlineElectsNum(@RequestParam(value="proPower", required=false) Integer proPower,
-			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower) throws UnsupportedEncodingException {
-		 List<Integer> inlineList = electrombileStationMapper.selectElectsByEleGuaCardNumNow(proPower,cityPower,areaPower);	
-		 return inlineList.size();
+	public Object findInlineElectsNum(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+			throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<Integer> inlineList = electrombileStationMapper.selectElectsByEleGuaCardNumNow(proPower, cityPower,
+				areaPower);
+		return inlineList.size();
 	}
-	
-	
+
 	/**
 	 * 根据各种关键字查询车辆
-	 * @param pageNum 
+	 * 
+	 * @param pageNum
 	 * @param pageSize
-	 * @param startTime 开始时间
-	 * @param endTime 结束时间
-	 * @param recorderID 录入人ID
-	 * @param electState 车辆状态
-	 * @param insurDetail 是否投保
-	 * @param proID 所属区域——省
-	 * @param cityID 所属区域——市
-	 * @param areaID 所属区域——县
-	 * @param ownerTele 车主手机号
-	 * @param ownerID 车主身份证号
-	 * @param plateNum 车牌号
-	 * @param guaCardNum 防盗芯片编号
-	 * @param ownerName 车主姓名
+	 * @param startTime
+	 *            开始时间
+	 * @param endTime
+	 *            结束时间
+	 * @param recorderID
+	 *            录入人ID
+	 * @param electState
+	 *            车辆状态
+	 * @param insurDetail
+	 *            是否投保
+	 * @param proID
+	 *            所属区域——省
+	 * @param cityID
+	 *            所属区域——市
+	 * @param areaID
+	 *            所属区域——县
+	 * @param ownerTele
+	 *            车主手机号
+	 * @param ownerID
+	 *            车主身份证号
+	 * @param plateNum
+	 *            车牌号
+	 * @param guaCardNum
+	 *            防盗芯片编号
+	 * @param ownerName
+	 *            车主姓名
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
 	@RequestMapping(value = "/findElectList", method = RequestMethod.POST)
 	@ResponseBody
-	public Object findElectList(@RequestParam(value="pageNum",required=false) Integer pageNum,
-			@RequestParam(value="pageSize") Integer pageSize, 
-			@RequestParam(value="startTime", required=false) String startTime,
-			@RequestParam(value="endTime", required=false) String endTime,
-			@RequestParam(value="recorderID", required=false) Integer recorderID,
-			@RequestParam(value="electState", required=false) Integer electState,
-			@RequestParam(value="insurDetail", required=false) Integer insurDetail,
-			@RequestParam(value="proID", required=false) Integer proID,
-			@RequestParam(value="cityID", required=false) Integer cityID,
-			@RequestParam(value="areaID", required=false) Integer areaID,
-			@RequestParam(value="proPower", required=false) Integer proPower,
-			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower,
-			@RequestParam(value="ownerTele", required=false) String ownerTele,
-			@RequestParam(value="ownerID", required=false) String ownerID,
-			@RequestParam(value="plateNum", required=false) String plateNum,
-			@RequestParam(value="guaCardNum", required=false) String guaCardNum,
-			@RequestParam(value="ownerName", required=false) String ownerName) throws UnsupportedEncodingException {
-		if (null==recorderID||recorderID==0) {
+	public Object findElectList(@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize") Integer pageSize,
+			@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "recorderID", required = false) Integer recorderID,
+			@RequestParam(value = "electState", required = false) Integer electState,
+			@RequestParam(value = "insurDetail", required = false) Integer insurDetail,
+			@RequestParam(value = "proID", required = false) Integer proID,
+			@RequestParam(value = "cityID", required = false) Integer cityID,
+			@RequestParam(value = "areaID", required = false) Integer areaID,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower,
+			@RequestParam(value = "ownerTele", required = false) String ownerTele,
+			@RequestParam(value = "ownerID", required = false) String ownerID,
+			@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "guaCardNum", required = false) String guaCardNum,
+			@RequestParam(value = "ownerName", required = false) String ownerName) throws UnsupportedEncodingException {
+		if (null == recorderID || recorderID == 0) {
 			recorderID = null;
 		}
-		if (null==electState||electState==8) {
+		if (null == electState || electState == 8) {
 			electState = null;
 		}
-		if (null==insurDetail||insurDetail==8) {
+		if (null == insurDetail || insurDetail == 8) {
 			insurDetail = null;
 		}
-		if (null==proID||proID==-1) {
+		if (null == proID || proID == -1) {
 			proID = null;
 		}
-		if (null==cityID||cityID==-1) {
+		if (null == cityID || cityID == -1) {
 			cityID = null;
 		}
-		if (null==areaID||areaID==-1) {
+		if (null == areaID || areaID == -1) {
 			areaID = null;
 		}
-		if (null==proPower||proPower==-1) {
+		if (null == proPower || proPower == -1) {
 			proPower = null;
 		}
-		if (null==cityPower||cityPower==-1) {
+		if (null == cityPower || cityPower == -1) {
 			cityPower = null;
 		}
-		if (null==areaPower||areaPower==-1) {
+		if (null == areaPower || areaPower == -1) {
 			areaPower = null;
 		}
-		pageNum = pageNum == null? 1:pageNum;
-		pageSize = pageSize==null? 12:pageSize;
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 12 : pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombiles(startTime, endTime, recorderID, electState, insurDetail, proID, 
-				cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName,proPower,cityPower,areaPower);
+		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombiles(startTime, endTime, recorderID,
+				electState, insurDetail, proID, cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName,
+				proPower, cityPower, areaPower);
 		Page<ElectrombileDto> electrombileDtos = new Page<ElectrombileDto>();
 		for (Electrombile electrombile : electrombiles) {
 			ElectrombileDto electrombileDto = new ElectrombileDto();
@@ -225,46 +257,39 @@ public class ElectController extends BaseController {
 		electrombileDtos.setTotal(electrombiles.getTotal());
 		return new PageInfo<ElectrombileDto>(electrombileDtos);
 	}
-	
+
 	/**
 	 * 添加车辆
+	 * 
 	 * @param electrombile
 	 * @return
 	 * @throws UnsupportedEncodingException
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@RequestMapping(value = "/addElect")
 	@ResponseBody
 	public Object addElect(@RequestParam(required = false) Integer gua_card_num,
-			@RequestParam(required = false) String plate_num,
-			@RequestParam(required = false) String ve_id_num,
-			@RequestParam(required = false) String elect_brand,
-			@RequestParam(required = false) String buy_date,
-			@RequestParam(required = false) String elect_color,
-			@RequestParam(required = false) String motor_num, 
-			@RequestParam(required = false) String note,
-			@RequestParam(required = false) Integer pro_id,
-			@RequestParam(required = false) Integer city_id,
-			@RequestParam(required = false) Integer area_id,
-			@RequestParam(required = false) Integer elect_type,
-			@RequestParam(required = false) Integer insur_detail,
+			@RequestParam(required = false) String plate_num, @RequestParam(required = false) String ve_id_num,
+			@RequestParam(required = false) String elect_brand, @RequestParam(required = false) String buy_date,
+			@RequestParam(required = false) String elect_color, @RequestParam(required = false) String motor_num,
+			@RequestParam(required = false) String note, @RequestParam(required = false) Integer pro_id,
+			@RequestParam(required = false) Integer city_id, @RequestParam(required = false) Integer area_id,
+			@RequestParam(required = false) Integer elect_type, @RequestParam(required = false) Integer insur_detail,
 			@RequestParam(required = false) MultipartFile elect_pic,
 			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
-			@RequestParam(required = false) String owner_tele,
-			@RequestParam(required = false) String owner_name,
-			@RequestParam(required = false) String owner_address,
-			@RequestParam(required = false) String owner_id,
-			@RequestParam(required = false) Integer recorder_id,
-			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
+			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
+			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
+			throws UnsupportedEncodingException, ParseException {
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
 		electrombile.setVe_id_num(ve_id_num);
 		electrombile.setElect_brand(elect_brand);
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//electrombile.setBuy_date(sdf.parse(buy_date));
+		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// electrombile.setBuy_date(sdf.parse(buy_date));
 		electrombile.setBuy_date(buy_date);
 		electrombile.setElect_color(elect_color);
 		electrombile.setMotor_num(motor_num);
@@ -286,40 +311,45 @@ public class ElectController extends BaseController {
 		if (electrombile.getPlate_num() == null) {
 			return new ResultDto(-1, "车牌号不能为空！");
 		}
-		if (null!=elect_pic) {
+		if (null != elect_pic) {
 			String dir = String.format("%s/elect/electPic", baseDir);
-			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setElect_pic(FtpService.READ_URL + "data/" + dir + "/" + elect_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
-		if (null!=indentity_card_pic) {
+		if (null != indentity_card_pic) {
 			String dir = String.format("%s/elect/indCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setIndentity_card_pic(FtpService.READ_URL + "data/" + dir + "/" + indentity_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
-		if (null!=record_pic) {
+		if (null != record_pic) {
 			String dir = String.format("%s/elect/recordPic", baseDir);
-			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setRecord_pic(FtpService.READ_URL+"data/"+dir + "/" + record_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setRecord_pic(FtpService.READ_URL + "data/" + dir + "/" + record_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
-		if (null!=install_card_pic) {
+		if (null != install_card_pic) {
 			String dir = String.format("%s/elect/installCardPic", baseDir);
-			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.insert(electrombile);
-		return new ResultDto(0,"添加成功");
+		return new ResultDto(0, "添加成功");
 	}
-	
+
 	/**
 	 * 更新车辆
+	 * 
 	 * @param electrombile
 	 * @return
 	 * @throws UnsupportedEncodingException
@@ -327,37 +357,29 @@ public class ElectController extends BaseController {
 	@RequestMapping(value = "/updateElect")
 	@ResponseBody
 	public Object updateElect(@RequestParam(required = false) Integer elect_id,
-			@RequestParam(required = false) Integer gua_card_num,
-			@RequestParam(required = false) String plate_num,
-			@RequestParam(required = false) String ve_id_num,
-			@RequestParam(required = false) String elect_brand,
-			@RequestParam(required = false) String buy_date,
-			@RequestParam(required = false) String elect_color,
-			@RequestParam(required = false) String motor_num, 
-			@RequestParam(required = false) String note,
-			@RequestParam(required = false) Integer pro_id,
-			@RequestParam(required = false) Integer city_id,
-			@RequestParam(required = false) Integer area_id,
-			@RequestParam(required = false) Integer elect_type,
+			@RequestParam(required = false) Integer gua_card_num, @RequestParam(required = false) String plate_num,
+			@RequestParam(required = false) String ve_id_num, @RequestParam(required = false) String elect_brand,
+			@RequestParam(required = false) String buy_date, @RequestParam(required = false) String elect_color,
+			@RequestParam(required = false) String motor_num, @RequestParam(required = false) String note,
+			@RequestParam(required = false) Integer pro_id, @RequestParam(required = false) Integer city_id,
+			@RequestParam(required = false) Integer area_id, @RequestParam(required = false) Integer elect_type,
 			@RequestParam(required = false) Integer insur_detail,
 			@RequestParam(required = false) MultipartFile elect_pic,
 			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
-			@RequestParam(required = false) String owner_tele,
-			@RequestParam(required = false) String owner_name,
-			@RequestParam(required = false) String owner_address,
-			@RequestParam(required = false) String owner_id,
-			@RequestParam(required = false) Integer recorder_id,
-			@RequestParam(required = false) Integer elect_state) throws UnsupportedEncodingException, ParseException {
+			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
+			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
+			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
+			throws UnsupportedEncodingException, ParseException {
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
 		electrombile.setVe_id_num(ve_id_num);
 		electrombile.setElect_brand(elect_brand);
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//electrombile.setBuy_date(sdf.parse(buy_date));
+		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// electrombile.setBuy_date(sdf.parse(buy_date));
 		electrombile.setBuy_date(buy_date);
 		electrombile.setElect_color(elect_color);
 		electrombile.setMotor_num(motor_num);
@@ -379,77 +401,84 @@ public class ElectController extends BaseController {
 		if (electrombile.getPlate_num() == null) {
 			return new ResultDto(-1, "车牌号不能为空！");
 		}
-		if (null!=elect_pic) {
+		if (null != elect_pic) {
 			String dir = String.format("%s/elect/electPic", baseDir);
-			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setElect_pic(FtpService.READ_URL + "data/" + dir + "/" + elect_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
-		if (null!=indentity_card_pic) {
+		if (null != indentity_card_pic) {
 			String dir = String.format("%s/elect/indCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setIndentity_card_pic(FtpService.READ_URL + "data/" + dir + "/" + indentity_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
-		if (null!=record_pic) {
+		if (null != record_pic) {
 			String dir = String.format("%s/elect/recordPic", baseDir);
-			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setRecord_pic(FtpService.READ_URL+"data/"+dir + "/" + record_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setRecord_pic(FtpService.READ_URL + "data/" + dir + "/" + record_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
-		if (null!=install_card_pic) {
+		if (null != install_card_pic) {
 			String dir = String.format("%s/elect/installCardPic", baseDir);
-			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(),
+					new Date().getTime(), "jpg");
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
-		return new ResultDto(0,"更新成功");
+		return new ResultDto(0, "更新成功");
 	}
-	
-    /**
-     * 根据ID删除车辆
-     * @param electID
-     * @return
-     */
+
+	/**
+	 * 根据ID删除车辆
+	 * 
+	 * @param electID
+	 * @return
+	 */
 	@RequestMapping(value = "/deleteElectByID")
 	@ResponseBody
 	public Object deleteElectByID(Integer electID) {
-		 electrombileMapper.deleteByPrimaryKey(electID);
-		 return new BaseDto(0);
+		electrombileMapper.deleteByPrimaryKey(electID);
+		return new BaseDto(0);
 	}
-	
+
 	/**
 	 * 根据多个ID删除车辆
+	 * 
 	 * @param electIDs
 	 * @return
 	 */
 	@RequestMapping(value = "/deleteElectByIDs")
 	@ResponseBody
 	public Object deleteElectByIDs(Integer[] electIDs) {
-		for(Integer electID:electIDs){
+		for (Integer electID : electIDs) {
 			electrombileMapper.deleteByPrimaryKey(electID);
 		}
 		return new BaseDto(0);
 	}
-	
+
 	/**
 	 * 导出车辆为excel
+	 * 
 	 * @param electIDs
 	 * @return
 	 */
 	@RequestMapping(value = "/exportElectByIDs")
 	@ResponseBody
 	public Object exportElectByIDs(Integer[] electIDs) {
-		List<Electrombile> electrombiles = new ArrayList<Electrombile>();	
-		for(Integer electID:electIDs){
+		List<Electrombile> electrombiles = new ArrayList<Electrombile>();
+		for (Integer electID : electIDs) {
 			Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
 			electrombiles.add(electrombile);
-		}		
+		}
 		Map<String, Object> dataExel = new HashMap<String, Object>();
 		List<String> titles = new ArrayList<String>();
 		titles.add("车牌号");
@@ -460,7 +489,7 @@ public class ElectController extends BaseController {
 		titles.add("车主姓名");
 		titles.add("身份证号");
 		titles.add("添加时间");
-		List<Map<String, Object>> varList = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> varList = new ArrayList<Map<String, Object>>();
 		for (Electrombile electrombile : electrombiles) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("var1", electrombile.getPlate_num());
@@ -471,14 +500,12 @@ public class ElectController extends BaseController {
 			area = area + cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName();
 			map.put("var3", area);
 			map.put("var4", electrombile.getOwner_tele());
-			if (electrombile.getElect_state()==1) {
+			if (electrombile.getElect_state() == 1) {
 				map.put("var5", "正常");
-			}
-			else if (electrombile.getElect_state()==2) {
+			} else if (electrombile.getElect_state() == 2) {
 				map.put("var5", "黑名单");
-			}
-			else{
-			    map.put("var5", "未知");
+			} else {
+				map.put("var5", "未知");
 			}
 			map.put("var6", electrombile.getOwner_name());
 			map.put("var7", electrombile.getOwner_id());
@@ -489,9 +516,10 @@ public class ElectController extends BaseController {
 		dataExel.put("varList", varList);
 		return ExcelImportUtil.exportExcel(dataExel);
 	}
-	
+
 	/**
 	 * 根据关键字定位车辆
+	 * 
 	 * @param plateNum
 	 * @param guaCardNum
 	 * @return
@@ -499,20 +527,22 @@ public class ElectController extends BaseController {
 	 */
 	@RequestMapping(value = "/findElectLocation")
 	@ResponseBody
-	public Object findElectLocation(
-			@RequestParam(value="plateNum", required=false) String plateNum,
-			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum) throws UnsupportedEncodingException {
+	public Object findElectLocation(@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
+			throws UnsupportedEncodingException {
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
 		Station station = new Station();
-		if (null!=electrombile) {
-			ElectrombileStation electrombileStation =  electrombileStationMapper.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
+		if (null != electrombile) {
+			ElectrombileStation electrombileStation = electrombileStationMapper
+					.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
 			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
 		}
 		return station;
 	}
-	
+
 	/**
 	 * 查询车辆轨迹
+	 * 
 	 * @param plateNum
 	 * @param guaCardNum
 	 * @param startTimeForTrace
@@ -522,28 +552,30 @@ public class ElectController extends BaseController {
 	 */
 	@RequestMapping(value = "/findElectTrace")
 	@ResponseBody
-	public Object findElectTrace(
-			@RequestParam(value="plateNum", required=false) String plateNum,
-			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
-			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
-			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace) throws UnsupportedEncodingException {
+	public Object findElectTrace(@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
+			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
+			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
+			throws UnsupportedEncodingException {
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
 		List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
-		if (null!=electrombile) {
-			List<ElectrombileStation> electrombileStations = electrombileStationMapper.
-					selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
+		if (null != electrombile) {
+			List<ElectrombileStation> electrombileStations = electrombileStationMapper
+					.selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
 			for (ElectrombileStation electrombileStation : electrombileStations) {
 				TraceStationDto traceStationDto = new TraceStationDto();
 				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
-				traceStationDto.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
+				traceStationDto
+						.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
 				traceStationDtos.add(traceStationDto);
 			}
 		}
 		return traceStationDtos;
 	}
-	
+
 	/**
 	 * 获取所有备案登记车辆
+	 * 
 	 * @param proPower
 	 * @param cityPower
 	 * @param areaPower
@@ -552,46 +584,51 @@ public class ElectController extends BaseController {
 	 */
 	@RequestMapping(value = "/findElectsList")
 	@ResponseBody
-	public Object findElectsList(
-			@RequestParam(value="proPower", required=false) Integer proPower,
-			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower
-			) throws UnsupportedEncodingException {
-		if (null==proPower||proPower==-1) {
+	public Object findElectsList(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+			throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
 			proPower = null;
 		}
-		if (null==cityPower||cityPower==-1) {
+		if (null == cityPower || cityPower == -1) {
 			cityPower = null;
 		}
-		if (null==areaPower||areaPower==-1) {
+		if (null == areaPower || areaPower == -1) {
 			areaPower = null;
 		}
-		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
+		List<Electrombile> electrombiles = electrombileMapper.findElectsList(proPower, cityPower, areaPower);
 		return electrombiles;
 	}
 
-//	@RequestMapping(value = "/findElectTracePages")
-//	@ResponseBody
-//	public Object findElectTracePages(@RequestParam(value="pageNum",required=false) Integer pageNum,
-//			@RequestParam(value="pageSize") Integer pageSize, 
-//			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
-//			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
-//			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace) throws UnsupportedEncodingException {
-//		pageNum = pageNum == null? 1:pageNum;
-//		pageSize = pageSize==null? 12:pageSize;
-//		PageHelper.startPage(pageNum, pageSize);
-//		Page<TraceStationDto> traceStationDtos = new Page<TraceStationDto>();
-//	    Page<ElectrombileStation> electrombileStations = (Page<ElectrombileStation>)electrombileStationMapper.
-//					selectByGuaCardNumForTrace(guaCardNum, startTimeForTrace, endTimeForTrace);
-//		for (ElectrombileStation electrombileStation : electrombileStations) {
-//				TraceStationDto traceStationDto = new TraceStationDto();
-//				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
-//				traceStationDto.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
-//				traceStationDtos.add(traceStationDto);
-//			}
-//		traceStationDtos.setPageSize(electrombileStations.getPageSize());
-//		traceStationDtos.setPages(electrombileStations.getPages());
-//		traceStationDtos.setTotal(electrombileStations.getTotal());
-//		return new PageInfo<TraceStationDto>(traceStationDtos);
-//	}
+	// @RequestMapping(value = "/findElectTracePages")
+	// @ResponseBody
+	// public Object
+	// findElectTracePages(@RequestParam(value="pageNum",required=false) Integer
+	// pageNum,
+	// @RequestParam(value="pageSize") Integer pageSize,
+	// @RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
+	// @RequestParam(value="startTimeForTrace", required=false) String
+	// startTimeForTrace,
+	// @RequestParam(value="endTimeForTrace", required=false) String
+	// endTimeForTrace) throws UnsupportedEncodingException {
+	// pageNum = pageNum == null? 1:pageNum;
+	// pageSize = pageSize==null? 12:pageSize;
+	// PageHelper.startPage(pageNum, pageSize);
+	// Page<TraceStationDto> traceStationDtos = new Page<TraceStationDto>();
+	// Page<ElectrombileStation> electrombileStations =
+	// (Page<ElectrombileStation>)electrombileStationMapper.
+	// selectByGuaCardNumForTrace(guaCardNum, startTimeForTrace,
+	// endTimeForTrace);
+	// for (ElectrombileStation electrombileStation : electrombileStations) {
+	// TraceStationDto traceStationDto = new TraceStationDto();
+	// traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
+	// traceStationDto.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
+	// traceStationDtos.add(traceStationDto);
+	// }
+	// traceStationDtos.setPageSize(electrombileStations.getPageSize());
+	// traceStationDtos.setPages(electrombileStations.getPages());
+	// traceStationDtos.setTotal(electrombileStations.getTotal());
+	// return new PageInfo<TraceStationDto>(traceStationDtos);
+	// }
 }

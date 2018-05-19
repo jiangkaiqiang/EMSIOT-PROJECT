@@ -27,7 +27,7 @@
                 <ul class="flex flex-items">
                     <li><img src="app/img/home-inline.png" alt=""/></li>
                     <li>
-                        <p>{{elects.length - blackElects.length}}</p>
+                        <p>{{inlineElects}}</p>
                         <span> 在线车辆</span>
                     </li>
                 </ul>
@@ -249,21 +249,21 @@
             <img src="app/img/config-car.png" style="width:25px;"/>
             <h4>车辆&nbsp;{{electNumForTraceTable}}</h4>
         </li>
-        <li>{{traceStationsLength}}个&nbsp;基站</li>
+        <li>经过{{traceStationsLength}}个&nbsp;基站</li>
     </ul>
     <div class="tableArea" style="margin-top:5%;">
         <table class="table table-striped " id="tableArea" ng-model="traceStations">
             <thead>
             <tr>
-                <th>基站物理编号</th>
                 <th>基站名称</th>
+                <th>基站地址</th>
                 <th>经过时间</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="traceStation in traceStations">
-                <td>{{traceStation.station.station_phy_num}}</td>
                 <td>{{traceStation.station.station_name}}</td>
+                <td>{{traceStation.station.station_address}}</td>
                 <td>{{traceStation.crossTime}}</td>
             </tr>
             </tbody>

@@ -18,7 +18,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 			            }
 			  }).success(function (data) {
 				$scope.cityName = data.name;
-				map.centerAndZoom($scope.cityName, 10); // 初始化地图,设置中心点坐标和地图级别
+				map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
 				map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 				//map.setMapStyle({style:'light'})
 				//map.disableDoubleClickZoom();
@@ -55,9 +55,21 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 					$scope.blackElects = data;
 				});
 			    // 获取在线车辆数量
+				$http.get('/i/elect/findInlineElectsNum', {
+					params : {
+						"areaPower" : $scope.user.area_power,
+						"cityPower" : $scope.user.city_power,
+						"proPower" : $scope.user.pro_power
+					}
+				}).success(function(data) {
+					$scope.inlineElects = data;
+				});
 			    // 获取报警数量
 				$http.get('/i/electalarm/findElectAlarmsList', {
 					params : {
+						"areaPower" : $scope.user.area_power,
+						"cityPower" : $scope.user.city_power,
+						"proPower" : $scope.user.pro_power
 					}
 				}).success(function(data) {
 					$scope.electAlarms = data;

@@ -8,7 +8,19 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 				}
 				$scope.getStations();
 		   });	 
-		 
+		 // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
+		 $http.get('/i/city/findCityNameByUserPower', {
+		            params: {
+		                "areaID": $scope.admin.area_power,
+		                "cityID": $scope.admin.city_power,
+		                "proID": $scope.admin.pro_power
+		            }
+		  }).success(function (data) {
+			$scope.cityName = data.name;
+			 mapStation.centerAndZoom($scope.cityName, 15);  // 初始化地图,设置中心点坐标和地图级别
+			 mapStation.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+			 mapStation.disableDoubleClickZoom();
+		  });
 	};
 	
 	 var mapStation = new BMap.Map("stationMap",{
@@ -64,9 +76,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 			    });
 			    local.search(myValue);
 			}
-	 mapStation.centerAndZoom("喀什", 10);  // 初始化地图,设置中心点坐标和地图级别
-	 mapStation.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-	 mapStation.disableDoubleClickZoom();
    	 //通过双击地图添加基站，弹出窗口
 	 var geoc = new BMap.Geocoder();    
 

@@ -1,7 +1,5 @@
 package com.ems.iot.manage.controller;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -130,8 +128,20 @@ public class ElectAlarmController extends BaseController {
 	 */
 	@RequestMapping(value = "/findElectAlarmsList")
 	@ResponseBody
-	public Object findElectAlarmsList() {
-		List<ElectAlarm> electAlarms = electAlarmMapper.findElectalarmsList();
+	public Object findElectAlarmsList(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower) {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<ElectAlarm> electAlarms = electAlarmMapper.findElectalarmsList(proPower, cityPower,
+				areaPower);
 		return electAlarms;
 	}
 }

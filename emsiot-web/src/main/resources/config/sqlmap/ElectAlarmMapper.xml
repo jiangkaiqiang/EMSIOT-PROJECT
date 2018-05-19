@@ -103,6 +103,17 @@
 			</where>
    </select>
    <select id="findElectalarmsList" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
-        SELECT * FROM `elect_alarm` 
+        SELECT * FROM `elect_alarm` left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
+        <where>
+			<if test="proPower != null">
+			    electrombile.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.area_id = #{areaPower}
+			</if>
+		</where>
    </select>
 </mapper>

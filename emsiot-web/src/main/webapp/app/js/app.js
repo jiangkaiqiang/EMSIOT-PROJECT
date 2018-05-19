@@ -34,6 +34,27 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 	            });
 	        	window.location.reload();
 	        };
+	        JS.Engine.start('conn');
+	    	JS.Engine.on(
+	    	        { 
+	    	           msgData : function(msgData){
+	    	        	   var message = msgData.split(";");
+	    	        	   if($rootScope.admin.pro_power==-1){
+	    	        		   $("#message").text(message[3]);  
+	    	        	    }
+	    	        	   else if($rootScope.admin.pro_power==message[0]) {
+	    	        		   if($rootScope.admin.city_power==-1){
+	    	        			   $("#message").text(message[3]); 
+	    	        		   }
+	    	        		   else if($rootScope.admin.city_power==message[1]){
+	    	        			   if($rootScope.admin.area_power==-1||$rootScope.admin.area_power==message[2]){
+	    	        				   $("#message").text(message[3]); 
+	    	        			   }
+	    	        		   }
+	    	        	   }
+	    	           },
+	    	       }
+	    	   );
 	        function checkInput(){
 		        var flag = true;
 		        // 检查必须填写项
@@ -130,11 +151,3 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         templateUrl: 'app/template/stationDeviceManage.html'
     });
 });
-JS.Engine.start('conn');
-JS.Engine.on(
-        { 
-           msgData : function(msgData){
-        	   $("#message").text(msgData);  
-           },
-       }
-   );
