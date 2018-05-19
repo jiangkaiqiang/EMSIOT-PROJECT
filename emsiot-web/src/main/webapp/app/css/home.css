@@ -18,10 +18,10 @@
     display:block;
     color:#666666;
     height:100%;
-    padding:0 5px;
+    /*padding:0 5px;*/
 
 }
-.countWarp  .home-title .active{
+.countWarp  .home-title .home-nav .active{
     color:#3C7ADA!important;
     background:rgba(232,241,255,0.9);
 }
@@ -30,10 +30,10 @@
 font-size:1.2em;
 font-weight:bold;
 }
-.countWarp .home-title .home-nav>li>a{text-align:center;}
+.countWarp .home-title .home-nav>li>a{text-align:left;}
 .countWarp .home-title .home-nav>li>a>span{font-size:13px;}
-.countWarp .home-title .home-nav-right>li:nth-child(odd){line-height:60px;width:10px;}
-.countWarp .home-title .home-nav-right>li:last-child a{padding-right:15px;}
+/*.countWarp .home-title .home-nav-right>li:nth-child(odd){line-height:60px;width:10px;}*/
+.countWarp .home-title .home-nav-right>li:last-child a{padding-right:10px;}
 .countWarp .home-title .home-nav-right .border-dashed {
     border-right: 1px dashed #91A2BE;
     margin: 3px!important;
@@ -120,18 +120,17 @@ font-weight:bold;
 #positionTable hr{width:100%;height:1px;border-top:1px solid #ddd;margin-top:20px;}
 #positionTable table thead tr>th:first-child div{margin-left:10px;}
 #positionTable thead tr th{background:transparent;}
-#positionTable table tbody td{text-align:left;}
 
 #r-result{width:100%;}
 #r-result input{
     width:250px;
-    background:rgba(255,255,255,0.9)
+    background:rgba(255,255,255,0.7)
 }
 
 #mapSearch{
     position: absolute;
     top: 80px;
-    left: 10px;
+    right: 10px;
 }
 
 #mapSearch #r-result span.form-control-feedback {
@@ -139,13 +138,13 @@ font-weight:bold;
     left:210px!important;
     color: #2D7CF9;
 }
-
+.home-title ul.home-nav-right>li{margin:0 10px;}
 .home-title ul.home-nav-right .swichWrap {
     /* float: right; */
     width: 40px;
     height: 17px;
     /* margin-top: 2px; */
-    margin-left: 20px;
+    margin-left:0px;
     background-color: #ccc;
     border-radius: 16px;
     position: relative;
@@ -167,7 +166,17 @@ font-weight:bold;
     left:25px;
 }
 #positionTable.rightToggle{
-    right:20px!important;
+    right:10px!important;
+}
+.home-title>.home-nav>li>a>ul>li{height:100%;}
+.home-title>.home-nav>li>a>ul>li:first-child{margin-right:8px;}
+.home-title>.home-nav>li>a>ul>li>p{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+#positionTable .tableArea{
+    max-height:450px;
+    overflow-y:scroll;
 }
 @media screen and (min-width:1024px) and (max-width:1152px){
     .countWarp .home-title .home-nav>li>a{

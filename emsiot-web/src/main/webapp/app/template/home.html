@@ -1,87 +1,84 @@
 <div class="home-title flex flex-between shadow">
     <ul class="flex home-nav">
-    <li>
-        <a href="">
-            <div>{{elects.length}}</div>
-            <span class="blue">
-                <i class="glyphicon glyphicon-list-alt"></i>
-                登记车辆
-            </span>
-        </a >
-    </li>
-    <li>
-        <a href="">
-            <div>{{blackElects.length}}</div>
-            <span class="black">
-                <i class="glyphicon glyphicon-ban-circle"></i>
-                黑名单车辆
-            </span>
-        </a >
-    </li>
-    <li>
-        <a href="">
-            <div>{{elects.length - blackElects.length}}</div>
-            <span class="green">
-                <i class="glyphicon glyphicon-th-large"></i>
-                在线车辆
-            </span>
-        </a >
-    </li>
-    <li>
-        <a href="">
-            <div>{{electAlarms.length}}</div>
-            <span class="red">
-                <i class="glyphicon glyphicon-bell"></i>
-                报警数量
-            </span>
-        </a >
-    </li>
-</ul>
+        <li>
+            <a href="">
+                <ul class="flex flex-items">
+                    <li><img src="app/img/home-dengji.png" alt=""/></li>
+                    <li>
+                        <p>{{elects.length}}</p>
+                        <span>登记车辆</span>
+                    </li>
+                </ul>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <ul class="flex flex-items">
+                    <li><img src="app/img/home-black.png" alt=""/></li>
+                    <li>
+                        <p>{{blackElects.length}}</p>
+                        <span>黑名单车辆</span>
+                    </li>
+                </ul>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <ul class="flex flex-items">
+                    <li><img src="app/img/home-inline.png" alt=""/></li>
+                    <li>
+                        <p>{{elects.length - blackElects.length}}</p>
+                        <span> 在线车辆</span>
+                    </li>
+                </ul>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <ul class="flex flex-items">
+                    <li><img src="app/img/home-baojing.png" alt=""/></li>
+                    <li>
+                        <p>{{electAlarms.length}}</p>
+                        <span> 报警数量</span>
+                    </li>
+                </ul>
+            </a>
+        </li>
+    </ul>
 
     <ul class="flex home-nav-right">
 
-    <li><i class="border-dashed"></i></li>
-    <li class="flex-items">
-        <div class="swichWrap">
-            <div class="guijiCircle" id="xsjizhan"></div>
-        </div>
-        显示基站
-    </li>
-
-
-    <li><i class="border-dashed"></i></li>
-    <li class="flex-items">
-        <div class="swichWrap">
-            <div class="guijiCircle" id="relitu"></div>
-        </div>
-         车辆热力图
-    </li>
-
-
-    <li><i class="border-dashed"></i></li>
-    <li class="flex-items">
-        <div class="swichWrap">
-            <div class="guijiCircle" id="jizhanjuhe"></div>
-        </div>
-        基站聚合
-    </li>
-
-    <li ng-show="rootUserPowerDto.traceSearch==1"><i class="border-dashed"></i></li>
-    <li ng-show="rootUserPowerDto.traceSearch==1">
-        <a href="" data-toggle="modal" data-target="#guijiModal">
-            <img src="app/img/guijiSearch.png" alt=""/>
-            <span>轨迹查询</span>
-        </a >
-    </li>
-    <li ng-show="rootUserPowerDto.location==1"><i class="border-dashed"></i></li>
-    <li ng-show="rootUserPowerDto.location==1">
-        <a href="" data-toggle="modal" data-target="#dingweiModal">
-            <img src="app/img/dingweiIcon.png" alt=""/>
-            <span>定位</span>
-        </a >
-    </li>
-    <li><i class="border-dashed"></i></li>
-</ul>
+        <li class="flex-items">
+            <div class="swichWrap">
+                <div class="guijiCircle" id="xsjizhan"></div>
+            </div>
+            显示基站
+        </li>
+        <li class="flex-items">
+            <div class="swichWrap">
+                <div class="guijiCircle" id="jizhanjuhe"></div>
+            </div>
+            基站聚合
+        </li>
+        <li class="flex-items">
+            <div class="swichWrap">
+                <div class="guijiCircle" id="relitu"></div>
+            </div>
+            车辆热力图
+        </li>
+        <li ng-show="rootUserPowerDto.traceSearch==1">
+            <a href="" data-toggle="modal" data-target="#guijiModal">
+                <img src="app/img/guijiSearch.png" alt=""/>
+                <span>轨迹查询</span>
+            </a>
+        </li>
+        <li ng-show="rootUserPowerDto.location==1">
+            <a href="" data-toggle="modal" data-target="#dingweiModal">
+                <img src="app/img/dingweiIcon.png" alt=""/>
+                <span>定位</span>
+            </a>
+        </li>
+    </ul>
 
     <!--轨迹查询模态框-->
     <div class="modal fade" id="guijiModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -109,9 +106,10 @@
                                     <option value="">摩托车</option>
                                 </select>
                                 <select id="" class="form-control"
-                                            ng-model="keywordTypeForTrace" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
-                                <input type="text" placeholder="请输入关键词" class="form-control" ng-model="keywordForTrace"/>
+                                        ng-model="keywordTypeForTrace" ng-disabled="editable"
+                                        ng-options="x.id as x.name for x in AllKeywordType"></select>
+                                <input type="text" placeholder="请输入关键词" class="form-control"
+                                       ng-model="keywordForTrace"/>
 
                             </div>
                         </div>
@@ -122,7 +120,8 @@
 
                             <div class="col-sm-7 flex">
                                 <div class='input-group date' id='homeDateStart'>
-                                    <input type='text' class="form-control" ng-model="startTimeForTrace" placeholder="选择开始时间" readonly/>
+                                    <input type='text' class="form-control" ng-model="startTimeForTrace"
+                                           placeholder="选择开始时间" readonly/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
 						            </span>
@@ -131,7 +130,8 @@
                                 至
                                 &nbsp;
                                 <div class='input-group date' id='homeDateEnd'>
-                                    <input type='text' class="form-control" ng-model="endTimeForTrace" placeholder="选择结束时间" readonly/>
+                                    <input type='text' class="form-control" ng-model="endTimeForTrace"
+                                           placeholder="选择结束时间" readonly/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
 						            </span>
@@ -166,9 +166,9 @@
                     <button type="button" ng-click="findElectTrace()" class="btn btn-primary">
                         查询轨迹
                     </button>
-                   <!--  <button type="button" class="btn btn-guiji">
-                        轨迹回放
-                    </button> -->
+                    <!--  <button type="button" class="btn btn-guiji">
+                         轨迹回放
+                     </button> -->
                     <button type="button" ng-click="clearElectTrace()" class="btn btn-guiji">
                         清除轨迹
                     </button>
@@ -208,10 +208,11 @@
                                 </select>
 
                                 <select id="" class="form-control"
-                                            ng-model="keywordTypeForLocation" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
+                                        ng-model="keywordTypeForLocation" ng-disabled="editable"
+                                        ng-options="x.id as x.name for x in AllKeywordType"></select>
 
-                                <input type="text" placeholder="请输入关键词" class="form-control" ng-model="keywordForLocation"/>
+                                <input type="text" placeholder="请输入关键词" class="form-control"
+                                       ng-model="keywordForLocation"/>
 
                             </div>
                         </div>
@@ -233,10 +234,10 @@
     </div>
 </div>
 <!--以下市可视化地图的内容-->
-<div id="allmap" style="width:100%;height:800px;"> </div>
-<div id="mapSearch" >
+<div id="allmap" style="width:100%;height:800px;"></div>
+<div id="mapSearch">
     <div id="r-result" class="form-group has-feedback">
-        <input type="text" id="suggestId" size="20" value="百度"  class="form-control" placeholder="搜索地址、区域"/>
+        <input type="text" id="suggestId" size="20" value="百度" class="form-control" placeholder="搜索地址、区域"/>
         <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
     </div>
     <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
@@ -268,5 +269,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dismis dismisPosition glyphicon glyphicon-chevron-left"></div>
+    <div class="dismis dismisPosition fa fa-fw fa-angle-left"></div>
 </div>

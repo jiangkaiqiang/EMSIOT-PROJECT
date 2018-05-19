@@ -93,12 +93,15 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     	$scope.updateElect.electrombile.install_card_pic = null;
     };
     
-	//显示下拉搜索条件
-	$scope.searchBlock=function(){
-	var  unblockContent=$(".search-container .unblock-content");
-	console.log(unblockContent);
-		unblockContent.toggleClass("no-block");
-    }
+    //显示下拉搜索条件
+    $("#searchBlock").click(function () {
+        $("#unblock").toggleClass("unblock-active");
+        if ($("#unblock").hasClass("unblock-active")) {
+            $(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
+        } else {
+            $(this).children("i").removeClass("fa-angle-up").addClass("fa-angle-down");
+        }
+    });
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 10;
@@ -634,13 +637,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		     maxDate:new Date(),
 		     pickerPosition: "bottom-left"
 		 }); 
-//		 $scope.Preview=function(){ //打印预览
-//			   $("#viewModalElec").printThis({loadCSS: ["emsiot-web/src/main/webapp/assets/css/bootstrap.css","emsiot-web/src/main/webapp/app/css/home.css",
-//"emsiot-web/src/main/webapp/app/css/app.css", "emsiot-web/src/main/webapp/app/css/electManage.css"],importCSS: false,importStyle: false,  pageTitle: "车辆登记证",
-//printContainer: true,  removeInline: false, formValues: true});//  loadCSS: "/Content/Themes/Default/style.css"
-//		 };
 		 $("#djPrint").on('click',function(){
 			    window.print();
-			})
+		 })
 });
 

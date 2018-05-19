@@ -136,4 +136,8 @@
     left join station on electrombile_station.station_phy_num = station.station_phy_num
     where update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by electrombile_station.station_phy_num    
 	</select>
+	<select id="selectElectsByEleGuaCardNumNow" parameterType="map" resultType="java.lang.Integer">
+	SELECT COUNT(*) as count FROM `electrombile_station` 
+    where update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by ele_gua_card_num   
+	</select>
 </mapper>

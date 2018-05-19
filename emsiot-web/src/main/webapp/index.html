@@ -33,21 +33,21 @@
     <div class="app-header navbar">
         <!-- navbar header -->
         <div class="navbar-header bg-dark">
-            <button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">
-                <i class="glyphicon glyphicon-cog"></i>
-            </button>
-            <button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside"  ui-scroll="app">
-                <i class="glyphicon glyphicon-align-justify"></i>
-            </button>
+            <!--<button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">-->
+                <!--<i class="glyphicon glyphicon-cog"></i>-->
+            <!--</button>-->
+            <!--<button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside"  ui-scroll="app">-->
+                <!--<i class="glyphicon glyphicon-align-justify"></i>-->
+            <!--</button>-->
             <!-- brand -->
             <a onclick="location.href='index.html'" class="navbar-brand text-lt">
                 <ul>
                     <li>
                         <img class="logo" src="app/img/logo.png">
                     </li>
-                    <li>
-                        <p style="font-size:13px;margin:2px 5px;" class="hidden-folded m-l-xs">新疆喀什地区公安局</p>
-                        <span class="hidden-folded m-l-xs">电动车监管系统</span>
+                    <li style="text-align:center;">
+                        <p style="font-size:13px;" class="hidden-folded">新疆喀什地区公安局</p>
+                        <span class="hidden-folded">电动车监管系统</span>
                     </li>
                 </ul>
             </a>
@@ -61,7 +61,7 @@
         <div class="collapse pos-rlt navbar-collapse box-shadow bg-dark-only">
             <!-- buttons -->
             <div class="nav navbar-nav hidden-xs">
-                <a href="#" class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">
+                <a href="#" class="no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">
                     <i class="fa fa-dedent fa-fw text"></i>
                     <i class="fa fa-indent fa-fw text-active"></i>
                 </a>
@@ -74,7 +74,7 @@
                     <span id="message" style="color:red;"></span>
                 </li>
                 <li>
-                    <a href="#" style="height:70px;line-height:40px;">
+                    <a href="#">
                         <!--<i class="fa fa-fw fa-plus visible-xs-inline-block"></i>-->
                         <img src="app/img/alarmIcon.png" alt=""/>
                         <span>报警管理</span>
@@ -101,13 +101,13 @@
                 <div class="clearfix hidden-xs text-center" id="aside-user">
                     <div class="dropdown wrapper">
                         <a ui-sref="app.page.profile">
-                            <span class="thumb-lg w-auto-folded avatar m-t-sm">
-                                <img src="app/img/a11.jpg" class="img-full" alt="..." style="width:70px;">
+                            <span class="thumb-lg w-auto-folded avatar">
+                                <img src="app/img/a11.jpg" class="img-full" alt="...">
                             </span>
                         </a>
                         <a href="#" class="dropdown-toggle hidden-folded" data-toggle="dropdown">
                              <span class="clear text-left">
-                                <span class="block m-t-sm" style="font-size:16px;" ng-model="admin">
+                                <span class="block" style="font-size:16px;" ng-model="admin">
                                     {{admin.user_name}}&nbsp;欢迎您!
                                 </span>
                                <span class="text-muted text-xs " data-toggle="modal" data-target="#passwordEdit">修改密码</span>
@@ -185,7 +185,7 @@
                                     <i class="fa fa-fw fa-angle-right text"></i>
                                     <i class="fa fa-fw fa-angle-down text-active"></i>
                                 </span>
-                                <img src="app/img/asideIcon04.png" alt=""/>
+                                <img src="app/img/teshuIcon.png" alt=""/>
                                 <span class="font-bold">特殊区域管理</span>
                             </a>
                             <ul class="nav nav-sub dk">
@@ -208,7 +208,7 @@
                                     <i class="fa fa-fw fa-angle-right text"></i>
                                     <i class="fa fa-fw fa-angle-down text-active"></i>
                                 </span>
-                                <img src="app/img/asideIcon04.png" alt=""/>
+                                <img src="app/img/areaBaojing.png" alt=""/>
                                 <span class="font-bold">区域报警管理</span>
                             </a>
                             <ul class="nav nav-sub dk">

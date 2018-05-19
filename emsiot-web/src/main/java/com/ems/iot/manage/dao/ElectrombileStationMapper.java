@@ -53,4 +53,11 @@ public interface ElectrombileStationMapper {
      * @return
      */
     List<Thermodynamic> selectElectsByStationPhyNumNow();
+    
+    /**
+     * 返回当前时间范围内在线车辆的数量；如果需要修改时间大小则修改时间范围，需要根据车号进行分组过滤，
+     * 即如果一辆车在该范围内经过了多个基站，则认为在线车辆只有一辆
+     * @return
+     */
+    List<Integer> selectElectsByEleGuaCardNumNow(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }

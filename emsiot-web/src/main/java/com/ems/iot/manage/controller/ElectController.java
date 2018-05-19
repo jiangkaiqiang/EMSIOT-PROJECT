@@ -123,6 +123,20 @@ public class ElectController extends BaseController {
 		 List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow();		
 		 return thermodynamics;
 	}
+	 /**
+	  * 找到最近一段时间的活跃车辆，为在线车辆功能提供服务
+	  * @return
+	  * @throws UnsupportedEncodingException
+	  */
+	@RequestMapping(value = "/findInlineElectsNum")
+	@ResponseBody
+	public Object findInlineElectsNum(@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower) throws UnsupportedEncodingException {
+		 List<Integer> inlineList = electrombileStationMapper.selectElectsByEleGuaCardNumNow(proPower,cityPower,areaPower);	
+		 return inlineList.size();
+	}
+	
 	
 	/**
 	 * 根据各种关键字查询车辆

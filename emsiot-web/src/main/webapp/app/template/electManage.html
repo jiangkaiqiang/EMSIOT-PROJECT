@@ -2,28 +2,6 @@
     <div class="title-brand flex-between align-items">
         <div class="title-text">车辆备案</div>
         <ul class="title-nav flex align-items">
-            <!--<li>-->
-            <!--<a href="">-->
-
-            <!--<img src="app/img/guijiIcon.png" alt=""/>-->
-            <!--<span class="border-dashed">轨迹查询</span>-->
-
-
-            <!--</a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="">-->
-            <!--<img src="app/img/dengjiIcon.png" alt=""/>-->
-            <!--<span class="border-dashed">登记证打印</span>-->
-            <!--</a>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<a href="">-->
-            <!--<img src="app/img/baoxianIcon.png" alt=""/>-->
-            <!--<span class="border-dashed">保险打印</span>-->
-
-            <!--</a>-->
-            <!--</li>-->
             <li ng-show="rootUserPowerDto.electExport==1">
                 <a href="">
                     <img src="app/img/daochuIcon.png" alt=""/>
@@ -70,13 +48,13 @@
                     <button type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
                     <button type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
                 </div>
-                <a href="" class="text-blue pull-right margin-top" ng-click="searchBlock()">
+                <span class="text-blue pull-right margin-top" style="color:#3C7ADA;cursor:pointer;" id="searchBlock">
                     更多搜索条件
                     <i class="fa fa-fw fa-angle-down text"></i>
-                    <i class="fa fa-fw fa-angle-up text-active"></i>
-                </a>
+                    <!--<i class="fa fa-fw fa-angle-up "></i>-->
+                </span>
             </div>
-            <div class="unblock-content no-block">
+            <div class="unblock-content" id="unblock">
                 <div class="form-group">
                     <label for="area">所属区域</label>   
                     <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID" ng-disabled="editable"
@@ -136,7 +114,7 @@
             </th>
             <!-- <th>序号</th> -->
             <th>车牌号</th>
-            <th>防盗芯片编号</th>
+            <th style="min-width:75px!important;">防盗芯片编号</th>
             <th>所属地区</th>
             <th>车辆状态</th>
             <th>录入人</th>
@@ -155,25 +133,24 @@
                 <input type="checkbox" ng-checked="exists(electDto, selected)"
                        ng-click="toggle(electDto, selected)"/>
             </td>
-            <!-- <td>{{$index+1}}</td> -->
-            <td>{{electDto.electrombile.plate_num}}</td>
-            <td>{{electDto.electrombile.gua_card_num}}</td>
-            <td>{{electDto.provinceName}}_{{electDto.cityName}}_{{electDto.areaName}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.plate_num}}">{{electDto.electrombile.plate_num}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.gua_card_num}}">{{electDto.electrombile.gua_card_num}}</td>
+            <td>
+                <button  class="btn btn-guiji-after"  data-toggle="tooltip" data-placement="right" title="{{electDto.provinceName}}_{{electDto.cityName}}_{{electDto.areaName}}">{{electDto.provinceName}}</button>
+            </td>
             <td ng-bind="getState(electDto.electrombile.elect_state)"></td>
-            <td>{{electDto.recordName}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.recordName}}">{{electDto.recordName}}</td>
             <td ng-bind="getInsur(electDto.electrombile.insur_detail)"></td>
-            <td>{{electDto.electrombile.owner_name}}</td>
-            <td>{{electDto.electrombile.owner_id}}</td>
-            <td>{{electDto.electrombile.owner_tele}}</td>
-            <td>{{electDto.electrombile.recorder_time}}</td>
-            <td class="flex-items flex-center">
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_name}}">{{electDto.electrombile.owner_name}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_id}}">{{electDto.electrombile.owner_id}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_tele}}">{{electDto.electrombile.owner_tele}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.recorder_time}}">{{electDto.electrombile.recorder_time}}</td>
+            <td class="flex-items flex-center" style="overflow:visible;">
                 <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
                 <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#updateCar"></i>
 
                 <div class="dropdown">
-                    <span data-toggle="dropdown">
-                        更多
-                        <span class="caret"></span>
+                    <span data-toggle="dropdown" class="glyphicon glyphicon-cog">
                     </span>
                     <ul class="dropdown-menu">
                         <li >
@@ -321,6 +298,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
+                                    <i>*</i>
                                     车牌号：
                                 </label>
 
@@ -1045,7 +1023,6 @@
                                 </label>
 
                                 <div class="col-sm-8" id='electBuyDate'>
-                                    <!--<input type="text" class="form-control" ng-model="addBuyDate">-->
                                     <div class='input-group date' id='buyCarDateUpdate'>
                                         <input type='text' class="form-control" placeholder="选择购买时间" readonly
                                                ng-model="updateElect.electrombile.buy_date"/>

@@ -72,13 +72,13 @@
 
 <!-- 表格操作区域开始 -->
 <div class="tableArea shadow countent no-padding">
-    <table class="table table-striped table-bordered" id="tableArea" ng-model="AllStations">
+    <table class="table table-striped" id="tableArea" ng-model="AllStations">
         <thead>
         <tr>
             <th>
                 <div>
                     <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
-                    <label for="allSecSon">全选</label>
+                    <label for="allSecSon"></label>
                 </div>
             </th>
             <th>基站名称</th>
@@ -97,13 +97,13 @@
                     </td>
                     <td>{{station.station_name}}</td>
                     <td>{{station.station_phy_num}}</td>
-                    <td>{{station.station_address}}</td>
+                    <td data-toggle="tooltip" data-placement="right" title="{{station.station_address}}">{{station.station_address}}</td>
                     <td ng-bind="getStatus(station.station_status)"></td>
-                    <td>{{station.install_date}}</td>
+                    <td data-toggle="tooltip" data-placement="right" title="{{station.install_date}}">{{station.install_date}}</td>
                     <td>
-                        <button ng-show="rootUserPowerDto.stationDeviceDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteStation(station.station_id)">删除</button>
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewStation" ng-click="goStationView(station.station_id)">查看</button>
-                        <button ng-show="rootUserPowerDto.stationDeviceUpdate==1" class="btn btn-primary btn-sm" ng-click="goStationUpdate(station.station_id)" data-toggle="modal" data-target="#updateStation">修改</button>
+                        <i ng-show="rootUserPowerDto.stationDeviceDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteStation(station.station_id)"></i>
+                        <i  ng-show="rootUserPowerDto.stationDeviceUpdate==1" class="glyphicon glyphicon-edit" ng-click="goStationUpdate(station.station_id)" data-toggle="modal" data-target="#updateStation"></i>
+                        <i class="glyphicon glyphicon-eye-open" data-toggle="modal" data-target="#viewStation" ng-click="goStationView(station.station_id)"></i>
                     </td>
          </tr>
         </tbody>

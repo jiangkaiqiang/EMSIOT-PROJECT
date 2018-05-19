@@ -307,6 +307,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 						}
 				});
 			$("#guijiModal").modal("hide");
+			$("#positionTable .dismisPosition").removeClass("fa-angle-left").addClass("fa-angle-right");
 	 }
 	 $scope.clearElectTrace = function(){
 		 //walking.clearResults();
@@ -362,7 +363,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 }
 	 //热力图开关选项控制
 	 $scope.relituFlag = 0;
-	 $('#relitu').click(function () {
+	 $('#relitu').parent(".swichWrap").click(function () {
 	     if($scope.relituFlag==0){
 	    	 $scope.showReLiTu();
 	    	 $scope.relituFlag=1;
@@ -376,7 +377,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 });
 	 //显示基站开关选项控制
 	 $scope.jizhanFlag = 1;
-	 $('#xsjizhan').click(function () {
+	 $('#xsjizhan').parent(".swichWrap").click(function () {
 	     if($scope.jizhanFlag==0){
 	    	 //alert("显示基站");
 	    	 showStation();
@@ -395,7 +396,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 });
 	 //基站聚合开关选项控制
 	 $scope.jizhanjuheFlag = 1;
-	 $('#jizhanjuhe').click(function () {
+	 $('#jizhanjuhe').parent(".swichWrap").click(function () {
 	     if($scope.jizhanjuheFlag==1){
 	    //	map.clearOverlays();
 	    	 $scope.jizhanjuheFlag=0;
@@ -437,11 +438,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		     }
 	 }
 	 $(".dismis").click(function () {
-	     $(this).parents('#positionTable').toggleClass("rightToggle");
-	     if ($(this).hasClass("glyphicon-chevron-left")) {
-	         $(this).removeClass("glyphicon-chevron-left").addClass("glyphicon-chevron-right")
-	     } else {
-	         $(this).removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-left")
-	     }
-	 });
+		   $(this).parents('#positionTable').toggleClass("rightToggle");
+		   if ($(this).hasClass("fa-angle-left")) {
+		      $(this).removeClass("fa-angle-left").addClass("fa-angle-right")
+		   } else {
+		      $(this).removeClass("fa-angle-right").addClass("fa-angle-left")
+		   }
+		});
 });

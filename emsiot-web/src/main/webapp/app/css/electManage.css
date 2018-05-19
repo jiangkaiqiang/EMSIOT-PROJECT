@@ -39,13 +39,13 @@
     /* 设置背景颜色，背景图加载过程中会显示背景色 */
     background-color: #f3f3f3;
 }
- .fileup .up-content a:hover,
- .fileup .up-content a:focus,
-.fileup .up-content a:active,
- .fileup .up-content a:visited{
-    border: 1px dashed red;
+ /*.fileup .up-content a:hover,*/
+ /*.fileup .up-content a:focus,*/
+/*.fileup .up-content a:active,*/
+ /*.fileup .up-content a:visited{*/
+    /*border: 1px dashed red;*/
 
-}
+/*}*/
  .fileup .up-content input[type='file']{
     position: absolute;
     top: 0;
@@ -73,6 +73,45 @@
  .fileup .up-content output img{
     height:118px;width:118px;
 }
+.electManage .search-container .datePicker .glyphicon-calendar{
+    opacity:0.5;
+}
+.electManage .search-container .datePicker input{
+    border-right:0;
+}
+#viewModalElec input{
+    border:0;
+    background:transparent;
+}
+#viewModalElec select{
+    border:0;
+}
+#adressArea select{margin:0 3px;}
+.electManage .title-brand ul.title-nav img{height:17px;margin-bottom:5px;}
+#unblock{
+    padding-bottom:15px;
+    height:0;
+    opacity:0;
+    transition: all 0.3s;
+
+}
+.unblock-active{
+    height:60px!important;
+    opacity:1!important;
+}
+
+/*#tableAreatest table{*/
+    /*width:100%;*/
+    /*table-layout:fixed;*/
+/*}*/
+/*#tableAreatest table td{*/
+     /*width:100%;*/
+     /*word-break:keep-all;*/
+     /*white-space:nowrap;*/
+     /*overflow:hidden;*/
+     /*text-overflow:ellipsis;*/
+ /*}*/
+
 
 @media screen and (max-width:1365px) and (min-width:1023px){
     #addCar .fileup .up-content a{
@@ -108,11 +147,58 @@
 .electManage .search-container .datePicker input{
     border-right:0;
 }
- #viewModalElec input{
+#viewModalElec input{
     border:0;
-     background:transparent;
+    background:transparent;
 }
 #viewModalElec select{
     border:0;
 }
 #adressArea select{margin:0 3px;}
+
+
+@media screen and (max-width: 1600px) and (min-width: 769px){
+    .electManage .search-container .datePicker{
+        margin-top:10px!important;
+    }
+}
+@media screen and (max-width: 1279px) and (min-width: 1024px){
+    .unblock-active{
+        height:90px!important;
+        opacity:1!important;
+    }
+}
+
+@media screen and (max-width: 1359px) and (min-width: 1280px){
+    .unblock-active{
+        height:90px!important;
+        opacity:1!important;
+    }
+}
+@media screen and (max-width: 1399px) and (min-width: 1360px){
+    .unblock-active{
+        height:50px!important;
+        opacity:1!important;
+    }
+}
+@media screen and (max-width: 1599px) and (min-width: 1400px){
+    .unblock-active{
+        height:95px!important;
+        opacity:1!important;
+    }
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1600px){
+    .unblock-active{
+        height:55px!important;
+        opacity:1!important;
+    }
+}
+
+@media screen and(min-width:1920px){
+    .unblock-active{
+        height:50px!important;
+        opacity:1!important;
+    }
+}
+

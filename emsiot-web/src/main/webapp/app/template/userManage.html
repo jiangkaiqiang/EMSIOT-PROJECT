@@ -40,7 +40,7 @@
 
 <!-- 表格操作区域开始 -->
 <div class="tableArea countent no-padding shadow">
-    <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+    <table class="table table-striped" id="tableArea" ng-model="Allusers">
         <thead>
         <tr>
             <th>
@@ -66,16 +66,14 @@
             </td>
             <!-- <td>{{user.sysUser.user_id}}</td> -->
             <td>{{$index+1}}</td>
-            <td>{{user.sysUser.user_name}}</td>
-            <td>{{user.sysUser.nickname}}</td>
-            <td>{{user.sysUser.user_tel}}</td>
-            <td>{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}</td>
-            <td>{{user.sysUser.create_time}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.sysUser.user_name}}">{{user.sysUser.user_name}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.sysUser.nickname}}">{{user.sysUser.nickname}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{user.sysUser.user_tel}}">{{user.sysUser.user_tel}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}">{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.sysUser.create_time}}">{{user.sysUser.create_time}}</td>
             <td>
-                <button ng-show="rootUserPowerDto.userDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteUser(user.sysUser.user_id)">删除</button>
-                <button ng-show="rootUserPowerDto.userEdit==1" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                        ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                </button>
+                <i ng-show="rootUserPowerDto.userDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteUser(user.sysUser.user_id)"></i>
+                <i   ng-show="rootUserPowerDto.userEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateUser(user.sysUser.user_id)" data-toggle="modal" data-target="#updateUser"></i>
             </td>
         </tr>
         </tbody>

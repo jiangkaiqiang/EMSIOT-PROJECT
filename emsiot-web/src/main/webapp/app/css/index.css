@@ -187,7 +187,7 @@ body{
 .tableArea thead th{
 	background-color: #F4F7FC;
 	font-size: 14px;
-	padding:4px 0!important;
+	padding:14px 0!important;
 	font-weight: 800;
 }
 .tableArea thead th:first-child,.tableArea thead th:last-child{
@@ -694,7 +694,7 @@ footer{
 #passworIcon{background:url(../img/loginLock.png) no-repeat}
 #userIcon{background:url(../img/userIcon.png) no-repeat}
 .countWarp{position:relative;}
-#aside-user >.wrapper>.hidden-folded>.text-left{padding-top:10px;padding-left:5px;}
+#aside-user >.wrapper>.hidden-folded>.text-left{padding-left:5px;height:60px;padding-top:9px;}
 /*#passwordEdit .modal-content*/
 #passwordEdit .modal-content{
 	/*加载背景图 */
@@ -718,3 +718,13 @@ footer{
 }
 .bg-dark-only .btn:active, .bg-dark-only .btn.active{color:#fff;}
 .bg-dark-only .btn:visited, .bg-dark-only .btn.visited{color:#fff;}
+.navbar-collapse .navbar-right li:last-child a{
+	height:70px;
+	line-height:50px;
+}
+.navbar-collapse .navbar-right li:last-child a img{
+	width:23px;
+	height:23px;
+	margin-top:-3px;
+	margin-right:5px;
+}
