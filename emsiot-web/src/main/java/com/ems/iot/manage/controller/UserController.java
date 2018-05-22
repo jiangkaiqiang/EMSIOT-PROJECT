@@ -25,7 +25,6 @@ import com.ems.iot.manage.dto.SysUserDto;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
-import com.ems.iot.manage.service.FtpService;
 import com.ems.iot.manage.util.ResponseData;
 import com.ems.iot.manage.util.StringUtil;
 import com.github.pagehelper.Page;
@@ -40,13 +39,10 @@ import com.github.pagehelper.PageInfo;
 @Controller
 @RequestMapping(value = "/user")
 public class UserController extends BaseController {
-	private static String baseDir = "picture";
 	@Autowired
 	private SysUserMapper userDao;
 	@Autowired
 	private CookieService cookieService;
-	@Autowired
-	private FtpService ftpService;
 	@Autowired
 	private CityMapper cityMapper;
 	

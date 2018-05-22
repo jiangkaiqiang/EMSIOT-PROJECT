@@ -279,6 +279,8 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
+			@RequestParam(required = false) MultipartFile insur_pic,
+			@RequestParam(required = false) MultipartFile tele_fee_pic,
 			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
@@ -343,6 +345,20 @@ public class ElectController extends BaseController {
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
+		if (null!=insur_pic) {
+			String dir = String.format("%s/elect/insurPic", baseDir);
+			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=tele_fee_pic) {
+			String dir = String.format("%s/elect/telefeePic", baseDir);
+			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
 		electrombileMapper.insert(electrombile);
 		return new ResultDto(0, "添加成功");
 	}
@@ -368,6 +384,8 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
+			@RequestParam(required = false) MultipartFile insur_pic,
+			@RequestParam(required = false) MultipartFile tele_fee_pic,
 			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
@@ -432,6 +450,20 @@ public class ElectController extends BaseController {
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=insur_pic) {
+			String dir = String.format("%s/elect/insurPic", baseDir);
+			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=tele_fee_pic) {
+			String dir = String.format("%s/elect/telefeePic", baseDir);
+			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
 		return new ResultDto(0, "更新成功");

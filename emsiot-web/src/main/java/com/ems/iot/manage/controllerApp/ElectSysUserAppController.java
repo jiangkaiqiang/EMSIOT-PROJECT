@@ -26,6 +26,7 @@ import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.service.FtpService;
 import com.github.pagehelper.Page;
@@ -38,8 +39,8 @@ import com.github.pagehelper.PageInfo;
  * Copyright: Copyright (c) EMSIOT 2018
  */
 @Controller
-@RequestMapping(value = "/electApp")
-public class ElectAppController extends AppBaseController {
+@RequestMapping(value = "/electSysUserApp")
+public class ElectSysUserAppController extends AppBaseController {
 	private static String baseDir = "picture";
 	@Autowired
 	private ElectrombileMapper electrombileMapper;
@@ -74,10 +75,17 @@ public class ElectAppController extends AppBaseController {
 			return new AppResultDto(3001, "要查找的车辆id不能为空",false);
 		 }
 		 Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
+		
 		 if (electrombile==null) {
 			return new AppResultDto(2001, "未查询到给车辆id对应的车辆信息");
 		 }
-	     return new AppResultDto(electrombile);
+		 ElectrombileDto electrombileDto = new ElectrombileDto();
+	     electrombileDto.setElectrombile(electrombile);
+		 electrombileDto.setProvinceName(cityMapper.findProvinceById(electrombile.getPro_id()).getName());
+		 electrombileDto.setCityName(cityMapper.findCityById(electrombile.getCity_id()).getName());
+		 electrombileDto.setAreaName(cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName());
+		 electrombileDto.setRecordName(sysUserMapper.findUserById(electrombile.getRecorder_id()).getUser_name());
+	     return new AppResultDto(electrombileDto);
 	}
 	
 	/**
@@ -112,28 +120,15 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(value="proID", required=false) Integer proID,
 			@RequestParam(value="cityID", required=false) Integer cityID,
 			@RequestParam(value="areaID", required=false) Integer areaID,
-			@RequestParam(value="ownerTele", required=false) String ownerTele,
 			@RequestParam(value="ownerID", required=false) String ownerID,
-			@RequestParam(value="plateNum", required=false) String plateNum,
 			@RequestParam(value="guaCardNum", required=false) String guaCardNum,
-			@RequestParam(value="ownerName", required=false) String ownerName,
-			@RequestParam(value="proPower", required=false) Integer proPower,
-			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower,
+			@RequestParam(value="keyword", required=false) String keyword,
 			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
 		if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
-		if (proPower==null) {
-			return new AppResultDto(3001, "管理员的省权限不能为空", false);
-		}
-		if (cityPower==null) {
-			return new AppResultDto(3001,"管理员的市权限不能为空", false);
-		}
-		if (areaPower==null) {
-			return new AppResultDto(3001, "管理员的区/县权限不能为空", false);
-		}
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
 		if (null==recorderID||recorderID==0) {
 			recorderID = null;
 		}
@@ -152,20 +147,23 @@ public class ElectAppController extends AppBaseController {
 		if (null==areaID||areaID==-1) {
 			areaID = null;
 		}
-		if (proPower==-1) {
-			proPower = null;
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
 		}
-		if (cityPower==-1) {
-			cityPower = null;
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
 		}
-		if (areaPower==-1) {
-			areaPower = null;
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
 		}
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombiles(startTime, endTime, recorderID, electState, insurDetail, proID, 
-				cityID, areaID, ownerTele, ownerID, plateNum, guaCardNum, ownerName,proPower,cityPower,areaPower);
+		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombilesForApp(startTime, endTime, recorderID, electState, insurDetail, proID, 
+				cityID, areaID, keyword, ownerID, keyword, guaCardNum, keyword,proPower,cityPower,areaPower);
         if (electrombiles==null||electrombiles.size()==0) {
         	return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
@@ -213,6 +211,8 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
+			@RequestParam(required = false) MultipartFile insur_pic,
+			@RequestParam(required = false) MultipartFile tele_fee_pic,
 			@RequestParam(required = false) String owner_tele,
 			@RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address,
@@ -296,6 +296,20 @@ public class ElectAppController extends AppBaseController {
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
+		if (null!=insur_pic) {
+			String dir = String.format("%s/elect/insurPic", baseDir);
+			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=tele_fee_pic) {
+			String dir = String.format("%s/elect/telefeePic", baseDir);
+			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
 		electrombileMapper.insert(electrombile);
 		return new AppResultDto(1001,"添加成功");
 	}
@@ -326,6 +340,8 @@ public class ElectAppController extends AppBaseController {
 			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
+			@RequestParam(required = false) MultipartFile insur_pic,
+			@RequestParam(required = false) MultipartFile tele_fee_pic,
 			@RequestParam(required = false) String owner_tele,
 			@RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address,
@@ -412,6 +428,20 @@ public class ElectAppController extends AppBaseController {
 			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=insur_pic) {
+			String dir = String.format("%s/elect/insurPic", baseDir);
+			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+		}
+		if (null!=tele_fee_pic) {
+			String dir = String.format("%s/elect/telefeePic", baseDir);
+			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
+			ftpService.uploadFile(uploadFileEntity);
+			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
 		return new AppResultDto(1001, "更新成功");
@@ -541,61 +571,32 @@ public class ElectAppController extends AppBaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findElectsList")
+	@RequestMapping(value = "/findAllElects")
 	@ResponseBody
-	public Object findElectsList(
-			@RequestParam(value="proPower", required=false) Integer proPower,
-			@RequestParam(value="cityPower", required=false) Integer cityPower,
-			@RequestParam(value="areaPower", required=false) Integer areaPower,
+	public Object findAllElects(
 			@RequestParam(value="token", required=false) String token
 			) throws UnsupportedEncodingException {
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
 		if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
-		if (proPower==null) {
-			return new AppResultDto(3001, "管理员的省权限不能为空", false);
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
 		}
-		if (cityPower==null) {
-			return new AppResultDto(3001,"管理员的市权限不能为空", false);
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
 		}
-		if (areaPower==null) {
-			return new AppResultDto(3001, "管理员的区/县权限不能为空", false);
-		}
-		if (proPower==-1) {
-			proPower = null;
-		}
-		if (cityPower==-1) {
-			cityPower = null;
-		}
-		if (areaPower==-1) {
-			areaPower = null;
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
 		}
 		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
 		if (electrombiles==null||electrombiles.size()==0) {
 			return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
 		return new AppResultDto(electrombiles);
-	}
-	
-	
-	@RequestMapping(value = "/findElectByTele")
-	@ResponseBody
-	public Object findElectByTele(
-			@RequestParam(value="tele", required=false) Integer tele,
-			@RequestParam(value="token", required=false) String token
-			) throws UnsupportedEncodingException {
-		 Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
-		 if (effectiveCookie==null) {
-			return new AppResultDto(4001, "登录失效，请先登录", false);
-	     }
-		 if (tele==null) {
-			return new AppResultDto(3001,"手机号不能为空",false);
-		 }
-		 List<Electrombile> electrombiles = electrombileMapper.findElectsByTele(tele);
-		 if (electrombiles==null||electrombiles.size()==0) {
-			return new AppResultDto(2001, "未查询到该手机号绑定的车辆");
-		 }
-	     return new AppResultDto(electrombiles);
 	}
 }

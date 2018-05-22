@@ -1,6 +1,5 @@
 package com.ems.iot.manage.entity;
 
-import java.util.Date;
 
 public class Electrombile {
     private Integer elect_id;
@@ -56,6 +55,10 @@ public class Electrombile {
     private Integer black_list_recorder;
 
     private String black_list_time;
+    
+    private String insur_pic;
+
+    private String tele_fee_pic;
 
     public Integer getElect_id() {
         return elect_id;
@@ -272,4 +275,21 @@ public class Electrombile {
     public void setBlack_list_time(String black_list_time) {
         this.black_list_time = black_list_time;
     }
+
+	public String getInsur_pic() {
+		return insur_pic;
+	}
+
+	public void setInsur_pic(String insur_pic) {
+		this.insur_pic = insur_pic;
+	}
+
+	public String getTele_fee_pic() {
+		return tele_fee_pic;
+	}
+
+	public void setTele_fee_pic(String tele_fee_pic) {
+		this.tele_fee_pic = tele_fee_pic;
+	}
+    
 }

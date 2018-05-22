@@ -52,7 +52,7 @@
       elect_color, motor_num, note, 
       pro_id, city_id, area_id, 
       elect_type, insur_detail, elect_pic, 
-      indentity_card_pic, record_pic, install_card_pic, 
+      indentity_card_pic, record_pic, install_card_pic, insur_pic, tele_fee_pic,
       owner_tele, owner_name, owner_address, 
       owner_id, recorder_id, recorder_time, 
       elect_state, black_list_recorder, black_list_time
@@ -62,7 +62,8 @@
       #{elect_color,jdbcType=VARCHAR}, #{motor_num,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
       #{pro_id,jdbcType=INTEGER}, #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}, 
       #{elect_type,jdbcType=INTEGER}, #{insur_detail,jdbcType=INTEGER}, #{elect_pic,jdbcType=VARCHAR}, 
-      #{indentity_card_pic,jdbcType=VARCHAR}, #{record_pic,jdbcType=VARCHAR}, #{install_card_pic,jdbcType=VARCHAR}, 
+      #{indentity_card_pic,jdbcType=VARCHAR}, #{record_pic,jdbcType=VARCHAR}, #{install_card_pic,jdbcType=VARCHAR},
+      #{insur_pic,jdbcType=VARCHAR}, #{tele_fee_pic,jdbcType=VARCHAR}, 
       #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{owner_address,jdbcType=VARCHAR}, 
       #{owner_id,jdbcType=VARCHAR}, #{recorder_id,jdbcType=INTEGER}, now(), 
       #{elect_state,jdbcType=INTEGER}, #{black_list_recorder,jdbcType=INTEGER}, #{black_list_time,jdbcType=TIMESTAMP}
@@ -291,6 +292,12 @@
       <if test="install_card_pic != null">
         install_card_pic = #{install_card_pic,jdbcType=VARCHAR},
       </if>
+      <if test="insur_pic != null">
+        insur_pic = #{insur_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="tele_fee_pic != null">
+        tele_fee_pic = #{tele_fee_pic,jdbcType=VARCHAR},
+      </if>
       <if test="owner_tele != null">
         owner_tele = #{owner_tele,jdbcType=VARCHAR},
       </if>
@@ -491,6 +498,12 @@
       <if test="install_card_pic != null">
         install_card_pic = #{install_card_pic,jdbcType=VARCHAR},
       </if>
+      <if test="insur_pic != null">
+        insur_pic = #{insur_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="tele_fee_pic != null">
+        tele_fee_pic = #{tele_fee_pic,jdbcType=VARCHAR},
+      </if>
       <if test="owner_tele != null">
         owner_tele = #{owner_tele,jdbcType=VARCHAR},
       </if>
@@ -527,6 +540,61 @@
 		<where>
 			<if test="tele != null">
 			    owner_tele = #{tele}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
+	<select id="findAllElectrombilesForApp" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="recorderID != null">
+				recorder_id = #{recorderID}
+			</if>
+			<if test="electState != null">
+				AND elect_state = #{electState}
+			</if>
+			<if test="insurDetail != null">
+				AND insur_detail = #{insurDetail}
+			</if>
+			<if test="proID != null">
+				AND pro_id = #{proID}
+			</if>
+			<if test="cityID != null">
+				AND city_id = #{cityID}
+			</if>
+			<if test="areaID != null">
+				AND area_id = #{areaID}
+			</if>
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+			<if test="ownerID != null">
+				AND owner_id = #{ownerID}
+			</if>
+			<if test="plateNum != null">
+				AND plate_num = #{plateNum}
+			</if>
+			<if test="ownerName != null">
+				OR owner_name like "%"#{ownerName}"%"
+			</if>
+			<if test="ownerTele != null">
+				OR owner_tele = #{ownerTele}
+			</if>
+			<if test="guaCardNum != null">
+				AND gua_card_num = #{guaCardNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND recorder_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND recorder_time &lt;= #{endTime}
 			</if>
 		</where>
 		order by `recorder_time` desc

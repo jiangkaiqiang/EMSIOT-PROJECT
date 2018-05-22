@@ -24,7 +24,7 @@
 	<select id="findEffectiveCookie" parameterType="map" resultType="Cookies">
 	    SELECT * FROM `cookies`
 	    WHERE cookie = #{cookie} 
-	    AND addTime + INTERVAL expireTime MINUTE >= now()
+	    AND addTime + INTERVAL expireTime DAY >= now()
 	</select>
 	
 	<delete id="deleteCookie" parameterType="map">
