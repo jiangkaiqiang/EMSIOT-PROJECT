@@ -203,7 +203,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	    	 	markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	     }
 	     else if($scope.jizhanjuheFlag==1){
-	    	 	map.clearOverlays();
+	    	 map.clearOverlays();
 	    	 	for(var i=0;i<markers.length;i++){
 	    	 		map.addOverlay(markers[i]); 
 	    	 	}
@@ -212,6 +212,43 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	 function clusterStation(){  //对基站进行聚合
    	  	var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 	 }
+	 
+//	 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
+//	    var overlaysDraw = [];
+//		var overlaycomplete = function(e){
+//	      		console.log(e.overlay.getPath());  //多边形轨迹
+//	      		
+//	      		overlaysDraw.push(e.overlay);
+//		};
+//	    var styleOptions = {
+//	            strokeColor:"blue",    //边线颜色。
+//	            fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+//	            strokeWeight: 3,       //边线的宽度，以像素为单位。
+//	            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+//	            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+//	            strokeStyle: 'solid' //边线的样式，solid或dashed。
+//	        }
+//	    //实例化鼠标绘制工具
+//	    var drawingManager = new BMapLib.DrawingManager(map, {
+//	        isOpen: false, //是否开启绘制模式
+//	        enableDrawingTool: true, //是否显示工具栏
+//	        drawingToolOptions: {
+//	            anchor: BMAP_ANCHOR_TOP_LEFT, //位置
+//	            offset: new BMap.Size(5, 5), //偏离值
+//	          drawingModes : [
+//	            BMAP_DRAWING_POLYGON,
+//	         ]
+//	        },
+//	        polygonOptions: styleOptions //多边形的样式
+//	    }); 
+//	    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+//	    function clearAll() {
+//			for(var i = 0; i < overlaysDraw.length; i++){
+//	            map.removeOverlay(overlaysDraw[i]);
+//	        }
+//			overlaysDraw.length = 0   
+//	    }
+//	  
 	 
 	 //根据时间和基站id获取基站下面的当前所有车辆
      function showElectsInStation(startTime,endTime,stationPhyNum){
