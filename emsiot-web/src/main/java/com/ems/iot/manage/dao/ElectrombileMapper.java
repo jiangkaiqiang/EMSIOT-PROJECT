@@ -18,6 +18,8 @@ public interface ElectrombileMapper {
     
     Electrombile findPlateNumByGuaCardNum(@Param("guaCardNum") int guaCardNum);
     
+    Electrombile findGuaCardNumByPlateNum(@Param("plateNum") String plateNum);
+    
     List<Electrombile> findElectrombiles(@Param("num") int num);
 
     int updateByPrimaryKeySelective(Electrombile record);

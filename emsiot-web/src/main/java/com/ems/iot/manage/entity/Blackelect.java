@@ -26,8 +26,18 @@ public class Blackelect {
     private String case_detail;
 
     private Integer deal_status;
+    
+    private String detail_address;
 
-    public Integer getBlack_id() {
+    public String getDetail_address() {
+		return detail_address;
+	}
+
+	public void setDetail_address(String detail_address) {
+		this.detail_address = detail_address;
+	}
+
+	public Integer getBlack_id() {
         return black_id;
     }
 

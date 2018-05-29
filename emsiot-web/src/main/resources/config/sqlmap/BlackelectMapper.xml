@@ -80,6 +80,9 @@
       <if test="deal_status != null">
         deal_status,
       </if>
+       <if test="detail_address != null">
+        detail_address,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="black_id != null">
@@ -117,6 +120,9 @@
       </if>
       <if test="deal_status != null">
         #{deal_status,jdbcType=INTEGER},
+      </if>
+      <if test="detail_address != null">
+        #{detail_address,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

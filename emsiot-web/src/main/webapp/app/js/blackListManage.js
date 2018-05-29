@@ -193,7 +193,7 @@ console.log("报警页面展示成功");
   function checkInput(){
       var flag = true;
       // 检查必须填写项
-      if ($scope.addGuaCardNum == undefined || $scope.addGuaCardNum == '') {
+      if ($scope.addPlateNum == undefined || $scope.addPlateNum == '') {
           flag = false;
       }
       if ($scope.addProvinceID == undefined || $scope.addProvinceID == '') {
@@ -204,13 +204,22 @@ console.log("报警页面展示成功");
       }
       return flag;
   }
+  
+  function checkInputInfo(){
+      var flag = true;
+      // 检查必须填写项
+      if ($scope.addPlateNum == undefined || $scope.addPlateNum == '') {
+          flag = false;
+      }
+      return flag;
+  }
   $scope.submit = function(){
       if (checkInput()){
     	  $http({
   			method : 'POST',
   			url : '/i/blackelect/addBlackelect',
   			params : {
-      			gua_card_num: $scope.addGuaCardNum,
+      			plate_num: $scope.addPlateNum,
   			    case_occur_time : $scope.addOccurDate,
   			    owner_tele : $scope.addOwnerTele,
   			    owner_name : $scope.addOwnerName,
@@ -219,17 +228,8 @@ console.log("报警页面展示成功");
   			    area_id : $scope.addAreaID,
   			    case_address_type : $scope.addAddressType,
   			    case_detail : $scope.addCaseDetail,
+  			    detail_address : $scope.addDetailAddress,
   			    deal_status : 0
-//    			'gua_card_num': $scope.addGuaCardNum,
-//  			    'case_occur_time' : $scope.addOccurDate,
-//  			    'owner_tele' : $scope.addOwnerTele,
-//  			    'elect_brand' : $scope.addOwnerName,
-//  			    'pro_id' : $scope.addProvinceID,
-//  			    'city_id' : $scope.addCityID,
-//  			    'area_id' : $scope.addAreaID,
-//  			    'case_address_type' : $scope.addAddressType,
-//  			    'case_detail' : $scope.addCaseDetail,
-//  			    'deal_status' : 0
   			}
 	            }).success(function (data) {
           if(data.success){
@@ -240,7 +240,37 @@ console.log("报警页面展示成功");
       });
         }
      else {
-          alert("防盗芯片编号、案发区域、案发地不能为空");
+          alert("车牌号、案发区域、案发地不能为空");
+      }
+  }
+  
+ //刷新模态框
+  $scope.refreshInfo = function(){
+      if (checkInputInfo()){
+    	  $http({
+  			method : 'POST',
+  			url : '/i/blackelect/refreshBlackelect',
+  			params : {
+  				plate_num: $scope.addPlateNum,
+  			    case_occur_time : $scope.addOccurDate,
+  			    owner_tele : $scope.addOwnerTele,
+  			    owner_name : $scope.addOwnerName,
+  			    pro_id : $scope.addProvinceID,
+  			    city_id : $scope.addCityID,
+  			    area_id : $scope.addAreaID,
+  			    case_address_type : $scope.addAddressType,
+  			    case_detail : $scope.addCaseDetail,
+  			    detail_address : $scope.addDetailAddress,
+  			    deal_status : 0
+  			}
+	            }).success(function (data) {
+          if(data.success){
+          	 alert(data.message);
+          }
+      });
+        }
+     else {
+          alert("车牌号不能为空");
       }
   }
   //弹出黑名单

@@ -149,7 +149,7 @@ public class BlackelectController extends BaseController {
 	 */
 	@RequestMapping(value = "/addBlackelect", method = RequestMethod.POST)
 	@ResponseBody
-	public Object addBlackelect(@RequestParam(value = "gua_card_num", required = false) Integer gua_card_num,
+	public Object addBlackelect(@RequestParam(value = "plate_num", required = false) String plateNum,
 			@RequestParam(value = "case_occur_time", required = false) String case_occur_time,
 			@RequestParam(value = "owner_tele", required = false) String owner_tele,
 			@RequestParam(value = "owner_name", required = false) String owner_name,
@@ -158,10 +158,15 @@ public class BlackelectController extends BaseController {
 			@RequestParam(value = "area_id", required = false) Integer area_id,
 			@RequestParam(value = "case_address_type", required = false) String case_address_type,
 			@RequestParam(value = "case_detail", required = false) String case_detail,
-			@RequestParam(value = "deal_status", required = false) Integer deal_status)
+			@RequestParam(value = "deal_status", required = false) Integer deal_status,
+			@RequestParam(value = "detail_address", required = false) String detail_address)
 			throws UnsupportedEncodingException, ParseException {
 		Blackelect blackelect = new Blackelect();
-		blackelect.setGua_card_num(gua_card_num);
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
+		if(electrombile==null){
+			return new ResultDto(-1, "该车牌号不存在！");
+		}
+		blackelect.setGua_card_num(electrombile.getGua_card_num());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		blackelect.setCase_occur_time(sdf.parse(case_occur_time));
 		blackelect.setOwner_tele(owner_tele);
@@ -178,21 +183,49 @@ public class BlackelectController extends BaseController {
 		blackelect.setCase_address(caseAddress);
 		blackelect.setCase_detail(case_detail);
 		blackelect.setDeal_status(deal_status);
+		blackelect.setDetail_address(detail_address);
 		if (blackelect.getGua_card_num() == null) {
 			return new ResultDto(-1, "防盗芯片编号不能为空！");
 		}
-		if (electrombileMapper.findElectrombileForLocation(gua_card_num, null) == null) {
+		if (electrombileMapper.findElectrombileForLocation(blackelect.getGua_card_num(), null) == null) {
 			return new ResultDto(-1, "防盗芯片编号不存在！");
 		}
 		// 更新elect表中车辆的状态为黑名单状态
-		Electrombile electrombile = new Electrombile();
-		electrombile.setGua_card_num(blackelect.getGua_card_num());
-		electrombile.setElect_state(2);
+		Electrombile electrombile2 = new Electrombile();
+		electrombile2.setGua_card_num(blackelect.getGua_card_num());
+		electrombile2.setElect_state(2);
 		electrombileMapper.updateByGuaCardNumSelective(electrombile);
 		blackelectMapper.insert(blackelect);
 		return new ResultDto(0, "添加成功");
 	}
-
+	
+	/**
+	 * 添加黑名单 (业务逻辑存在问题，当防盗芯片不存在时，无法显示车牌号)
+	 * 
+	 * @param blackelect
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException
+	 */
+	@RequestMapping(value = "/refreshBlackelect", method = RequestMethod.POST)
+	@ResponseBody
+	public Object refreshBlackelect(@RequestParam(value = "plate_num", required = false) String plateNum,
+			@RequestParam(value = "case_occur_time", required = false) String case_occur_time,
+			@RequestParam(value = "owner_tele", required = false) String owner_tele,
+			@RequestParam(value = "owner_name", required = false) String owner_name,
+			@RequestParam(value = "pro_id", required = false) Integer pro_id,
+			@RequestParam(value = "city_id", required = false) Integer city_id,
+			@RequestParam(value = "area_id", required = false) Integer area_id,
+			@RequestParam(value = "case_address_type", required = false) String case_address_type,
+			@RequestParam(value = "case_detail", required = false) String case_detail,
+			@RequestParam(value = "deal_status", required = false) Integer deal_status,
+			@RequestParam(value = "detail_address", required = false) String detail_address)
+			throws UnsupportedEncodingException, ParseException {
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
+		return  electrombile;
+	}
+	
+	
 	/**
 	 * 根据ID删除黑名单
 	 * 

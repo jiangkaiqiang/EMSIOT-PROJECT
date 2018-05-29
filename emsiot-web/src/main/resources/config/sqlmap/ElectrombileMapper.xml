@@ -416,6 +416,10 @@
         SELECT *
         FROM `electrombile` WHERE `gua_card_num` = #{guaCardNum}
     </select>
+    <select id="findGuaCardNumByPlateNum" parameterType="map" resultType="com.ems.iot.manage.entity.Electrombile">
+        SELECT *
+        FROM `electrombile` WHERE `plate_num` = #{plateNum}
+    </select>
     <select id="findElectrombiles" parameterType="map" resultType="com.ems.iot.manage.entity.Electrombile">
         SELECT *
         FROM `electrombile` LIMIT #{num}

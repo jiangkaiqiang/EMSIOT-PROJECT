@@ -118,12 +118,12 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> <i>*</i>
-									防盗芯片：
+									车牌号：
 								</label>
 
 								<div class="col-sm-8">
 									<input type="text" class="form-control"
-										ng-model="addGuaCardNum">
+										ng-model="addPlateNum">
 								</div>
 							</div>
 						</div>
@@ -222,6 +222,22 @@
 
 
 					</div>
+					
+					
+					
+					
+					<div class="row">
+					<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 详细地址： </label>
+
+								<div class="col-sm-8">
+									<input type="text" class="form-control" ng-model="addDetailAddress">
+								</div>
+							</div>
+							</div>
+					</div>
+
 
 					<div class="row">
 						<div class="col-md-12">
@@ -255,6 +271,9 @@
 			<div class="modal-footer">
 				<button type="button" ng-click="submit()" class="btn btn-primary">
 					添加</button>
+					
+					<button type="button" ng-click="refreshInfo()" class="btn btn-primary">
+					刷新信息</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消
 				</button>
 			</div>
@@ -579,6 +598,7 @@
 			<div class="modal-footer">
 				<button type="button" ng-click="goUpdateBlackelectConfirm()"
 					class="btn btn-primary">修改</button>
+					
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消
 				</button>
 			</div>
