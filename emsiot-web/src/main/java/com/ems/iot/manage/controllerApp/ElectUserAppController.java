@@ -1,19 +1,30 @@
 package com.ems.iot.manage.controllerApp;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ems.iot.manage.dao.AppUserMapper;
+import com.ems.iot.manage.dao.BlackelectMapper;
+import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
+import com.ems.iot.manage.dao.ProvinceMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.AppResultDto;
+import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
+import com.ems.iot.manage.entity.AppUser;
+import com.ems.iot.manage.entity.Blackelect;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
@@ -36,6 +47,14 @@ public class ElectUserAppController extends AppBaseController {
 	private StationMapper stationMapper;
 	@Autowired
 	private CookieService cookieService;
+	@Autowired
+	private BlackelectMapper blackelectMapper;
+	@Autowired
+	private ProvinceMapper provinceMapper;
+	@Autowired
+	private CityMapper cityMapper;
+	@Autowired
+	private AppUserMapper appUserMapper;
 	/**
 	 * 根据电动车的ID寻找电动车
 	 * @param electID
@@ -154,5 +173,60 @@ public class ElectUserAppController extends AppBaseController {
 			return new AppResultDto(2001, "未查询到该手机号绑定的车辆");
 		 }
 	     return new AppResultDto(electrombiles);
+	}
+	
+	@RequestMapping(value = "/addElectAlarm")
+	@ResponseBody
+	public Object addElectAlarm(@RequestParam(value = "plate_num", required = false) String plate_num,
+			@RequestParam(value = "case_occur_time", required = false) String case_occur_time,
+			@RequestParam(value = "case_address_type", required = false) String case_address_type,
+			@RequestParam(value = "case_detail", required = false) String case_detail,
+			@RequestParam(value = "detail_address", required = false) String detail_address,
+			@RequestParam(value="token", required=false) String token)
+			throws UnsupportedEncodingException, ParseException {
+		Blackelect blackelect = new Blackelect();
+		if (blackelect.getGua_card_num() == null) {
+			return new AppResultDto(3001, "防盗芯片编号不能为空！");
+		}
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		 if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	     }
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plate_num);
+		if(electrombile==null){
+			return new ResultDto(3001, "该车牌号不存在！");
+		}
+		blackelect.setGua_card_num(electrombile.getGua_card_num());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		blackelect.setCase_occur_time(sdf.parse(case_occur_time));
+		blackelect.setOwner_tele(electrombile.getOwner_tele());
+		blackelect.setOwner_name(electrombile.getOwner_name());
+		blackelect.setPro_id(electrombile.getPro_id());
+		blackelect.setCity_id(electrombile.getCity_id());
+		blackelect.setArea_id(electrombile.getArea_id());
+		blackelect.setCase_address_type(case_address_type);
+		String caseAddress = provinceMapper.selectByProID(electrombile.getPro_id()).getName();
+		if (electrombile.getCity_id() != null)
+			caseAddress += cityMapper.findCityById(electrombile.getCity_id()).getName();
+		if (electrombile.getArea_id() != null)
+			caseAddress += cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName();
+		blackelect.setCase_address(caseAddress);
+		blackelect.setCase_detail(case_detail);
+		blackelect.setDeal_status(0);
+		blackelect.setDetail_address(detail_address);
+		blackelectMapper.insert(blackelect);
+		return new AppResultDto(1001, "添加成功");
+	}
+	@RequestMapping(value = "/findAlarmElectsList")
+	@ResponseBody
+	public Object findAlarmElectsList(@RequestParam(value="token", required=false) String token)
+			throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		 if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	     }
+		AppUser appUser =  appUserMapper.findUserByName(effectiveCookie.getUsername());
+		List<Blackelect> blackelects = blackelectMapper.findBlackelectsByOwnerTele(appUser.getUser_tele());
+		return blackelects;
 	}
 }

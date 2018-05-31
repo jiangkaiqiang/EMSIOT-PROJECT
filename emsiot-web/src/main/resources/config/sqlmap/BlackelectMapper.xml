@@ -221,5 +221,14 @@
 			</if>
 			</where>
    </select>
+   
+   <select id="findBlackelectsByOwnerTele" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
+        SELECT  * FROM `blackelect`
+        <where>
+			<if test="ownerTele != null and ownerTele != ''">
+				owner_tele = #{ownerTele}
+			</if>
+		</where>
+   </select>
     
 </mapper>

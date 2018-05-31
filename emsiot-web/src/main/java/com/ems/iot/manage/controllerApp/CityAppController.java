@@ -66,9 +66,9 @@ public class CityAppController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
-		Integer proID = null;
-		Integer cityID = null;
-		Integer areaID = null;
+		Integer proID = -1;
+		Integer cityID = -1;
+		Integer areaID = -1;
 		if (!sysUser.getPro_power().equals("-1")) {
 			proID = Integer.valueOf(sysUser.getPro_power());
 		}

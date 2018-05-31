@@ -26,4 +26,6 @@ public interface BlackelectMapper {
     		@Param("DealStatus")Integer DealStatus,@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     List<Blackelect> findBlackelectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
+    List<Blackelect> findBlackelectsByOwnerTele(@Param("ownerTele") String ownerTele);
 }
