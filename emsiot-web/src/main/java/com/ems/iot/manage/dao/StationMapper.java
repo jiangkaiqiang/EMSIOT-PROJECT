@@ -14,6 +14,8 @@ public interface StationMapper {
     int insertSelective(Station record);
 
     Station selectByPrimaryKey(Integer station_id);
+    
+    Station selectByStationName(@Param("stationName")String stationName);
 
     int updateByPrimaryKeySelective(Station record);
 

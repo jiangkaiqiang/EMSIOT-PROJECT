@@ -275,4 +275,10 @@
 		</where>
 		order by `install_date` desc
 	</select>
+	<select id="selectByStationName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from station
+    where station_name = #{stationName}
+  </select>
 </mapper>

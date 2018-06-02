@@ -5,10 +5,52 @@
  * Created by SAIHE01 on 2018/4/8.
  */
 coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, $http, $location) {
-    //$.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
-    //    var user = data;
-    //
-    //});
+	$scope.load = function(){
+		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
+			   $rootScope.admin = data;
+				if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
+					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
+					window.location.href = url;
+				}
+		   });	 
+		 
+	};
+	$scope.load();
+	// 显示最大页数
+    $scope.maxSize = 10;
+    // 总条目数(默认每页十条)
+    $scope.bigTotalItems = 10;
+    // 当前页
+    $scope.bigCurrentPage = 1;
+    $scope.AllLimitAreas=[];
+    $scope.getLimitAreaByOptions = function() {
+		$http({
+			method : 'POST',
+			url : '/i/specialArea/findLimitAreaByOptions',
+			params : {
+				pageNum : $scope.bigCurrentPage,
+				pageSize : $scope.maxSize,
+				limitAreaName: $scope.LimitAreaName,
+				limitAreaID:$scope.limitAreaID
+			}
+		}).success(function(data) {
+			$scope.bigTotalItems = data.total;
+			$scope.AllLimitAreas = data.list;
+		});
+	}
+    $scope.getLimitAreaByOptions();
+    $scope.goSearch = function () {
+  		$scope.getLimitAreaByOptions();
+    }
+    $scope.pageChanged = function() {
+  	  $scope.getLimitAreaByOptions();
+   }
+    function delcfm() {
+        if (!confirm("确认要删除？")) {
+            return false;
+        }
+        return true;
+  }
 	 var limitAreaMap = new BMap.Map("limitAreaMap",{
 	   	  minZoom:5,
 	   	  maxZoom:30
@@ -38,7 +80,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 	        			 "areaPower" : $scope.user.area_power
 	                }
 	            }).success(function (data) { 
-					$scope.stations = data;
+					$scope.addStationNames = data;
 					showStationForAera(limitAreaMap);
 				});
 
@@ -137,17 +179,29 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 	     
 		 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
 		    var overlaysDraw = [];
+		    //var borderPoints;
 			var overlaycomplete = function(e){
-				var borderPoints=e.overlay.getPath();//多边形轨迹数据点
+				 $scope.borderPoints=e.overlay.getPath();//多边形轨迹数据点
 	      		console.log(e.overlay.getPath());  //多边形轨迹数据点
-	      		$http.post('/path',borderPoints).success(function(data){
-	      			
-	      		});
+//	      		$http.post('/path',borderPoints).success(function(data){
+//	      			
+//	      		});
 	      		
 	      		
 	            e.overlay.addEventListener("click", function(){ 
-	            		alert("stations");
-
+	            	 $http({
+				  			method : 'POST',
+				  			url : '/i/specialArea/findStations',
+				  			params : {
+				  				area_power:$scope.user.area_power,
+				  				city_power:$scope.user.city_power,
+				  				pro_power: $scope.user.pro_power,
+				  				borderPoints:$scope.borderPoints
+				  			}}).success(function (data) {
+				  				$scope.addStationNames=data;
+				  				 $("#addLimitArea").modal("show"); 
+				  			})
+	            		
 	            				        	  });		      		
 		      		overlaysDraw.push(e.overlay);
 			};
@@ -179,9 +233,89 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		        }
 				overlaysDraw.length = 0   
 		    }
-		  
-
-
-
+		  //添加限制区域
+		    function checkInputInfo(){
+		        var flag = true;
+		        // 检查必须填写项
+		        if ($scope.addLimitAreaName == undefined || $scope.addLimitAreaName == '') {
+		            flag = false;
+		        }
+		        if ($scope.addStationNames == undefined || $scope.addStationNames == '') {
+		            flag = false;
+		        }
+		        return flag;
+		    }
+		   $scope.addLimitArea = function(){
+			   console.log($scope.borderPoints);
+			   if(checkInputInfo()){
+				   $http({
+			  			method : 'POST',
+			  			url : '/i/specialArea/addSpecialArea',
+			  			params : {
+			  				addLimitAreaName: $scope.addLimitAreaName,
+			  				addStationNames: $scope.addStationNames,
+			  				addBlackelectPlatenum: $scope.addBlackelectPlatenum,
+			  			}}).success(function (data) {
+			  				alert(data.message);
+			  				$scope.getLimitAreaByOptions();
+			  				 $("#addLimitArea").modal("hide"); 
+			  			})
+			   }else{
+				   alert("限制区域名和基站ID不能为空！")
+			   }
+		   }
+		   $scope.selected = [];
+		   $scope.exists = function (LimitArea, list) {
+		    	return list.indexOf(LimitArea) > -1;
+		    };
+		    $scope.toggle = function (LimitArea, list) {
+				  var idx = list.indexOf(LimitArea);
+				  if (idx > -1) {
+				    list.splice(idx, 1);
+				  }
+				  else {
+				    list.push(LimitArea);
+				  }
+		  };
+		   $scope.isChecked = function() {
+			      return $scope.selected.length === $scope.AllLimitAreas.length;
+			  };
+		  $scope.toggleAll = function() {
+		      if ($scope.selected.length === $scope.AllLimitAreas.length) {
+		      	$scope.selected = [];
+		      } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+		      	$scope.selected = $scope.AllLimitAreas.slice(0);
+		      }
+		  };
+		  $scope.goDeleteLimitArea=function(limitAreaID){
+			  if(delcfm()){
+				  	$http.get('/i/specialArea/deleteLimitAreaByID', {
+				          params: {
+				              "limitAreaID": limitAreaID,
+				          }
+				      }).success(function (data) {
+				    	  $scope.getLimitAreaByOptions();
+				      });
+				  	}
+		  }
+		  $scope.goDeleteLimitAreas = function(){
+			  	if(delcfm()){
+			  	var limitAreaIDs = [];
+			  	for(i in $scope.selected){
+			  		limitAreaIDs.push($scope.selected[i].limit_area_id);
+			  	}
+			  	if(limitAreaIDs.length >0 ){
+			  		$http({
+			  			method:'DELETE',
+			  			url:'/i/specialArea/deleteLimitAreaByIDs',
+			  			params:{
+			  				"limitAreaIDs": limitAreaIDs,
+			  			}
+			  		}).success(function (data) {
+			  			 $scope.getLimitAreaByOptions();
+			          });
+			  	}
+			  	}
+			  }
 
 });

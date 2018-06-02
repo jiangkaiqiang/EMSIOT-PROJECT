@@ -142,6 +142,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		      		console.log(e.overlay.getPath());  
 		      		$http.post('/path',borderPoints).success(function(data){
 		      			
+		      			
 		      		});
 		      		
 		      		

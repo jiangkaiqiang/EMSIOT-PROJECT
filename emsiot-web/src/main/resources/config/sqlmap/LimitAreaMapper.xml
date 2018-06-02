@@ -17,6 +17,17 @@
     from limit_area
     where limit_area_id = #{limit_area_id,jdbcType=INTEGER}
   </select>
+  <select id="findAllLimitAreas" parameterType="map" resultType="com.ems.iot.manage.entity.LimitArea">
+        SELECT  * FROM `limit_area`
+        <where>
+			<if test="limitAreaID != null and limitAreaID != ''">
+				limit_area_id = #{limitAreaID}
+			</if>
+			<if test="limitAreaName != null and limitAreaName != ''">
+				AND  limit_area_name= #{limitAreaName}
+			</if>
+		</where>
+   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from limit_area
     where limit_area_id = #{limit_area_id,jdbcType=INTEGER}
