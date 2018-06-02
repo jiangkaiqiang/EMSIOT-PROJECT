@@ -31,6 +31,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				                    "provinceID": $scope.userPowerDto.sysUser.pro_power
 				                }
 				            }).success(function (data) {
+				            	$scope.citis = data;
+				            	$scope.citisForUpdate = data;
 				            	$scope.citisForSearch = data;
 				            	var city = {"city_id":"-1","name":"不限"};
 				            	$scope.citisForSearch.push(city);
@@ -42,6 +44,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				                    "cityID": $scope.userPowerDto.sysUser.city_power
 				                }
 				            }).success(function (data) {
+				            	$scope.areas = data;
+				            	$scope.areasForUpdate = data;
 				            	$scope.areasForSearch = data;
 				            	var area = {"area_id":"-1","name":"不限"};
 				            	$scope.areasForSearch.push(area);
