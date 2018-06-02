@@ -185,8 +185,8 @@ public class ElectUserAppController extends AppBaseController {
 			@RequestParam(value="token", required=false) String token)
 			throws UnsupportedEncodingException, ParseException {
 		Blackelect blackelect = new Blackelect();
-		if (blackelect.getGua_card_num() == null) {
-			return new AppResultDto(3001, "防盗芯片编号不能为空！");
+		if (plate_num == null) {
+			return new AppResultDto(3001, "车牌号不能为空！");
 		}
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
 		 if (effectiveCookie==null) {
@@ -196,7 +196,7 @@ public class ElectUserAppController extends AppBaseController {
 		if(electrombile==null){
 			return new ResultDto(3001, "该车牌号不存在！");
 		}
-		blackelect.setGua_card_num(electrombile.getGua_card_num());
+		blackelect.setPlate_num(electrombile.getPlate_num());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		blackelect.setCase_occur_time(sdf.parse(case_occur_time));
 		blackelect.setOwner_tele(electrombile.getOwner_tele());

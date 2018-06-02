@@ -5,7 +5,7 @@ import java.util.Date;
 public class Blackelect {
     private Integer black_id;
 
-    private Integer gua_card_num;
+    private String plate_num;
 
     private Date case_occur_time;
 
@@ -45,15 +45,15 @@ public class Blackelect {
         this.black_id = black_id;
     }
 
-    public Integer getGua_card_num() {
-        return gua_card_num;
-    }
+	public String getPlate_num() {
+		return plate_num;
+	}
 
-    public void setGua_card_num(Integer gua_card_num) {
-        this.gua_card_num = gua_card_num;
-    }
+	public void setPlate_num(String plate_num) {
+		this.plate_num = plate_num;
+	}
 
-    public Date getCase_occur_time() {
+	public Date getCase_occur_time() {
         return case_occur_time;
     }
 

@@ -50,7 +50,6 @@ console.log("报警页面展示成功");
 			params : {
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
-				blackID : $scope.blackID,
 				ownerTele: $scope.ownerTele,
 				plateNum: $scope.plateNum,
 				DealStatus: $scope.DealStatus,
@@ -229,7 +228,7 @@ console.log("报警页面展示成功");
   			    case_address_type : $scope.addAddressType,
   			    case_detail : $scope.addCaseDetail,
   			    detail_address : $scope.addDetailAddress,
-  			    deal_status : 0
+  			    deal_status : 1
   			}
 	            }).success(function (data) {
           if(data.success){
@@ -251,19 +250,9 @@ console.log("报警页面展示成功");
   			method : 'POST',
   			url : '/i/blackelect/refreshBlackelect',
   			params : {
-  				plate_num: $scope.addPlateNum,
-  			    case_occur_time : $scope.addOccurDate,
-  			    owner_tele : $scope.addOwnerTele,
-  			    owner_name : $scope.addOwnerName,
-  			    pro_id : $scope.addProvinceID,
-  			    city_id : $scope.addCityID,
-  			    area_id : $scope.addAreaID,
-  			    case_address_type : $scope.addAddressType,
-  			    case_detail : $scope.addCaseDetail,
-  			    detail_address : $scope.addDetailAddress,
-  			    deal_status : 0
-  			}
-	            }).success(function (data) {
+  				plate_num: $scope.addPlateNum
+  			    }
+	        }).success(function (data) {
           if(data.success){
           	 alert(data.message);
           }
@@ -307,7 +296,7 @@ console.log("报警页面展示成功");
 	$scope.goUpdateBlackelectConfirm = function(){
     	data = {
     			'black_id':$scope.blackElectForUpdate.blackelect.black_id,
-    			'gua_card_num': $scope.blackElectForUpdate.blackelect.gua_card_num,
+    			'plate_num': $scope.blackElectForUpdate.blackelect.plate_num,
     			'case_occur_time':$scope.blackElectForUpdate.blackelect.case_occur_time,
     			'owner_tele':$scope.blackElectForUpdate.blackelect.owner_tele,
     			'owner_name':$scope.blackElectForUpdate.blackelect.owner_name,

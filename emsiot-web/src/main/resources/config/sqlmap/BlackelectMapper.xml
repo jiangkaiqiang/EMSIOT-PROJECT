@@ -3,7 +3,7 @@
 <mapper namespace="com.ems.iot.manage.dao.BlackelectMapper">
   <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.Blackelect">
     <id column="black_id" jdbcType="INTEGER" property="black_id" />
-    <result column="gua_card_num" jdbcType="INTEGER" property="gua_card_num" />
+    <result column="plate_num" jdbcType="INTEGER" property="plate_num" />
     <result column="case_occur_time" jdbcType="TIMESTAMP" property="case_occur_time" />
     <result column="owner_tele" jdbcType="VARCHAR" property="owner_tele" />
     <result column="owner_name" jdbcType="VARCHAR" property="owner_name" />
@@ -16,7 +16,7 @@
     <result column="deal_status" jdbcType="INTEGER" property="deal_status" />
   </resultMap>
   <sql id="Base_Column_List">
-    black_id, gua_card_num, case_occur_time, owner_tele, owner_name, pro_id, city_id, 
+    black_id, plate_num, case_occur_time, owner_tele, owner_name, pro_id, city_id, 
     area_id, case_address, case_address_type, case_detail, deal_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -30,12 +30,12 @@
     where black_id = #{black_id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ems.iot.manage.entity.Blackelect">
-    insert into blackelect (black_id, gua_card_num, case_occur_time, 
+    insert into blackelect (black_id, plate_num, case_occur_time, 
       owner_tele, owner_name, pro_id, 
       city_id, area_id, case_address, 
       case_address_type, case_detail, deal_status
       )
-    values (#{black_id,jdbcType=INTEGER}, #{gua_card_num,jdbcType=INTEGER}, #{case_occur_time,jdbcType=TIMESTAMP}, 
+    values (#{black_id,jdbcType=INTEGER}, #{plate_num,jdbcType=INTEGER}, #{case_occur_time,jdbcType=TIMESTAMP}, 
       #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{pro_id,jdbcType=INTEGER}, 
       #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}, #{case_address,jdbcType=VARCHAR}, 
       #{case_address_type,jdbcType=VARCHAR}, #{case_detail,jdbcType=VARCHAR}, #{deal_status,jdbcType=INTEGER}
@@ -47,8 +47,8 @@
       <if test="black_id != null">
         black_id,
       </if>
-      <if test="gua_card_num != null">
-        gua_card_num,
+      <if test="plate_num != null">
+        plate_num,
       </if>
       <if test="case_occur_time != null">
         case_occur_time,
@@ -88,8 +88,8 @@
       <if test="black_id != null">
         #{black_id,jdbcType=INTEGER},
       </if>
-      <if test="gua_card_num != null">
-        #{gua_card_num,jdbcType=INTEGER},
+      <if test="plate_num != null">
+        #{plate_num,jdbcType=INTEGER},
       </if>
       <if test="case_occur_time != null">
         #{case_occur_time,jdbcType=TIMESTAMP},
@@ -129,8 +129,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Blackelect">
     update blackelect
     <set>
-      <if test="gua_card_num != null">
-        gua_card_num = #{gua_card_num,jdbcType=INTEGER},
+      <if test="plate_num != null">
+        plate_num = #{plate_num,jdbcType=INTEGER},
       </if>
       <if test="case_occur_time != null">
         case_occur_time = #{case_occur_time,jdbcType=TIMESTAMP},
@@ -167,7 +167,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.Blackelect">
     update blackelect
-    set gua_card_num = #{gua_card_num,jdbcType=INTEGER},
+    set plate_num = #{plate_num,jdbcType=INTEGER},
       case_occur_time = #{case_occur_time,jdbcType=TIMESTAMP},
       owner_tele = #{owner_tele,jdbcType=VARCHAR},
       owner_name = #{owner_name,jdbcType=VARCHAR},
@@ -184,16 +184,16 @@
         SELECT * FROM `blackelect` 
    </select>
    <select id="findAllBlackelectByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
-        SELECT  blackelect.* FROM `blackelect` LEFT join  `electrombile` on blackelect.`gua_card_num` =electrombile.`gua_card_num`
+        SELECT  blackelect.* FROM `blackelect` LEFT join  `electrombile` on blackelect.`plate_num` =electrombile.`plate_num`
         <where>
-			<if test="blackID != null and blackID != ''">
-				black_id = #{blackID}
+			<if test="plateNum != null and plateNum != ''">
+				blackelect.plate_num = #{plateNum}
 			</if>
 			<if test="ownerTele != null and ownerTele != ''">
-				AND owner_tele = #{ownerTele}
+				AND blackelect.owner_tele = #{ownerTele}
 			</if>
 			<if test="DealStatus != null and DealStatus != ''">
-				AND deal_status = #{DealStatus}
+				AND blackelect.deal_status = #{DealStatus}
 			</if>
 			<if test="proPower != null">
 			    AND electrombile.`pro_id` = #{proPower}
@@ -208,7 +208,7 @@
    </select>
     
     <select id="findBlackelectsList" parameterType="map" resultType="com.ems.iot.manage.entity.Blackelect">
-      SELECT  blackelect.* FROM `blackelect` LEFT join  `electrombile` on blackelect.`gua_card_num` =electrombile.`gua_card_num`
+      SELECT  blackelect.* FROM `blackelect` LEFT join  `electrombile` on blackelect.`plate_num` =electrombile.`plate_num`
         <where>
 			<if test="proPower != null">
 			    electrombile.`pro_id` = #{proPower}

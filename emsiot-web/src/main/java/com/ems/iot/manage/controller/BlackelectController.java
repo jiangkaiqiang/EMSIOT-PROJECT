@@ -54,7 +54,6 @@ public class BlackelectController extends BaseController {
 	@ResponseBody
 	public Object findAllBlackelectByOptions(@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestParam(value = "blackID", required = false) Integer blackID,
 			@RequestParam(value = "ownerTele", required = false) String ownerTele,
 			@RequestParam(value = "plateNum", required = false) String plateNum,
 			@RequestParam(value = "DealStatus", required = false) Integer DealStatus,
@@ -74,22 +73,14 @@ public class BlackelectController extends BaseController {
 		if (null == areaPower || areaPower == -1) {
 			areaPower = null;
 		}
-		Page<Blackelect> blackelets = blackelectMapper.findAllBlackelectByOptions(blackID, ownerTele, DealStatus,
+		Page<Blackelect> blackelets = blackelectMapper.findAllBlackelectByOptions(plateNum, ownerTele, DealStatus,
 				proPower, cityPower, areaPower);
 		Page<BlackelectDto> blackelectDtos = new Page<BlackelectDto>();
 		for (Blackelect blackelect : blackelets) {
 			BlackelectDto blackelectDto = new BlackelectDto();
 			blackelectDto.setBlackelect(blackelect);
-			blackelectDto.setPlateNum(
-					electrombileMapper.findPlateNumByGuaCardNum(blackelect.getGua_card_num()).getPlate_num());
-			if (plateNum != null) {
-				if (blackelectDto.getPlateNum().equals(plateNum)) {
-					blackelectDtos.add(blackelectDto);
-					break;
-				}
-			} else {
-				blackelectDtos.add(blackelectDto);
-			}
+			blackelectDto.setPlateNum(blackelect.getPlate_num());
+			blackelectDtos.add(blackelectDto);
 		}
 		blackelectDtos.setPageSize(blackelets.getPageSize());
 		blackelectDtos.setPages(blackelets.getPages());
@@ -149,7 +140,7 @@ public class BlackelectController extends BaseController {
 	 */
 	@RequestMapping(value = "/addBlackelect", method = RequestMethod.POST)
 	@ResponseBody
-	public Object addBlackelect(@RequestParam(value = "plate_num", required = false) String plateNum,
+	public Object addBlackelect(@RequestParam(value = "plate_num", required = false) String plate_num,
 			@RequestParam(value = "case_occur_time", required = false) String case_occur_time,
 			@RequestParam(value = "owner_tele", required = false) String owner_tele,
 			@RequestParam(value = "owner_name", required = false) String owner_name,
@@ -161,12 +152,15 @@ public class BlackelectController extends BaseController {
 			@RequestParam(value = "deal_status", required = false) Integer deal_status,
 			@RequestParam(value = "detail_address", required = false) String detail_address)
 			throws UnsupportedEncodingException, ParseException {
+		if (plate_num == null) {
+			return new ResultDto(-1, "车牌号不能为空！");
+		}
 		Blackelect blackelect = new Blackelect();
-		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plate_num);
 		if(electrombile==null){
 			return new ResultDto(-1, "该车牌号不存在！");
 		}
-		blackelect.setGua_card_num(electrombile.getGua_card_num());
+		blackelect.setPlate_num(plate_num);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		blackelect.setCase_occur_time(sdf.parse(case_occur_time));
 		blackelect.setOwner_tele(owner_tele);
@@ -184,15 +178,9 @@ public class BlackelectController extends BaseController {
 		blackelect.setCase_detail(case_detail);
 		blackelect.setDeal_status(deal_status);
 		blackelect.setDetail_address(detail_address);
-		if (blackelect.getGua_card_num() == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空！");
-		}
-		if (electrombileMapper.findElectrombileForLocation(blackelect.getGua_card_num(), null) == null) {
-			return new ResultDto(-1, "防盗芯片编号不存在！");
-		}
 		// 更新elect表中车辆的状态为黑名单状态
 		Electrombile electrombile2 = new Electrombile();
-		electrombile2.setGua_card_num(blackelect.getGua_card_num());
+		electrombile2.setGua_card_num(electrombile.getGua_card_num());
 		electrombile2.setElect_state(2);
 		electrombileMapper.updateByGuaCardNumSelective(electrombile);
 		blackelectMapper.insert(blackelect);
@@ -209,17 +197,7 @@ public class BlackelectController extends BaseController {
 	 */
 	@RequestMapping(value = "/refreshBlackelect", method = RequestMethod.POST)
 	@ResponseBody
-	public Object refreshBlackelect(@RequestParam(value = "plate_num", required = false) String plateNum,
-			@RequestParam(value = "case_occur_time", required = false) String case_occur_time,
-			@RequestParam(value = "owner_tele", required = false) String owner_tele,
-			@RequestParam(value = "owner_name", required = false) String owner_name,
-			@RequestParam(value = "pro_id", required = false) Integer pro_id,
-			@RequestParam(value = "city_id", required = false) Integer city_id,
-			@RequestParam(value = "area_id", required = false) Integer area_id,
-			@RequestParam(value = "case_address_type", required = false) String case_address_type,
-			@RequestParam(value = "case_detail", required = false) String case_detail,
-			@RequestParam(value = "deal_status", required = false) Integer deal_status,
-			@RequestParam(value = "detail_address", required = false) String detail_address)
+	public Object refreshBlackelect(@RequestParam(value = "plate_num", required = false) String plateNum)
 			throws UnsupportedEncodingException, ParseException {
 		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
 		return  electrombile;
@@ -227,7 +205,7 @@ public class BlackelectController extends BaseController {
 	
 	
 	/**
-	 * 根据ID删除黑名单
+	 * 根据ID查询黑名单
 	 * 
 	 * @param electID
 	 * @return
@@ -235,12 +213,10 @@ public class BlackelectController extends BaseController {
 	@RequestMapping(value = "/findBlackelectByID")
 	@ResponseBody
 	public Object findBlackElectByID(@RequestParam(value = "BlakcID") Integer blackID) {
-		Page<Blackelect> blackelets = blackelectMapper.findAllBlackelectByOptions(blackID, null, null, null, null,
-				null);
+		Blackelect blackelet = blackelectMapper.selectByPrimaryKey(blackID);
 		BlackelectDto blackelectDto = new BlackelectDto();
-		blackelectDto.setBlackelect(blackelets.get(0));
-		blackelectDto.setPlateNum(
-				electrombileMapper.findPlateNumByGuaCardNum(blackelets.get(0).getGua_card_num()).getPlate_num());
+		blackelectDto.setBlackelect(blackelet);
+		blackelectDto.setPlateNum(blackelet.getPlate_num());
 		return blackelectDto;
 	}
 
@@ -254,7 +230,7 @@ public class BlackelectController extends BaseController {
 	@RequestMapping(value = "/updateBlackelect")
 	@ResponseBody
 	public Object updateBlackElect(@RequestParam(value = "black_id", required = false) Integer black_id,
-			@RequestParam(value = "gua_card_num", required = false) Integer gua_card_num,
+			@RequestParam(value = "plate_num", required = false) String plate_num,
 			@RequestParam(value = "case_occur_time", required = false) Date case_occur_time,
 			@RequestParam(value = "owner_tele", required = false) String owner_tele,
 			@RequestParam(value = "owner_name", required = false) String owner_name,
@@ -264,9 +240,13 @@ public class BlackelectController extends BaseController {
 			@RequestParam(value = "case_address_type", required = false) String case_address_type,
 			@RequestParam(value = "case_detail", required = false) String case_detail,
 			@RequestParam(value = "deal_status", required = false) Integer deal_status) {
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plate_num);
+		if(electrombile==null){
+			return new ResultDto(-1, "该车牌号不存在！");
+		}
 		Blackelect blackelect = new Blackelect();
 		blackelect.setBlack_id(black_id);
-		blackelect.setGua_card_num(gua_card_num);
+		blackelect.setPlate_num(plate_num);
 		blackelect.setCase_occur_time(case_occur_time);
 		blackelect.setOwner_tele(owner_tele);
 		blackelect.setOwner_name(owner_name);
@@ -277,10 +257,10 @@ public class BlackelectController extends BaseController {
 		blackelect.setCase_detail(case_detail);
 		blackelect.setDeal_status(deal_status);
 		blackelectMapper.updateByPrimaryKeySelective(blackelect);
-		if(deal_status==1){
-			Electrombile electrombile = new Electrombile();
-			electrombile.setGua_card_num(gua_card_num);
-			electrombile.setElect_state(1);
+		if(deal_status==2){
+			Electrombile electrombileUpdate = new Electrombile();
+			electrombileUpdate.setGua_card_num(electrombile.getGua_card_num());
+			electrombileUpdate.setElect_state(1);
 			electrombileMapper.updateByGuaCardNumSelective(electrombile);
 		}
 		return new ResultDto(0, "修改成功");

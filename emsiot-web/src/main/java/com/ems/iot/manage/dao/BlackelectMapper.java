@@ -14,7 +14,7 @@ public interface BlackelectMapper {
 
     int insertSelective(Blackelect record);
 
-    Blackelect ç(Integer black_id);
+    Blackelect selectByPrimaryKey(Integer black_id);
 
     int updateByPrimaryKeySelective(Blackelect record);
 
@@ -22,7 +22,7 @@ public interface BlackelectMapper {
     
     Page<Blackelect> findAllBlackelect();
     
-    Page<Blackelect> findAllBlackelectByOptions(@Param("blackID")Integer blackID,@Param("ownerTele")String ownerTele,
+    Page<Blackelect> findAllBlackelectByOptions(@Param("plateNum")String plateNum,@Param("ownerTele")String ownerTele,
     		@Param("DealStatus")Integer DealStatus,@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     List<Blackelect> findBlackelectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);

@@ -79,7 +79,7 @@ public class GenDataUtil {
 		occur_calendar.add(Calendar.DATE, -rand.nextInt(before_interval));
 		Date occur_date = occur_calendar.getTime();
 		
-		blackelect.setGua_card_num(electrombile.getGua_card_num());
+		blackelect.setPlate_num(electrombile.getPlate_num());
 		blackelect.setCase_occur_time(occur_date);
 		blackelect.setOwner_tele(electrombile.getOwner_tele());
 		blackelect.setOwner_name(electrombile.getOwner_name());
