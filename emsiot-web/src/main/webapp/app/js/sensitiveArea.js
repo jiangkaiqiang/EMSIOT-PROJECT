@@ -138,7 +138,17 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
 		    var overlaysDraw = [];
 			var overlaycomplete = function(e){
-		      		console.log(e.overlay.getPath());  //多边形轨迹
+					var borderPoints=e.overlay.getPath();//多边形轨迹数据点
+		      		console.log(e.overlay.getPath());  
+		      		$http.post('/path',borderPoints).success(function(data){
+		      			
+		      		});
+		      		
+		      		
+		            e.overlay.addEventListener("click", function(){ 
+		            		alert("stations");
+
+		            				        	  });
 		      		
 		      		overlaysDraw.push(e.overlay);
 			};
