@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ems.iot.manage.dto.StationLine;
+import com.ems.iot.manage.dto.StationPoint;
+
 public class AreaUtil {
 	public static void CalLines(List<StationPoint> ls,List<StationLine> lines ){
 		int size = ls.size();
