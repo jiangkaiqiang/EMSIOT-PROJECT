@@ -1,4 +1,4 @@
-package com.ems.iot.manage.util;
+package com.ems.iot.manage.dto;
 
 public class StationPoint {
 	private double x;
