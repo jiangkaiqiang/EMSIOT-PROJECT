@@ -98,12 +98,12 @@ public class BlackelectController extends BaseController {
 	@ResponseBody
 	public Object deleteElectByID(
 			@RequestParam(value = "blackID", required = false) Integer blackID,
-			@RequestParam(value = "gua_card_num", required = false) Integer gua_card_num
+			@RequestParam(value = "plate_num", required = false) String plate_num
 			) {
 		Electrombile electrombile = new Electrombile();
-		electrombile.setGua_card_num(gua_card_num);
+		electrombile.setPlate_num(plate_num);
 		electrombile.setElect_state(1);
-		electrombileMapper.updateByGuaCardNumSelective(electrombile);
+		electrombileMapper.updateByPlateNumSelective(electrombile);
 		blackelectMapper.deleteByPrimaryKey(blackID);
 		return new BaseDto(0);
 	}
@@ -118,13 +118,13 @@ public class BlackelectController extends BaseController {
 	@ResponseBody
 	public Object deleteElectByIDs(
 			@RequestParam(value = "BlackIDs", required = false) Integer[] blackIDs,
-			@RequestParam(value = "gua_card_nums", required = false) Integer[] gua_card_nums
+			@RequestParam(value = "plate_nums", required = false) String[] plate_nums
 			) {
 		for (int i = 0; i < blackIDs.length; i++) {
 			Electrombile electrombile = new Electrombile();
-			electrombile.setGua_card_num(gua_card_nums[i]);
+			electrombile.setPlate_num(plate_nums[i]);
 			electrombile.setElect_state(1);
-			electrombileMapper.updateByGuaCardNumSelective(electrombile);
+			electrombileMapper.updateByPlateNumSelective(electrombile);
 			blackelectMapper.deleteByPrimaryKey(blackIDs[i]);
 		}
 		return new BaseDto(0);

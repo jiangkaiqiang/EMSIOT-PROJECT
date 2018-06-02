@@ -93,6 +93,26 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     	$scope.updateElect.electrombile.install_card_pic = null;
     };
     
+    $scope.addInsurPic = function () {
+		
+    };
+    $scope.dropInsurPic = function(insurPic){
+    	$scope.insurPic = null;
+    };
+    $scope.dropInsurPicForUpdate = function(insurPic){
+    	$scope.updateElect.electrombile.insur_pic = null;
+    };
+    
+    $scope.addTeleFeePic = function () {
+		
+    };
+    $scope.dropTeleFeePic = function(teleFeePic){
+    	$scope.teleFeePic = null;
+    };
+    $scope.dropTeleFeePicForUpdate = function(teleFeePic){
+    	$scope.updateElect.electrombile.tele_fee_pic = null;
+    };
+    
     //显示下拉搜索条件
     $("#searchBlock").click(function () {
         $("#unblock").toggleClass("unblock-active");
@@ -433,6 +453,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'indentity_card_pic' : $scope.indentityCardPic,
     			    'record_pic' : $scope.recordPic,
     			    'install_card_pic' : $scope.installCardPic,
+    			    'insur_pic' : $scope.insurPic,
+    			    'tele_fee_pic' : $scope.teleFeePic,
     			    'owner_tele' : $scope.addOwnerTele,
     			    'owner_name' : $scope.addOwnerName,
     			    'owner_address' : $scope.addOwnerAddress,
@@ -550,6 +572,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    			    'indentity_card_pic' : $scope.updateElect.electrombile.indentity_card_pic,
 		    			    'record_pic' : $scope.updateElect.electrombile.record_pic,
 		    			    'install_card_pic' : $scope.updateElect.electrombile.install_card_pic,
+		    			    'insur_pic' : $scope.updateElect.electrombile.insur_pic,
+		    			    'tele_fee_pic' : $scope.updateElect.electrombile.tele_fee_pic,
 		    			    'owner_tele' : $scope.updateElect.electrombile.owner_tele,
 		    			    'owner_name' : $scope.updateElect.electrombile.owner_name,
 		    			    'owner_address' : $scope.updateElect.electrombile.owner_address,

@@ -137,8 +137,6 @@
 								</div>
 							</div>
 						</div>
-
-
 					</div>
 
 					<div class="row">
@@ -149,7 +147,7 @@
 								<label for="" class="col-sm-4 control-label"> 车主手机： </label>
 
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="addOwnerTele">
+									<input type="text" class="form-control" id="addOwnerTele"  ng-model="addOwnerTele">
 								</div>
 							</div>
 						</div>
@@ -157,9 +155,8 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 车主姓名： </label>
-
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="addOwnerName">
+									<input type="text" class="form-control" id="addOwnerName"  ng-model="addOwnerName">
 								</div>
 							</div>
 						</div>
@@ -184,10 +181,7 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
-
-
 					<div class="row">
 
 
@@ -216,11 +210,7 @@
 						</div>
 
 
-					</div>
-					
-					
-					
-					
+					</div>	
 					<div class="row">
 					<div class="col-md-6">
 							<div class="form-group">
@@ -264,13 +254,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" ng-click="submit()" class="btn btn-primary">
-					添加</button>
-					
-					<button type="button" ng-click="refreshInfo()" class="btn btn-primary">
-					刷新信息</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消
-				</button>
+			    <button type="button" ng-click="refreshInfo()" class="btn btn-primary">刷新信息</button>
+				<button type="button" ng-click="submit()" class="btn btn-primary">添加</button>		
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -326,7 +312,7 @@
 								<label for="" class="col-sm-4 control-label"> 车主手机： </label>
 
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="blackElectForUpdate.blackelect.owner_tele">
+									<input type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_tele">
 								</div>
 							</div>
 						</div>
@@ -336,7 +322,7 @@
 								<label for="" class="col-sm-4 control-label"> 车主姓名： </label>
 
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="blackElectForUpdate.blackelect.owner_name">
+									<input type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_name">
 								</div>
 							</div>
 						</div>

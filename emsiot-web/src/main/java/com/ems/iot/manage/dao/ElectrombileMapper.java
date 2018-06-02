@@ -25,6 +25,8 @@ public interface ElectrombileMapper {
     int updateByPrimaryKeySelective(Electrombile record);
     
     int updateByGuaCardNumSelective(Electrombile record);
+    
+    int updateByPlateNumSelective(Electrombile record);
 
     int updateByPrimaryKey(Electrombile record);
     

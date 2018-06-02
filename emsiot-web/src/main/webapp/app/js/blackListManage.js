@@ -32,8 +32,6 @@ console.log("报警页面展示成功");
         pickerPosition: "bottom-left"
     });
     
-    
-    
     $scope.load();
 	// 显示最大页数
     $scope.maxSize = 10;
@@ -78,6 +76,17 @@ console.log("报警页面展示成功");
 		    list.push(blackelectDto);
 		  }
   };
+  $scope.isChecked = function() {
+      return $scope.selected.length === $scope.AllBlackelects.length;
+  };
+  $scope.toggleAll = function() {
+      if ($scope.selected.length === $scope.AllBlackelects.length) {
+      	$scope.selected = [];
+      } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+      	$scope.selected = $scope.AllBlackelects.slice(0);
+      }
+  };
+  
   $scope.getState = function(deal_status){
   	if(deal_status==1)
   		return '已处理';
@@ -98,12 +107,12 @@ console.log("报警页面展示成功");
       return true;
 }
   //根据id删除黑名单 goDeleteBlackElect(blackelectDto.blackelect.black_id)
-  $scope.goDeleteBlackElect = function (blackID,gua_card_num) {
+  $scope.goDeleteBlackElect = function (blackID,plate_num) {
   	if(delcfm()){
   	$http.get('/i/blackelect/deleteBlackelectByID', {
           params: {
               "blackID": blackID,
-              "gua_card_num":gua_card_num
+              "plate_num":plate_num
           }
       }).success(function (data) {
     	  $scope.getBlackelectsByOptions();
@@ -114,10 +123,10 @@ console.log("报警页面展示成功");
   $scope.goDeleteBlackElects = function(){
   	if(delcfm()){
   	var BlackIDs = [];
-  	var gua_card_nums = [];
+  	var plate_nums = [];
   	for(i in $scope.selected){
   		BlackIDs.push($scope.selected[i].blackelect.black_id);
-  		gua_card_nums.push($scope.selected[i].blackelect.gua_card_num);
+  		plate_nums.push($scope.selected[i].blackelect.plate_num);
   	}
   	if(BlackIDs.length >0 ){
   		$http({
@@ -125,7 +134,7 @@ console.log("报警页面展示成功");
   			url:'/i/blackelect/deleteBlackelectByIDs',
   			params:{
   				"BlackIDs": BlackIDs,
-  				"gua_card_nums":gua_card_nums
+  				"plate_nums":plate_nums
   			}
   		}).success(function (data) {
   			 $scope.getBlackelectsByOptions();
@@ -253,9 +262,10 @@ console.log("报警页面展示成功");
   				plate_num: $scope.addPlateNum
   			    }
 	        }).success(function (data) {
-          if(data.success){
-          	 alert(data.message);
-          }
+	          $scope.addOwnerTele = data.owner_tele;
+	          $scope.addOwnerName = data.owner_name;
+//        	  $("#addOwnerTele").val(data.owner_tele);
+//        	  $("#addOwnerName").val(data.owner_name);
       });
         }
      else {

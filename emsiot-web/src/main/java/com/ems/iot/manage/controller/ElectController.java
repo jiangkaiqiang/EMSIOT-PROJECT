@@ -341,21 +341,21 @@ public class ElectController extends BaseController {
 			String dir = String.format("%s/elect/installCardPic", baseDir);
 			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(),
 					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, install_card_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		if (null!=insur_pic) {
 			String dir = String.format("%s/elect/insurPic", baseDir);
 			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, insur_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		if (null!=tele_fee_pic) {
 			String dir = String.format("%s/elect/telefeePic", baseDir);
 			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, tele_fee_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
@@ -447,21 +447,21 @@ public class ElectController extends BaseController {
 			String dir = String.format("%s/elect/installCardPic", baseDir);
 			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(),
 					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, install_card_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		if (null!=insur_pic) {
 			String dir = String.format("%s/elect/insurPic", baseDir);
 			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, insur_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}
 		if (null!=tele_fee_pic) {
 			String dir = String.format("%s/elect/telefeePic", baseDir);
 			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, tele_fee_pic, dir);
 			ftpService.uploadFile(uploadFileEntity);
 			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
 		}

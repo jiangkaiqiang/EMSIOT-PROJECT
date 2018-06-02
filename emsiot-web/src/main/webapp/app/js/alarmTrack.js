@@ -83,7 +83,16 @@ coldWeb.controller('alarmTrack', function($rootScope, $scope, $state, $cookies, 
 			list.push(electAlarmDto);
 		}
 	};
-
+	$scope.isChecked = function() {
+	      return $scope.selected.length === $scope.AllElectalarms.length;
+	  };
+	  $scope.toggleAll = function() {
+	      if ($scope.selected.length === $scope.AllElectalarms.length) {
+	      	$scope.selected = [];
+	      } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+	      	$scope.selected = $scope.AllElectalarms.slice(0);
+	      }
+	  };
 	$scope.pageChanged = function() {
 		$scope.getElectalarmsByOptions();
 	}

@@ -532,6 +532,38 @@
 
                                     <p>安装芯片照片</p>
                                 </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile"><input type="file"
+                                                                                  id="insurPic"
+                                                                                  ngf-select="addInsurPic()"
+                                                                                  ng-model="insurPic"
+                                                                                  name="insurPic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="insurPic" title="{{insurPic.name}}">
+                                                <i ng-click="dropInsurPic(insurPic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>保险单照片</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile"><input type="file"
+                                                                                  id="teleFeePic"
+                                                                                  ngf-select="addTeleFeePic()"
+                                                                                  ng-model="teleFeePic"
+                                                                                  name="teleFeePic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="teleFeePic" title="{{teleFeePic.name}}">
+                                                <i ng-click="dropTeleFeePic(teleFeePic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>话费单照片</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -830,6 +862,26 @@
                                         </output>
                                     </a>
                                     <p>安装芯片照片</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                 <img ngf-src="viewElect.electrombile.insur_pic">
+                                            </span>
+                                        </output>
+                                    </a>
+                                    <p>保险单照片</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                 <img ngf-src="viewElect.electrombile.tele_fee_pic">
+                                            </span>
+                                        </output>
+                                    </a>
+                                    <p>话费单照片</p>
                                 </div>
                             </div>
                         </div>
@@ -1181,6 +1233,34 @@
                                     </a>
 
                                     <p>安装芯片照片</p>
+                                </div>
+                                 <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                    <input type="file" id="insurPic" ngf-select="addInsurPic()"
+                                       ng-model="updateElect.electrombile.insur_pic" name="insurPic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="updateElect.electrombile.insur_pic" >
+                                                <i ng-click="dropInsurPicForUpdate(updateElect.electrombile.insur_pic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>保险单照片</p>
+                                </div>
+                                <div class="col-md-3 up-content">
+                                    <a href="javascript:;" class="picfile">
+                                    <input type="file" id="teleFeePic" ngf-select="addTeleFeePic()"
+                                       ng-model="updateElect.electrombile.tele_fee_pic" name="teleFeePic">
+                                        <output id="pic_list" class="pic_list">
+                                            <span>
+                                                <img ngf-src="updateElect.electrombile.tele_fee_pic" >
+                                                <i ng-click="dropTeleFeePicForUpdate(updateElect.electrombile.tele_fee_pic)">&times;</i>
+                                            </span>
+                                        </output>
+                                    </a>
+
+                                    <p>话费单照片</p>
                                 </div>
                             </div>
                         </div>
