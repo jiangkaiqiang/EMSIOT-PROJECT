@@ -81,6 +81,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 	                }
 	            }).success(function (data) { 
 					$scope.addStationNames = data;
+					$scope.stations = data;
 					showStationForAera(limitAreaMap);
 				});
 
