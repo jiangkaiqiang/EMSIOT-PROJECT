@@ -105,7 +105,9 @@ public class ElectUserAppController extends AppBaseController {
 		Station station = new Station();
 		if (null!=electrombile) {
 			ElectrombileStation electrombileStation =  electrombileStationMapper.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
-			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
+			if (electrombileStation != null) {
+				station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
+			}		
 		}
 		if (station==null||station.getLongitude()==null||station.getLatitude()==null) {
 			return new AppResultDto(0, "未查询到车辆的位置信息");
@@ -155,26 +157,44 @@ public class ElectUserAppController extends AppBaseController {
 		return new AppResultDto(traceStationDtos);
 	}
 	
-	@RequestMapping(value = "/findElectByTele")
+	/**
+	 * 查询该用户已备案的车辆
+	 * @param token
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findMyElect")
 	@ResponseBody
-	public Object findElectByTele(
-			@RequestParam(value="tele", required=false) Integer tele,
+	public Object findMyElect(
 			@RequestParam(value="token", required=false) String token
 			) throws UnsupportedEncodingException {
 		 Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
 		 if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	     }
-		 if (tele==null) {
+		 AppUser appUser =  appUserMapper.findUserByName(effectiveCookie.getUsername());
+		 if (appUser.getUser_tele()==null) {
 			return new AppResultDto(3001,"手机号不能为空",false);
 		 }
-		 List<Electrombile> electrombiles = electrombileMapper.findElectsByTele(tele);
+		 List<Electrombile> electrombiles = electrombileMapper.findElectsByTele(appUser.getUser_tele());
 		 if (electrombiles==null||electrombiles.size()==0) {
 			return new AppResultDto(2001, "未查询到该手机号绑定的车辆");
 		 }
 	     return new AppResultDto(electrombiles);
 	}
 	
+	/**
+	 * 添加报警信息
+	 * @param plate_num
+	 * @param case_occur_time
+	 * @param case_address_type
+	 * @param case_detail
+	 * @param detail_address
+	 * @param token
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException
+	 */
 	@RequestMapping(value = "/addElectAlarm")
 	@ResponseBody
 	public Object addElectAlarm(@RequestParam(value = "plate_num", required = false) String plate_num,
@@ -217,9 +237,16 @@ public class ElectUserAppController extends AppBaseController {
 		blackelectMapper.insert(blackelect);
 		return new AppResultDto(1001, "添加成功");
 	}
-	@RequestMapping(value = "/findAlarmElectsList")
+	
+	/**
+	 * 查询该用户的报警列表
+	 * @param token
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findMyAlarmElectsList")
 	@ResponseBody
-	public Object findAlarmElectsList(@RequestParam(value="token", required=false) String token)
+	public Object findMyAlarmElectsList(@RequestParam(value="token", required=false) String token)
 			throws UnsupportedEncodingException {
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
 		 if (effectiveCookie==null) {

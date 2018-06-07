@@ -564,16 +564,14 @@ public class ElectSysUserAppController extends AppBaseController {
 	}
 	
 	/**
-	 * 获取所有备案登记车辆
-	 * @param proPower
-	 * @param cityPower
-	 * @param areaPower
+	 * 查询已备案车辆的数量
+	 * @param token
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findAllElects")
+	@RequestMapping(value = "/findElectsNum")
 	@ResponseBody
-	public Object findAllElects(
+	public Object findElectsNum(
 			@RequestParam(value="token", required=false) String token
 			) throws UnsupportedEncodingException {
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
@@ -597,6 +595,6 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (electrombiles==null||electrombiles.size()==0) {
 			return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
-		return new AppResultDto(electrombiles);
+		return new AppResultDto(electrombiles.size());
 	}
 }

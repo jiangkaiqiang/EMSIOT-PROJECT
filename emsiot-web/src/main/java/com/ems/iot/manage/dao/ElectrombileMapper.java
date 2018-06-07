@@ -46,7 +46,7 @@ public interface ElectrombileMapper {
      * @param guaCardNum
      * @return
      */
-    Electrombile findElectrombileForLocation(@Param("guaCardNum") int guaCardNum,@Param("plateNum") String plateNum);
+    Electrombile findElectrombileForLocation(@Param("guaCardNum") Integer guaCardNum,@Param("plateNum") String plateNum);
     /**
      * 获取某个管理员权限之内的所有车辆，不分页
      * @param proPower
@@ -60,5 +60,5 @@ public interface ElectrombileMapper {
       * @param tele
       * @return
       */
-    List<Electrombile> findElectsByTele(@Param("tele") Integer tele);
+    List<Electrombile> findElectsByTele(@Param("tele") String tele);
 }

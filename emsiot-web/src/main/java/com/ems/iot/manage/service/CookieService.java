@@ -10,7 +10,7 @@ import com.ems.iot.manage.entity.Cookies;
  */
 public interface CookieService {
 
-	static int EXPIERD_TIME = 1;
+	static int EXPIERD_TIME = 30;
 
 	public String insertCookie(String username);
 

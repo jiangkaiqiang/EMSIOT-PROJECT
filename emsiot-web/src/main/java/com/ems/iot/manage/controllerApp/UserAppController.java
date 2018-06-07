@@ -83,7 +83,7 @@ public class UserAppController extends AppBaseController {
 				appUser = appUserMapper.findUserByName(effectiveCookie.getUsername());
 				if(appUser!=null){
 					appUser.setPassword("********");
-					return new AppResultDto(true, 1, "用户已登录", appUser);
+					return new AppResultDto(true, 1001, "用户已登录", appUser);
 				}
 			}
 		}
