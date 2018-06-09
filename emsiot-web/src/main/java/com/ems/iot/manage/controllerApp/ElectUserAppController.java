@@ -30,6 +30,7 @@ import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.service.CookieService;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 /**
  * @author Barry
  * @date 2018年3月20日下午3:33:14  app接口-车辆相关
@@ -212,6 +213,10 @@ public class ElectUserAppController extends AppBaseController {
 		 if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	     }
+		List<Blackelect> blackelectExist = blackelectMapper.findAllBlackelectByOptions(plate_num, null, null, null, null, null);
+		if (blackelectExist.size()>0) {
+			return new ResultDto(3001, "该车辆已经报警成功！");
+		}
 		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plate_num);
 		if(electrombile==null){
 			return new ResultDto(3001, "该车牌号不存在！");
@@ -254,6 +259,6 @@ public class ElectUserAppController extends AppBaseController {
 	     }
 		AppUser appUser =  appUserMapper.findUserByName(effectiveCookie.getUsername());
 		List<Blackelect> blackelects = blackelectMapper.findBlackelectsByOwnerTele(appUser.getUser_tele());
-		return blackelects;
+		return new AppResultDto(blackelects);
 	}
 }

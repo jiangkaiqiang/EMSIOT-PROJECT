@@ -13,11 +13,12 @@
     <result column="case_address" jdbcType="VARCHAR" property="case_address" />
     <result column="case_address_type" jdbcType="VARCHAR" property="case_address_type" />
     <result column="case_detail" jdbcType="VARCHAR" property="case_detail" />
+    <result column="detail_address" jdbcType="VARCHAR" property="detail_address" />
     <result column="deal_status" jdbcType="INTEGER" property="deal_status" />
   </resultMap>
   <sql id="Base_Column_List">
     black_id, plate_num, case_occur_time, owner_tele, owner_name, pro_id, city_id, 
-    area_id, case_address, case_address_type, case_detail, deal_status
+    area_id, case_address, case_address_type, case_detail, deal_status, detail_address
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -33,12 +34,13 @@
     insert into blackelect (black_id, plate_num, case_occur_time, 
       owner_tele, owner_name, pro_id, 
       city_id, area_id, case_address, 
-      case_address_type, case_detail, deal_status
+      case_address_type, case_detail, deal_status ,detail_address
       )
     values (#{black_id,jdbcType=INTEGER}, #{plate_num,jdbcType=INTEGER}, #{case_occur_time,jdbcType=TIMESTAMP}, 
       #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{pro_id,jdbcType=INTEGER}, 
       #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}, #{case_address,jdbcType=VARCHAR}, 
-      #{case_address_type,jdbcType=VARCHAR}, #{case_detail,jdbcType=VARCHAR}, #{deal_status,jdbcType=INTEGER}
+      #{case_address_type,jdbcType=VARCHAR}, #{case_detail,jdbcType=VARCHAR}, #{deal_status,jdbcType=INTEGER}, 
+      #{detail_address,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Blackelect">
