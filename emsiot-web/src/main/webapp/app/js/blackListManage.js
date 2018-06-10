@@ -9,6 +9,17 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
 				}
+				//获取全部管理员
+				  $http.get('/i/user/findAllUsers',{
+				 	 params: {
+						    "proPower" : $rootScope.admin.pro_power,
+							"cityPower" : $rootScope.admin.city_power,
+							"areaPower" : $rootScope.admin.area_power
+				  }
+				  }).success(function (data) {
+				      $scope.sysUsers = data;
+				      $scope.sysUserID = data[0].user_id;
+				  });
 		   });	 
 		 
 	};
@@ -149,11 +160,7 @@ console.log("报警页面展示成功");
       $scope.addProvinceID = data[0].province_id;
   });
 	
-  //获取全部管理员
-  $http.get('/i/user/findAllUsers').success(function (data) {
-      $scope.sysUsers = data;
-      $scope.sysUserID = data[0].user_id;
-  });
+  
   $scope.getCitis = function () {
   	$http.get('/i/city/findCitysByProvinceId', {
           params: {

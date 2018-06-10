@@ -305,8 +305,19 @@ public class UserController extends BaseController {
 	
 	@RequestMapping(value = "/findAllUsers")
 	@ResponseBody
-	public Object findAllUsers() throws UnsupportedEncodingException {
-		return userDao.findAllUser(null, null, null,null,null,null,null);
+	public Object findAllUsers(@RequestParam(required = false) Integer proPower,
+			@RequestParam(required = false) Integer cityPower,
+			@RequestParam(required = false) Integer areaPower) throws UnsupportedEncodingException {
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		return userDao.findAllUser(null, null, null,proPower,cityPower,areaPower,null);
 	}
 	
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)

@@ -1,6 +1,9 @@
 package com.ems.iot.manage.controllerApp;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.SimpleSysUser;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
@@ -126,10 +130,10 @@ public class SysUserAppController extends AppBaseController {
 				return new AppResultDto(4001, "登录失效，请先登录", false);
 			 }
 		if (sysUser.getUser_name() == null) {
-			return new ResultDto(3001, "用户名不能为空");
+			return new AppResultDto(3001, "用户名不能为空");
 		}
 		sysUserMapper.updateUser(sysUser);
-		return new ResultDto(1001,"更新成功");
+		return new AppResultDto(1001,"更新成功");
 	}
 	
 	/**
@@ -149,16 +153,56 @@ public class SysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
 		if (password==null) {
-			return new ResultDto(3001, "密码不能为空", false);
+			return new AppResultDto(3001, "密码不能为空", false);
 		}
 		if (sysUserID==null) {
-			return new ResultDto(3001,"用户id不能为空",false);
+			return new AppResultDto(3001,"用户id不能为空",false);
 		}
 		SysUser sysUser = new SysUser();
 		sysUser.setUser_id(sysUserID);
 		sysUser.setPassword(password);
 		sysUserMapper.updateUser(sysUser);
 		logout(token);
-		return new ResultDto(1001, "修改成功");
+		return new AppResultDto(1001, "修改成功");
+	}
+	
+	/**
+	 * 获取全部录入人
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findAllUsers")
+	@ResponseBody
+	public Object findAllUsers(String token) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		SysUser sysUser = null;
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		else if (effectiveCookie != null) {
+			sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		}
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
+		List<SysUser>  sysUsers = sysUserMapper.findAllUser(null, null, null,proPower,
+				cityPower,areaPower,null);
+		List<SimpleSysUser> simpleSysUsers = new ArrayList<SimpleSysUser>();
+		for (SysUser sysUserSim : sysUsers) {
+			SimpleSysUser simpleSysUser = new SimpleSysUser();
+			simpleSysUser.setUser_id(sysUserSim.getUser_id());
+			simpleSysUser.setUser_name(sysUserSim.getUser_name());
+			simpleSysUsers.add(simpleSysUser);
+		}
+		return new AppResultDto(simpleSysUsers);
 	}
 }

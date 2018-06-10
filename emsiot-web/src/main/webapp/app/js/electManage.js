@@ -51,6 +51,19 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				            	$scope.areasForSearch.push(area);
 				            });
 				    	}
+				    	 //获取全部管理员
+				        $http.get('/i/user/findAllUsers',{
+				        	 params: {
+				        		    "proPower" : $scope.userPowerDto.sysUser.pro_power,
+				        			"cityPower" : $scope.userPowerDto.sysUser.city_power,
+				        			"areaPower" : $scope.userPowerDto.sysUser.area_power
+				             }
+				        }).success(function (data) {
+				            $scope.sysUsers = data;
+				            var user = {"user_id":"0","user_name":"全部"};
+				            $scope.sysUsers.push(user);
+				            $scope.sysUserID = "0";
+				        });
 				    	$scope.getElects();
 			    });
 		   });
@@ -229,13 +242,6 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	        }
 	        return true;
 	}
-    //获取全部管理员
-    $http.get('/i/user/findAllUsers').success(function (data) {
-        $scope.sysUsers = data;
-        var user = {"user_id":"0","user_name":"全部"};
-        $scope.sysUsers.push(user);
-        $scope.sysUserID = "0";
-    });
     
     //获取全部省For ADD
     $http.get('/i/city/findProvinceList').success(function (data) {
