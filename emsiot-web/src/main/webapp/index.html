@@ -46,7 +46,13 @@
                         <img class="logo" src="app/img/logo.png">
                     </li>
                     <li style="text-align:center;">
-                        <p style="font-size:13px;" class="hidden-folded">新疆喀什地区公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power==-1" style="font-size:13px;" class="hidden-folded">公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power==-1" 
+                        style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power==-1" 
+                        style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}{{rootUserPowerDto.city_name}}公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power!=-1" 
+                        style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.city_name}}{{rootUserPowerDto.area_name}}公安局</p>
                         <span class="hidden-folded">电动车监管系统</span>
                     </li>
                 </ul>
