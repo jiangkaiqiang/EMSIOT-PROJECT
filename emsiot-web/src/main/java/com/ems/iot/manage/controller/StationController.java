@@ -1,27 +1,25 @@
 package com.ems.iot.manage.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aliyun.oss.OSSClient;
 import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
-import com.ems.iot.manage.dto.UploadFileEntity;
-import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.Station;
-import com.ems.iot.manage.service.FtpService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.Page;
@@ -38,8 +36,14 @@ public class StationController extends BaseController {
 	@Autowired
 	private CityMapper cityMapper;
 	private static String baseDir = "picture";
-	@Autowired
-	private FtpService ftpService;
+//	@Autowired
+//	private FtpService ftpService;
+	// Endpoint以杭州为例，其它Region请按实际情况填写。
+	String endpoint = "http://oss-cn-hangzhou.aliyuncs.com/";
+	// 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
+	String accessKeyId = "LTAIoPdymMIPeien";
+	String accessKeySecret = "1T0RpATFgnWvuOJBvBV3TD2kaDZfyT";
+	String readUrl = "https://emsiot.oss-cn-hangzhou.aliyuncs.com/";
 	/**
 	 * 根据关键字查询所有基站
 	 * 
@@ -147,8 +151,8 @@ public class StationController extends BaseController {
 	 * @param stick_num
 	 * @param station_address
 	 * @return
-	 * @throws UnsupportedEncodingException
 	 * @throws ParseException
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/updateStation")
 	@ResponseBody
@@ -167,7 +171,7 @@ public class StationController extends BaseController {
 			@RequestParam(required = false) MultipartFile install_pic,
 			@RequestParam(required = false) String stick_num,
 			@RequestParam(required = false) String station_address		
-			)throws UnsupportedEncodingException, ParseException{
+			)throws ParseException, IOException{
 		if (null == station_phy_num) {
 			return new ResultDto(-1, "基站物理编号不能为空！");
 		}
@@ -197,11 +201,18 @@ public class StationController extends BaseController {
 	    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
 		}
 	    if (null!=install_pic) {
-			String dir = String.format("%s/station/stationPic", baseDir);
-			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			station.setInstall_pic(FtpService.READ_URL+"data/"+dir + "/" + station_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/stationPic/", baseDir);
+			String station_pic_name = String.format("%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
+			//UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
+			//ftpService.uploadFile(uploadFileEntity);
+			// 创建OSSClient实例。
+			OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+			// 上传文件流。
+			InputStream inputStream = install_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+station_pic_name, inputStream);
+			// 关闭OSSClient。
+			ossClient.shutdown();
+			station.setInstall_pic(readUrl+dir + "/" + station_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 	    stationMapper.updateByPrimaryKeySelective(station);
 	    return new ResultDto(0,"修改成功");
@@ -222,8 +233,8 @@ public class StationController extends BaseController {
 	 * @param install_pic
 	 * @param stick_num
 	 * @return
-	 * @throws UnsupportedEncodingException
 	 * @throws ParseException
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/addStation")
 	@ResponseBody
@@ -241,13 +252,15 @@ public class StationController extends BaseController {
 			@RequestParam(required = false) MultipartFile install_pic,
 			@RequestParam(required = false) String stick_num,
 			@RequestParam(required = false) String station_address		
-			)throws UnsupportedEncodingException, ParseException{
+			)throws ParseException, IOException{
 		if (null == station_phy_num) {
 			return new ResultDto(-1, "基站物理编号不能为空！");
 		}
 		if (null == station_name) {
 			return new ResultDto(-1, "基站名称不能为空！");
 		}
+		// 创建OSSClient实例。
+		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 	    Station station = new Station();
 	    station.setContact_person(contact_person);
 	    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -270,14 +283,20 @@ public class StationController extends BaseController {
 	    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
 		}
 	    if (null!=install_pic) {
-			String dir = String.format("%s/station/stationPic", baseDir);
-			String station_pic_name = String.format("electPic%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			station.setInstall_pic(FtpService.READ_URL+"data/"+dir + "/" + station_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+	    	String dir = String.format("%s/stationPic/", baseDir);
+			String station_pic_name = String.format("%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
+			//UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
+			//ftpService.uploadFile(uploadFileEntity);
+			// 上传文件流。
+			InputStream inputStream = install_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+station_pic_name, inputStream);
+			station.setInstall_pic(readUrl + dir+station_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 	    stationMapper.insert(station);
+	    // 关闭OSSClient。
+	 	ossClient.shutdown();
 	    return new ResultDto(0,"添加成功");
+	    
 	}
 	
 	/**

@@ -14,16 +14,16 @@
 	<dependencies>
 		<!-- test -->
 		<dependency>
-      <groupId>net.sf.json-lib</groupId>
-      <artifactId>json-lib</artifactId>
-      <version>2.3</version>
-      <classifier>jdk15</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20090211</version>
-    </dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.3</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -36,7 +36,7 @@
 			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -87,9 +87,9 @@
 			<version>1.2.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-dbcp</groupId>
-		    <artifactId>commons-dbcp</artifactId>
-		    <version>1.2.2</version>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -107,17 +107,17 @@
 			<artifactId>modelmapper</artifactId>
 			<version>0.7.2</version>
 		</dependency>
-            <!-- PageHelper -->
-	 		<dependency> 
-	 			<groupId>com.github.pagehelper</groupId> 
-	 			<artifactId>pagehelper</artifactId> 
-	 			<version>4.0.3</version> 
-	 		</dependency>
-	 		<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>1.2.3</version>
-		    </dependency>
+		<!-- PageHelper -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>4.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.3</version>
+		</dependency>
 		<!-- log -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -139,17 +139,21 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
 		</dependency>
-		
-		<!-- other -->
 
-		
+		<!-- aliyun oss -->
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
 		</dependency>
-		
-		
+
+
 
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -167,107 +171,107 @@
 			<version>2.2.4</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-fileupload</groupId>
-		    <artifactId>commons-fileupload</artifactId>
-		    <version>1.3</version>
-	    </dependency>
-	    <dependency>
-	    <groupId>commons-net</groupId>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>2.2</version>
 			<scope>compile</scope>
 		</dependency>
-		
-		<dependency>  
-    		<groupId>com.alibaba</groupId>  
-    		<artifactId>fastjson</artifactId>  
-    		<version>1.2.7</version>  
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.7</version>
 		</dependency>
-		
+
 		<!-- Util -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
-         <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4</version>
-            <classifier>jdk15</classifier>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi</artifactId>
-    		<version>3.11</version>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.11</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi-examples</artifactId>
-    		<version>3.11</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-examples</artifactId>
+			<version>3.11</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi-excelant</artifactId>
-    		<version>3.11</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-excelant</artifactId>
+			<version>3.11</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi-ooxml</artifactId>
-    		<version>3.12</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.12</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi-ooxml-schemas</artifactId>
-    		<version>3.11</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>3.11</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi-scratchpad</artifactId>
-    		<version>3.11</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.11</version>
 		</dependency>
-      <!-- hardware -->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId>
-        <version>1.7.7</version>
-    </dependency>
-      <dependency>
-        <groupId>org.apache.mina</groupId>
-        <artifactId>mina-core</artifactId>
-        <version>2.0.13</version>
-        <type>bundle</type>  
-        <scope>compile</scope>
-    </dependency>
-			<dependency>
+		<!-- hardware -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>2.0.13</version>
+			<type>bundle</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-integration-beans</artifactId>
 			<version>2.0.13</version>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-integration-jmx</artifactId>
 			<version>2.0.13</version>
 		</dependency>
-    <dependency>
-        <groupId>org.apache.mina</groupId>
-        <artifactId>mina-integration-spring</artifactId>
-        <version>1.1.7</version>
-    </dependency>
-      <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-<dependency>
-    <groupId>redis.clients</groupId>
-    <artifactId>jedis</artifactId>
-    <version>2.7.2</version>
-</dependency>
-      <dependency> 
-            <groupId>comet4j-tomcat7</groupId> 
-            <artifactId>comet4j-tomcat7</artifactId> 
-            <version>1.0</version> 
-            <scope>system</scope> 
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/comet4j-tomcat7.jar</systemPath>
-    </dependency> 
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-integration-spring</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+		<dependency>
+			<groupId>comet4j-tomcat7</groupId>
+			<artifactId>comet4j-tomcat7</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/comet4j-tomcat7.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -281,7 +285,7 @@
 						<target>1.6</target>
 					</configuration>
 				</plugin>
-		
+
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
 					<version>2.9</version>
@@ -306,11 +310,11 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 			</plugin>
-					<plugin>
-			        <groupId>org.apache.felix</groupId>
-			        <artifactId>maven-bundle-plugin</artifactId>
-			        <extensions>true</extensions>
-			    </plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>

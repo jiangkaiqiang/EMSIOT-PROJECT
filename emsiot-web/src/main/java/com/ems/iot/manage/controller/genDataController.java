@@ -42,7 +42,7 @@ public class genDataController extends BaseController {
 	@RequestMapping(value = "/genData")
 	@ResponseBody
 	public Object genData() throws UnsupportedEncodingException {
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 50; i++) {
 			Station station = new Station();
 			Electrombile electrombile = new Electrombile();
 			ElectrombileStation electrombileStation = new ElectrombileStation();

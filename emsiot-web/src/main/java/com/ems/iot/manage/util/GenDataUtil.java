@@ -1,5 +1,6 @@
 package com.ems.iot.manage.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -27,10 +28,9 @@ public class GenDataUtil {
 	electrombile.setPlate_num(String.valueOf(gua_card_num));
 	electrombile.setVe_id_num(String.valueOf(gua_card_num));
 	
-	Calendar buy_calendar = Calendar.getInstance();
-	buy_calendar.add(Calendar.DATE, rand.nextInt(before_interval));
-	Date buy_date=buy_calendar.getTime();
-	electrombile.setBuy_date(buy_date.toString());
+	Date currentTime = new Date();
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	electrombile.setBuy_date(formatter.format(currentTime));
 	electrombile.setElect_color(color[rand.nextInt(10)]);
 	electrombile.setMotor_num(String.valueOf(gua_card_num));
 	electrombile.setNote("XXX");
@@ -42,7 +42,8 @@ public class GenDataUtil {
 	electrombile.setOwner_address("新疆喀什"+String.valueOf(gua_card_num));
 	electrombile.setOwner_id("65310119601111"+String.valueOf(1000+rand.nextInt(8999)));
 	electrombile.setRecorder_id(123456);
-	electrombile.setRecorder_time(new Date().toString());
+	
+	electrombile.setRecorder_time(formatter.format(currentTime));
 	electrombile.setElect_state(1);
 	electrombile.setElect_brand("小鸟"+rand.nextInt(10));
 	
@@ -56,21 +57,24 @@ public class GenDataUtil {
 	
 	station.setStation_status(0);
 	station.setStation_type("A");	
-	Calendar install_calendar = Calendar.getInstance();
-	install_calendar.add(Calendar.DATE, rand.nextInt(before_interval));
-	Date install_date=install_calendar.getTime();
-	station.setInstall_date(install_date.toString());
+//	Calendar install_calendar = Calendar.getInstance();
+//	install_calendar.add(Calendar.DATE, rand.nextInt(before_interval));
+//	Date install_date=install_calendar.getTime();
+	station.setInstall_date(formatter.format(currentTime));
 	
 	station.setSoft_version("1.0");
 	station.setContact_person(firstName[rand.nextInt(10)]+lastName[rand.nextInt(10)]);
 	station.setContact_tele("1520102"+String.valueOf(1000+rand.nextInt(8999)));
 	station.setStick_num("杆"+String.valueOf(station_phy_num));	
+	station.setPro_id(370000);
+	station.setCity_id(370100);
+	station.setArea_id(370102);
 	
 //	Electrombile_Station数据生成
 	electrombileStation.setEle_gua_card_num(electrombile.getGua_card_num());
 	electrombileStation.setStation_phy_num(station.getStation_phy_num());
-	electrombileStation.setHard_read_time(new Date().toString());
-	electrombileStation.setUpdate_time(new Date().toString());
+	electrombileStation.setHard_read_time(formatter.format(currentTime));
+	electrombileStation.setUpdate_time(formatter.format(currentTime));
 	}
 	
 	public static void genBlackelect(Electrombile electrombile,Blackelect blackelect){
