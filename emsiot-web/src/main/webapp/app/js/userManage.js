@@ -828,7 +828,12 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	console.log(btnWhite);
 	$(btnWhite).click(function (){
 		$(this).toggleClass("active");
-		$(this).children(".btn-ok").toggleClass("icon-active");
+		if ($(this).hasClass("active")){
+			$(this).children("input").prop("checked","true");
+		}else{
+			$(this).children("input").prop("checked","false");
+		}
+		console.log($(this).children("input").prop("checked"))
 	});
 
 

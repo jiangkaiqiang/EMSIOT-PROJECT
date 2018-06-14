@@ -131,12 +131,16 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     };
     
     //显示下拉搜索条件
+    //$(".unblock-content .form-control").prop("disabled",true);
+    //$(".unblock-active .form-control").prop("disabled",false);
     $("#searchBlock").click(function () {
         $("#unblock").toggleClass("unblock-active");
         if ($("#unblock").hasClass("unblock-active")) {
             $(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
+			$(".unblock-active .form-control").prop("disabled",false);
         } else {
             $(this).children("i").removeClass("fa-angle-up").addClass("fa-angle-down");
+			$(".unblock-active .form-control").prop("disabled",true);
         }
     });
 	$scope.load();
@@ -658,11 +662,11 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		     pickerPosition: "bottom-left"
 		 }); 
 		 $('#electDateStart').datetimepicker({
-		     format: 'yyyy-mm-dd - hh:mm:ss',
-		     minView: "month",
-		     autoclose:true,
-		     maxDate:new Date(),
-		     pickerPosition: "bottom-left"
+		     format: 'yyyy-mm-dd - hh:mm:ss',//时间格式
+		     minView: "month",//最小选择到月
+		     autoclose:true,//选择好时间关闭弹框
+		     maxDate:new Date(),//默认当前时间
+		     pickerPosition: "bottom-left"//位置左下
 		 });
 		 $("#electDateEnd").datetimepicker({
 		     format : 'yyyy-mm-dd - hh:mm:ss',

@@ -182,7 +182,16 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 				overlaysDraw.length = 0   
 		    }
 
+	//----------------表格收缩功能-----------------
 
+	$(".closeStationPosition").click(function(){
+		$(this).parents('.limitArea-content').toggleClass("leftToggle");
+		if($(this).hasClass("glyphicon-chevron-left")){
+			$(this).removeClass("glyphicon-chevron-left").addClass("glyphicon-chevron-right")
+		}else{
+			$(this).removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-left");
+		}
+	});
 
 
 });

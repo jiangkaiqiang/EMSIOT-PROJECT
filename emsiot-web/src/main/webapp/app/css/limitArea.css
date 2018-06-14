@@ -1,0 +1,14 @@
+.limitArea-content{
+    width: 50%;
+    height: auto;
+    background: #fff;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 500;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+.limitArea-content.leftToggle{
+    left:-48.5%!important;
+}
