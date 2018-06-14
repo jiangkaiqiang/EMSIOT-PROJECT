@@ -431,10 +431,10 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	    	        	$scope.areasForUpdate = data;
 	    	        });
 					 if($scope.userForUpdate.sysUser.opt_power=="1"){
-						 $("#optPowerChange").prop("checked",true);
+						 $("#optPowerChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#optPowerChange").prop("checked",false);
+						 $("#optPowerChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.console=="1"){
 						 $("#consoleChange").prop("checked",true);
@@ -443,16 +443,16 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 						 $("#consoleChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.traceSearch=="1"){
-						 $("#traceSearchChange").prop("checked",true);
+						 $("#traceSearchChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#traceSearchChange").prop("checked",false);
+						 $("#traceSearchChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.location=="1"){
-						 $("#locationChange").prop("checked",true);
+						 $("#locationChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#locationChange").prop("checked",false);
+						 $("#locationChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.electManage=="1"){
 						 $("#electManageChange").prop("checked",true);
@@ -461,178 +461,178 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 						 $("#electManageChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.electRecord=="1"){
-						 $("#electRecordChange").prop("checked",true);
+						 $("#electRecordChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#electRecordChange").prop("checked",false);
+						 $("#electRecordChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.blackManage=="1"){
-						 $("#blackManageChange").prop("checked",true);
+						 $("#blackManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#blackManageChange").prop("checked",false);
+						 $("#blackManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.alarmTrack=="1"){
-						 $("#alarmTrackChange").prop("checked",true);
+						 $("#alarmTrackChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#alarmTrackChange").prop("checked",false);
+						 $("#alarmTrackChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.electAdd=="1"){
-						 $("#electAddChange").prop("checked",true);
+						 $("#electAddChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#electAddChange").prop("checked",false);
+						 $("#electAddChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.electDelete=="1"){
-						 $("#electDeleteChange").prop("checked",true);
+						 $("#electDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#electDeleteChange").prop("checked",false);
+						 $("#electDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.electExport=="1"){
-						 $("#electExportChange").prop("checked",true);
+						 $("#electExportChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#electExportChange").prop("checked",false); 
+						 $("#electExportChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.electEdit=="1"){
-						 $("#electEditChange").prop("checked",true);
+						 $("#electEditChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#electEditChange").prop("checked",false);
+						 $("#electEditChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.blackAdd=="1"){
-						 $("#blackAddChange").prop("checked",true);
+						 $("#blackAddChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#blackAddChange").prop("checked",false);
+						 $("#blackAddChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.blackDelete=="1"){
-						 $("#blackDeleteChange").prop("checked",true);
+						 $("#blackDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#blackDeleteChange").prop("checked",false);
+						 $("#blackDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.blackEdit=="1"){
-						 $("#blackEditChange").prop("checked",true);
+						 $("#blackEditChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#blackEditChange").prop("checked",false);
+						 $("#blackEditChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.alarmDelete=="1"){
-						 $("#alarmDeleteChange").prop("checked",true);
+						 $("#alarmDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#alarmDeleteChange").prop("checked",false);
+						 $("#alarmDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationManageWhole=="1"){
-						 $("#stationManageWholeChange").prop("checked",true);
+						 $("#stationManageWholeChange").prop("checked",true);//1
 					 }
 					 else{
 						 $("#stationManageWholeChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.stationManage=="1"){
-						 $("#stationManageChange").prop("checked",true);
+						 $("#stationManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#stationManageChange").prop("checked",false);
+						 $("#stationManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationDeviceManage=="1"){
-						 $("#stationDeviceManageChange").prop("checked",true);
+						 $("#stationDeviceManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#stationDeviceManageChange").prop("checked",false);
+						 $("#stationDeviceManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationAdd=="1"){
-						 $("#stationAddChange").prop("checked",true);
+						 $("#stationAddChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#stationAddChange").prop("checked",false);
+						 $("#stationAddChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationDelete=="1"){
-						 $("#stationDeleteChange").prop("checked",true);
+						 $("#stationDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#stationDeleteChange").prop("checked",false);
+						 $("#stationDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationDeviceDelete=="1"){
-						 $("#stationDeviceDeleteChange").prop("checked",true);
+						 $("#stationDeviceDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#stationDeviceDeleteChange").prop("checked",false);
+						 $("#stationDeviceDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationDeviceUpdate=="1"){
-						 $("#stationDeviceUpdateChange").prop("checked",true);
+						 $("#stationDeviceUpdateChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#stationDeviceUpdateChange").prop("checked",false);
+						 $("#stationDeviceUpdateChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.specialAreaManage=="1"){
-						 $("#specialAreaManageChange").prop("checked",true);
+						 $("#specialAreaManageChange").prop("checked",true);//1
 					 }
 					 else{
 						 $("#specialAreaManageChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.limitAreaManage=="1"){
-						 $("#limitAreaManageChange").prop("checked",true);
+						 $("#limitAreaManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#limitAreaManageChange").prop("checked",false);
+						 $("#limitAreaManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.sensitiveAreaManage=="1"){
-						 $("#sensitiveAreaManageChange").prop("checked",true);
+						 $("#sensitiveAreaManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#sensitiveAreaManageChange").prop("checked",false); 
+						 $("#sensitiveAreaManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.AreaAlarmManage=="1"){
-						 $("#AreaAlarmManageChange").prop("checked",true);
+						 $("#AreaAlarmManageChange").prop("checked",true);//1
 					 }
 					 else{
 						 $("#AreaAlarmManageChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.limitAlarmManage=="1"){
-						 $("#limitAlarmManageChange").prop("checked",true);
+						 $("#limitAlarmManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#limitAlarmManageChange").prop("checked",false);
+						 $("#limitAlarmManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.sensitiveAlarmManage=="1"){
-						 $("#sensitiveAlarmManageChange").prop("checked",true);
+						 $("#sensitiveAlarmManageChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#sensitiveAlarmManageChange").prop("checked",false);
+						 $("#sensitiveAlarmManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.dataAnalysis=="1"){
-						 $("#dataAnalysisChange").prop("checked",true);
+						 $("#dataAnalysisChange").prop("checked",true);//1
 					 }
 					 else{
 						 $("#dataAnalysisChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.userManage=="1"){
-						 $("#userManageChange").prop("checked",true);
+						 $("#userManageChange").prop("checked",true);//1
 					 }
 					 else{
 						 $("#userManageChange").prop("checked",false);
 					 }
 					 if($scope.userForUpdate.userAdd=="1"){
-						 $("#userAddChange").prop("checked",true);
+						 $("#userAddChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#userAddChange").prop("checked",false);
+						 $("#userAddChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.userDelete=="1"){
-						 $("#userDeleteChange").prop("checked",true);
+						 $("#userDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#userDeleteChange").prop("checked",false);
+						 $("#userDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.userEdit=="1"){
-						 $("#userEditChange").prop("checked",true);
+						 $("#userEditChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
 					 else{
-						 $("#userEditChange").prop("checked",false);
+						 $("#userEditChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 			    }
 		     });
@@ -803,49 +803,64 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 /*-------------------t4月3号添加，以下内容不可删除------------------------------*/
 
 
+	////开关选项控制
+	//$('.btnCircle').click(function () {
+    //
+	//	var left = $(this).css('left');
+	//	left = parseInt(left);
+	//	if (left == 0) {
+	//		$(this).css('left', '25px'),
+	//			$(this).css('background-color', '#66b3ff'),
+	//			$(this).parent().css('background-color', '#66b3ff');
+	//		$(this).parent().parent().addClass("active");
+	//	} else {
+	//		$(this).css('left', '0px'),
+	//			$(this).css('background-color', '#fff'),
+	//			$(this).parent().css('background-color', '#ccc');
+	//		$(this).parent().parent().removeClass("active");
+	//	}
+    //
+	//})
+	var inputCheck = $(".addUserModal .search-container .btn-white input");
+	for(var i=0;i<inputCheck.length;i++){
+		$(inputCheck[i]).click(function(){
+			if($(this).prop("checked")){
+				$(this).parent(".btn-white").addClass("active");
+			}else{
+				$(this).parent(".btn-white").removeClass("active");
+			}
+		});
+	}
 
-	//开关选项控制
-	$('.btnCircle').click(function () {
+	var allAhecked =$("#addUser .addUserModal .title-brand input");
+	console.log(allAhecked);
+	for(var j=0;j<allAhecked.length;j++){
+		$(allAhecked[j]).click(function(){
+			var inputs = $(this).parents(".title-brand").next(".search-container").children().children(".btn-white");
+			if($(this).prop("checked")){
+				for(var k=0;k<inputs.length;k++){
+					$(inputs[k]).addClass("active");
+					$(inputs[k]).children("input").prop("checked",true);
+				}
+			}else{
+				for(var k=0;k<inputs.length;k++){
+					$(inputs[k]).removeClass("active");
+					$(inputs[k]).children("input").prop("checked",false);
+				}
+			}
+		});
+	}
 
-		var left = $(this).css('left');
-		left = parseInt(left);
-		if (left == 0) {
-			$(this).css('left', '25px'),
-				$(this).css('background-color', '#66b3ff'),
-				$(this).parent().css('background-color', '#66b3ff');
-			$(this).parent().parent().addClass("active");
-		} else {
-			$(this).css('left', '0px'),
-				$(this).css('background-color', '#fff'),
-				$(this).parent().css('background-color', '#ccc');
-			$(this).parent().parent().removeClass("active");
-		}
-
-	});
-
-	//选择按钮显示隐藏ok图标
-	var btnWhite=$(".addUserModal .search-container .btn-white");
-	console.log(btnWhite);
-	$(btnWhite).click(function (){
-		$(this).toggleClass("active");
-		if ($(this).hasClass("active")){
-			$(this).children("input").prop("checked","true");
-		}else{
-			$(this).children("input").prop("checked","false");
-		}
-		console.log($(this).children("input").prop("checked"))
-	});
-
-
-	//tabs切换功能实现
- $("#addUser .tabs input").click(function(){
-	 $("#addUser .tabs input").prop("checked","false");
-	 $(this).prop("checked","true");
-	 $("ul.search-container li").css("display","none");
-	 var a=$(this).attr("id")+"-car";
-	 $("."+a).css("display","block");
- });
-
+	var firstChecked =$(".userModalSwitch ul input");
+	for(var i=0;i<firstChecked.length;i++){
+		$(firstChecked[i]).click(function(){
+			if($(this).prop("checked")){
+				$(this).parent(".btn-white").addClass("active");
+			}else{
+				$(this).parent(".btn-white").removeClass("active");
+			}
+		});
+	}
 
 
 });
