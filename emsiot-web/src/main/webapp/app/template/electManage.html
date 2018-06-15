@@ -57,21 +57,21 @@
             <div class="unblock-content" id="unblock">
                 <div class="form-group">
                     <label for="area">所属区域</label>   
-                    <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID" ng-disabled="editable"
+                    <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID"
                                             ng-change="getCitisForSearch()"
                                             ng-options="x.province_id as x.name for x in provincesForSearch"></select>
                     <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
-                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  id="" class="form-control" ng-model="cityID" ng-disabled="editable"
+                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  id="" class="form-control" ng-model="cityID"
                                             ng-change="getAreasForSearch()"
                                             ng-options="x.city_id as x.name for x in citisForSearch"></select>
                    <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
-                   <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="areaID" ng-disabled="editable"
+                   <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="areaID"
                                             ng-options="x.area_id as x.name for x in areasForSearch"></select>
                    <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
                 </div>
                 <div class="form-group">
                     <select id="" class="form-control"
-                                            ng-model="searchKeyType" ng-disabled="editable"
+                                            ng-model="searchKeyType"
                                             ng-options="x.id as x.name for x in AllSearchKeyType"></select>
                     <input type="text" class="form-control" ng-model="searchKey" placeholder="请输入关键词"/>
                 </div>
@@ -1345,10 +1345,10 @@
 
                 <!-- 表格操作区域开始 -->
                 <div class="tableArea no-padding margin-top2 shadow">
-                    <table class="table table-striped table-bordered" id="tableArea">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>经过基站ID</th>
+                            <th style="width:100px!important;">经过基站ID</th>
                             <th>经过基站名称</th>
                             <th>经过基站时间</th>
                         </tr>
@@ -1361,14 +1361,6 @@
                         </tr>
                         </tbody>
                     </table>
-                   <!--  <div class="page">
-                        翻页功能
-                        <div class="row" style="text-align:center">
-                            <pagination ng-change="pageChangedForTrace()" total-items="bigTotalItemsForTrace"
-                                        ng-model="bigCurrentPageForTrace" max-size="maxSizeForTrace" class="pagination-sm"
-                                        boundary-links="true" rotate="false" num-pages="numPagesForTrace"></pagination>
-                        </div>
-                    </div> -->
                 </div>
                 <!-- 表格操作区域结束 -->
 

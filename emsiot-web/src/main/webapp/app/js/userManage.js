@@ -801,26 +801,6 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 
 
 /*-------------------t4月3号添加，以下内容不可删除------------------------------*/
-
-
-	////开关选项控制
-	//$('.btnCircle').click(function () {
-    //
-	//	var left = $(this).css('left');
-	//	left = parseInt(left);
-	//	if (left == 0) {
-	//		$(this).css('left', '25px'),
-	//			$(this).css('background-color', '#66b3ff'),
-	//			$(this).parent().css('background-color', '#66b3ff');
-	//		$(this).parent().parent().addClass("active");
-	//	} else {
-	//		$(this).css('left', '0px'),
-	//			$(this).css('background-color', '#fff'),
-	//			$(this).parent().css('background-color', '#ccc');
-	//		$(this).parent().parent().removeClass("active");
-	//	}
-    //
-	//})
 	var inputCheck = $(".addUserModal .search-container .btn-white input");
 	for(var i=0;i<inputCheck.length;i++){
 		$(inputCheck[i]).click(function(){
@@ -832,7 +812,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		});
 	}
 
-	var allAhecked =$("#addUser .addUserModal .title-brand input");
+	var allAhecked =$(".addUserModal .title-brand input");
 	console.log(allAhecked);
 	for(var j=0;j<allAhecked.length;j++){
 		$(allAhecked[j]).click(function(){

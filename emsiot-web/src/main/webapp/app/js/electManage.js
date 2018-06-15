@@ -131,16 +131,23 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     };
     
     //显示下拉搜索条件
-    //$(".unblock-content .form-control").prop("disabled",true);
-    //$(".unblock-active .form-control").prop("disabled",false);
-    $("#searchBlock").click(function () {
+	$("#searchBlock").click(function () {
         $("#unblock").toggleClass("unblock-active");
+		var selects = $(this).parent().next().children().children(".form-control");
+		console.log(selects);
+		console.log($(this));
         if ($("#unblock").hasClass("unblock-active")) {
             $(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
-			$(".unblock-active .form-control").prop("disabled",false);
+			//for(var i=0;i<selects.length;i++){
+			//	$(selects[i]).prop("disabled","false");
+			//	console.log($(selects[i]).prop("disabled"))
+			//}
         } else {
             $(this).children("i").removeClass("fa-angle-up").addClass("fa-angle-down");
-			$(".unblock-active .form-control").prop("disabled",true);
+			//for(var i=0;i<selects.length;i++){
+			//	$(selects[i]).prop("disabled","true");
+			//	console.log($(selects[i]).prop("disabled"))
+			//}
         }
     });
 	$scope.load();

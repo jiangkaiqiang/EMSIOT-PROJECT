@@ -89,45 +89,11 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 	 });
 		
 		 function showStationForAera(map){
-			 var sHtml=`<div id="positionTable" class="shadow">
-				   <ul class="flex-between">
-				      <li class="flex-items">
-				         <img src="app/img/station.png"/>
-				         <h4>`;
-		    var sHtml2 = `</h4>
-				      </li>
-				      <li>`;
-		    var sHtml3 = `</li>
-				   </ul>
-				   <p class="flex-items">
-				      <i class="glyphicon glyphicon-map-marker"></i>
-				      <span>`;
-			 
-			 var sHtml4= `
-				   </p >
-				   <ul class="flex flex-time">
-				      <li class="active">1分钟</li>
-				      <li>5分钟</li>
-				      <li>1小时</li>
-				   </ul>
-				   <hr/>
-				   <div class="tableArea margin-top2">
-				      <table class="table table-striped " id="tableArea" ng-model="AllElects">
-				         <thead>
-				            <tr>
-				                  <th>序号</th>
-				                  <th>车辆编号</th>
-				                  <th>经过时间</th>
-				               </tr>
-				            </thead>
-				            <tbody>`;
-
-			 var endHtml = `
-				            </tbody>
-				         </table>
-				      </div>
-				   </div>
-				`;
+			 var sHtml="<div id='positionTable' class='shadow'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
+		     var sHtml2 ="</h4></li><li>";
+		     var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
+			 var sHtml4= "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
+			var endHtml = "</tbody></table></div></div>";
 			 var pt;
 			 var marker2;
 			 var sContent = sHtml;
@@ -147,10 +113,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 					showElectsInStation(null,null,title_add[0]);  //根据物理编号查找
 					var electInfo='';
 					for(var k=0; k<$scope.electsInStation.length;k++){
-						electInfo += `<tr>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`+(k+1)+`</td>`
-							+`<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`+$scope.electsInStation[k].plate_num+`</td>`
-							+`<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`+$scope.electsInStation[k].corssTime+`</td></tr>`;
+						electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(k+1)+"</td>"+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+$scope.electsInStation[k].plate_num+"</td>"+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+$scope.electsInStation[k].corssTime+"</td></tr>";
 					}
 					
 					var infoWindow = new BMap.InfoWindow(sHtml+title_add[0]+sHtml2+$scope.electsInStation.length+sHtml3+title_add[1]+sHtml4+electInfo+endHtml);
