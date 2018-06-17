@@ -220,6 +220,7 @@
 				AND area_id = #{areaPower}
 			</if>
         </where>
+        order by `install_date` desc
     </select>
     <select id="findAllStationsByKey" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
 		SELECT * FROM `station`

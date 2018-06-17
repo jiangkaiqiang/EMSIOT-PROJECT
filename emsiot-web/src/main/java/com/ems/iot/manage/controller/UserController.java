@@ -179,6 +179,9 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("userEdit")) {
 	    	 sysUserDto.setUserEdit("1");
 		 }
+	     if (menuPowerList.contains("privatePower")) {
+	    	 sysUserDto.setPrivatePower("1");
+		 }
 	     if (sysUser.getPro_power().equals("-1")) {
 				sysUserDto.setPro_name("不限");
 			}

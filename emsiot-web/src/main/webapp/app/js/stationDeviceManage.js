@@ -170,7 +170,7 @@ $scope.addInstallPic = function () {
 	
 };
 $scope.dropInstallPic = function(installPic){
-	$scope.installPic = null;
+	$scope.stationForUpdate.install_pic = null;
 };
 
  $scope.goStationUpdate = function(stationID) {

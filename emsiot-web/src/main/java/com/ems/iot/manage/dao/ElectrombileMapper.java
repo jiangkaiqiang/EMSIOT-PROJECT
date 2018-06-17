@@ -35,7 +35,26 @@ public interface ElectrombileMapper {
     		@Param("proID")Integer proID, @Param("cityID")Integer cityID, @Param("areaID")Integer areaID, @Param("ownerTele")String ownerTele, @Param("ownerID")String ownerID, 
     		@Param("plateNum")String plateNum, @Param("guaCardNum")String guaCardNum, @Param("ownerName")String ownerName,
     		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
-    
+    /**
+     * 为APP端的管理员查询电动车列表，及筛选提供服务，注意是根据RecorderID先过滤，跟PC端不同
+     * @param startTime
+     * @param endTime
+     * @param recorderID
+     * @param electState
+     * @param insurDetail
+     * @param proID
+     * @param cityID
+     * @param areaID
+     * @param ownerTele
+     * @param ownerID
+     * @param plateNum
+     * @param guaCardNum
+     * @param ownerName
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @return
+     */
     Page<Electrombile> findAllElectrombilesForApp(@Param("startTime")String startTime, @Param("endTime")String endTime, 
     		@Param("recorderID")Integer recorderID, @Param("electState")Integer electState, @Param("insurDetail")Integer insurDetail,
     		@Param("proID")Integer proID, @Param("cityID")Integer cityID, @Param("areaID")Integer areaID, @Param("ownerTele")String ownerTele, @Param("ownerID")String ownerID, 
@@ -61,4 +80,11 @@ public interface ElectrombileMapper {
       * @return
       */
     List<Electrombile> findElectsByTele(@Param("tele") String tele);
+   
+    /**
+     * 根据管理员的ID查询该管理员已经备案登记的车辆数量
+     * @param recorderId
+     * @return
+     */
+    List<Electrombile> findElectsByRecorderId(@Param("recorderId") String recorderId);
 }

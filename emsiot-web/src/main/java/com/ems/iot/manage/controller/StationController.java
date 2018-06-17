@@ -20,6 +20,7 @@ import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.service.OssService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.Page;
@@ -38,12 +39,7 @@ public class StationController extends BaseController {
 	private static String baseDir = "picture";
 //	@Autowired
 //	private FtpService ftpService;
-	// Endpoint以杭州为例，其它Region请按实际情况填写。
-	String endpoint = "http://oss-cn-hangzhou.aliyuncs.com/";
-	// 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
-	String accessKeyId = "LTAIoPdymMIPeien";
-	String accessKeySecret = "1T0RpATFgnWvuOJBvBV3TD2kaDZfyT";
-	String readUrl = "https://emsiot.oss-cn-hangzhou.aliyuncs.com/";
+	
 	/**
 	 * 根据关键字查询所有基站
 	 * 
@@ -178,6 +174,8 @@ public class StationController extends BaseController {
 		if (null == station_name) {
 			return new ResultDto(-1, "基站名称不能为空！");
 		}
+		// 创建OSSClient实例。
+		OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 	    Station station = new Station();
 	    station.setStation_id(station_id);
 	    station.setContact_person(contact_person);
@@ -196,25 +194,31 @@ public class StationController extends BaseController {
 	    station.setStation_address(station_address);
 	    if (station_address!=null) {
 	    	 String[] stationAddress = station_address.split(",");
-	    	 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
-	    	 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId(stationAddress[1], station.getPro_id()).getCity_id()));
-	    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+	    	 if (stationAddress[0].equals("上海市")||stationAddress[0].equals("北京市")||stationAddress[0].equals("重庆市")||stationAddress[0].equals("天津市")) {
+	    		 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
+	    		 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId("市辖区", station.getPro_id()).getCity_id()));
+		    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+			 }
+	    	 else{
+	    		 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
+		    	 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId(stationAddress[1], station.getPro_id()).getCity_id()));
+		    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+	    	 }
 		}
 	    if (null!=install_pic) {
 			String dir = String.format("%s/stationPic/", baseDir);
 			String station_pic_name = String.format("%s_%s.%s", station.getStation_phy_num(), new Date().getTime(), "jpg");
-			//UploadFileEntity uploadFileEntity = new UploadFileEntity(station_pic_name, install_pic, dir);
-			//ftpService.uploadFile(uploadFileEntity);
-			// 创建OSSClient实例。
-			OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+			//删除原始文件
+			//String[] originPicUrl = stationMapper.selectByPrimaryKey(station_id).getInstall_pic().split("/");
+			//ossClient.deleteObject("emsiot", originPicUrl[originPicUrl.length-3]+originPicUrl[originPicUrl.length-2]+originPicUrl[originPicUrl.length-1]);
 			// 上传文件流。
 			InputStream inputStream = install_pic.getInputStream();
 			ossClient.putObject("emsiot", dir+station_pic_name, inputStream);
-			// 关闭OSSClient。
-			ossClient.shutdown();
-			station.setInstall_pic(readUrl+dir + "/" + station_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+			station.setInstall_pic(OssService.readUrl+dir +station_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 	    stationMapper.updateByPrimaryKeySelective(station);
+	    // 关闭OSSClient。
+	 	ossClient.shutdown();
 	    return new ResultDto(0,"修改成功");
 	}
 	
@@ -260,7 +264,7 @@ public class StationController extends BaseController {
 			return new ResultDto(-1, "基站名称不能为空！");
 		}
 		// 创建OSSClient实例。
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 	    Station station = new Station();
 	    station.setContact_person(contact_person);
 	    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -278,9 +282,16 @@ public class StationController extends BaseController {
 	    station.setStation_address(station_address);
 	    if (station_address!=null) {
 	    	 String[] stationAddress = station_address.split(",");
-	    	 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
-	    	 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId(stationAddress[1], station.getPro_id()).getCity_id()));
-	    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+	    	 if (stationAddress[0].equals("上海市")||stationAddress[0].equals("北京市")||stationAddress[0].equals("重庆市")||stationAddress[0].equals("天津市")) {
+	    		 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
+	    		 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId("市辖区", station.getPro_id()).getCity_id()));
+		    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+			 }
+	    	 else{
+	    		 station.setPro_id(Integer.valueOf(cityMapper.findProvinceByName(stationAddress[0]).getProvince_id()));
+		    	 station.setCity_id(Integer.valueOf(cityMapper.findCityByNameAndProId(stationAddress[1], station.getPro_id()).getCity_id()));
+		    	 station.setArea_id(Integer.valueOf(cityMapper.findAreaByNameAndCityId(stationAddress[2], station.getCity_id()).getArea_id()));
+	    	 }
 		}
 	    if (null!=install_pic) {
 	    	String dir = String.format("%s/stationPic/", baseDir);
@@ -290,7 +301,7 @@ public class StationController extends BaseController {
 			// 上传文件流。
 			InputStream inputStream = install_pic.getInputStream();
 			ossClient.putObject("emsiot", dir+station_pic_name, inputStream);
-			station.setInstall_pic(readUrl + dir+station_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+			station.setInstall_pic(OssService.readUrl + dir+station_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 	    stationMapper.insert(station);
 	    // 关闭OSSClient。

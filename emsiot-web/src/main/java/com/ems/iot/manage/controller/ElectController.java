@@ -1,5 +1,7 @@
 package com.ems.iot.manage.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aliyun.oss.OSSClient;
 import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
@@ -42,6 +45,7 @@ import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.service.FtpService;
+import com.ems.iot.manage.service.OssService;
 import com.ems.iot.manage.util.ExcelImportUtil;
 import com.ems.iot.manage.util.ResponseData;
 import com.ems.iot.manage.util.StringUtil;
@@ -263,8 +267,8 @@ public class ElectController extends BaseController {
 	 * 
 	 * @param electrombile
 	 * @return
-	 * @throws UnsupportedEncodingException
 	 * @throws ParseException
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/addElect")
 	@ResponseBody
@@ -284,7 +288,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
-			throws UnsupportedEncodingException, ParseException {
+			throws ParseException, IOException {
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
@@ -313,53 +317,59 @@ public class ElectController extends BaseController {
 		if (electrombile.getPlate_num() == null) {
 			return new ResultDto(-1, "车牌号不能为空！");
 		}
+		// 创建OSSClient实例。
+	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 		if (null != elect_pic) {
-			String dir = String.format("%s/elect/electPic", baseDir);
-			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setElect_pic(FtpService.READ_URL + "data/" + dir + "/" + elect_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/electPic/", baseDir);
+			String elect_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = elect_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+elect_pic_name, inputStream);
+			electrombile.setElect_pic(OssService.readUrl + dir+elect_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 		if (null != indentity_card_pic) {
-			String dir = String.format("%s/elect/indCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setIndentity_card_pic(FtpService.READ_URL + "data/" + dir + "/" + indentity_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/indCardPic/", baseDir);
+			String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = indentity_card_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+indentity_card_pic_name, inputStream);
+			electrombile.setIndentity_card_pic(OssService.readUrl + dir+indentity_card_pic_name);
 		}
 		if (null != record_pic) {
-			String dir = String.format("%s/elect/recordPic", baseDir);
-			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setRecord_pic(FtpService.READ_URL + "data/" + dir + "/" + record_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/recordPic/", baseDir);
+			String record_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = record_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+record_pic_name, inputStream);
+			electrombile.setRecord_pic(OssService.readUrl + dir+record_pic_name);
 		}
 		if (null != install_card_pic) {
-			String dir = String.format("%s/elect/installCardPic", baseDir);
-			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, install_card_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/installCardPic/", baseDir);
+			String install_card_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = install_card_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+install_card_pic_name, inputStream);
+			electrombile.setInstall_card_pic(OssService.readUrl + dir+install_card_pic_name);
 		}
 		if (null!=insur_pic) {
-			String dir = String.format("%s/elect/insurPic", baseDir);
-			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, insur_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/insurPic/", baseDir);
+			String insur_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = insur_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+insur_pic_name, inputStream);
+			electrombile.setInsur_pic(OssService.readUrl + dir+insur_pic_name);
 		}
 		if (null!=tele_fee_pic) {
-			String dir = String.format("%s/elect/telefeePic", baseDir);
-			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, tele_fee_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/telefeePic/", baseDir);
+			String tele_fee_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = tele_fee_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+tele_fee_pic_name, inputStream);
+			electrombile.setTele_fee_pic(OssService.readUrl + dir+tele_fee_pic_name);
 		}
 		electrombileMapper.insert(electrombile);
+		 // 关闭OSSClient。
+	 	ossClient.shutdown();
 		return new ResultDto(0, "添加成功");
 	}
 
@@ -368,7 +378,7 @@ public class ElectController extends BaseController {
 	 * 
 	 * @param electrombile
 	 * @return
-	 * @throws UnsupportedEncodingException
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/updateElect")
 	@ResponseBody
@@ -389,7 +399,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
-			throws UnsupportedEncodingException, ParseException {
+			throws ParseException, IOException {
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);
 		electrombile.setGua_card_num(gua_card_num);
@@ -419,53 +429,59 @@ public class ElectController extends BaseController {
 		if (electrombile.getPlate_num() == null) {
 			return new ResultDto(-1, "车牌号不能为空！");
 		}
+		// 创建OSSClient实例。
+	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 		if (null != elect_pic) {
-			String dir = String.format("%s/elect/electPic", baseDir);
-			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setElect_pic(FtpService.READ_URL + "data/" + dir + "/" + elect_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/electPic/", baseDir);
+			String elect_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = elect_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+elect_pic_name, inputStream);
+			electrombile.setElect_pic(OssService.readUrl + dir+elect_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 		if (null != indentity_card_pic) {
-			String dir = String.format("%s/elect/indCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setIndentity_card_pic(FtpService.READ_URL + "data/" + dir + "/" + indentity_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/indCardPic/", baseDir);
+			String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = indentity_card_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+indentity_card_pic_name, inputStream);
+			electrombile.setIndentity_card_pic(OssService.readUrl + dir+indentity_card_pic_name);
 		}
 		if (null != record_pic) {
-			String dir = String.format("%s/elect/recordPic", baseDir);
-			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setRecord_pic(FtpService.READ_URL + "data/" + dir + "/" + record_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/recordPic/", baseDir);
+			String record_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = record_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+record_pic_name, inputStream);
+			electrombile.setRecord_pic(OssService.readUrl + dir+record_pic_name);
 		}
 		if (null != install_card_pic) {
-			String dir = String.format("%s/elect/installCardPic", baseDir);
-			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(),
-					new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, install_card_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInstall_card_pic(FtpService.READ_URL + "data/" + dir + "/" + install_card_pic_name);// http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/installCardPic/", baseDir);
+			String install_card_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = install_card_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+install_card_pic_name, inputStream);
+			electrombile.setInstall_card_pic(OssService.readUrl + dir+install_card_pic_name);
 		}
 		if (null!=insur_pic) {
-			String dir = String.format("%s/elect/insurPic", baseDir);
-			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, insur_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/insurPic/", baseDir);
+			String insur_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = insur_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+insur_pic_name, inputStream);
+			electrombile.setInsur_pic(OssService.readUrl + dir+insur_pic_name);
 		}
 		if (null!=tele_fee_pic) {
-			String dir = String.format("%s/elect/telefeePic", baseDir);
-			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, tele_fee_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
+			String dir = String.format("%s/telefeePic/", baseDir);
+			String tele_fee_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
+			// 上传文件流。
+			InputStream inputStream = tele_fee_pic.getInputStream();
+			ossClient.putObject("emsiot", dir+tele_fee_pic_name, inputStream);
+			electrombile.setTele_fee_pic(OssService.readUrl + dir+tele_fee_pic_name);
 		}
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
+		 // 关闭OSSClient。
+	 	ossClient.shutdown();
 		return new ResultDto(0, "更新成功");
 	}
 

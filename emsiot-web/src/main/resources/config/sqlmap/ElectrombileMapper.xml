@@ -637,6 +637,16 @@
 		order by `recorder_time` desc
 	</select>
 	
+	<select id="findElectsByRecorderId" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="recorderId != null">
+			    recorder_id = #{recorderId}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
 	<select id="findAllElectrombilesForApp" parameterType="map" resultType="Electrombile">
 		SELECT * FROM `electrombile`
 		<where>

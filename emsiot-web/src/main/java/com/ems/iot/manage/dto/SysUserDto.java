@@ -85,6 +85,8 @@ public class SysUserDto {
 	
 	private String userEdit = "0";//用户管理-用户编辑
 	
+	private String privatePower = "0";//隐私权限
+	
 	public String getArea_name() {
 		return area_name;
 	}
@@ -379,6 +381,14 @@ public class SysUserDto {
 
 	public void setUserEdit(String userEdit) {
 		this.userEdit = userEdit;
+	}
+
+	public String getPrivatePower() {
+		return privatePower;
+	}
+
+	public void setPrivatePower(String privatePower) {
+		this.privatePower = privatePower;
 	}
 	
 }

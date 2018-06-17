@@ -147,23 +147,23 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (null==areaID||areaID==-1) {
 			areaID = null;
 		}
-		Integer proPower = null;
-		Integer cityPower = null;
-		Integer areaPower = null;
-		if (!sysUser.getPro_power().equals("-1")) {
-			proPower = Integer.valueOf(sysUser.getPro_power());
-		}
-		if (!sysUser.getCity_power().equals("-1")) {
-			cityPower = Integer.valueOf(sysUser.getCity_power());
-		}
-		if (!sysUser.getArea_power().equals("-1")) {
-			areaPower = Integer.valueOf(sysUser.getArea_power());
-		}
+//		Integer proPower = null;
+//		Integer cityPower = null;
+//		Integer areaPower = null;
+//		if (!sysUser.getPro_power().equals("-1")) {
+//			proPower = Integer.valueOf(sysUser.getPro_power());
+//		}
+//		if (!sysUser.getCity_power().equals("-1")) {
+//			cityPower = Integer.valueOf(sysUser.getCity_power());
+//		}
+//		if (!sysUser.getArea_power().equals("-1")) {
+//			areaPower = Integer.valueOf(sysUser.getArea_power());
+//		}
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombilesForApp(startTime, endTime, recorderID, electState, insurDetail, proID, 
-				cityID, areaID, keyword, ownerID, keyword, guaCardNum, keyword,proPower,cityPower,areaPower);
+		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombilesForApp(startTime, endTime, sysUser.getUser_id(), electState, insurDetail, proID, 
+				cityID, areaID, keyword, ownerID, keyword, guaCardNum, keyword,null,null,null);
         if (electrombiles==null||electrombiles.size()==0) {
         	return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
@@ -207,12 +207,12 @@ public class ElectSysUserAppController extends AppBaseController {
 			@RequestParam(required = false) Integer area_id,
 			@RequestParam(required = false) Integer elect_type,
 			@RequestParam(required = false) Integer insur_detail,
-			@RequestParam(required = false) MultipartFile elect_pic,
-			@RequestParam(required = false) MultipartFile indentity_card_pic,
-			@RequestParam(required = false) MultipartFile record_pic,
-			@RequestParam(required = false) MultipartFile install_card_pic,
-			@RequestParam(required = false) MultipartFile insur_pic,
-			@RequestParam(required = false) MultipartFile tele_fee_pic,
+			@RequestParam(required = false) String elect_pic,
+			@RequestParam(required = false) String indentity_card_pic,
+			@RequestParam(required = false) String record_pic,
+			@RequestParam(required = false) String install_card_pic,
+			@RequestParam(required = false) String insur_pic,
+			@RequestParam(required = false) String tele_fee_pic,
 			@RequestParam(required = false) String owner_tele,
 			@RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address,
@@ -268,48 +268,12 @@ public class ElectSysUserAppController extends AppBaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
-		if (null!=elect_pic) {
-			String dir = String.format("%s/elect/electPic", baseDir);
-			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=indentity_card_pic) {
-			String dir = String.format("%s/elect/indCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=record_pic) {
-			String dir = String.format("%s/elect/recordPic", baseDir);
-			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setRecord_pic(FtpService.READ_URL+"data/"+dir + "/" + record_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=install_card_pic) {
-			String dir = String.format("%s/elect/installCardPic", baseDir);
-			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=insur_pic) {
-			String dir = String.format("%s/elect/insurPic", baseDir);
-			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=tele_fee_pic) {
-			String dir = String.format("%s/elect/telefeePic", baseDir);
-			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
+		electrombile.setElect_pic(elect_pic);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+		electrombile.setIndentity_card_pic(indentity_card_pic);
+		electrombile.setRecord_pic(record_pic);
+		electrombile.setInstall_card_pic(install_card_pic);
+		electrombile.setInsur_pic(insur_pic);
+		electrombile.setTele_fee_pic(tele_fee_pic);
 		electrombileMapper.insert(electrombile);
 		return new AppResultDto(1001,"添加成功");
 	}
@@ -336,12 +300,12 @@ public class ElectSysUserAppController extends AppBaseController {
 			@RequestParam(required = false) Integer area_id,
 			@RequestParam(required = false) Integer elect_type,
 			@RequestParam(required = false) Integer insur_detail,
-			@RequestParam(required = false) MultipartFile elect_pic,
-			@RequestParam(required = false) MultipartFile indentity_card_pic,
-			@RequestParam(required = false) MultipartFile record_pic,
-			@RequestParam(required = false) MultipartFile install_card_pic,
-			@RequestParam(required = false) MultipartFile insur_pic,
-			@RequestParam(required = false) MultipartFile tele_fee_pic,
+			@RequestParam(required = false) String elect_pic,
+			@RequestParam(required = false) String indentity_card_pic,
+			@RequestParam(required = false) String record_pic,
+			@RequestParam(required = false) String install_card_pic,
+			@RequestParam(required = false) String insur_pic,
+			@RequestParam(required = false) String tele_fee_pic,
 			@RequestParam(required = false) String owner_tele,
 			@RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address,
@@ -401,48 +365,12 @@ public class ElectSysUserAppController extends AppBaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
-		if (null!=elect_pic) {
-			String dir = String.format("%s/elect/electPic", baseDir);
-			String elect_pic_name = String.format("electPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(elect_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setElect_pic(FtpService.READ_URL+"data/"+dir + "/" + elect_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=indentity_card_pic) {
-			String dir = String.format("%s/elect/indCardPic", baseDir);
-			String indentity_card_pic_name = String.format("indCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(indentity_card_pic_name, indentity_card_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setIndentity_card_pic(FtpService.READ_URL+"data/"+dir + "/" + indentity_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=record_pic) {
-			String dir = String.format("%s/elect/recordPic", baseDir);
-			String record_pic_name = String.format("recordPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(record_pic_name, record_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setRecord_pic(FtpService.READ_URL+"data/"+dir + "/" + record_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=install_card_pic) {
-			String dir = String.format("%s/elect/installCardPic", baseDir);
-			String install_card_pic_name = String.format("installCardPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(install_card_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInstall_card_pic(FtpService.READ_URL+"data/"+dir + "/" + install_card_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=insur_pic) {
-			String dir = String.format("%s/elect/insurPic", baseDir);
-			String insur_pic_name = String.format("insurPic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(insur_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setInsur_pic(FtpService.READ_URL+"data/"+dir + "/" + insur_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
-		if (null!=tele_fee_pic) {
-			String dir = String.format("%s/elect/telefeePic", baseDir);
-			String tele_fee_pic_name = String.format("telefeePic%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
-			UploadFileEntity uploadFileEntity = new UploadFileEntity(tele_fee_pic_name, elect_pic, dir);
-			ftpService.uploadFile(uploadFileEntity);
-			electrombile.setTele_fee_pic(FtpService.READ_URL+"data/"+dir + "/" + tele_fee_pic_name);//http://42.121.130.177:8089/picture/user/1124/3456789.png
-		}
+		electrombile.setElect_pic(elect_pic);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+		electrombile.setIndentity_card_pic(indentity_card_pic);
+		electrombile.setRecord_pic(record_pic);
+		electrombile.setInstall_card_pic(install_card_pic);
+		electrombile.setInsur_pic(insur_pic);
+		electrombile.setTele_fee_pic(tele_fee_pic);
 		electrombileMapper.updateByPrimaryKeySelective(electrombile);
 		return new AppResultDto(1001, "更新成功");
 	}
@@ -579,19 +507,20 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
-		Integer proPower = null;
-		Integer cityPower = null;
-		Integer areaPower = null;
-		if (!sysUser.getPro_power().equals("-1")) {
-			proPower = Integer.valueOf(sysUser.getPro_power());
-		}
-		if (!sysUser.getCity_power().equals("-1")) {
-			cityPower = Integer.valueOf(sysUser.getCity_power());
-		}
-		if (!sysUser.getArea_power().equals("-1")) {
-			areaPower = Integer.valueOf(sysUser.getArea_power());
-		}
-		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
+//		Integer proPower = null;
+//		Integer cityPower = null;
+//		Integer areaPower = null;
+//		if (!sysUser.getPro_power().equals("-1")) {
+//			proPower = Integer.valueOf(sysUser.getPro_power());
+//		}
+//		if (!sysUser.getCity_power().equals("-1")) {
+//			cityPower = Integer.valueOf(sysUser.getCity_power());
+//		}
+//		if (!sysUser.getArea_power().equals("-1")) {
+//			areaPower = Integer.valueOf(sysUser.getArea_power());
+//		}
+//		List<Electrombile> electrombiles =  electrombileMapper.findElectsList(proPower, cityPower, areaPower);
+		List<Electrombile> electrombiles =  electrombileMapper.findElectsByRecorderId(sysUser.getUser_id().toString());
 		if (electrombiles==null||electrombiles.size()==0) {
 			return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}

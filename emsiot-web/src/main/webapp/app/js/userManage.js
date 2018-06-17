@@ -370,6 +370,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  if($("#userEdit").is(":checked")){
         		  menuPower = menuPower+"userEdit";
         	  }
+        	  if($("#privatePower").is(":checked")){
+        		  menuPower = menuPower+"privatePower";
+        	  }
         	  if($scope.addProvinceID==undefined || $scope.addProvinceID==null){
         		  $scope.addProvinceID = $scope.userPowerDto.sysUser.pro_power;
         	  }
@@ -634,6 +637,12 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 else{
 						 $("#userEditChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
+					 if($scope.userForUpdate.privatePower=="1"){
+						 $("#privatePowerChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#privatePowerChange").prop("checked",false);
+					 }
 			    }
 		     });
 		};
@@ -760,6 +769,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  }
 	        	  if($("#userEditChange").is(":checked")){
 	        		  menuPower = menuPower+"userEdit";
+	        	  }
+	        	  if($("#privatePowerChange").is(":checked")){
+	        		  menuPower = menuPower+"privatePower";
 	        	  }
 		            $http({
 		            	method : 'GET', 

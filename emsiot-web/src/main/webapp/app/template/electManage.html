@@ -141,9 +141,19 @@
             <td ng-bind="getState(electDto.electrombile.elect_state)"></td>
             <td data-toggle="tooltip" data-placement="right" title="{{electDto.recordName}}">{{electDto.recordName}}</td>
             <td ng-bind="getInsur(electDto.electrombile.insur_detail)"></td>
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_name}}">{{electDto.electrombile.owner_name}}</td>
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_id}}">{{electDto.electrombile.owner_id}}</td>
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_tele}}">{{electDto.electrombile.owner_tele}}</td>
+            
+            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_name}}">
+            {{electDto.electrombile.owner_name}}</td>
+            <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
+            
+            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_id}}">
+            {{electDto.electrombile.owner_id}}</td>
+            <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
+            
+            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_tele}}">
+            {{electDto.electrombile.owner_tele}}</td>
+            <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
+            
             <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.recorder_time}}">{{electDto.electrombile.recorder_time}}</td>
             <td class="flex-items flex-center" style="overflow:visible;">
                 <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
@@ -624,8 +634,11 @@
                                     <i>*</i>
                                     手机号：
                                 </label>
-                                <div class="col-sm-8">
+                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
                                     {{viewElect.electrombile.owner_tele}}
+                                </div>
+                                <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+                                   ******
                                 </div>
                             </div>
                         </div>
@@ -635,8 +648,11 @@
                                     <i>*</i>
                                     姓名：
                                 </label>
-                                <div class="col-sm-8">
+                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
                                     {{viewElect.electrombile.owner_name}}
+                                </div>
+                                <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+                                   ******
                                 </div>
                             </div>
                         </div>
@@ -649,8 +665,11 @@
                                     <i>*</i>
                                     地址：
                                 </label>
-                                <div class="col-sm-8">
+                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
                                     {{viewElect.electrombile.owner_address}}
+                                </div>
+                                 <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+                                   ******
                                 </div>
                             </div>
                         </div>
@@ -661,8 +680,11 @@
                                     <i>*</i>
                                     身份证：
                                 </label>
-                                <div class="col-sm-8">
+                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
                                     {{viewElect.electrombile.owner_id}}
+                                </div>
+                                <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+                                   ******
                                 </div>
                             </div>
                         </div>
