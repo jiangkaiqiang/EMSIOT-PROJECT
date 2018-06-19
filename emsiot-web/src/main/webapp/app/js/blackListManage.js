@@ -24,9 +24,6 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
 		 
 	};
 
-
-console.log("报警页面展示成功");
-
     $scope.goHome = function () {
         $state.reload();
     }
@@ -129,7 +126,7 @@ console.log("报警页面展示成功");
     	  $scope.getBlackelectsByOptions();
       });
   	}
-  }
+  };
   //批量删除黑名单
   $scope.goDeleteBlackElects = function(){
   	if(delcfm()){
@@ -335,6 +332,6 @@ console.log("报警页面展示成功");
              $("#updateBlackelect").modal("hide"); 
         }
     });
-  }
+  };
 	//
 });

@@ -823,23 +823,28 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 
 
 /*-------------------t4月3号添加，以下内容不可删除------------------------------*/
-	var inputCheck = $(".addUserModal .search-container .btn-white input");
-	for(var i=0;i<inputCheck.length;i++){
-		$(inputCheck[i]).click(function(){
-			if($(this).prop("checked")){
-				$(this).parent(".btn-white").addClass("active");
+	//单选checkbox
+	var inputCheck = $(".addUserModal .search-container .btn-white");
+	//console.log(inputCheck)
+	for(var a=0;a<inputCheck.length;a++){
+		$(inputCheck[a]).click(function(){
+			$(this).toggleClass("active");
+			if($(this).hasClass("active")){
+				$(this).children("input[type=checkbox]").prop("checked",true);
 			}else{
-				$(this).parent(".btn-white").removeClass("active");
+				$(this).children("input[type=checkbox]").prop("checked",false);
 			}
 		});
 	}
 
+	//实现全选checkbox
 	var allAhecked =$(".addUserModal .title-brand input");
-	console.log(allAhecked);
+	//console.log(allAhecked);
 	for(var j=0;j<allAhecked.length;j++){
 		$(allAhecked[j]).click(function(){
 			var inputs = $(this).parents(".title-brand").next(".search-container").children().children(".btn-white");
 			if($(this).prop("checked")){
+				console.log($(this));
 				for(var k=0;k<inputs.length;k++){
 					$(inputs[k]).addClass("active");
 					$(inputs[k]).children("input").prop("checked",true);
@@ -854,8 +859,8 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	}
 
 	var firstChecked =$(".userModalSwitch ul input");
-	for(var i=0;i<firstChecked.length;i++){
-		$(firstChecked[i]).click(function(){
+	for(var b=0;b<firstChecked.length;b++){
+		$(firstChecked[b]).click(function(){
 			if($(this).prop("checked")){
 				$(this).parent(".btn-white").addClass("active");
 			}else{
@@ -863,6 +868,8 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 			}
 		});
 	}
+
+
 
 
 });

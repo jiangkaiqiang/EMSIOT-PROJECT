@@ -335,7 +335,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 		navBtn.click(function(){
 		   navBtn.removeClass("active");
 		   $(this).addClass("active");
-		   console.log("点击了一次");
+		   //console.log("点击了一次");
 
 		});
 	//轨迹选择日期

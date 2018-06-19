@@ -129,27 +129,27 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $scope.dropTeleFeePicForUpdate = function(teleFeePic){
     	$scope.updateElect.electrombile.tele_fee_pic = null;
     };
-    
-    //显示下拉搜索条件
+
+	//显示下拉搜索条件
 	$("#searchBlock").click(function () {
-        $("#unblock").toggleClass("unblock-active");
-		var selects = $(this).parent().next().children().children(".form-control");
-		console.log(selects);
-		console.log($(this));
-        if ($("#unblock").hasClass("unblock-active")) {
-            $(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
-			//for(var i=0;i<selects.length;i++){
-			//	$(selects[i]).prop("disabled","false");
-			//	console.log($(selects[i]).prop("disabled"))
-			//}
-        } else {
-            $(this).children("i").removeClass("fa-angle-up").addClass("fa-angle-down");
-			//for(var i=0;i<selects.length;i++){
-			//	$(selects[i]).prop("disabled","true");
-			//	console.log($(selects[i]).prop("disabled"))
-			//}
-        }
-    });
+		$("#unblock").toggleClass("unblock-active");
+		isDisabled();
+	});
+
+	function isDisabled(){
+		var selectes = $("#unblock .form-control");
+		if ($("#unblock").hasClass("unblock-active")) {
+			for(var i=0;i<selectes.length;i++){
+				$(selectes[i]).prop("disabled",false);
+			}
+		}else{
+			for(var i=0;i<selectes.length;i++){
+				$(selectes[i]).prop("disabled",true);
+			}
+		}
+	}
+	isDisabled();
+
 	$scope.load();
 	// 显示最大页数
     $scope.maxSize = 10;
@@ -646,50 +646,52 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 //		$scope.pageChangedForTrace = function() {
 //			$scope.goSearchForTrace($scope.gua_card_numForTrace);
 //		}
-		 
-		 //选择日期
-		 $('#buyCarDateUpdate').datetimepicker({
-		        format: 'yyyy-mm-dd',
-		        autoclose:true,
-		        maxDate:new Date(),
-		        pickerPosition: "bottom-left"
-	    });
-		 $('#byCarDate').datetimepicker({
-		        format: 'yyyy-mm-dd',
-		        autoclose:true,
-		        maxDate:new Date(),
-		        pickerPosition: "bottom-left"
-	    });
-		 $('#guijiSearchStart').datetimepicker({
-		     format: 'yyyy-mm-dd - hh:mm:ss',
-		     //minView: "month",
-		     autoclose:true,
-		     maxDate:new Date(),
-		     pickerPosition: "bottom-left"
-		 });
-		 $("#guijiSearchEnd").datetimepicker({
-		     format : 'yyyy-mm-dd - hh:mm:ss',
-		     //minView: 'month',
-		     autoclose:true,
-		     maxDate:new Date(),
-		     pickerPosition: "bottom-left"
-		 }); 
-		 $('#electDateStart').datetimepicker({
-		     format: 'yyyy-mm-dd - hh:mm:ss',//时间格式
-		     minView: "month",//最小选择到月
-		     autoclose:true,//选择好时间关闭弹框
-		     maxDate:new Date(),//默认当前时间
-		     pickerPosition: "bottom-left"//位置左下
-		 });
-		 $("#electDateEnd").datetimepicker({
-		     format : 'yyyy-mm-dd - hh:mm:ss',
-		     minView: 'month',
-		     autoclose:true,
-		     maxDate:new Date(),
-		     pickerPosition: "bottom-left"
-		 }); 
-		 $("#djPrint").on('click',function(){
-			    window.print();
-		 })
+
+	//选择日期
+	$('#buyCarDateUpdate').datetimepicker({
+		format: 'yyyy-mm-dd',
+		minView: "month",
+		autoclose:true,
+		maxDate:new Date(),
+		pickerPosition: "bottom-left"
+	});
+	$('#byCarDate').datetimepicker({
+		format: 'yyyy-mm-dd',
+		minView: "month",
+		autoclose:true,
+		maxDate:new Date(),
+		pickerPosition: "bottom-left"
+	});
+	$('#guijiSearchStart').datetimepicker({
+		format: 'yyyy-mm-dd - hh:mm:ss',
+		//minView: "month",
+		autoclose:true,
+		maxDate:new Date(),
+		pickerPosition: "bottom-left"
+	});
+	$("#guijiSearchEnd").datetimepicker({
+		format : 'yyyy-mm-dd - hh:mm:ss',
+		//minView: 'month',
+		autoclose:true,
+		maxDate:new Date(),
+		pickerPosition: "bottom-left"
+	});
+	$('#electDateStart').datetimepicker({
+		format: 'yyyy-mm-dd - hh:mm:ss',//时间格式
+		//minView: "month",//最小选择到月
+		autoclose:true,//选择好时间关闭弹框
+		maxDate:new Date(),//默认当前时间
+		pickerPosition: "bottom-left"//位置左下
+	});
+	$("#electDateEnd").datetimepicker({
+		format : 'yyyy-mm-dd - hh:mm:ss',
+		//minView: 'month',
+		autoclose:true,
+		maxDate:new Date(),
+		pickerPosition: "bottom-left"
+	});
+	$("#djPrint").on('click',function(){
+		window.print();
+	})
 });
 

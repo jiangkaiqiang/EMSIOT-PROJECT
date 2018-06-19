@@ -62,7 +62,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 				pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
 				marker2 = new BMap.Marker(pt);
 				marker2.setTitle(tmpStation.station_phy_num+'\t'+tmpStation.station_address);
-				console.log($scope.stations.length);
+				//console.log($scope.stations.length);
 
 				marker2.addEventListener("click", function(e) {
 					var title_add = new Array();
@@ -102,7 +102,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		    var overlaysDraw = [];
 			var overlaycomplete = function(e){
 					var borderPoints=e.overlay.getPath();//多边形轨迹数据点
-		      		console.log(e.overlay.getPath());  
+		      		//console.log(e.overlay.getPath());
 		      		$http.post('/path',borderPoints).success(function(data){
 		      			
 		      			

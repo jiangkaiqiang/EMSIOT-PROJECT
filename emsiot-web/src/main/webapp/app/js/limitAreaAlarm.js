@@ -13,8 +13,6 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 		 
 	};
 
-	console.log("车辆报警页面展示成功");
-
 	$scope.goHome = function() {
 		$state.reload();
 	}
