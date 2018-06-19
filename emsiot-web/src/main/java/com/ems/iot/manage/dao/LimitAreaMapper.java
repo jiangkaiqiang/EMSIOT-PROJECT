@@ -19,4 +19,10 @@ public interface LimitAreaMapper {
     int updateByPrimaryKey(LimitArea record);
     
     Page<LimitArea> findAllLimitAreas(@Param("limitAreaID")Integer limitAreaID,@Param("limitAreaName")String limitAreaName);
+    /**
+     * 防止出现相同名字的限制区域
+     * @param limitAreaName
+     * @return
+     */
+    LimitArea findLimitAreaForFilter(@Param("limitAreaName")String limitAreaName);
 }

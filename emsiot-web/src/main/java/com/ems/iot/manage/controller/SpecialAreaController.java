@@ -23,7 +23,6 @@ import com.ems.iot.manage.util.AreaUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -81,6 +80,12 @@ public class SpecialAreaController {
 	public Object addBlackelect(@RequestParam(value = "addLimitAreaName", required = false) String addLimitAreaName,
 			@RequestParam(value = "addStationNames", required = false) String addStationNames,
 			@RequestParam(value = "addBlackelectPlatenum", required = false) String addBlackelectPlatenum){
+		if (addLimitAreaName==null||addLimitAreaName.equals("")) {
+			return new ResultDto(-1, "限制区域的名称不能为空");
+		}
+		if (limitAreaMapper.findLimitAreaForFilter(addLimitAreaName)!=null) {
+			return new ResultDto(-1, "该限制区域名称已存在，不能重复添加");
+		}
 		LimitArea limitArea = new LimitArea();
 		limitArea.setAdd_time(new Date());
 		limitArea.setBlack_list_elects(addBlackelectPlatenum);

@@ -397,9 +397,14 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
     				'menu_power' : menuPower
     			}
     		}).then(function (resp) {
+    		   if(resp.data.success){
     			 alert(resp.data.message);
                  $scope.getUsers();
                  $("#addUser").modal("hide"); 
+    		   }
+    		   else{
+	            	 alert(resp.data.message);
+	           }
             });
            }
           else{
@@ -789,9 +794,14 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		    				'user_tel' : $scope.userForUpdate.sysUser.user_tel
 		    			}
 		    		}).then(function (resp) {
+		    		  if(resp.data.success){
 		    			 alert(resp.data.message);
 		                 $scope.getUsers();
 		                 $("#updateUser").modal("hide"); 
+		                 }
+		    		  else{
+			            	 alert(resp.data.message);
+			            }
 		            });
 		          /* }
 		          else{

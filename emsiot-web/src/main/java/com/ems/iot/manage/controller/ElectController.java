@@ -3,20 +3,15 @@ package com.ems.iot.manage.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,24 +26,15 @@ import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectrombileDto;
-import com.ems.iot.manage.dto.NgRemoteValidateDTO;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.StationElectDto;
-import com.ems.iot.manage.dto.SysUserDto;
 import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.dto.TraceStationDto;
-import com.ems.iot.manage.dto.UploadFileEntity;
-import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
-import com.ems.iot.manage.entity.SysUser;
-import com.ems.iot.manage.service.CookieService;
-import com.ems.iot.manage.service.FtpService;
 import com.ems.iot.manage.service.OssService;
 import com.ems.iot.manage.util.ExcelImportUtil;
-import com.ems.iot.manage.util.ResponseData;
-import com.ems.iot.manage.util.StringUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -66,8 +52,6 @@ public class ElectController extends BaseController {
 	private ElectrombileMapper electrombileMapper;
 	@Autowired
 	private ElectrombileStationMapper electrombileStationMapper;
-	@Autowired
-	private FtpService ftpService;
 	@Autowired
 	private CityMapper cityMapper;
 	@Autowired
@@ -289,6 +273,36 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
 			throws ParseException, IOException {
+		if (gua_card_num == null) {
+			return new ResultDto(-1, "防盗芯片编号不能为空！");
+		}
+		if (plate_num == null) {
+			return new ResultDto(-1, "车牌号不能为空！");
+		}
+		if (pro_id==null) {
+			return new ResultDto(-1, "车牌号所属省不能为空");
+		}
+		if (city_id==null) {
+			return new ResultDto(-1, "车牌号所属市不能为空");
+		}
+		if (area_id==null) {
+			return new ResultDto(-1, "车牌号所属区/县不能为空");
+		}
+		if (owner_tele==null){
+			return new ResultDto(-1, "车主手机号不能为空");
+		}
+		if (owner_name==null){
+			return new ResultDto(-1, "车主姓名不能为空");
+		}
+		if (owner_id==null){
+			return new ResultDto(-1, "车主身份证号不能为空");
+		}
+		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
+			return new ResultDto(-1, "防盗芯片编号已存在，不可重复添加！");
+		}
+		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
+			return new ResultDto(-1, "车牌号已存在，不可重复添加！");
+		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
@@ -311,12 +325,7 @@ public class ElectController extends BaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
-		if (electrombile.getGua_card_num() == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空！");
-		}
-		if (electrombile.getPlate_num() == null) {
-			return new ResultDto(-1, "车牌号不能为空！");
-		}
+		
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 		if (null != elect_pic) {
@@ -400,6 +409,36 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
 			throws ParseException, IOException {
+		if (gua_card_num == null) {
+			return new ResultDto(-1, "防盗芯片编号不能为空！");
+		}
+		if (plate_num == null) {
+			return new ResultDto(-1, "车牌号不能为空！");
+		}
+		if (pro_id==null) {
+			return new ResultDto(-1, "车牌号所属省不能为空");
+		}
+		if (city_id==null) {
+			return new ResultDto(-1, "车牌号所属市不能为空");
+		}
+		if (area_id==null) {
+			return new ResultDto(-1, "车牌号所属区/县不能为空");
+		}
+		if (owner_tele==null){
+			return new ResultDto(-1, "车主手机号不能为空");
+		}
+		if (owner_name==null){
+			return new ResultDto(-1, "车主姓名不能为空");
+		}
+		if (owner_id==null){
+			return new ResultDto(-1, "车主身份证号不能为空");
+		}
+		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
+			return new ResultDto(-1, "防盗芯片编号已存在，不可重复添加！");
+		}
+		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
+			return new ResultDto(-1, "车牌号已存在，不可重复添加！");
+		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);
 		electrombile.setGua_card_num(gua_card_num);
@@ -423,12 +462,6 @@ public class ElectController extends BaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
-		if (electrombile.getGua_card_num() == null) {
-			return new ResultDto(-1, "防盗芯片编号不能为空！");
-		}
-		if (electrombile.getPlate_num() == null) {
-			return new ResultDto(-1, "车牌号不能为空！");
-		}
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 		if (null != elect_pic) {

@@ -282,4 +282,17 @@
     from station
     where station_name = #{stationName}
   </select>
+  
+  <select id="findStationsForFilter" parameterType="map" resultType="com.ems.iot.manage.entity.Station">
+		SELECT * FROM `station`
+		<where>
+			<if test="stationName != null">
+				station_name = #{stationName}
+			</if>
+			 <if test="stationPhyNum != null">
+				AND station_phy_num = #{stationPhyNum}
+			</if>
+		</where>
+		order by `install_date` desc
+	</select>
 </mapper>

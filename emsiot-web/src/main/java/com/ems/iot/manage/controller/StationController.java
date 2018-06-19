@@ -174,6 +174,12 @@ public class StationController extends BaseController {
 		if (null == station_name) {
 			return new ResultDto(-1, "基站名称不能为空！");
 		}
+		if (stationMapper.findStationsForFilter(null, station_phy_num)!=null) {
+			return new ResultDto(-1, "基站物理编号已存在，不可重复添加！");
+		}
+		if (stationMapper.findStationsForFilter(station_name, null)!=null) {
+			return new ResultDto(-1, "基站名称已存在，不可重复添加！");
+		}
 		// 创建OSSClient实例。
 		OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 	    Station station = new Station();
@@ -262,6 +268,12 @@ public class StationController extends BaseController {
 		}
 		if (null == station_name) {
 			return new ResultDto(-1, "基站名称不能为空！");
+		}
+		if (stationMapper.findStationsForFilter(null, station_phy_num)!=null) {
+			return new ResultDto(-1, "基站物理编号已存在，不可重复添加！");
+		}
+		if (stationMapper.findStationsForFilter(station_name, null)!=null) {
+			return new ResultDto(-1, "基站名称已存在，不可重复添加！");
 		}
 		// 创建OSSClient实例。
 		OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);

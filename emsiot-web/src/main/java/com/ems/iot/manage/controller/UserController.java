@@ -345,6 +345,9 @@ public class UserController extends BaseController {
 		if (user.getUser_name() == null) {
 			return new ResultDto(-1, "用户名不能为空");
 		}
+		if (userDao.findUserByName(user.getUser_name())!=null) {
+			return new ResultDto(-1, "用户名已存在");
+		}
 		userDao.updateUser(user);
 		return new ResultDto(0,"更新成功");
 	}

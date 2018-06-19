@@ -493,6 +493,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			 $scope.getElects();
                  $("#addCar").modal("hide"); 
             }
+            else{
+            	 alert(data.message);
+            }
         });
           }
        else {
@@ -611,6 +614,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		            	 alert(data.message);
 		    			 $scope.getElects();
 		                 $("#updateCar").modal("hide"); 
+		            }
+		            else{
+		            	 alert(data.message);
 		            }
 		        });
 		          } else {

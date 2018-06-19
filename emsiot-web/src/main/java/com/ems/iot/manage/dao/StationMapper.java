@@ -31,4 +31,11 @@ public interface StationMapper {
     
     List<Station> findStationsByStatus(@Param("stationStatus")Integer stationStatus,
     		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
+    /**
+     * 避免添加重复字段
+     * @param stationName
+     * @param stationPhyNum
+     * @return
+     */
+    Station findStationsForFilter(@Param("stationName")String stationName,@Param("stationPhyNum")Integer stationPhyNum);
 }

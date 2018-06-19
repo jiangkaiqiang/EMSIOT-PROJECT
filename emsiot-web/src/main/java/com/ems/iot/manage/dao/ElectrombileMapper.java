@@ -82,9 +82,17 @@ public interface ElectrombileMapper {
     List<Electrombile> findElectsByTele(@Param("tele") String tele);
    
     /**
-     * 根据管理员的ID查询该管理员已经备案登记的车辆数量
+     * 根据管理员的ID查询该管理员已经备案登记的车辆数量，此处是为App端的管理员提供服务
      * @param recorderId
      * @return
      */
     List<Electrombile> findElectsByRecorderId(@Param("recorderId") String recorderId);
+    
+    /**
+     * 为防止车牌号或防盗芯片编号这种唯一字段重复添加而设计的判断编号是否存在方法
+     * @param guaCardNum
+     * @param plateNum
+     * @return
+     */
+    Electrombile findElectForFilter(@Param("guaCardNum") Integer guaCardNum, @Param("plateNum") String plateNum);
 }

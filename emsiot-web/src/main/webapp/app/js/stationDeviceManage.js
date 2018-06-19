@@ -257,6 +257,9 @@ $scope.dropInstallPic = function(installPic){
 				 $scope.getStations();
 	             $("#updateStation").modal("hide"); 
 	        }
+	        else{
+	           	 alert(data.message);
+	           }
 	    });
 	  }
 	

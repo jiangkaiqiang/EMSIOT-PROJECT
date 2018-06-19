@@ -23,7 +23,13 @@ public class ResultDto {
 	public ResultDto(int status, String message) {
 		this.status = status;
 		this.message = message;
-		this.success = true;
+		if (status==-1) {
+			this.success = false;
+		}
+		else {
+			this.success = true;
+		}
+		
 	}
 	
 	

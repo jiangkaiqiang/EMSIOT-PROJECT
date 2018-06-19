@@ -701,4 +701,16 @@
 		</where>
 		order by `recorder_time` desc
 	</select>
+	<select id="findElectForFilter" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="guaCardNum != null">
+			    gua_card_num = #{guaCardNum}
+			</if>
+			<if test="plateNum != null">
+			    AND plate_num = #{plateNum}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
 </mapper>

@@ -220,9 +220,14 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 			  				addStationNames: $scope.addStationNames,
 			  				addBlackelectPlatenum: $scope.addBlackelectPlatenum,
 			  			}}).success(function (data) {
+			  			  if(data.success){
 			  				alert(data.message);
 			  				$scope.getLimitAreaByOptions();
-			  				 $("#addLimitArea").modal("hide"); 
+			  				$("#addLimitArea").modal("hide");
+			  				}
+			  			  else{
+			  				alert(data.message); 
+			  			  }
 			  			})
 			   }else{
 				   alert("限制区域名和基站ID不能为空！")

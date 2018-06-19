@@ -248,6 +248,12 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (owner_id==null){
 			return new AppResultDto(3001, "车主身份证号不能为空", false);
 		}
+		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
+			return new AppResultDto(3001, "防盗芯片编号已存在，不可重复添加！", false);
+		}
+		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
+			return new AppResultDto(3001, "车牌号已存在，不可重复添加！", false);
+		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
@@ -343,6 +349,12 @@ public class ElectSysUserAppController extends AppBaseController {
 		}
 		if (owner_id==null){
 			return new AppResultDto(3001, "车主身份证号不能为空", false);
+		}
+		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
+			return new AppResultDto(3001, "防盗芯片编号已存在，不可重复添加！", false);
+		}
+		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
+			return new AppResultDto(3001, "车牌号已存在，不可重复添加！", false);
 		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);

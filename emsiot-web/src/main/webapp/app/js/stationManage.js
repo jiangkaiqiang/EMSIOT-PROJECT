@@ -353,7 +353,9 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
             	 alert(data.message);
     			 $scope.getStations();
                  $("#addStation").modal("hide"); 
-            }
+            } else{
+           	 alert(data.message);
+           }
         });
           }
        else {
