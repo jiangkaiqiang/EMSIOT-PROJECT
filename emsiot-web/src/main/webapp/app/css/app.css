@@ -50,6 +50,9 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+.glyphicon{
+  cursor: pointer;
+}
 
 a:hover,
 a:focus {

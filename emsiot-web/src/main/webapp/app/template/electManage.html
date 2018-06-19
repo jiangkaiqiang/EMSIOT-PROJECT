@@ -1145,31 +1145,49 @@
                                     所在区域：
                                 </label>
 
-								<div class="col-sm-8 flex">
-									<select ng-show="userPowerDto.sysUser.pro_power==-1" id=""
-										class="form-control"
-										ng-model="updateElect.electrombile.pro_id"
-										ng-disabled="editable" ng-change="getCitisForUpdate()"
-										ng-options="x.province_id as x.name for x in provinces"></select>
-									<button ng-show="userPowerDto.sysUser.pro_power!=-1"
-										class="btn btn-guiji-after">
-										{{userPowerDto.pro_name}}</button>
-									<select ng-show="userPowerDto.sysUser.city_power==-1" id=""
-										class="form-control"
-										ng-model="updateElect.electrombile.city_id"
-										ng-disabled="editable" ng-click="getAreasForUpdate(addCityID)"
-										ng-options="x.city_id as x.name for x in citisForUpdate"></select>
-									<button ng-show="userPowerDto.sysUser.city_power!=-1"
-										class="btn btn-guiji-after">
-										{{userPowerDto.city_name}}</button>
-									<select ng-show="userPowerDto.sysUser.area_power==-1" id=""
-										class="form-control"
-										ng-model="updateElect.electrombile.area_id"
-										ng-disabled="editable"
-										ng-options="x.area_id as x.name for x in areasForUpdate"></select>
-									<button ng-show="userPowerDto.sysUser.area_power!=-1"
-										class="btn btn-guiji-after">
-										{{userPowerDto.area_name}}</button>
+								<div class="col-sm-10">
+                                    <div class="col-sm-4">
+                                        <select ng-show="userPowerDto.sysUser.pro_power==-1"
+                                                class="form-control"
+                                                ng-model="updateElect.electrombile.pro_id"
+                                                ng-disabled="editable" ng-change="getCitisForUpdate()"
+                                                ng-options="x.province_id as x.name for x in provinces">
+
+                                        </select>
+                                        <button ng-show="userPowerDto.sysUser.pro_power!=-1"
+                                                class="btn btn-guiji-after">
+                                            {{userPowerDto.pro_name}}
+                                        </button>
+                                    </div>
+
+                                    <div class="col-sm-4" ng-style style="margin:0 5px;">
+                                        <select ng-show="userPowerDto.sysUser.city_power==-1"
+                                                class="form-control"
+                                                ng-model="updateElect.electrombile.city_id"
+                                                ng-disabled="editable" ng-click="getAreasForUpdate(addCityID)"
+                                                ng-options="x.city_id as x.name for x in citisForUpdate">
+
+                                        </select>
+                                        <button ng-show="userPowerDto.sysUser.city_power!=-1"
+                                                class="btn btn-guiji-after">
+                                            {{userPowerDto.city_name}}
+                                        </button>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <select ng-show="userPowerDto.sysUser.area_power==-1"
+                                                class="form-control"
+                                                ng-model="updateElect.electrombile.area_id"
+                                                ng-disabled="editable"
+                                                ng-options="x.area_id as x.name for x in areasForUpdate">
+
+                                        </select>
+                                        <button ng-show="userPowerDto.sysUser.area_power!=-1"
+                                                class="btn btn-guiji-after">
+                                            {{userPowerDto.area_name}}
+                                        </button>
+                                    </div>
+
 								</div>
 							</div>
                         </div>

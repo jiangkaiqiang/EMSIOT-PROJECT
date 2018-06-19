@@ -858,13 +858,14 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		});
 	}
 
-	var firstChecked =$(".userModalSwitch ul input");
+	var firstChecked =$(".userModalSwitch ul .btn-white");
 	for(var b=0;b<firstChecked.length;b++){
 		$(firstChecked[b]).click(function(){
-			if($(this).prop("checked")){
-				$(this).parent(".btn-white").addClass("active");
+			$(this).toggleClass("active");
+			if($(this).hasClass("active")){
+				$(this).children("input[type=checkbox]").prop("checked",true);
 			}else{
-				$(this).parent(".btn-white").removeClass("active");
+				$(this).children("input").prop("checked",false);
 			}
 		});
 	}

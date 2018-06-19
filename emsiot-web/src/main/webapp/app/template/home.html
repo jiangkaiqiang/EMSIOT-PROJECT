@@ -85,7 +85,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close"
+                    <button ng-attr-type type="button" class="close"
                             data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
@@ -100,17 +100,22 @@
                                 查询条件：
                             </label>
 
-                            <div class="col-sm-7 flex">
-                                <select name="" id="" class="form-control">
-                                    <option value="">电动车</option>
-                                    <option value="">摩托车</option>
-                                </select>
-                                <select id="" class="form-control"
-                                        ng-model="keywordTypeForTrace" ng-disabled="editable"
-                                        ng-options="x.id as x.name for x in AllKeywordType"></select>
-                                <input type="text" placeholder="请输入关键词" class="form-control"
-                                       ng-model="keywordForTrace"/>
-
+                            <div class="col-sm-7">
+                                <div class="col-sm-3">
+                                    <select name="" id="" class="form-control">
+                                        <option value="">电动车</option>
+                                        <option value="">摩托车</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4" ng-style style="margin:0 5px;">
+                                    <select id="" class="form-control"
+                                            ng-model="keywordTypeForTrace" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input ng-attr-type type="text" ng-attr-placeholder placeholder="请输入关键词" class="form-control"
+                                           ng-model="keywordForTrace"/>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -120,8 +125,8 @@
 
                             <div class="col-sm-7 flex">
                                 <div class='input-group date' id='homeDateStart'>
-                                    <input type='text' class="form-control" ng-model="startTimeForTrace"
-                                           placeholder="选择开始时间" readonly/>
+                                    <input ng-attr-type type='text' class="form-control" ng-model="startTimeForTrace"
+                                           ng-attr-placeholder placeholder="选择开始时间" readonly/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
 						            </span>
@@ -130,8 +135,8 @@
                                 至
                                 &nbsp;
                                 <div class='input-group date' id='homeDateEnd'>
-                                    <input type='text' class="form-control" ng-model="endTimeForTrace"
-                                           placeholder="选择结束时间" readonly/>
+                                    <input ng-attr-type type='text' class="form-control" ng-model="endTimeForTrace"
+                                           ng-attr-placeholder placeholder="选择结束时间" readonly/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
 						            </span>
@@ -142,10 +147,10 @@
                  </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" ng-click="findElectTrace()" class="btn btn-primary">
+                    <button ng-attr-type type="button" ng-click="findElectTrace()" class="btn btn-primary">
                         查询轨迹
                     </button>
-                    <button type="button" ng-click="clearElectTrace()" class="btn btn-guiji">
+                    <button ng-attr-type type="button" ng-click="clearElectTrace()" class="btn btn-guiji">
                         清除轨迹
                     </button>
 
@@ -162,7 +167,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close"
+                    <button ng-attr-type type="button" class="close"
                             data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
@@ -177,28 +182,31 @@
                                 定位条件：
                             </label>
 
-                            <div class="col-sm-7 flex">
-                                <select name="" id="" class="form-control">
-                                    <option value="">电动车</option>
-                                    <option value="">摩托车</option>
-                                </select>
-
-                                <select id="" class="form-control"
-                                        ng-model="keywordTypeForLocation" ng-disabled="editable"
-                                        ng-options="x.id as x.name for x in AllKeywordType"></select>
-
-                                <input type="text" placeholder="请输入关键词" class="form-control"
-                                       ng-model="keywordForLocation"/>
-
+                            <div class="col-sm-7">
+                                <div class="col-sm-3">
+                                    <select name="" id="" class="form-control">
+                                        <option value="">电动车</option>
+                                        <option value="">摩托车</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4" ng-style style="margin:0 5px;">
+                                    <select id="" class="form-control"
+                                            ng-model="keywordTypeForLocation" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input ng-attr-type type="text" ng-attr-placeholder placeholder="请输入关键词" class="form-control"
+                                           ng-model="keywordForLocation"/>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" ng-click="findElectLocation()" class="btn btn-primary">
+                    <button ng-attr-type type="button" ng-click="findElectLocation()" class="btn btn-primary">
                         确定
                     </button>
-                    <button type="button" ng-click="clearElectLocation()" class="btn btn-guiji">
+                    <button ng-attr-type type="button" ng-click="clearElectLocation()" class="btn btn-guiji">
                         清除定位
                     </button>
 
@@ -210,28 +218,28 @@
     </div>
 </div>
 <!--以下市可视化地图的内容-->
-<div id="allmap" style="width:100%;height:800px;"></div>
+<div id="allmap" ng-style style="width:100%;height:800px;"></div>
 <div id="mapSearch">
     <div id="r-result" class="form-group has-feedback">
-        <input type="text" id="suggestId" size="20" value="百度" class="form-control" placeholder="搜索地址、区域"/>
+        <input ng-attr-type type="text" id="suggestId" size="20" ng-attr-value value="百度" class="form-control" ng-attr-placeholder placeholder="搜索地址、区域"/>
         <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
     </div>
-    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+    <div id="searchResultPanel" ng-style style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
 </div>
 <!--车辆经过的基站-->
-<div id="positionTable" class="shadow" style="position:absolute;top:150px;right:-490px;">
+<div id="positionTable" class="shadow" ng-style style="position:absolute;top:150px;right:-490px;">
     <ul class="flex-between">
         <li class="flex-items">
-            <img src="app/img/config-car.png" style="width:25px;"/>
+            <img src="app/img/config-car.png" ng-style style="width:25px;"/>
             <h4>车辆&nbsp;{{electNumForTraceTable}}</h4>
         </li>
         <li>经过{{traceStationsLength}}个&nbsp;基站</li>
     </ul>
-    <div class="tableArea" style="margin-top:5%;">
+    <div class="tableArea" ng-style style="margin-top:5%;">
         <table class="table table-striped " id="tableArea" ng-model="traceStations">
             <thead>
             <tr>
-                <th style="width:100px!important;">基站名称</th>
+                <th ng-style style="width:100px!important;">基站名称</th>
                 <th>基站地址</th>
                 <th>经过时间</th>
             </tr>

@@ -45,14 +45,14 @@
                     <li>
                         <img class="logo" src="app/img/logo.png">
                     </li>
-                    <li style="text-align:center;">
-                        <p ng-show="rootUserPowerDto.sysUser.pro_power==-1" style="font-size:13px;" class="hidden-folded">公安局</p>
-                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power==-1" 
-                        style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}公安局</p>
-                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power==-1" 
-                        style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}{{rootUserPowerDto.city_name}}公安局</p>
-                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power!=-1" 
-                        style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.city_name}}{{rootUserPowerDto.area_name}}公安局</p>
+                    <li ng-style style="text-align:center;">
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power==-1" ng-style style="font-size:13px;" class="hidden-folded">公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power==-1"
+                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power==-1"
+                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}{{rootUserPowerDto.city_name}}公安局</p>
+                        <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power!=-1"
+                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.city_name}}{{rootUserPowerDto.area_name}}公安局</p>
                         <span class="hidden-folded">电动车监管系统</span>
                     </li>
                 </ul>
@@ -76,8 +76,8 @@
 
             <!-- nabar right -->
             <ul class="nav navbar-nav navbar-right">
-                <li style="height:70px;line-height:70px;">
-                    <span id="message" style="color:red;"></span>
+                <li ng-style style="height:70px;line-height:70px;">
+                    <span id="message" ng-style style="color:red;"></span>
                 </li>
                 <li>
                     <a href="#/alarmTrack">
@@ -113,7 +113,7 @@
                         </a>
                         <a href="#" class="dropdown-toggle hidden-folded" data-toggle="dropdown">
                              <span class="clear text-left">
-                                <span class="block" style="font-size:16px;" ng-model="admin">
+                                <span class="block" ng-style style="font-size:16px;" ng-model="admin">
                                     {{admin.user_name}}&nbsp;欢迎您!
                                 </span>
                                <span class="text-muted text-xs " data-toggle="modal" data-target="#passwordEdit">修改密码</span>
@@ -323,7 +323,7 @@
     <!-- /.modal -->
 </div>
     <!-- 主体区域结构开始 -->
-    <div ui-view style="overflow: hidden" class="countWarp">
+    <div ui-view  ng-style style="overflow: hidden" class="countWarp">
 
     </div>
     <!-- 主体区域结构结束-->

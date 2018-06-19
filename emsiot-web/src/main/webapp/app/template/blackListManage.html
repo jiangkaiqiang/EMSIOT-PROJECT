@@ -105,7 +105,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<div class="modal-title" id="">新增车辆并加入黑名单</div>
+				<div class="modal-title">新增车辆并加入黑名单</div>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" name="electForm">
@@ -168,16 +168,25 @@
 									案发区域：
 								</label>
 
-								<div class="col-sm-10 flex">
-									<select id="" class="form-control" ng-model="addProvinceID"
-										ng-disabled="editable" ng-change="getCitis()"
-										ng-options="x.province_id as x.name for x in provinces"></select>
-									<select id="" class="form-control" ng-model="addCityID"
-										ng-disabled="editable" ng-change="getAreas(addCityID)"
-										ng-options="x.city_id as x.name for x in citis"></select> <select
-										id="" class="form-control" ng-model="addAreaID"
-										ng-disabled="editable"
-										ng-options="x.area_id as x.name for x in areas"></select>
+								<div class="col-sm-10">
+									<div class="col-sm-4">
+										<select class="form-control" ng-model="addProvinceID"
+												ng-disabled="editable" ng-change="getCitis()"
+												ng-options="x.province_id as x.name for x in provinces">
+										</select>
+									</div>
+									<div class="col-sm-4" ng-style style="margin:0 5px;">
+										<select class="form-control" ng-model="addCityID"
+												ng-disabled="editable" ng-change="getAreas(addCityID)"
+												ng-options="x.city_id as x.name for x in citis">
+										</select>
+									</div>
+									<div class="col-sm-3">
+										<select class="form-control" ng-model="addAreaID"
+												ng-disabled="editable"
+												ng-options="x.area_id as x.name for x in areas">
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -273,7 +282,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<div class="modal-title" id="">修改黑名单</div>
+				<div class="modal-title">修改黑名单</div>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" name="blackelectForm">
@@ -335,16 +344,25 @@
 									案发区域：
 								</label>
 
-								<div class="col-sm-10 flex">
-									<select id="" class="form-control" ng-model="blackElectForUpdate.blackelect.pro_id"
-										ng-disabled="editable" ng-change="getCitisForUpdate()"
-										ng-options="x.province_id as x.name for x in provinces"></select>
-									<select id="" class="form-control" ng-model="blackElectForUpdate.blackelect.city_id"
-										ng-disabled="editable" ng-change="getAreasForUpdate()"
-										ng-options="x.city_id as x.name for x in citisForUpdate"></select> <select
-										id="" class="form-control" ng-model="blackElectForUpdate.blackelect.area_id"
-										ng-disabled="editable"
-										ng-options="x.area_id as x.name for x in areasForUpdate"></select>
+								<div class="col-sm-10">
+									<div class="col-sm-4">
+										<select  class="form-control" ng-model="blackElectForUpdate.blackelect.pro_id"
+												 ng-disabled="editable" ng-change="getCitisForUpdate()"
+												 ng-options="x.province_id as x.name for x in provinces">
+										</select>
+									</div>
+									<div class="col-sm-4" ng-style style="margin:0 5px;">
+										<select  class="form-control" ng-model="blackElectForUpdate.blackelect.city_id"
+												 ng-disabled="editable" ng-change="getAreasForUpdate()"
+												 ng-options="x.city_id as x.name for x in citisForUpdate">
+										</select>
+									</div>
+									<div class="col-sm-3">
+										<select class="form-control" ng-model="blackElectForUpdate.blackelect.area_id"
+												ng-disabled="editable"
+												ng-options="x.area_id as x.name for x in areasForUpdate">
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
