@@ -100,18 +100,7 @@
     opacity:1!important;
 }
 
-/*#tableAreatest table{*/
-    /*width:100%;*/
-    /*table-layout:fixed;*/
-/*}*/
-/*#tableAreatest table td{*/
-     /*width:100%;*/
-     /*word-break:keep-all;*/
-     /*white-space:nowrap;*/
-     /*overflow:hidden;*/
-     /*text-overflow:ellipsis;*/
- /*}*/
-
+#viewModalElec .modal-body .row .form-group .col-sm-8{padding-top:7px;}
 
 @media screen and (max-width:1365px) and (min-width:1023px){
     #addCar .fileup .up-content a{

@@ -133,6 +133,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	//显示下拉搜索条件
 	$("#searchBlock").click(function () {
 		$("#unblock").toggleClass("unblock-active");
+		console.log($(this).children("i"));
+		if($(this).children("i").hasClass("fa-angle-down")){
+			$(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
+		}else{
+			$(this).children("i").removeClass("fa-angle-up").addClass("fa-angle-down");
+		};
 		isDisabled();
 	});
 

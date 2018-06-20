@@ -5552,6 +5552,9 @@ input[type=checkbox]:focus,input[type=radio]:focus {
   text-overflow:ellipsis;
 }
 .tableArea table thead th:first-child{width:51px!important;}
+table input[type=checkbox], input[type=radio]{
+  vertical-align:middle;
+}
 @media screen and (max-width:1367px){
   body{font-size:1em;}
   .navbar-brand{font-size:1.6em;}

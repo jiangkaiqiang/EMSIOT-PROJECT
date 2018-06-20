@@ -12,3 +12,6 @@
 .limitArea-content.leftToggle{
     left:-48.5%!important;
 }
+.limitArea-content  .title-nav>li:last-child>a{
+    background:none;
+}
