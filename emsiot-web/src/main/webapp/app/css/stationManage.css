@@ -73,3 +73,30 @@
     background:#fff;
     padding:5px 15px;
 }
+.stationDeviceManage .title-nav>li:last-child>a{background:none;color:#409eff;}
+.stationDeviceManage .title-nav form.navbar-form {
+    background: #EAF2FF;
+    border-radius: 5px;
+    margin-right: 8px;
+}
+.stationDeviceManage .title-nav form.navbar-form {
+    margin-top: 3px!important;
+}
+.stationDeviceManage .title-nav form.navbar-form input.bg-light {
+    color: #333!important;
+    text-align: left;
+}
+.stationDeviceManage .title-nav form.navbar-form button.bg-light {
+    color: #2B7DFA!important;
+    text-align: right;
+}
+.stationDeviceManage .title-brand .navbar-form button {
+    width: 50px!important;
+    height: 25px!important;
+    /* border-left: 1px solid #c0c3c9!important; */
+    border-left: 1px solid rgba(192,195,201,0.5)!important;
+}
+.stationDeviceManage .title-brand {
+    padding: 10px 0;
+}
+#viewStation .modal-body .col-md-6 .col-sm-8{margin-top:10px;}

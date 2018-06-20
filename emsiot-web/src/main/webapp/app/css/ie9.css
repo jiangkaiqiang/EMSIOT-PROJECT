@@ -82,5 +82,36 @@
 .alarmTrack>.title-brand{height:50px;line-height:50px;}
 
 /*基站样式*/
-.station-content>.page-title>.title-brand>select{float:left;}
+.station-content>.page-title>.title-brand>select{float:left;margin-top:20px;}
 .station-content>.page-title>.title-brand>ul.title-nav{float:right;}
+.station-content>.page-title>.title-brand>ul.title-nav>li.border-dashed{margin-top:36px;}
+.station-content>.page-title>.title-brand>ul.title-nav>li>a{margin-top:15px;}
+
+/*基站设备管理样式*/
+.stationDeviceManage.page-title> .title-brand{height:70px;line-height:50px;}
+.stationDeviceManage>.title-brand>.title-nav form{height:45px;}
+.stationDeviceManage .title-brand .navbar-form button{margin-bottom:15px;}
+
+/*限制区域管理样式*/
+.limitArea-content > .page-title > .title-brand > .title-text{margin-top:20px;}
+.limitArea-content > .page-title > .title-brand > .title-nav>li.border-dashed{margin-top:36px;}
+.limitArea-content > .page-title > .title-brand > .title-nav>li>a{margin-top:15px;}
+
+/*限制区域报警管理 样式*/
+.page-title.alarmManage-content > .title-brand{height:70px;line-height:50px;}
+.alarmManage-content > .title-brand > .title-nav form{height:45px;}
+.alarmManage-content .title-brand .navbar-form button{margin-bottom:15px;}
+
+/*用户管理样式*/
+.userManage>.title-brand{height:70px;}
+.userManage>.title-brand>.title-nav form{height:45px;}
+.userManage>.title-brand>.title-nav form button{margin-bottom:10px;}
+#addUser .modal-body .userModalSwitch,#updateUser .modal-body .userModalSwitch{height:50px;}
+#addUser .modal-body .userModalSwitch>ul,#updateUser .modal-body .userModalSwitch>u{float:left;}
+#addUser .modal-body .userModalSwitch>ul>li,#updateUser .modal-body .userModalSwitch>ul>li{float:left;}
+#addUser .modal-body .userModalSwitch>ul>li>button,#updateUser .modal-body .userModalSwitch>ul>li>button{float:left;}
+#addUser .modal-body .userModalSwitch>ul>li>button>span,#updateUser .modal-body .userModalSwitch>ul>li>button>span{float:left;}
+#addUser .modal-body .userModalSwitch>ul>li>button>i,#updateUser .modal-body .userModalSwitch>ul>li>button>i{float:left;}
+#addUser .modal-body .userModalSwitch>div,#updateUser .modal-body .userModalSwitch>div{float:right;}
+#addUser .modal-body .userModalSwitch>div>label,#updateUser .modal-body .userModalSwitch>div>label{float:left;}
+#addUser .modal-body .userModalSwitch>div>select,#updateUser .modal-body .userModalSwitch>div>select{float:left;}

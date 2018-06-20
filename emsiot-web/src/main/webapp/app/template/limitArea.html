@@ -1,6 +1,6 @@
 <div class="limitArea-content shadow">
 <nav class="page-title no-margin no-padding full-width ">
-    <div class="title-brand flex-around align-items no-border">
+    <div class="title-brand align-items no-border">
         <div class="title-text margin-left-md">限制区域管理</div>
         <!-- 删除了<i ng-show="==1" 否则无法测试，好像山东的没有这个权限？？？ -->
         <ul class="title-nav flex-between align-items margin-left">
@@ -9,23 +9,23 @@
                       role="search">
                     <div class="form-group border-bottom">
                         <div class="input-group">
-                            <input type="text" ng-model="limitAreaID"
+                            <input ng-attr-type type="text" ng-model="limitAreaID"
                                    typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                    class="form-control input-sm bg-light no-border searchInput no-padding"
-                                   placeholder="请输入限制区域编号搜索" style="color:#333;">
+                                   ng-attr-placeholder placeholder="请输入限制区域编号搜索" ng-style style="color:#333;">
                         <span class="input-group-btn">
-                             <button type="button" class="btn btn-sm bg-light searchInput text-right"
+                             <button ng-attr-type type="button" class="btn btn-sm bg-light searchInput text-right"
                                      ng-click="goSearch()">
-                                 <img src="app/img/search-black .png" alt="" class="pull-right"/>
+                                 <img src="app/img/search .png" alt="" class="pull-right"/>
                              </button>
                         </span>
                         </div>
                     </div>
                 </form>
             </li>
-            <li class="border-dashed" style="height:15px;color:#7D7C82;"></li>
+            <li class="border-dashed" ng-style style="height:15px;color:#7D7C82;"></li>
             <li>
-                <a href="" style="color:#7D7C82;">
+                <a href="" ng-style style="color:#7D7C82;">
                     <button class="btn btn-guiji" ng-click="goDeleteLimitAreas()">
                         <i class="glyphicon glyphicon-trash"></i>
                         批量删除
@@ -48,7 +48,7 @@
             <tr>
                 <th>
                     <div>
-                        <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                        <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
                     </div>
                 </th>
                 <!--<th>序号</th>-->
@@ -61,7 +61,7 @@
             <tbody>
             <tr ng-repeat="LimitArea in AllLimitAreas">
                 <td>
-                    <input type="checkbox" ng-checked="exists(LimitArea, selected)"
+                    <input ng-attr-type type="checkbox" ng-checked="exists(LimitArea, selected)"
                            ng-click="toggle(LimitArea, selected)"/>
                 </td>
                 <!-- <td>{{user.sysUser.user_id}}</td> -->
@@ -76,7 +76,7 @@
         </table>
         <div class="page">
             <!-- 翻页功能 -->
-            <div class="row" style="text-align:center">
+            <div class="row" ng-style style="text-align:center">
                 <pagination ng-change="pageChanged()" total-items="bigTotalItems"
                             ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
                             boundary-links="true" rotate="false" num-pages="numPages"></pagination>
@@ -93,7 +93,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
+                <button ng-attr-type type="button" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
                 <div class="modal-title" id="">新增限制区域</div>
             </div>
@@ -107,7 +107,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="addLimitAreaName">
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                                 <label for="" class="col-sm-4 control-label"> <i>*</i>关联基站名： </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="addStationNames">
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="addBlackelectPlatenum">
                                 </div>
                             </div>
@@ -140,10 +140,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="addLimitArea()" class="btn btn-primary">
+                <button ng-attr-type type="button" ng-click="addLimitArea()" class="btn btn-primary">
                     添加
                 </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                <button ng-attr-type type="button" class="btn btn-default" data-dismiss="modal">取消
                 </button>
             </div>
         </div>
@@ -153,4 +153,4 @@
 </div>
 <!--  添加限制区域模态框 end -->
 <!--以下市可视化内容-->
-<div id="limitAreaMap" style="width:100%;height:800px;ground:#ddd;">bbdbgf</div>
+<div id="limitAreaMap" ng-style style="width:100%;height:800px;ground:#ddd;">bbdbgf</div>

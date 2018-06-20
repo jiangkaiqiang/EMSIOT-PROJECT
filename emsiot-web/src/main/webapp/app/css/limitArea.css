@@ -15,3 +15,6 @@
 .limitArea-content  .title-nav>li:last-child>a{
     background:none;
 }
+.limitArea-content>.page-title>.title-brand>.title-text{float:left;margin-top: 15px;}
+.limitArea-content>.page-title>.title-brand>ul.title-nav{float:right;}
+.limitArea-content>.page-title>.title-brand>ul.title-nav>li{float:left;}

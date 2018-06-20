@@ -1,4 +1,4 @@
-<nav class="page-title shadow alarmManage-content">
+<nav class="page-title shadow stationDeviceManage">
     <div class="title-brand flex-between align-items">
         <div class="title-text flex-items">
             基站设备管理
@@ -9,10 +9,10 @@
                       data-target=".navbar-collapse" role="search">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" ng-model="stationPhyNum"
+                            <input ng-attr-type type="text" ng-model="stationPhyNum"
                                    typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                    class="form-control input-sm bg-light no-border searchInput padder"
-                                   placeholder="基站编号查询">
+                                   ng-attr-placeholder placeholder="基站编号查询">
                                  <span class="input-group-btn">
                                     <button ng-click="goSearch()" class="btn btn-sm bg-light searchInput"><i
                                             class="fa fa-search margin-right"></i></button>
@@ -22,15 +22,15 @@
                 </form>
             </li>
             <li>
-    <a href="">
-        <b class="border-dashed-left"></b>
+                <a href="">
+                     <b class="border-dashed-left"></b>
 
-        <button ng-show="rootUserPowerDto.stationDeviceDelete==1" ng-click="goDeleteStations()" class="btn btn-guiji">
-            <i class="glyphicon glyphicon-trash"></i>
-            批量删除
-        </button>
-    </a >
-</li>
+                    <button ng-show="rootUserPowerDto.stationDeviceDelete==1" ng-click="goDeleteStations()" class="btn btn-guiji">
+                         <i class="glyphicon glyphicon-trash"></i>
+                        批量删除
+                    </button>
+                </a >
+            </li>
         </ul>
     </div>
     <div class="search-container">
@@ -47,14 +47,14 @@
                     <label>添加时间：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='alarmDateStart'>
-                        <input type='text' class="form-control" id="startTime" placeholder="选择开始时间" readonly style="width:200px;"/>
+                        <input ng-attr-type type='text' class="form-control" id="startTime"  ng-attr-placeholder placeholder="选择开始时间" readonly ng-style style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                     --
                     <div class='input-group date' id='alarmDateEnd'>
-                        <input type='text' class="form-control" id="endTime" placeholder="选择结束时间" readonly style="width:200px;"/>
+                        <input ng-attr-type type='text' class="form-control" id="endTime"  ng-attr-placeholder placeholder="选择结束时间" readonly ng-style style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" ng-click="goSearch()">搜索</button>
+                    <button ng-attr-type type="button" class="btn btn-primary" ng-click="goSearch()">搜索</button>
                 </div>
 
             </div>
@@ -77,7 +77,7 @@
         <tr>
             <th>
                 <div>
-                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
                     <label for="allSecSon"></label>
                 </div>
             </th>
@@ -92,7 +92,7 @@
         <tbody>
         <tr ng-repeat="station in AllStations">
                     <td>
-                        <input type="checkbox" ng-checked="exists(station, selected)"
+                        <input ng-attr-type type="checkbox" ng-checked="exists(station, selected)"
                                ng-click="toggle(station, selected)"/>
                     </td>
                     <td>{{station.station_name}}</td>
@@ -110,7 +110,7 @@
     </table>
     <div class="page">
         <!-- 翻页功能 -->
-        <div class="row" style="text-align:center">
+        <div class="row" ng-style style="text-align:center">
             <pagination ng-change="pageChanged()" total-items="bigTotalItems"
                         ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
                         boundary-links="true" rotate="false" num-pages="numPages"></pagination>
@@ -123,7 +123,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close"
+                <button ng-attr-type type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
@@ -141,7 +141,7 @@
                                     物理编号：
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="addStationPhyNum" class="form-control"
+                                    <input ng-attr-type type="text" id="addStationPhyNum" class="form-control"
                                            ng-model="stationForUpdate.station_phy_num">
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
 
                                 <div class="col-sm-8">
                                     <div class='input-group date' id='electAlarmDate'>
-                                        <input type='text' class="form-control" placeholder="选择安装时间" readonly
+                                        <input ng-attr-type type='text' class="form-control"  ng-attr-placeholder placeholder="选择安装时间" readonly
                                                ng-model="stationForUpdate.install_date"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
@@ -173,7 +173,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" id="addStationLng" class="form-control" ng-model="stationForUpdate.longitude" readonly>
+                                    <input ng-attr-type type="text" id="addStationLng" class="form-control" ng-model="stationForUpdate.longitude" readonly>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" id="addStationLat" class="form-control" ng-model="stationForUpdate.latitude" readonly>
+                                    <input ng-attr-type type="text" id="addStationLat" class="form-control" ng-model="stationForUpdate.latitude" readonly>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="stationForUpdate.station_name">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="stationForUpdate.station_name">
                                 </div>
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="stationForUpdate.soft_version">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="stationForUpdate.soft_version">
                                 </div>
                             </div>
                         </div>
@@ -252,7 +252,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="stationForUpdate.contact_person">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="stationForUpdate.contact_person">
                                 </div>
                             </div>
                         </div>
@@ -263,7 +263,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="stationForUpdate.contact_tele">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="stationForUpdate.contact_tele">
                                 </div>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="addStationAddress"
+                                    <input ng-attr-type type="text" class="form-control" id="addStationAddress"
                                            ng-model="stationForUpdate.station_address">
                                 </div>
                             </div>
@@ -291,7 +291,7 @@
 
                                 <div class="col-sm-8 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="installPic" ngf-select="addInstallPic()" ng-model="stationForUpdate.install_pic" name="installPic">
+                                        <input ng-attr-type type="file" id="installPic" ngf-select="addInstallPic()" ng-model="stationForUpdate.install_pic" name="installPic">
                                         <output id="pic_list" class="pic_list">
                                         <span>
                                             <img ngf-src="stationForUpdate.install_pic">
@@ -307,10 +307,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="goUpdateStation()" class="btn btn-primary">
+                <button ng-attr-type type="button" ng-click="goUpdateStation()" class="btn btn-primary">
                     修改
                 </button>
-                <button type="button" class="btn btn-default"
+                <button ng-attr-type type="button" class="btn btn-default"
                         data-dismiss="modal">取消
                 </button>
             </div>
@@ -326,7 +326,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close"
+                <button ng-attr-type type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
