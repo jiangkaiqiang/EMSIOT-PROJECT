@@ -45,10 +45,10 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
-                    <button type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
+                    <button ng-attr-type type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
+                    <button ng-attr-type type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
                 </div>
-                <span class="text-blue pull-right margin-top" style="color:#3C7ADA;cursor:pointer;" id="searchBlock">
+                <span class="text-blue pull-right margin-top" ng-style style="color:#3C7ADA;cursor:pointer;" id="searchBlock">
                     更多搜索条件
                     <i class="fa fa-fw fa-angle-down text"></i>
                     <!--<i class="fa fa-fw fa-angle-up "></i>-->
@@ -73,14 +73,14 @@
                     <select id="" class="form-control"
                                             ng-model="searchKeyType"
                                             ng-options="x.id as x.name for x in AllSearchKeyType"></select>
-                    <input type="text" class="form-control" ng-model="searchKey" placeholder="请输入关键词"/>
+                    <input ng-attr-type type="text" class="form-control" ng-model="searchKey" ng-attr-placeholder placeholder="请输入关键词"/>
                 </div>
 
                 <div class="form-group datePicker">
                     <label>选择日期：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='electDateStart'>
-                        <input type='text' class="form-control" placeholder="选择开始时间" ng-model="startTime"
+                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间" ng-model="startTime"
                                readonly/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -88,7 +88,7 @@
                     </div>
                     --
                     <div class='input-group date' id='electDateEnd'>
-                        <input type='text' class="form-control" placeholder="选择结束时间" ng-model="endTime"
+                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间" ng-model="endTime"
                                readonly/> <span class="input-group-addon"> <span
                             class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -108,13 +108,13 @@
         <tr>
             <th>
                 <div>
-                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
                     <label for="allSecSon"></label>
                 </div>
             </th>
             <!-- <th>序号</th> -->
             <th>车牌号</th>
-            <th style="min-width:75px!important;">防盗芯片编号</th>
+            <th ng-style style="min-width:75px!important;">防盗芯片编号</th>
             <th>所属地区</th>
             <th>车辆状态</th>
             <th>录入人</th>
@@ -130,7 +130,7 @@
         <tbody>
         <tr ng-repeat="electDto in AllElectDtos">
             <td>
-                <input type="checkbox" ng-checked="exists(electDto, selected)"
+                <input ng-attr-type type="checkbox" ng-checked="exists(electDto, selected)"
                        ng-click="toggle(electDto, selected)"/>
             </td>
             <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.plate_num}}">{{electDto.electrombile.plate_num}}</td>
@@ -155,7 +155,7 @@
             <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
             
             <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.recorder_time}}">{{electDto.electrombile.recorder_time}}</td>
-            <td class="flex-items flex-center" style="overflow:visible;">
+            <td class="flex-items flex-center" ng-style style="overflow:visible;">
                 <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
                 <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#updateCar"></i>
 
@@ -195,7 +195,7 @@
     </table>
     <div class="page">
         <!-- 翻页功能 -->
-        <div class="row" style="text-align:center">
+        <div class="row" ng-style style="text-align:center">
             <pagination ng-change="pageChanged()" total-items="bigTotalItems"
                         ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
                         boundary-links="true" rotate="false" num-pages="numPages"></pagination>
@@ -210,7 +210,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close"
+                <button ng-attr-type type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
@@ -235,7 +235,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="phoneNum" ng-model="addOwnerTele">
+                                    <input ng-attr-type type="text" class="form-control" id="phoneNum" ng-model="addOwnerTele">
                                 </div>
                             </div>
                         </div>
@@ -248,7 +248,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addOwnerName" name="username">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addOwnerName" name="username">
                                 </div>
                             </div>
                         </div>
@@ -263,7 +263,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addOwnerAddress" name="address"
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addOwnerAddress" name="address"
                                            id="address">
                                 </div>
                             </div>
@@ -277,7 +277,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addOwnerID" name="id-user"
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addOwnerID" name="id-user"
                                            id="id-user">
                                 </div>
                             </div>
@@ -301,7 +301,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addGuaCardNum">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addGuaCardNum">
                                 </div>
                             </div>
                         </div>
@@ -313,7 +313,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addPlateNum">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addPlateNum">
                                 </div>
                             </div>
                         </div>
@@ -327,7 +327,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addVeIdNum">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addVeIdNum">
                                 </div>
                             </div>
                         </div>
@@ -356,7 +356,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addElectBrand">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addElectBrand">
                                 </div>
                             </div>
                         </div>
@@ -368,9 +368,8 @@
                                 </label>
 
                                 <div class="col-sm-8" id='electBuyDate'>
-                                    <!--<input type="text" class="form-control" ng-model="addBuyDate">-->
                                     <div class='input-group date' id='byCarDate'>
-                                        <input type='text' class="form-control" placeholder="选择购买时间" readonly
+                                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择购买时间" readonly
                                                ng-model="addBuyDate"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
@@ -391,7 +390,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addElectColor">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addElectColor">
                                 </div>
                             </div>
                         </div>
@@ -403,7 +402,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addMotorNum">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addMotorNum">
                                 </div>
                             </div>
                         </div>
@@ -419,24 +418,30 @@
                                     所在区域：
                                 </label>
 
-                                <div class="col-sm-8 flex">
-                                    <select id="" class="form-control" ng-show="userPowerDto.sysUser.pro_power==-1" ng-model="addProvinceID" ng-disabled="editable"
-                                            ng-change="getCitis()"
-                                            ng-options="x.province_id as x.name for x in provinces"></select>
-                                    <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-guiji-after">
-                                    {{userPowerDto.pro_name}}
-                                    </button>       
-                                    <select id="" class="form-control" ng-show="userPowerDto.sysUser.city_power==-1"  ng-model="addCityID" ng-disabled="editable"
-                                            ng-change="getAreas(addCityID)"
-                                            ng-options="x.city_id as x.name for x in citis"></select>
-                                     <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-guiji-after">
-                                    {{userPowerDto.city_name}}
-                                    </button>       
-                                    <select id="" ng-show="userPowerDto.sysUser.area_power==-1" class="form-control" ng-model="addAreaID" ng-disabled="editable"
-                                            ng-options="x.area_id as x.name for x in areas"></select>
-                                    <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-guiji-after">
-                                    {{userPowerDto.area_name}}
-                                    </button>     
+                                <div class="col-sm-10 flex">
+                                    <div class="col-sm-4">
+                                        <select id="" class="form-control" ng-show="userPowerDto.sysUser.pro_power==-1" ng-model="addProvinceID" ng-disabled="editable"
+                                                ng-change="getCitis()"
+                                                ng-options="x.province_id as x.name for x in provinces"></select>
+                                        <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-guiji-after">
+                                            {{userPowerDto.pro_name}}
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select id="" class="form-control" ng-show="userPowerDto.sysUser.city_power==-1"  ng-model="addCityID" ng-disabled="editable"
+                                                ng-change="getAreas(addCityID)"
+                                                ng-options="x.city_id as x.name for x in citis"></select>
+                                        <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-guiji-after">
+                                            {{userPowerDto.city_name}}
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select id="" ng-show="userPowerDto.sysUser.area_power==-1" class="form-control" ng-model="addAreaID" ng-disabled="editable"
+                                                ng-options="x.area_id as x.name for x in areas"></select>
+                                        <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-guiji-after">
+                                            {{userPowerDto.area_name}}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -451,7 +456,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="addNote">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addNote">
                                 </div>
                             </div>
                         </div>
@@ -459,24 +464,24 @@
 
                     <div class="row">
                         <div class="col-sm-12 flex-items ">
-                            <div class="col-sm-2" style="text-align:center;">
+                            <div class="col-sm-2" ng-style style="text-align:center;">
                                 <span> 车辆类型：</span>
                             </div>
                             <div class="col-sm-10">
                                 <label class="radio-inline">
-                                    <input type="radio" name="addElectType" value="2" checked>
+                                    <input ng-attr-type type="radio" name="addElectType" ng-attr-value value ="2" checked>
                                     两轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="addElectType" value="3">
+                                    <input ng-attr-type type="radio" name="addElectType" ng-attr-value value="3">
                                     三轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  name="addElectType" value="4">
+                                    <input ng-attr-type type="radio"  name="addElectType" ng-attr-value value="4">
                                     四轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  name="addElectType" value="1">
+                                    <input ng-attr-type type="radio"  name="addElectType" ng-attr-value value="1">
                                     摩托车
                                 </label>
                             </div>
@@ -494,7 +499,7 @@
                             <div class="col-sm-10">
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic"
+                                        <input ng-attr-type type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic"
                                                name="electPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -508,7 +513,7 @@
                                 </div>
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
+                                        <input ng-attr-type type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
                                                ng-model="indentityCardPic" name="indentityCardPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -521,7 +526,7 @@
                                     <p>身份证照片</p>
                                 </div>
                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input type="file" id="recordPic"
+                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file" id="recordPic"
                                                                                   ngf-select="addRecordPic()"
                                                                                   ng-model="recordPic"
                                                                                   name="recordPic">
@@ -536,7 +541,7 @@
                                     <p>备案登记表照片</p>
                                 </div>
                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input type="file"
+                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file"
                                                                                   id="installCardPic"
                                                                                   ngf-select="addInstallCardPic()"
                                                                                   ng-model="installCardPic"
@@ -552,7 +557,7 @@
                                     <p>安装芯片照片</p>
                                 </div>
                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input type="file"
+                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file"
                                                                                   id="insurPic"
                                                                                   ngf-select="addInsurPic()"
                                                                                   ng-model="insurPic"
@@ -568,7 +573,7 @@
                                     <p>保险单照片</p>
                                 </div>
                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input type="file"
+                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file"
                                                                                   id="teleFeePic"
                                                                                   ngf-select="addTeleFeePic()"
                                                                                   ng-model="teleFeePic"
@@ -589,10 +594,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="submit()" class="btn btn-primary">
+                <button ng-attr-type type="button" ng-click="submit()" class="btn btn-primary">
                     添加
                 </button>
-                <button type="button" class="btn btn-default"
+                <button ng-attr-type type="button" class="btn btn-default"
                         data-dismiss="modal">取消
                 </button>
             </div>
@@ -611,7 +616,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close noprint"
+                <button ng-attr-type type="button" class="close noprint"
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
@@ -836,7 +841,7 @@
 
                     <div class="row">
                         <div class="col-sm-12 flex-items ">
-                            <div class="col-sm-2" style="text-align:center;">
+                            <div class="col-sm-2" ng-style style="text-align:center;">
                                 <span> 车辆类型：</span>
                             </div>
                             <div class="col-sm-10">
@@ -920,7 +925,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-guiji noprint"  id="djPrint" >
+                <button ng-attr-type type="button" class="btn btn-guiji noprint"  id="djPrint" >
                     <i class="glyphicon glyphicon-print"></i>
                     登记证打印
                 </button>
@@ -938,7 +943,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close"
+                <button ng-attr-type type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
@@ -963,7 +968,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="phoneNum" ng-model="updateElect.electrombile.owner_tele">
+                                    <input ng-attr-type type="text" class="form-control" id="phoneNum" ng-model="updateElect.electrombile.owner_tele">
                                 </div>
                             </div>
                         </div>
@@ -976,7 +981,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.owner_name" name="username">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.owner_name" name="username">
                                 </div>
                             </div>
                         </div>
@@ -991,7 +996,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.owner_address" name="address"
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.owner_address" name="address"
                                            id="address">
                                 </div>
                             </div>
@@ -1005,7 +1010,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.owner_id" name="id-user"
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.owner_id" name="id-user"
                                            id="id-user">
                                 </div>
                             </div>
@@ -1029,7 +1034,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.gua_card_num">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.gua_card_num">
                                 </div>
                             </div>
                         </div>
@@ -1040,7 +1045,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.plate_num">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.plate_num">
                                 </div>
                             </div>
                         </div>
@@ -1054,7 +1059,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.ve_id_num">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.ve_id_num">
                                 </div>
                             </div>
                         </div>
@@ -1083,7 +1088,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.elect_brand">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.elect_brand">
                                 </div>
                             </div>
                         </div>
@@ -1096,7 +1101,7 @@
 
                                 <div class="col-sm-8" id='electBuyDate'>
                                     <div class='input-group date' id='buyCarDateUpdate'>
-                                        <input type='text' class="form-control" placeholder="选择购买时间" readonly
+                                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择购买时间" readonly
                                                ng-model="updateElect.electrombile.buy_date"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
@@ -1117,7 +1122,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.elect_color">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.elect_color">
                                 </div>
                             </div>
                         </div>
@@ -1129,7 +1134,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.motor_num">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.motor_num">
                                 </div>
                             </div>
                         </div>
@@ -1202,7 +1207,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="updateElect.electrombile.note">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.note">
                                 </div>
                             </div>
                         </div>
@@ -1210,24 +1215,24 @@
 
                     <div class="row">
                         <div class="col-sm-12 flex-items ">
-                            <div class="col-sm-2" style="text-align:center;">
+                            <div class="col-sm-2" ng-style style="text-align:center;">
                                 <span> 车辆类型：</span>
                             </div>
                             <div class="col-sm-10">
                                 <label class="radio-inline">
-                                    <input type="radio" name="updateElectType" value="2">
+                                    <input ng-attr-type type="radio" name="updateElectType" ng-attr-value value="2">
                                     两轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="updateElectType" value="3">
+                                    <input ng-attr-type type="radio" name="updateElectType" ng-attr-value value="3">
                                     三轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  name="updateElectType" value="4">
+                                    <input ng-attr-type type="radio"  name="updateElectType" ng-attr-value value="4">
                                     四轮
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  name="updateElectType" value="1">
+                                    <input ng-attr-type type="radio"  name="updateElectType" ng-attr-value value="1">
                                     摩托车
                                 </label>
                             </div>
@@ -1245,7 +1250,7 @@
                             <div class="col-sm-10">
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="electPic" ngf-select="addElectPic()" ng-model="updateElect.electrombile.elect_pic"
+                                        <input ng-attr-type type="file" id="electPic" ngf-select="addElectPic()" ng-model="updateElect.electrombile.elect_pic"
                                                name="electPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -1259,7 +1264,7 @@
                                 </div>
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                        <input type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
+                                        <input ng-attr-type type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
                                                ng-model="updateElect.electrombile.indentity_card_pic" name="indentityCardPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -1273,7 +1278,7 @@
                                 </div>
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                    <input type="file" id="recordPic" ngf-select="addRecordPic()"
+                                    <input ng-attr-type type="file" id="recordPic" ngf-select="addRecordPic()"
                                       ng-model="updateElect.electrombile.record_pic"  name="recordPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -1287,7 +1292,7 @@
                                 </div>
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                    <input type="file" id="installCardPic" ngf-select="addInstallCardPic()"
+                                    <input ng-attr-type type="file" id="installCardPic" ngf-select="addInstallCardPic()"
                                        ng-model="updateElect.electrombile.install_card_pic" name="installCardPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -1301,7 +1306,7 @@
                                 </div>
                                  <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                    <input type="file" id="insurPic" ngf-select="addInsurPic()"
+                                    <input ng-attr-type type="file" id="insurPic" ngf-select="addInsurPic()"
                                        ng-model="updateElect.electrombile.insur_pic" name="insurPic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -1315,7 +1320,7 @@
                                 </div>
                                 <div class="col-md-3 up-content">
                                     <a href="javascript:;" class="picfile">
-                                    <input type="file" id="teleFeePic" ngf-select="addTeleFeePic()"
+                                    <input ng-attr-type type="file" id="teleFeePic" ngf-select="addTeleFeePic()"
                                        ng-model="updateElect.electrombile.tele_fee_pic" name="teleFeePic">
                                         <output id="pic_list" class="pic_list">
                                             <span>
@@ -1333,10 +1338,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="update()" class="btn btn-primary">
+                <button ng-attr-type type="button" ng-click="update()" class="btn btn-primary">
                     更新
                 </button>
-                <button type="button" class="btn btn-default"
+                <button ng-attr-type type="button" class="btn btn-default"
                         data-dismiss="modal">取消
                 </button>
             </div>
@@ -1353,7 +1358,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close"
+                <button ng-attr-type type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
@@ -1367,20 +1372,20 @@
                         <label>轨迹时间：</label>
                         <!--指定 date标记-->
                         <div class='input-group date' id='guijiSearchStart'>
-                            <input type='text' class="form-control" placeholder="选择开始时间" ng-model="searchTraceStart" readonly style="width:200px;"/>
+                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间" ng-model="searchTraceStart" readonly ng-style style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                         </div>
                         --
                         <div class='input-group date' id='guijiSearchEnd'>
-                            <input type='text' class="form-control" placeholder="选择结束时间" ng-model="searchTraceEnd" readonly style="width:200px;"/>
+                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间" ng-model="searchTraceEnd" readonly ng-style style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" ng-click="goSearchForTraceWithTime()" style="padding:6px 12px;">搜索</button>
+                    <button class="btn btn-primary" ng-click="goSearchForTraceWithTime()" ng-style style="padding:6px 12px;">搜索</button>
                 </form>
 
                 <!-- 表格操作区域开始 -->
@@ -1388,7 +1393,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th style="width:100px!important;">经过基站ID</th>
+                            <th ng-style style="width:100px!important;">经过基站ID</th>
                             <th>经过基站名称</th>
                             <th>经过基站时间</th>
                         </tr>

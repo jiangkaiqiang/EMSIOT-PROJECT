@@ -7,7 +7,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 					window.location.href = url;
 				}
 				$scope.getStations();
-		   });	 
+		   });
 		 // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
 		 $http.get('/i/city/findCityNameByUserPower', {
 		            params: {

@@ -9,7 +9,7 @@
 					</button>
 			     </a>
 			</li>
-			<li class="border-dashed" style="height:15px;margin-right:15px;"></li>
+			<li class="border-dashed" ng-style style="height:15px;margin-right:15px;"></li>
 			<li ng-show="rootUserPowerDto.blackAdd==1">
 			     <a href="" data-toggle="modal" data-target="#addBlackelect">
 					<i class="glyphicon glyphicon-plus"></i> 新增车辆报警并加入黑名单
@@ -21,23 +21,23 @@
 		<form class="form-inline">
 			<div class="block-content">
 				<div class="form-group">
-					<label for="">车牌号</label> <input type="text" placeholder="车牌号查询"
+					<label for="">车牌号</label> <input ng-attr-type type="text" ng-attr-placeholder placeholder="车牌号查询"
 						ng-model="plateNum" class="form-control" />
 				</div>
 				<div class="form-group">
-					<label for="">手机号</label> <input type="text" placeholder="车主手机号查询"
+					<label for="">手机号</label> <input ng-attr-type type="text" ng-attr-placeholder placeholder="车主手机号查询"
 						ng-model="ownerTele" class="form-control" />
 				</div>
 				<div class="form-group">
 					<label for="DealStatus">处理状态</label> <select name=""
 						id="DealStatus" ng-model="DealStatus" class="form-control">
-						<option value="0">未处理</option>
-						<option value="1">已处理</option>
+						<option ng-attr-value value="0">未处理</option>
+						<option ng-attr-value value="1">已处理</option>
 					</select>
 				</div>
 
 				<div class="form-group">
-					<button type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
+					<button ng-attr-type type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
 				</div>
 			</div>
 		</form>
@@ -53,7 +53,7 @@
 			<tr>
 				<th>
 					<div>
-						<input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+						<input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
 						<label for="allSecSon"></label>
 					</div>
 				</th>
@@ -68,7 +68,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="blackelectDto in AllBlackelects">
-				<td><input type="checkbox"
+				<td><input ng-attr-type type="checkbox"
 					ng-checked="exists(blackelectDto, selected)"
 					ng-click="toggle(blackelectDto, selected)" /></td>
 				<td>{{blackelectDto.blackelect.black_id}}</td>
@@ -87,7 +87,7 @@
 	</table>
 	<div class="page">
 		<!-- 翻页功能 -->
-		<div class="row" style="text-align:center">
+		<div class="row" ng-style style="text-align:center">
 			<pagination ng-change="pageChanged()" total-items="bigTotalItems"
 				ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
 				boundary-links="true" rotate="false" num-pages="numPages"></pagination>
@@ -103,7 +103,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button ng-attr-type type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
 				<div class="modal-title">新增车辆并加入黑名单</div>
 			</div>
@@ -117,7 +117,7 @@
 								</label>
 
 								<div class="col-sm-8">
-									<input type="text" class="form-control"
+									<input ng-attr-type type="text" class="form-control"
 										ng-model="addPlateNum">
 								</div>
 							</div>
@@ -128,7 +128,7 @@
 
 								<div class="col-sm-8">
 									<div class='input-group date' id='electAlarmDate'>
-										<input type='text' class="form-control" placeholder="选择开始时间"
+										<input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间"
 											readonly ng-model="addOccurDate" /> <span
 											class="input-group-addon"> <span
 											class="glyphicon glyphicon-calendar"></span>
@@ -147,7 +147,7 @@
 								<label for="" class="col-sm-4 control-label"> 车主手机： </label>
 
 								<div class="col-sm-8">
-									<input type="text" class="form-control" id="addOwnerTele"  ng-model="addOwnerTele">
+									<input ng-attr-type type="text" class="form-control" id="addOwnerTele"  ng-model="addOwnerTele">
 								</div>
 							</div>
 						</div>
@@ -156,13 +156,13 @@
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 车主姓名： </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" id="addOwnerName"  ng-model="addOwnerName">
+									<input ng-attr-type type="text" class="form-control" id="addOwnerName"  ng-model="addOwnerName">
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-sm-12">
 							<div class="form-group" id="electAlarmArea">
 								<label for="" class="col-sm-2 control-label"> <i>*</i>
 									案发区域：
@@ -175,13 +175,13 @@
 												ng-options="x.province_id as x.name for x in provinces">
 										</select>
 									</div>
-									<div class="col-sm-4" ng-style style="margin:0 5px;">
+									<div class="col-sm-4">
 										<select class="form-control" ng-model="addCityID"
 												ng-disabled="editable" ng-change="getAreas(addCityID)"
 												ng-options="x.city_id as x.name for x in citis">
 										</select>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-4">
 										<select class="form-control" ng-model="addAreaID"
 												ng-disabled="editable"
 												ng-options="x.area_id as x.name for x in areas">
@@ -203,16 +203,16 @@
 								<div class="col-sm-8">
 									<select name="" id="" class="form-control"
 										ng-model="addAddressType">
-										<option value="社区">社区</option>
-										<option value="地铁站">地铁站</option>
-										<option value="商场">商场</option>
-										<option value="超市">超市</option>
-										<option value="沿街商铺">沿街商铺</option>
-										<option value="办公楼">办公楼</option>
-										<option value="医院">医院</option>
-										<option value="车站">车站</option>
-										<option value="学校">学校</option>
-										<option value="其他">其他</option>
+										<option ng-attr-value value="社区">社区</option>
+										<option ng-attr-value value="地铁站">地铁站</option>
+										<option ng-attr-value value="商场">商场</option>
+										<option ng-attr-value value="超市">超市</option>
+										<option ng-attr-value value="沿街商铺">沿街商铺</option>
+										<option ng-attr-value value="办公楼">办公楼</option>
+										<option ng-attr-value value="医院">医院</option>
+										<option ng-attr-value value="车站">车站</option>
+										<option ng-attr-value value="学校">学校</option>
+										<option ng-attr-value value="其他">其他</option>
 									</select>
 								</div>
 							</div>
@@ -226,7 +226,7 @@
 								<label for="" class="col-sm-4 control-label"> 详细地址： </label>
 
 								<div class="col-sm-8">
-									<input type="text" class="form-control" ng-model="addDetailAddress">
+									<input ng-attr-type type="text" class="form-control" ng-model="addDetailAddress">
 								</div>
 							</div>
 							</div>
@@ -239,8 +239,7 @@
 								<label for="" class="col-sm-2 control-label"> 备注： </label>
 
 								<div class="col-sm-10">
-									<!--<textarea name="" id="" cols="30" rows="10"></textarea>-->
-									<textarea rows="3" style="border:1px solid #ddd;width:100%"
+									<textarea rows="3" ng-style style="border:1px solid #ddd;width:100%"
 										class="form-control" ng-model="addCaseDetail"></textarea>
 								</div>
 							</div>
@@ -253,7 +252,7 @@
 								<label for="" class="col-sm-2 control-label"> </label>
 
 								<div class="col-sm-10 flex">
-									<input type="checkbox" ng-style style="margin:4px 5px 0 0;"
+									<input ng-attr-type type="checkbox" ng-style style="margin:4px 5px 0 0;"
 										ng-model="addConfirm" />我们已经与车主联系或者车主已主动110报警，并已确定车辆被盗
 								</div>
 							</div>
@@ -263,9 +262,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-			    <button type="button" ng-click="refreshInfo()" class="btn btn-primary">刷新信息</button>
-				<button type="button" ng-click="submit()" class="btn btn-primary">添加</button>		
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			    <button ng-attr-type type="button" ng-click="refreshInfo()" class="btn btn-primary">刷新信息</button>
+				<button ng-attr-type type="button" ng-click="submit()" class="btn btn-primary">添加</button>
+				<button ng-attr-type type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -280,7 +279,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button ng-attr-type type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
 				<div class="modal-title">修改黑名单</div>
 			</div>
@@ -293,7 +292,7 @@
 									车牌号：
 								</label>
 								<div class="col-sm-8">
-									<input type="text" id="blackID" class="form-control" readonly
+									<input ng-attr-type type="text" id="blackID" class="form-control" readonly
 										ng-model="blackElectForUpdate.blackelect.plate_num">
 								</div>
 							</div>
@@ -304,7 +303,7 @@
 
 								<div class="col-sm-8">
 									<div class='input-group date' id='electAlarmDateUpdate'>
-										<input type='text' class="form-control" placeholder="选择案发时间" readonly
+										<input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择案发时间" readonly
 											ng-model="blackElectForUpdate.blackelect.case_occur_time" /> 
 									    <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
@@ -321,7 +320,7 @@
 								<label for="" class="col-sm-4 control-label"> 车主手机： </label>
 
 								<div class="col-sm-8">
-									<input type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_tele">
+									<input ng-attr-type type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_tele">
 								</div>
 							</div>
 						</div>
@@ -331,14 +330,14 @@
 								<label for="" class="col-sm-4 control-label"> 车主姓名： </label>
 
 								<div class="col-sm-8">
-									<input type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_name">
+									<input ng-attr-type type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_name">
 								</div>
 							</div>
 						</div>
 					</div>
 					
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-sm-12">
 							<div class="form-group" id="electAlarmArea">
 								<label for="" class="col-sm-2 control-label"> <i>*</i>
 									案发区域：
@@ -351,13 +350,13 @@
 												 ng-options="x.province_id as x.name for x in provinces">
 										</select>
 									</div>
-									<div class="col-sm-4" ng-style style="margin:0 5px;">
+									<div class="col-sm-4">
 										<select  class="form-control" ng-model="blackElectForUpdate.blackelect.city_id"
 												 ng-disabled="editable" ng-change="getAreasForUpdate()"
 												 ng-options="x.city_id as x.name for x in citisForUpdate">
 										</select>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-4">
 										<select class="form-control" ng-model="blackElectForUpdate.blackelect.area_id"
 												ng-disabled="editable"
 												ng-options="x.area_id as x.name for x in areasForUpdate">
@@ -380,16 +379,16 @@
 								<div class="col-sm-8">
 									<select name="" id="" class="form-control"
 										ng-model="blackElectForUpdate.blackelect.case_address_type">
-										<option value="社区">社区</option>
-										<option value="地铁站">地铁站</option>
-										<option value="商场">商场</option>
-										<option value="超市">超市</option>
-										<option value="沿街商铺">沿街商铺</option>
-										<option value="办公楼">办公楼</option>
-										<option value="医院">医院</option>
-										<option value="车站">车站</option>
-										<option value="学校">学校</option>
-										<option value="其他">其他</option>
+										<option ng-attr-value value="社区">社区</option>
+										<option ng-attr-value value="地铁站">地铁站</option>
+										<option ng-attr-value value="商场">商场</option>
+										<option ng-attr-value value="超市">超市</option>
+										<option ng-attr-value value="沿街商铺">沿街商铺</option>
+										<option ng-attr-value value="办公楼">办公楼</option>
+										<option ng-attr-value value="医院">医院</option>
+										<option ng-attr-value value="车站">车站</option>
+										<option ng-attr-value value="学校">学校</option>
+										<option ng-attr-value value="其他">其他</option>
 									</select>
 								</div>
 							</div>
@@ -403,7 +402,7 @@
 
 								<div class="col-sm-10">
 									<!--<textarea name="" id="" cols="30" rows="10"></textarea>-->
-									<textarea rows="3" style="border:1px solid #ddd;width:100%"
+									<textarea rows="3" ng-style style="border:1px solid #ddd;width:100%"
 										class="form-control" ng-model="blackElectForUpdate.blackelect.case_detail"></textarea>
 								</div>
 							</div>
@@ -433,10 +432,10 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" ng-click="goUpdateBlackelectConfirm()"
+				<button ng-attr-type type="button" ng-click="goUpdateBlackelectConfirm()"
 					class="btn btn-primary">修改</button>
 					
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消
+				<button ng-attr-type type="button" class="btn btn-default" data-dismiss="modal">取消
 				</button>
 			</div>
 		</div>

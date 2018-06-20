@@ -44,6 +44,7 @@
 .alarmManage-content .search-container .datePicker .glyphicon{
     opacity:0.5;
 }
+.alarmTrack .title-nav>li:last-child>a{background:none;color:#409eff;}
 
 @media screen and (max-width:1078px) and (min-width:769px){
     .alarmManage-content .search-container .datePicker{

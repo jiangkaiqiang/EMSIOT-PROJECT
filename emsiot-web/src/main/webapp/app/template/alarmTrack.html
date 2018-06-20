@@ -1,4 +1,4 @@
-<nav class="page-title shadow alarmManage-content">
+<nav class="page-title shadow alarmTrack">
     <div class="title-brand flex-between align-items">
         <div class="title-text flex-items">
             报警追踪
@@ -17,23 +17,23 @@
         <form class="form-inline">
             <div class="block-content">
                 <div class="form-group">
-                    <label for="">车牌号</label> <input type="text" placeholder="车牌号查询"
+                    <label for="">车牌号</label> <input ng-attr-type type="text" placeholder placeholder="车牌号查询"
                                                      ng-model="plateNum" class="form-control"/>
                 </div>
                 <div class="form-group datePicker">
                     <label>报警时间：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='alarmDateStart'>
-                        <input type='text' class="form-control" ng-model="alarmDateStart" placeholder="选择开始时间" readonly
-                               style="width:200px;"/>
+                        <input ng-attr-type type='text' class="form-control" ng-model="alarmDateStart" placeholder placeholder="选择开始时间" readonly
+                               ng-style style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                     --
                     <div class='input-group date' id='alarmDateEnd'>
-                        <input type='text' class="form-control" ng-model="alarmDateEnd" placeholder="选择结束时间" readonly
-                               style="width:200px;"/>
+                        <input ng-attr-type type='text' class="form-control" ng-model="alarmDateEnd" placeholder placeholder="选择结束时间" readonly
+                               ng-style style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
+                    <button ng-attr-type type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
                 </div>
 
             </div>
@@ -56,7 +56,7 @@
         <tr>
             <th>
                 <div>
-                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
                     <label for="allSecSon"></label>
                 </div>
             </th>
@@ -72,7 +72,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="electAlarmDto in AllElectalarms">
-            <td><input type="checkbox"
+            <td><input ng-attr-type type="checkbox"
                        ng-checked="exists(electAlarmDto, selected)"
                        ng-click="toggle(electAlarmDto, selected)"/></td>
             <!-- <td>{{user.sysUser.user_id}}</td> -->
@@ -91,7 +91,7 @@
     </table>
     <div class="page">
         <!-- 翻页功能 -->
-        <div class="row" style="text-align:center">
+        <div class="row" ng-style style="text-align:center">
             <pagination ng-change="pageChanged()" total-items="bigTotalItems"
                         ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
                         boundary-links="true" rotate="false" num-pages="numPages"></pagination>

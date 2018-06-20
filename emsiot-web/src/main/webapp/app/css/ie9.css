@@ -1,0 +1,86 @@
+/*此文件为兼容ie9样式的文件，不可删除*/
+
+/*公共样式*/
+.page-title>.title-brand>div.title-text{float:left;}
+.page-title>.title-brand>ul.title-nav{float:right;}
+.page-title>.title-brand{height:50px;line-height:50px;}
+.title-nav > li:last-child > a{padding:0 20px;}
+.page-title>.title-brand:after{
+    content: ''; display: block; height: 0; clear: both;
+}
+.page-title>.title-brand>ul.title-nav>li{float:left;}
+.tableArea>.table>tbody>tr>td.flex-items>i{
+    float:left;
+    margin-top:5px;
+}
+.tableArea>.table>tbody>tr>td.flex-items>i:first-child{margin-left:15px;}
+.tableArea>.table>tbody>tr>td.flex-items>.dropdown{
+    float:left;
+}
+
+/*index样式*/
+#app>.app-header>.navbar-header>.navbar-brand>ul>li{
+    float:left;
+}
+#app>.app-header>.navbar-header>.navbar-brand>ul{padding-left:7px;}
+#aside-user>.wrapper>a{
+    float:left;
+}
+#aside-user{
+    padding:15px 10px;
+}
+
+/*home样式*/
+.home-title>ul.home-nav{
+    float:left;
+}
+.home-title>ul.home-nav>li{
+    float:left;
+}
+.home-title>ul.home-nav>li ul.flex li{
+    float:left;
+}
+.countWarp .home-title .home-nav > li > a{height:60px;}
+.home-title>ul.home-nav-right{
+    float:right;
+}
+.home-title>ul.home-nav-right>li{
+    float:left;
+    line-height:60px;
+}
+.home-title>ul.home-nav-right>li>div{
+    float:left;
+}
+.home-title>ul.home-nav-right>li>div.swichWrap{margin-top:22px;}
+#guijiModal .col-sm-7.flex>div{float:left;}
+#guijiModal .col-sm-7.flex>div.dandu{padding-top:6px;margin:0 5px;}
+#positionTable>ul.flex-between:after{
+    content: ''; display: block; height: 0; clear: both;
+}
+#positionTable>ul.flex-between>li:first-child{
+    float:left;
+}
+#positionTable>ul.flex-between>li:last-child{
+    float:right;
+}
+#positionTable>ul.flex-between>li>img{
+    float:left;
+}
+#positionTable>ul.flex-between>li>h4{
+    float:left;
+}
+
+/*车辆备案样式*/
+#addCar .modal-body .myModalTitle>img,#updateCar .modal-body .myModalTitle>img,#viewModalElec .modal-body .myModalTitle>img{float:left;}
+#addCar .modal-body .myModalTitle>div,#updateCar .modal-body .myModalTitle>div,#viewModalElec .modal-body .myModalTitle>div{float:left;}
+#addCar .modal-body .myModalTitle,#updateCar .modal-body .myModalTitle,#viewModalElec .modal-body .myModalTitle{height:25px;margin-bottom:10px;}
+
+/*黑名单管理样式*/
+.electAlarm>.title-brand>.title-nav>li.border-dashed{margin-top:20px;}
+
+/*报警追踪样式*/
+.alarmTrack>.title-brand{height:50px;line-height:50px;}
+
+/*基站样式*/
+.station-content>.page-title>.title-brand>select{float:left;}
+.station-content>.page-title>.title-brand>ul.title-nav{float:right;}
