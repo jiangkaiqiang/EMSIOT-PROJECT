@@ -19,6 +19,8 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 	return {
 		setAdmin: function(admin){
 	    	$rootScope.admin = admin;
+
+			//权限
 			if ($rootScope.admin != null && $rootScope.admin.user_id != 0 && $rootScope.admin.user_id != undefined) {
 				$http.get('/i/user/findUserByID', {
 					params : {
@@ -28,6 +30,8 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 					$rootScope.rootUserPowerDto = data;
 				});
 			}
+
+
 			$rootScope.logout = function () {
 	        	$http.get('/i/user/logout').success(function(data){
 	        		$rootScope.admin = null;
@@ -87,7 +91,7 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 		            alert("密码输入有误!");
 		        }
 		    }
-	    },
+	    }
 	}
 }])
 
