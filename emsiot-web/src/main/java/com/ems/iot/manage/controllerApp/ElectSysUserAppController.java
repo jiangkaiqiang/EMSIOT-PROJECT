@@ -22,9 +22,12 @@ import com.ems.iot.manage.dto.ElectrombileDto;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
+import com.ems.iot.manage.entity.Area;
+import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
+import com.ems.iot.manage.entity.Province;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.CookieService;
@@ -171,10 +174,22 @@ public class ElectSysUserAppController extends AppBaseController {
 		for (Electrombile electrombile : electrombiles) {
 			ElectrombileDto electrombileDto = new ElectrombileDto();
 			electrombileDto.setElectrombile(electrombile);
-			electrombileDto.setProvinceName(cityMapper.findProvinceById(electrombile.getPro_id()).getName());
-			electrombileDto.setCityName(cityMapper.findCityById(electrombile.getCity_id()).getName());
-			electrombileDto.setAreaName(cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName());
-			electrombileDto.setRecordName(sysUserMapper.findUserById(electrombile.getRecorder_id()).getUser_name());
+			Province province = cityMapper.findProvinceById(electrombile.getPro_id());
+			if (province!=null) {
+				electrombileDto.setProvinceName(province.getName());
+			}
+			City city = cityMapper.findCityById(electrombile.getCity_id());
+			if (city!=null) {
+				electrombileDto.setCityName(city.getName());
+			}
+			Area area = cityMapper.findAreaNameByAreaID(electrombile.getArea_id());
+			if (area!=null) {
+				electrombileDto.setAreaName(area.getName());
+			}
+			SysUser sysRecorder = sysUserMapper.findUserById(electrombile.getRecorder_id());
+			if (sysRecorder!=null) {
+				electrombileDto.setRecordName(sysRecorder.getUser_name());
+			}
 			electrombileDtos.add(electrombileDto);
 		}
 		electrombileDtos.setPageSize(electrombiles.getPageSize());
@@ -350,12 +365,12 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (owner_id==null){
 			return new AppResultDto(3001, "车主身份证号不能为空", false);
 		}
-		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
-			return new AppResultDto(3001, "防盗芯片编号已存在，不可重复添加！", false);
-		}
-		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
-			return new AppResultDto(3001, "车牌号已存在，不可重复添加！", false);
-		}
+//		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
+//			return new AppResultDto(3001, "防盗芯片编号已存在，不可重复添加！", false);
+//		}
+//		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
+//			return new AppResultDto(3001, "车牌号已存在，不可重复添加！", false);
+//		}
 		Electrombile electrombile = new Electrombile();
 		electrombile.setElect_id(elect_id);
 		electrombile.setGua_card_num(gua_card_num);

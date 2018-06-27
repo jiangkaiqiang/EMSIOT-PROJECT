@@ -237,7 +237,7 @@ public class ElectUserAppController extends AppBaseController {
 			caseAddress += cityMapper.findAreaNameByAreaID(electrombile.getArea_id()).getName();
 		blackelect.setCase_address(caseAddress);
 		blackelect.setCase_detail(case_detail);
-		blackelect.setDeal_status(0);
+		blackelect.setDeal_status(8);
 		blackelect.setDetail_address(detail_address);
 		blackelectMapper.insert(blackelect);
 		return new AppResultDto(1001, "添加成功");

@@ -34,6 +34,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				            	$scope.citis = data;
 				            	$scope.citisForUpdate = data;
 				            	$scope.citisForSearch = data;
+				            	$scope.addProvinceID = $scope.userPowerDto.sysUser.pro_power;
 				            	var city = {"city_id":"-1","name":"不限"};
 				            	$scope.citisForSearch.push(city);
 				            });
@@ -47,9 +48,13 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				            	$scope.areas = data;
 				            	$scope.areasForUpdate = data;
 				            	$scope.areasForSearch = data;
+				            	$scope.addCityID = $scope.userPowerDto.sysUser.city_power;
 				            	var area = {"area_id":"-1","name":"不限"};
 				            	$scope.areasForSearch.push(area);
 				            });
+				    	if($scope.userPowerDto.sysUser.area_power != "-1"){
+				    		$scope.addAreaID = $scope.userPowerDto.sysUser.area_power;
+				    	}
 				    	}
 				    	 //获取全部管理员
 				        $http.get('/i/user/findAllUsers',{

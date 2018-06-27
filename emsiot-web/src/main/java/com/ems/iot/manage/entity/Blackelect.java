@@ -28,6 +28,10 @@ public class Blackelect {
     private Integer deal_status;
     
     private String detail_address;
+    
+    private String comfirm_sysuser_name;
+    
+    private String deal_sysuser_name;
 
     public String getDetail_address() {
 		return detail_address;
@@ -132,4 +136,21 @@ public class Blackelect {
     public void setDeal_status(Integer deal_status) {
         this.deal_status = deal_status;
     }
+
+	public String getComfirm_sysuser_name() {
+		return comfirm_sysuser_name;
+	}
+
+	public void setComfirm_sysuser_name(String comfirm_sysuser_name) {
+		this.comfirm_sysuser_name = comfirm_sysuser_name;
+	}
+
+	public String getDeal_sysuser_name() {
+		return deal_sysuser_name;
+	}
+
+	public void setDeal_sysuser_name(String deal_sysuser_name) {
+		this.deal_sysuser_name = deal_sysuser_name;
+	}
+    
 }

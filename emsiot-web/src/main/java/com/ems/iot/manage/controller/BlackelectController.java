@@ -109,6 +109,57 @@ public class BlackelectController extends BaseController {
 	}
 
 	/**
+	 * 确认报警信息
+	 * @param blackID
+	 * @param plate_num
+	 * @return
+	 */
+	@RequestMapping(value = "/confirmBlackelectByID")
+	@ResponseBody
+	public Object confirmBlackelectByID(
+			@RequestParam(value = "blackID", required = false) Integer blackID,
+			@RequestParam(value = "plate_num", required = false) String plate_num,
+			@RequestParam(value = "comfirm_sysuser_name", required = false) String comfirm_sysuser_name
+			) {
+		Electrombile electrombile = new Electrombile();
+		electrombile.setPlate_num(plate_num);
+		electrombile.setElect_state(2);
+		electrombileMapper.updateByPlateNumSelective(electrombile);
+		Blackelect blackelect = new Blackelect();
+		blackelect.setBlack_id(blackID);
+		blackelect.setDeal_status(1);
+		blackelect.setComfirm_sysuser_name(comfirm_sysuser_name);
+		blackelectMapper.updateByPrimaryKeySelective(blackelect);
+		return new BaseDto(0);
+	}
+	
+	/**
+	 * 处理报警信息
+	 * @param blackID
+	 * @param plate_num
+	 * @return
+	 */
+	@RequestMapping(value = "/dealBlackelectByID")
+	@ResponseBody
+	public Object dealBlackelectByID(
+			@RequestParam(value = "blackID", required = false) Integer blackID,
+			@RequestParam(value = "plate_num", required = false) String plate_num,
+			@RequestParam(value = "deal_sysuser_name", required = false) String deal_sysuser_name
+			) {
+		Electrombile electrombile = new Electrombile();
+		electrombile.setPlate_num(plate_num);
+		electrombile.setElect_state(1);
+		electrombileMapper.updateByPlateNumSelective(electrombile);
+		Blackelect blackelect = new Blackelect();
+		blackelect.setBlack_id(blackID);
+		blackelect.setDeal_status(2);
+		blackelect.setDeal_sysuser_name(deal_sysuser_name);
+		blackelectMapper.updateByPrimaryKeySelective(blackelect);
+		return new BaseDto(0);
+	}
+	
+	
+	/**
 	 * 根据多个ID删除黑名单
 	 * 
 	 * @param electIDs
@@ -239,7 +290,7 @@ public class BlackelectController extends BaseController {
 			@RequestParam(value = "area_id", required = false) Integer area_id,
 			@RequestParam(value = "case_address_type", required = false) String case_address_type,
 			@RequestParam(value = "case_detail", required = false) String case_detail,
-			@RequestParam(value = "deal_status", required = false) Integer deal_status) {
+			@RequestParam(value = "detail_address", required = false) String detail_address) {
 		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plate_num);
 		if(electrombile==null){
 			return new ResultDto(-1, "该车牌号不存在！");
@@ -255,14 +306,8 @@ public class BlackelectController extends BaseController {
 		blackelect.setArea_id(area_id);
 		blackelect.setCase_address_type(case_address_type);
 		blackelect.setCase_detail(case_detail);
-		blackelect.setDeal_status(deal_status);
+		blackelect.setDetail_address(detail_address);
 		blackelectMapper.updateByPrimaryKeySelective(blackelect);
-		if(deal_status==2){
-			Electrombile electrombileUpdate = new Electrombile();
-			electrombileUpdate.setGua_card_num(electrombile.getGua_card_num());
-			electrombileUpdate.setElect_state(1);
-			electrombileMapper.updateByGuaCardNumSelective(electrombile);
-		}
 		return new ResultDto(0, "修改成功");
 	}
 

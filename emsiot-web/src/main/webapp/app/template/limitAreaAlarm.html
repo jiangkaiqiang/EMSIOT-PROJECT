@@ -10,10 +10,10 @@
                       data-target=".navbar-collapse" role="search">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" ng-model="selected"
+                            <input type="text" ng-model="plateNum"
                                    typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                    class="form-control input-sm bg-light no-border searchInput padder"
-                                   placeholder="账户查询">
+                                   placeholder="车牌号">
                                  <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm bg-light searchInput"><i
                                             class="fa fa-search margin-right"></i></button>
@@ -37,14 +37,9 @@
         <form class="form-inline">
             <div class="block-content">
                 <div class="form-group">
-                    <label for="importUser">报警区域&nbsp;&nbsp;&nbsp;</label>
-                    <select class="form-control" id="importUser">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>区域1</option>
-                        <option>区域2</option>
-                        <option>区域3</option>
-                        <option>区域4</option>
-                    </select>
+                    <label for="">限制区域名</label> 
+                    <input type="text" placeholder placeholder="限制区域名"
+                                                     ng-model="limitAreaName" class="form-control"/>
                 </div>
 
                 <div class="form-group datePicker">
@@ -86,13 +81,9 @@
                 </div>
             </th>
             <th>序号</th>
-            <th>报警区域</th>
-            <th>报警车辆编号</th>
+            <th>限制区域名</th>
+            <th>车牌号</th>
             <th>报警时间</th>
-            <th>车辆颜色</th>
-            <th>状态</th>
-            <th>所在区域</th>
-            <th>车主手机号</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -107,15 +98,8 @@
             <td>{{user.sysUser.user_name}}</td>
             <td>{{user.sysUser.user_tel}}</td>
             <td>{{user.sysUser.company}}</td>
-            <td>{{user.projectName}}</td>
-            <td>{{user.compFactoryName}}</td>
-            <td>{{user.userRoleName}}</td>
-            <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
             <td>
                 <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                        ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                </button>
             </td>
         </tr>
         </tbody>

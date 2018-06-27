@@ -96,11 +96,14 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
   };
   
   $scope.getState = function(deal_status){
-  	if(deal_status==1)
-  		return '已处理';
-      else{
-      	return '未处理';
-      }
+  	if(deal_status==8)
+  		return '未确认';
+    else if(deal_status==1){
+      	return '已确认';
+    }
+    else if(deal_status==2){
+      	return '已处理';
+    }
   }
   $scope.pageChanged = function() {
 	  $scope.getBlackelectsByOptions();
@@ -113,7 +116,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
           return false;
       }
       return true;
-}
+  }
   //根据id删除黑名单 goDeleteBlackElect(blackelectDto.blackelect.black_id)
   $scope.goDeleteBlackElect = function (blackID,plate_num) {
   	if(delcfm()){
@@ -127,6 +130,50 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
       });
   	}
   };
+  
+  
+  function comfirmfm() {
+      if (!confirm("确认要将该报警记录加入？")) {
+          return false;
+      }
+      return true;
+  }
+  //确认报警信息
+  $scope.confirmBlackElect = function (blackID,plate_num) {
+	  	if(comfirmfm()){
+	  	$http.get('/i/blackelect/confirmBlackelectByID', {
+	          params: {
+	              "blackID": blackID,
+	              "plate_num":plate_num,
+	              "comfirm_sysuser_name":$rootScope.admin.user_name
+	          }
+	      }).success(function (data) {
+	    	  $scope.getBlackelectsByOptions();
+	      });
+	  	}
+   };
+   
+   function dealfm() {
+	      if (!confirm("确认该报警已处理？")) {
+	          return false;
+	      }
+	      return true;
+	  }
+	  //处理报警信息
+	  $scope.dealBlackElect = function (blackID,plate_num) {
+		  	if(dealfm()){
+		  	$http.get('/i/blackelect/dealBlackelectByID', {
+		          params: {
+		              "blackID": blackID,
+		              "plate_num":plate_num,
+		              "deal_sysuser_name":$rootScope.admin.user_name
+		          }
+		      }).success(function (data) {
+		    	  $scope.getBlackelectsByOptions();
+		      });
+		  	}
+	   };
+  
   //批量删除黑名单
   $scope.goDeleteBlackElects = function(){
   	if(delcfm()){
@@ -319,7 +366,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
     			'area_id':$scope.blackElectForUpdate.blackelect.area_id,
     			'case_address_type':$scope.blackElectForUpdate.blackelect.case_address_type,
     			'case_detail':$scope.blackElectForUpdate.blackelect.case_detail,
-    			'deal_status':$scope.blackElectForUpdate.blackelect.deal_status
+    			'detail_address':$scope.blackElectForUpdate.blackelect.detail_address
             };
        Upload.upload({
                 url: '/i/blackelect/updateBlackelect',

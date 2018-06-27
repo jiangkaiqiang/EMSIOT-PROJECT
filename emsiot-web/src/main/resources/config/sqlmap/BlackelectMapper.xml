@@ -164,6 +164,12 @@
       <if test="deal_status != null">
         deal_status = #{deal_status,jdbcType=INTEGER},
       </if>
+       <if test="comfirm_sysuser_name != null">
+        comfirm_sysuser_name = #{comfirm_sysuser_name,jdbcType=INTEGER},
+      </if>
+       <if test="deal_sysuser_name != null">
+        deal_sysuser_name = #{deal_sysuser_name,jdbcType=INTEGER},
+      </if>
     </set>
     where black_id = #{black_id,jdbcType=INTEGER}
   </update>

@@ -109,4 +109,7 @@
 			</if>
 		</where>
    </select>
+    <select id="findAll" parameterType="map" resultType="com.ems.iot.manage.entity.LimitArea">
+        SELECT  * FROM `limit_area`
+   </select>
 </mapper>

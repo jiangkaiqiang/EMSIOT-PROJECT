@@ -1,5 +1,7 @@
 package com.ems.iot.manage.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.ems.iot.manage.entity.LimitArea;
@@ -19,6 +21,8 @@ public interface LimitAreaMapper {
     int updateByPrimaryKey(LimitArea record);
     
     Page<LimitArea> findAllLimitAreas(@Param("limitAreaID")Integer limitAreaID,@Param("limitAreaName")String limitAreaName);
+    
+    List<LimitArea> findAll();
     /**
      * 防止出现相同名字的限制区域
      * @param limitAreaName

@@ -31,8 +31,9 @@
 				<div class="form-group">
 					<label for="DealStatus">处理状态</label> <select name=""
 						id="DealStatus" ng-model="DealStatus" class="form-control">
-						<option ng-attr-value value="0">未处理</option>
-						<option ng-attr-value value="1">已处理</option>
+						<option ng-attr-value value="8">未确认</option>
+						<option ng-attr-value value="1">已确认</option>
+						<option ng-attr-value value="2">已处理</option>
 					</select>
 				</div>
 
@@ -63,7 +64,10 @@
 				<th>车主手机号</th>
 				<th>处理状态</th>
 				<th>报案时间</th>
+				<th>确认人</th>
+				<th>处理人</th>
 				<th>操作</th>
+				<th>处理</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -77,10 +81,16 @@
 				<td>{{blackelectDto.blackelect.owner_tele}}</td>
 				<td ng-bind="getState(blackelectDto.blackelect.deal_status)"></td>
 				<td data-toggle="tooltip" data-placement="right" title="{{blackelectDto.blackelect.case_occur_time}}">{{blackelectDto.blackelect.case_occur_time}}</td>
+				<td>{{blackelectDto.blackelect.comfirm_sysuser_name}}</td>
+				<td>{{blackelectDto.blackelect.deal_sysuser_name}}</td>
 				<td>
-					<i ng-show="rootUserPowerDto.blackDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteBlackElect(blackelectDto.blackelect.black_id,blackelectDto.blackelect.gua_card_num)"></i>
+					<i ng-show="rootUserPowerDto.blackDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteBlackElect(blackelectDto.blackelect.black_id,blackelectDto.blackelect.plate_num)"></i>
 					<i ng-show="rootUserPowerDto.blackEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateBlackelect(blackelectDto.blackelect.black_id)" data-toggle="modal"
 					   data-target="#updateBlackelect"></i>
+				</td>
+				<td>
+				<button type="button" ng-click="confirmBlackElect(blackelectDto.blackelect.black_id, blackelectDto.blackelect.plate_num)" class="btn btn-primary">确认</button>
+				<button type="button" ng-click="dealBlackElect(blackelectDto.blackelect.black_id, blackelectDto.blackelect.plate_num)" class="btn btn-primary">处理</button>
 				</td>
 			</tr>
 		</tbody>
@@ -396,6 +406,18 @@
 					</div>
 					
 					<div class="row">
+					<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 详细地址： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control" ng-model="blackElectForUpdate.blackelect.detail_address">
+								</div>
+							</div>
+							</div>
+					</div>
+					
+					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="" class="col-sm-2 control-label"> 备注： </label>
@@ -409,7 +431,7 @@
 						</div>
 					</div>
 					
-					<div class="row">
+					<!-- <div class="row">
 
 
 						<div class="col-md-6">
@@ -427,7 +449,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					
 				</form>
 			</div>
