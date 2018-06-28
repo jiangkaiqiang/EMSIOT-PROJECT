@@ -1,8 +1,8 @@
 .countWarp .home-title{
     height:60px;
-    /*width:100%;*/
-    background:#fff);
-    float:left;
+    width:100%;
+    background:#fff;
+    /*float:left;*/
 }
 .countWarp .home-title .home-nav>li>a{
     border-right:1px solid #ddd;

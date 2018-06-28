@@ -406,6 +406,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 	     }
 	     showCssFlag('#xsjizhan');
 	 });
+
 	 //基站聚合开关选项控制
 	 $scope.jizhanjuheFlag = 1;
 	 $('#jizhanjuhe').parent(".swichWrap").click(function () {
