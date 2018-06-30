@@ -7,7 +7,7 @@ public class AreaAlarm {
 
     private Integer area_type;
 
-    private String sensitive_area_id;
+    private String area_name;
 
     private String enter_plate_num;
 
@@ -31,12 +31,12 @@ public class AreaAlarm {
         this.area_type = area_type;
     }
 
-    public String getSensitive_area_id() {
-        return sensitive_area_id;
+    public String getArea_name() {
+        return area_name;
     }
 
-    public void setSensitive_area_id(String sensitive_area_id) {
-        this.sensitive_area_id = sensitive_area_id == null ? null : sensitive_area_id.trim();
+    public void setArea_name(String area_name) {
+        this.area_name = area_name == null ? null : area_name.trim();
     }
 
     public String getEnter_plate_num() {

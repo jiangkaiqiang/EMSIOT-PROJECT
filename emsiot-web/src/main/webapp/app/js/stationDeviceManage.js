@@ -192,22 +192,22 @@ $scope.dropInstallPic = function(installPic){
 	};
 	
 	$scope.goStationView = function(stationID) {
-		for (var i=0;i<$scope.AllStations.length;i++)
-    	{
-    		if($scope.AllStations[i].station_id == stationID){
-    		   $scope.viewStation = $scope.AllStations[i];
-    		   if($scope.viewStation.station_status=="0"){
-    			   $scope.viewStation.station_status = "正常"
-    		   }
-    		   else if($scope.viewStation.station_status=="1"){
-    			   $scope.viewStation.station_status = "故障"
-    		   }
-    		   else{
-    			   
-    		   }
-    		   break;
-    		}
-    	}
+		$http.get('/i/station/findStationByID', {
+            params: {
+                "stationID": stationID
+            }
+        }).success(function(data){ 
+        	$scope.viewStation = data;
+        	if($scope.viewStation.station_status=="0"){
+ 			   $scope.viewStation.station_status = "正常";
+ 		   }
+ 		   else if($scope.viewStation.station_status=="1"){
+ 			   $scope.viewStation.station_status = "故障";
+ 		   }
+ 		   else{
+ 			   
+ 		   }
+        });
 	};
 	
 	function checkInputForUpdate(){

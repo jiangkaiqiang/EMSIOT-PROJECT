@@ -431,7 +431,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     
     $scope.getInsur = function(insur_detail){
     	if(insur_detail==1)
-    		return '投保';
+    		return '已投保';
         else if(insur_detail==null){
     		return '未知';
     	}
@@ -534,12 +534,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     		   else{
     			   
     		   }
-    		   if($scope.viewElect.electrombile.insur_detail=="1"){
-    			   $scope.viewElect.electrombile.insur_detail = "已投保";
-    		   }
-    		   else if($scope.viewElect.electrombile.insur_detail=="2"){
-    			   $scope.viewElect.electrombile.insur_detail = "未投保";
-    		   }
+//    		   if($scope.viewElect.electrombile.insur_detail=="1"){
+//    			   $scope.viewElect.electrombile.insur_detail = "已投保";
+//    		   }
+//    		   else if($scope.viewElect.electrombile.insur_detail=="2"){
+//    			   $scope.viewElect.electrombile.insur_detail = "未投保";
+//    		   }
     		   break;
     		}
     	}

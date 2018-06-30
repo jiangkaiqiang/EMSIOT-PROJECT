@@ -52,7 +52,7 @@ public class ElectAlarmController extends BaseController {
 	@ResponseBody
 	public Object findAllBlackelectByOptions(@RequestParam(value="pageNum",required=false) Integer pageNum,
 			@RequestParam(value="pageSize",required=false) Integer pageSize,
-			@RequestParam(value="plateNum",required=false) Integer plateNum,
+			@RequestParam(value="plateNum",required=false) String plateNum,
 			@RequestParam(value="alarmDateStart",required=false) String alarmDateStartStr,
 			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr,
 			@RequestParam(value = "proPower", required = false) Integer proPower,

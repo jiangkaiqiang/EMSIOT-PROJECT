@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.AreaAlarm">
     <id column="alarm_id" jdbcType="INTEGER" property="alarm_id" />
     <result column="area_type" jdbcType="INTEGER" property="area_type" />
-    <result column="sensitive_area_id" jdbcType="VARCHAR" property="sensitive_area_id" />
+    <result column="area_name" jdbcType="VARCHAR" property="area_name" />
     <result column="enter_plate_num" jdbcType="VARCHAR" property="enter_plate_num" />
     <result column="enter_time" jdbcType="TIMESTAMP" property="enter_time" />
     <result column="process_state" jdbcType="INTEGER" property="process_state" />
   </resultMap>
   <sql id="Base_Column_List">
-    alarm_id, area_type, sensitive_area_id, enter_plate_num, enter_time, process_state
+    alarm_id, area_type, area_name, enter_plate_num, enter_time, process_state
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,11 +23,11 @@
     where alarm_id = #{alarm_id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ems.iot.manage.entity.AreaAlarm">
-    insert into area_alarm (alarm_id, area_type, sensitive_area_id, 
+    insert into area_alarm (alarm_id, area_type, area_name, 
       enter_plate_num, enter_time, process_state
       )
-    values (#{alarm_id,jdbcType=INTEGER}, #{area_type,jdbcType=INTEGER}, #{sensitive_area_id,jdbcType=VARCHAR}, 
-      #{enter_plate_num,jdbcType=VARCHAR}, #{enter_time,jdbcType=TIMESTAMP}, #{process_state,jdbcType=INTEGER}
+    values (#{alarm_id,jdbcType=INTEGER}, #{area_type,jdbcType=INTEGER}, #{area_name,jdbcType=VARCHAR}, 
+      #{enter_plate_num,jdbcType=VARCHAR}, now(), #{process_state,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.AreaAlarm">
@@ -39,8 +39,8 @@
       <if test="area_type != null">
         area_type,
       </if>
-      <if test="sensitive_area_id != null">
-        sensitive_area_id,
+      <if test="area_name != null">
+        area_name,
       </if>
       <if test="enter_plate_num != null">
         enter_plate_num,
@@ -59,8 +59,8 @@
       <if test="area_type != null">
         #{area_type,jdbcType=INTEGER},
       </if>
-      <if test="sensitive_area_id != null">
-        #{sensitive_area_id,jdbcType=VARCHAR},
+      <if test="area_name != null">
+        #{area_name,jdbcType=VARCHAR},
       </if>
       <if test="enter_plate_num != null">
         #{enter_plate_num,jdbcType=VARCHAR},
@@ -79,8 +79,8 @@
       <if test="area_type != null">
         area_type = #{area_type,jdbcType=INTEGER},
       </if>
-      <if test="sensitive_area_id != null">
-        sensitive_area_id = #{sensitive_area_id,jdbcType=VARCHAR},
+      <if test="area_name != null">
+        area_name = #{area_name,jdbcType=VARCHAR},
       </if>
       <if test="enter_plate_num != null">
         enter_plate_num = #{enter_plate_num,jdbcType=VARCHAR},
@@ -97,10 +97,38 @@
   <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.AreaAlarm">
     update area_alarm
     set area_type = #{area_type,jdbcType=INTEGER},
-      sensitive_area_id = #{sensitive_area_id,jdbcType=VARCHAR},
+      area_name = #{area_name,jdbcType=VARCHAR},
       enter_plate_num = #{enter_plate_num,jdbcType=VARCHAR},
       enter_time = #{enter_time,jdbcType=TIMESTAMP},
       process_state = #{process_state,jdbcType=INTEGER}
     where alarm_id = #{alarm_id,jdbcType=INTEGER}
   </update>
+  
+  <select id="findAllAreaAlarmByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.AreaAlarm">
+        SELECT  area_alarm.* FROM `area_alarm` LEFT join  `electrombile` on area_alarm.`enter_plate_num` =electrombile.`plate_num`
+        <where>
+        	<if test="plateNum != null and plateNum != ''">
+				area_alarm.enter_plate_num = #{plateNum}
+			</if>
+			<if test="areaName != null and areaName != ''">
+				AND area_alarm.area_name = #{areaName}
+			</if>
+			<if test="alarmDateStart != null and alarmDateStart != ''">
+				AND area_alarm.enter_time  &gt;= #{alarmDateStart}
+			</if>
+			<if test="alarmDateEnd != null and alarmDateEnd != ''">
+				AND area_alarm.enter_time &lt;= #{alarmDateEnd}
+			</if>
+			<if test="proPower != null">
+			    AND electrombile.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.`area_id` = #{areaPower}
+			</if>
+			</where>
+   </select>
+  
 </mapper>

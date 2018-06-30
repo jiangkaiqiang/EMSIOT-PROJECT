@@ -21,7 +21,7 @@ public interface ElectAlarmMapper {
 
     int updateByPrimaryKey(ElectAlarm record);
     
-    Page<ElectAlarm> findAllElectalarmByOptions(@Param("plateNum")Integer plateNum,@Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
+    Page<ElectAlarm> findAllElectalarmByOptions(@Param("plateNum")String plateNum,@Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
     		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     List<ElectAlarm> findElectalarmsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);

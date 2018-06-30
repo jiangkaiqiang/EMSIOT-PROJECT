@@ -349,6 +349,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
 	            }
 	        }).success(function (data) {
 	        	$scope.areasForUpdate = data;
+	        	$("#case_address_type").val($scope.blackElectForUpdate.blackelect.case_address_type);
 	        });
 	     });
 	$scope.statusForUpdate = [{deal_status:"0",name:"未处理"},{deal_status:"1",name:"已处理"}];

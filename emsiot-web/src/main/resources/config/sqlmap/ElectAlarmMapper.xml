@@ -83,7 +83,7 @@
         SELECT  elect_alarm.* FROM `elect_alarm` LEFT join  `electrombile` on elect_alarm.`alarm_gua_card_num` =electrombile.`gua_card_num`
         <where>
         	<if test="plateNum != null and plateNum != ''">
-				alarm_gua_card_num = #{plateNum}
+				electrombile.plate_num = #{plateNum}
 			</if>
 			<if test="alarmDateStart != null and alarmDateStart != ''">
 				AND alarm_time  &gt;= #{alarmDateStart}

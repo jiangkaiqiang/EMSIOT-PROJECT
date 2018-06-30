@@ -747,8 +747,11 @@
                                     <!--<i>*</i>-->
                                     投保明细：
                                 </label>
-                                <div class="col-sm-8">
-                                    {{viewElect.electrombile.insur_detail}}
+                                <div ng-show="viewElect.electrombile.insur_detail==1" class="col-sm-8">
+                                   已投保
+                                </div>
+                                <div ng-show="viewElect.electrombile.insur_detail==2" class="col-sm-8">
+                                   未投保
                                 </div>
                             </div>
                         </div>

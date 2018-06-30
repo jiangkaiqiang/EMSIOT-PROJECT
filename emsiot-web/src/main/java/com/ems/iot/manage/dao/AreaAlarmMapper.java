@@ -1,6 +1,11 @@
 package com.ems.iot.manage.dao;
 
+import java.util.Date;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.ems.iot.manage.entity.AreaAlarm;
+import com.github.pagehelper.Page;
 
 public interface AreaAlarmMapper {
     int deleteByPrimaryKey(Integer alarm_id);
@@ -14,4 +19,7 @@ public interface AreaAlarmMapper {
     int updateByPrimaryKeySelective(AreaAlarm record);
 
     int updateByPrimaryKey(AreaAlarm record);
+    
+    Page<AreaAlarm> findAllAreaAlarmByOptions(@Param("plateNum")String plateNum, @Param("areaName")String areaName, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
+    		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }
