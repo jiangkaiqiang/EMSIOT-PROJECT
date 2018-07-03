@@ -52,7 +52,7 @@ public interface ElectrombileStationMapper {
      * @param stationPhyNum
      * @return
      */
-    List<Thermodynamic> selectElectsByStationPhyNumNow();
+    List<Thermodynamic> selectElectsByStationPhyNumNow(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     /**
      * 返回当前时间范围内在线车辆的数量；如果需要修改时间大小则修改时间范围，需要根据车号进行分组过滤，

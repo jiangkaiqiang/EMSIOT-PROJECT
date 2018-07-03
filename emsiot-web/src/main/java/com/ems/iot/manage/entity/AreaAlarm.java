@@ -11,7 +11,7 @@ public class AreaAlarm {
 
     private String enter_plate_num;
 
-    private Date enter_time;
+    private String enter_time;
 
     private Integer process_state;
 
@@ -47,11 +47,11 @@ public class AreaAlarm {
         this.enter_plate_num = enter_plate_num == null ? null : enter_plate_num.trim();
     }
 
-    public Date getEnter_time() {
+    public String getEnter_time() {
         return enter_time;
     }
 
-    public void setEnter_time(Date enter_time) {
+    public void setEnter_time(String enter_time) {
         this.enter_time = enter_time;
     }
 

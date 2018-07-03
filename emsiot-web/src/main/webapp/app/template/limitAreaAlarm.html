@@ -95,7 +95,7 @@
             <td>{{$index+1}}</td>
             <td>{{alarm.area_name}}</td>
             <td>{{alarm.enter_plate_num}}</td>
-            <td>{{alarm.enter_time}}</td>
+            <td>{{alarm.enter_time|date:'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>
                 <i class="glyphicon glyphicon-trash" ng-click="goDeleteAlarm(alarm.alarm_id)"></i>
             </td>

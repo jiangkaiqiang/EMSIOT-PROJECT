@@ -116,8 +116,19 @@ public class ElectController extends BaseController {
 	 */
 	@RequestMapping(value = "/findElectsNumByStations")
 	@ResponseBody
-	public Object findElectsNumByStations() throws UnsupportedEncodingException {
-		List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow();
+	public Object findElectsNumByStations(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower) throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<Thermodynamic> thermodynamics = electrombileStationMapper.selectElectsByStationPhyNumNow(proPower,cityPower,areaPower);
 		return thermodynamics;
 	}
 

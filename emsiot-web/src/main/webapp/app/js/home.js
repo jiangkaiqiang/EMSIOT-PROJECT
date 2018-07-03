@@ -364,7 +364,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
 
 	 $scope.showReLiTu = function(){
-		 $http.get('/i/elect/findElectsNumByStations').success(function (data) {
+		 $http.get('/i/elect/findElectsNumByStations', {
+             params: {
+                 "proPower" : $scope.user.pro_power,
+    			 "cityPower" : $scope.user.city_power,
+    			 "areaPower" : $scope.user.area_power
+            }
+           }).success(function (data) {
 	   	        $scope.thermodynamics = data;
 	   	        heatmap();
 	   	        
