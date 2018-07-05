@@ -7,7 +7,7 @@ public class Blackelect {
 
     private String plate_num;
 
-    private Date case_occur_time;
+    private String case_occur_time;
 
     private String owner_tele;
 
@@ -57,11 +57,11 @@ public class Blackelect {
 		this.plate_num = plate_num;
 	}
 
-	public Date getCase_occur_time() {
+	public String getCase_occur_time() {
         return case_occur_time;
     }
 
-    public void setCase_occur_time(Date case_occur_time) {
+    public void setCase_occur_time(String case_occur_time) {
         this.case_occur_time = case_occur_time;
     }
 

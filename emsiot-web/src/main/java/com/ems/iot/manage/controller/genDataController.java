@@ -1,6 +1,7 @@
 package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -71,12 +72,13 @@ public class genDataController extends BaseController {
 	public Object genAlarm() throws UnsupportedEncodingException {
 		int genNum=12;
 		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		for(int i=1;i<=genNum;i++){
 			ElectAlarm electAlarm = new ElectAlarm();
 			electAlarm.setAlarm_gua_card_num(101010);
 			electAlarm.setAlarm_station_phy_num(202020);
 			date.setMonth(i);
-			electAlarm.setAlarm_time(date);
+			electAlarm.setAlarm_time(sdf.format(date));
 			electAlarmMapper.insert(electAlarm);
 		}				
 		return new ResultDto(1, "gen Success");
