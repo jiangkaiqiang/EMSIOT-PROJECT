@@ -84,7 +84,8 @@ public class GenDataUtil {
 		Date occur_date = occur_calendar.getTime();
 		
 		blackelect.setPlate_num(electrombile.getPlate_num());
-		blackelect.setCase_occur_time(occur_date);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		blackelect.setCase_occur_time(sdf.format(occur_date));
 		blackelect.setOwner_tele(electrombile.getOwner_tele());
 		blackelect.setOwner_name(electrombile.getOwner_name());
 		blackelect.setCase_address("新疆喀什XXX");

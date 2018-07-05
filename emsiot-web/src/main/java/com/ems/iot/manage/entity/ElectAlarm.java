@@ -9,7 +9,7 @@ public class ElectAlarm {
 
     private Integer alarm_station_phy_num;
 
-    private Date alarm_time;
+    private String alarm_time;
 
     public Integer getElect_alarm_id() {
         return elect_alarm_id;
@@ -35,11 +35,11 @@ public class ElectAlarm {
         this.alarm_station_phy_num = alarm_station_phy_num;
     }
 
-    public Date getAlarm_time() {
+    public String getAlarm_time() {
         return alarm_time;
     }
 
-    public void setAlarm_time(Date alarm_time) {
+    public void setAlarm_time(String alarm_time) {
         this.alarm_time = alarm_time;
     }
 }

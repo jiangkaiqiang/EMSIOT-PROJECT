@@ -223,7 +223,7 @@ public class ElectUserAppController extends AppBaseController {
 		}
 		blackelect.setPlate_num(electrombile.getPlate_num());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		blackelect.setCase_occur_time(sdf.parse(case_occur_time));
+		blackelect.setCase_occur_time(case_occur_time);
 		blackelect.setOwner_tele(electrombile.getOwner_tele());
 		blackelect.setOwner_name(electrombile.getOwner_name());
 		blackelect.setPro_id(electrombile.getPro_id());

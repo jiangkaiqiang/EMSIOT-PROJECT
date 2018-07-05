@@ -213,7 +213,7 @@ public class BlackelectController extends BaseController {
 		}
 		blackelect.setPlate_num(plate_num);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		blackelect.setCase_occur_time(sdf.parse(case_occur_time));
+		blackelect.setCase_occur_time(case_occur_time);
 		blackelect.setOwner_tele(owner_tele);
 		blackelect.setOwner_name(owner_name);
 		blackelect.setPro_id(pro_id);
@@ -282,7 +282,7 @@ public class BlackelectController extends BaseController {
 	@ResponseBody
 	public Object updateBlackElect(@RequestParam(value = "black_id", required = false) Integer black_id,
 			@RequestParam(value = "plate_num", required = false) String plate_num,
-			@RequestParam(value = "case_occur_time", required = false) Date case_occur_time,
+			@RequestParam(value = "case_occur_time", required = false) String case_occur_time,
 			@RequestParam(value = "owner_tele", required = false) String owner_tele,
 			@RequestParam(value = "owner_name", required = false) String owner_name,
 			@RequestParam(value = "pro_id", required = false) Integer pro_id,
