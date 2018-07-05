@@ -235,7 +235,7 @@ public class BlackelectController extends BaseController {
 		electrombile2.setElect_state(2);
 		electrombileMapper.updateByGuaCardNumSelective(electrombile);
 		blackelectMapper.insert(blackelect);
-		return new ResultDto(0, "添加成功"); 
+		return new ResultDto(0, "添加成功");
 	}
 	
 	/**
