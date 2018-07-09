@@ -125,6 +125,14 @@ public class HardAcceptController extends BaseController {
 					}
 				}
 		    	if (limitStationPhyNumsList.contains(stationPhyNum)) {
+		    		
+		    		MessageEntity messageEntityLimit = new MessageEntity();
+		    		messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
+					+"限制区域报警：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
+					+ electrombileStation.getEle_gua_card_num() + "!");
+					CometUtil cometUtilLimit = new CometUtil();
+					cometUtilLimit.pushToLimit(messageEntityLimit);
+		    		
 		    		AreaAlarm areaAlarm = new AreaAlarm();
 		    		areaAlarm.setArea_name(limitArea.getLimit_area_name());
 		    		areaAlarm.setArea_type(2);//2表示限制区域

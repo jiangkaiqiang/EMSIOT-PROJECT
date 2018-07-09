@@ -22,6 +22,7 @@ public class CometUtil extends ConnectListener implements ServletContextListener
              // 注册频道，即标识哪些字段可用当成频道，用来作为向前台传送数据的“通道”
              cc.registChannel(Constant.CHANNEL_MSGCOUNT);
              cc.registChannel(Constant.CHANNEL_MSG_DATA);
+             cc.registChannel(Constant.CHANNEL_LIMIT_DATA);
              //添加监听器  
              CometEngine engine = CometContext.getInstance().getEngine();  
              engine.addConnectListener(this); 
@@ -61,6 +62,24 @@ public class CometUtil extends ConnectListener implements ServletContextListener
         }
            
     }
+    
+    /**
+     * 推送给所有的客户端(限制区域)
+     * @param comet
+     */
+    public void pushToLimit(MessageEntity comet){
+    	try {
+    		CometEngine engine = CometContext.getInstance().getEngine();
+    		//推送到所有客户端  
+    		engine.sendToAll(Constant.CHANNEL_MSGCOUNT,1);
+    		engine.sendToAll(Constant.CHANNEL_LIMIT_DATA,comet.getContent());
+    	} catch (Exception e) {
+    		// TODO: handle exception
+    		System.out.println(e.getMessage());
+    	}
+    	
+    }
+    
     /**
      * 推送给指定客户端
      * @param comet

@@ -59,6 +59,26 @@ coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http)
 	    	           },
 	    	       }
 	    	   );
+	    	JS.Engine.on(
+	    			{ 
+	    				limitData : function(msgData){
+	    					var message = msgData.split(";");
+	    					if($rootScope.admin.pro_power==-1){
+	    						$("#limitMessage").text(message[3]);  
+	    					}
+	    					else if($rootScope.admin.pro_power==message[0]) {
+	    						if($rootScope.admin.city_power==-1){
+	    							$("#limitMessage").text(message[3]); 
+	    						}
+	    						else if($rootScope.admin.city_power==message[1]){
+	    							if($rootScope.admin.area_power==-1||$rootScope.admin.area_power==message[2]){
+	    								$("#limitMessage").text(message[3]); 
+	    							}
+	    						}
+	    					}
+	    				},
+	    			}
+	    	);
 	        function checkInput(){
 		        var flag = true;
 		        // 检查必须填写项
