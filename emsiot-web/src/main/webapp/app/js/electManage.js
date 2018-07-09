@@ -201,7 +201,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				pageSize : $scope.maxSize,
 				startTime : $scope.startTime,
 				endTime : $scope.endTime,
-				recorderID : $scope.recorderID,
+				recorderID : $scope.sysUserID,
 				electState : $scope.electState,
 				insurDetail : $scope.insurDetail,
 				proPower : $scope.userPowerDto.sysUser.pro_power,
