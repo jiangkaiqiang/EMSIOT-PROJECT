@@ -270,6 +270,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $http.get('/i/city/findProvinceList').success(function (data) {
         $scope.provinces = data;
         $scope.addProvinceID = data[0].province_id;
+        $scope.getCitis();
     });
     //根据省ID获取全部市For ADD
     $scope.getCitis = function () {
@@ -279,7 +280,10 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             }
         }).success(function (data) {
         	$scope.citis = data;
-            $scope.addCityID = data[0].city_id;
+        	var addCity = {"city_id":"-1","name":"不限"};
+        	$scope.citis.push(addCity);
+            $scope.addCityID ="-1";
+            $scope.getAreas();
         });
     }
    //根据市ID获取全部区For ADD
@@ -290,7 +294,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             }
         }).success(function (data) {
         	$scope.areas = data;
-            $scope.addAreaID = data[0].area_id;
+        	var addArea = {"area_id":"-1","name":"不限"};
+        	$scope.areas.push(addArea)
+            $scope.addAreaID = "-1";
         });
     }
     
@@ -312,6 +318,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         	var city = {"city_id":"-1","name":"不限"};
         	$scope.citisForSearch.push(city);
             $scope.cityID = "-1";
+            $scope.getAreasForSearch();
         });
     }
     //根据市ID获取全部省For Search；并添加上不限的权限
@@ -336,7 +343,10 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             }
         }).success(function (data) {
         	$scope.citisForUpdate = data;
-            $scope.updateElect.electrombile.city_id = data[0].city_id;
+        	var updateCity= {"city_id":"-1","name":"不限"};
+        	$scope.citisForUpdate.push(updateCity);
+            $scope.updateElect.electrombile.city_id = "-1";
+            $scope.getAreasForUpdate();
         });
     }
     
@@ -347,7 +357,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             }
         }).success(function (data) {
         	$scope.areasForUpdate = data;
-            $scope.updateElect.electrombile.area_id = data[0].area_id;
+        	var updateArea = {"area_id":"-1","name":"不限"};
+        	$scope.areasForUpdate.push(updateArea);
+            $scope.updateElect.electrombile.area_id = "-1";
         });
     }
     
