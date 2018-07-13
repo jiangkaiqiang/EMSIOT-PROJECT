@@ -64,10 +64,12 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
 				areaPower : $scope.admin.area_power
 			}
 		}).success(function(data) {
+			console.log(data);
 			$scope.bigTotalItems = data.total;
 			$scope.AllBlackelects = data.list;
 		});
-	}
+	};
+
 //    $scope.getBlackelects();
     $scope.getBlackelectsByOptions();
     
@@ -98,6 +100,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
   $scope.getState = function(deal_status){
   	if(deal_status==8)
   		return '未确认';
+
     else if(deal_status==1){
       	return '已确认';
     }
@@ -105,6 +108,30 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
       	return '已处理';
     }
   }
+
+
+	$scope.showConfirmBtn = function(status){
+		var flag1 = true;
+		if(status==8)
+			flag1 = true;//显示
+
+		else if(status==1 || status==2){
+			flag1 = false;//不显示
+		}
+		return flag1;
+	};
+
+	$scope.showDealBtn = function(status){
+		var flag2 = true;
+		if(status==8 || status==1)
+			flag2 = true;//显示
+
+		else if(status==2){
+			flag2 = false;//不显示
+		}
+		return flag2;
+	};
+
   $scope.pageChanged = function() {
 	  $scope.getBlackelectsByOptions();
  }

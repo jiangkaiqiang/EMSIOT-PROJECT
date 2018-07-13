@@ -34,13 +34,13 @@
     insert into blackelect (black_id, plate_num, case_occur_time, 
       owner_tele, owner_name, pro_id, 
       city_id, area_id, case_address, 
-      case_address_type, case_detail, deal_status ,detail_address
+      case_address_type, case_detail, deal_status ,detail_address, comfirm_sysuser_name
       )
     values (#{black_id,jdbcType=INTEGER}, #{plate_num,jdbcType=INTEGER}, #{case_occur_time,jdbcType=TIMESTAMP}, 
       #{owner_tele,jdbcType=VARCHAR}, #{owner_name,jdbcType=VARCHAR}, #{pro_id,jdbcType=INTEGER}, 
       #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}, #{case_address,jdbcType=VARCHAR}, 
       #{case_address_type,jdbcType=VARCHAR}, #{case_detail,jdbcType=VARCHAR}, #{deal_status,jdbcType=INTEGER}, 
-      #{detail_address,jdbcType=VARCHAR}
+      #{detail_address,jdbcType=VARCHAR}, #{comfirm_sysuser_name,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Blackelect">

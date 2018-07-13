@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ import com.ems.iot.manage.dto.BlackelectDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.Blackelect;
 import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.SysUser;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -201,7 +204,7 @@ public class BlackelectController extends BaseController {
 			@RequestParam(value = "case_address_type", required = false) String case_address_type,
 			@RequestParam(value = "case_detail", required = false) String case_detail,
 			@RequestParam(value = "deal_status", required = false) Integer deal_status,
-			@RequestParam(value = "detail_address", required = false) String detail_address)
+			@RequestParam(value = "detail_address", required = false) String detail_address,HttpServletRequest request)
 			throws UnsupportedEncodingException, ParseException {
 		if (plate_num == null) {
 			return new ResultDto(-1, "车牌号不能为空！");
@@ -213,6 +216,8 @@ public class BlackelectController extends BaseController {
 		}
 		blackelect.setPlate_num(plate_num);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SysUser user = (SysUser)request.getSession().getAttribute("user");
+		blackelect.setComfirm_sysuser_name(user.getUser_name());
 		blackelect.setCase_occur_time(case_occur_time);
 		blackelect.setOwner_tele(owner_tele);
 		blackelect.setOwner_name(owner_name);
@@ -233,7 +238,7 @@ public class BlackelectController extends BaseController {
 		Electrombile electrombile2 = new Electrombile();
 		electrombile2.setGua_card_num(electrombile.getGua_card_num());
 		electrombile2.setElect_state(2);
-		electrombileMapper.updateByGuaCardNumSelective(electrombile);
+		electrombileMapper.updateByGuaCardNumSelective(electrombile2);
 		blackelectMapper.insert(blackelect);
 		return new ResultDto(0, "添加成功");
 	}

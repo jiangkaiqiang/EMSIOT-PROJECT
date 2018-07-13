@@ -5584,4 +5584,7 @@ table input[type=checkbox], input[type=radio]{
 
 
 }
+/*.table td .operatBtn{color:#2C7DFA;}*/
+/*.table td .operatBtn,.table td .confirmBtn{color:#8E8E8E;}*/
+.table td .operatBtn,.table td .confirmBtn{color:#2C7DFA;}
 
