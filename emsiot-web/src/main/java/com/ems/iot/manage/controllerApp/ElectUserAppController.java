@@ -21,6 +21,7 @@ import com.ems.iot.manage.dao.ElectrombileStationMapper;
 import com.ems.iot.manage.dao.ProvinceMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.AppResultDto;
+import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.entity.AppUser;
@@ -260,5 +261,28 @@ public class ElectUserAppController extends AppBaseController {
 		AppUser appUser =  appUserMapper.findUserByName(effectiveCookie.getUsername());
 		List<Blackelect> blackelects = blackelectMapper.findBlackelectsByOwnerTele(appUser.getUser_tele());
 		return new AppResultDto(blackelects);
+	}
+	
+	/**
+	 * 根据ID删除黑名单
+	 * 
+	 * @param electID
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteMyAlarmElect")
+	@ResponseBody
+	public Object deleteMyAlarmElect(
+			@RequestParam(value = "blackID", required = false) Integer blackID,
+			@RequestParam(value="token", required=false) String token
+			) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		if (blackID==null) {
+			 return new AppResultDto(4001, "要删除的id不能为空", false);
+		}
+		blackelectMapper.deleteByPrimaryKey(blackID);
+		return new AppResultDto(1001, "删除成功");
 	}
 }

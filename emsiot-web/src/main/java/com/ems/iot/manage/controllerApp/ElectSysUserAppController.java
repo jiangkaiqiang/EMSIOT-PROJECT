@@ -269,6 +269,8 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
 			return new AppResultDto(3001, "车牌号已存在，不可重复添加！", false);
 		}
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		recorder_id = sysUser.getUser_id();
 		Electrombile electrombile = new Electrombile();
 		electrombile.setGua_card_num(gua_card_num);
 		electrombile.setPlate_num(plate_num);
