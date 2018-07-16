@@ -1289,6 +1289,7 @@ html {
   overflow: hidden;
   line-height: 40px;
   text-align: center;
+  z-index:0;
 }
 
 .navi ul.nav li a > i:before {
