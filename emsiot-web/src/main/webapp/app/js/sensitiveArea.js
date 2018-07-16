@@ -149,10 +149,10 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 
 	$(".closeStationPosition").click(function(){
 		$(this).parents('.limitArea-content').toggleClass("leftToggle");
-		if($(this).hasClass("glyphicon-chevron-left")){
-			$(this).removeClass("glyphicon-chevron-left").addClass("glyphicon-chevron-right")
+		if($(this).hasClass("fa-angle-left")){
+			$(this).removeClass("fa-angle-left").addClass("fa-angle-right")
 		}else{
-			$(this).removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-left");
+			$(this).removeClass("fa-angle-right").addClass("fa-angle-left");
 		}
 	});
 

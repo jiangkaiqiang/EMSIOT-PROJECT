@@ -256,4 +256,10 @@ ul.search-container .search-container{
     margin-left:5px;
 }
 
+#addUser .addUserModal .page-title i,#updateUser .addUserModal .page-title i{
+    font-size:20px;
+    color:#2A7CF9;
+}
+
+
 
