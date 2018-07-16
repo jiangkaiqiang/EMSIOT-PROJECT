@@ -108,7 +108,8 @@
         SELECT  area_alarm.* FROM `area_alarm` LEFT join  `electrombile` on area_alarm.`enter_plate_num` =electrombile.`plate_num`
         <where>
         	<if test="plateNum != null and plateNum != ''">
-				area_alarm.enter_plate_num = #{plateNum}
+				<!-- area_alarm.enter_plate_num = #{plateNum} -->
+				area_alarm.enter_plate_num like "%"#{plateNum}"%"
 			</if>
 			<if test="areaName != null and areaName != ''">
 				AND area_alarm.area_name = #{areaName}
