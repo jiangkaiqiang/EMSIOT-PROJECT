@@ -229,6 +229,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
   $http.get('/i/city/findProvinceList').success(function (data) {
       $scope.provinces = data;
       $scope.addProvinceID = data[0].province_id;
+      $scope.getCitis();
   });
 	
   
@@ -238,8 +239,11 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
               "provinceID": $scope.addProvinceID
           }
       }).success(function (data) {
-      	$scope.citis = data;
-          $scope.addCityID = data[0].city_id;
+    	  $scope.citis = data;
+      	  var addCity = {"city_id":"-1","name":"不限"};
+      	  $scope.citis.push(addCity);
+          $scope.addCityID ="-1";
+          $scope.getAreas();
       });
   }
   
@@ -249,8 +253,10 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
               "cityID": $scope.addCityID
           }
       }).success(function (data) {
-      	$scope.areas = data;
-          $scope.addAreaID = data[0].area_id;
+    	  $scope.areas = data;
+      	  var addArea = {"area_id":"-1","name":"不限"};
+      	  $scope.areas.push(addArea)
+          $scope.addAreaID = "-1";
       });
   }
   
@@ -261,7 +267,11 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
           }
       }).success(function (data) {
       	  $scope.citisForUpdate = data;
-      	  $scope.blackElectForUpdate.blackelect.city_id = data[0].city_id;
+      	  //$scope.blackElectForUpdate.blackelect.city_id = data[0].city_id;
+    	  var updateCity = {"city_id":"-1","name":"不限"};
+    	  $scope.citisForUpdate.push(updateCity);
+    	  $scope.blackElectForUpdate.blackelect.city_id = "-1";
+          $scope.getAreasForUpdate();
       });
   }
   
@@ -272,7 +282,11 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
           }
       }).success(function (data) {
       	$scope.areasForUpdate = data;
-      	$scope.blackElectForUpdate.blackelect.area_id = data[0].area_id;
+      	//$scope.blackElectForUpdate.blackelect.area_id = data[0].area_id;
+      	var updateArea = {"area_id":"-1","name":"不限"};
+      	$scope.areasForUpdate.push(updateArea);
+  	    $scope.blackElectForUpdate.blackelect.area_id = "-1";
+       
       });
   }
   //添加黑名单
