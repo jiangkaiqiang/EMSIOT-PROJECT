@@ -1,5 +1,5 @@
 .countWarp .station-content{
-    width:50%;
+    width:45%;
     height:auto;
     /*padding:10px 10px;*/
     background:#fff;
@@ -20,7 +20,7 @@
 .station-content .title-nav{margin-left:15px;}
 
 .station-content.leftToggle{
-    left:-48.5%!important;
+    left:-44%!important;
 }
 .stationAlert{
     position:absolute;
@@ -100,3 +100,4 @@
     padding: 10px 0;
 }
 #viewStation .modal-body .col-md-6 .col-sm-8{margin-top:10px;}
+.station-content .page-title .title-brand .searchInput img{width:20px;}

@@ -40,7 +40,7 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 		params :{
 			"pageNum" : $scope.bigCurrentPage,
 			"pageSize" :$scope.bigTotalItems,
-			"plateNum" : $scope.plateNum,
+			"plateNum" :$scope.plateNum,
 			"areaName" :$scope.limitAreaName,
 			"alarmDateStart" : $scope.startTime ,
 			"alarmDateEnd" : $scope.endTime,
@@ -56,6 +56,9 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 	};
 	$scope.load();
 	$scope.limitAlarmElects();
+	$scope.goSearchForPlate = function(){
+		$scope.limitAlarmElects();
+	};
 
 
  //实现表格全选或者单选

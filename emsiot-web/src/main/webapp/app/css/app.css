@@ -354,7 +354,7 @@ a.list-group-item.hover {
 .nav-pills > li.active > a:active {
   background-color: #19a9d5;
 }
-.nav > li > a{padding:10px 25px;}
+.nav > li > a{padding:15px 25px;}
 .nav > li > a:hover,
 .nav > li > a:focus {
   background-color: #4B5054;
@@ -1267,7 +1267,7 @@ html {
   display: block;
   /*padding: 15px 20px;*/
   font-weight: normal;
-  line-height:35px;
+  /*line-height:35px;*/
   text-transform: none;
   -webkit-transition: background-color 0.2s ease-in-out 0s;
   transition: background-color 0.2s ease-in-out 0s;
@@ -5268,16 +5268,17 @@ button.searchInput:hover{
 }
 /*模态框重置*/
 .modal-title,.myModalTitle{
-  font-size:16px;
+  font-size:15px;
   color:#333;
   font-weight:bold;
 }
 
 .myModalTitle .modal-img{
-  width:25px;
-  height:25px;
+  width:23px;
+  height:23px;
   border-radius:50%;
   margin-right:10px;
+  margin-bottom:10px;
 }
 @media (min-width:768px){
   .modal-dialog{
@@ -5587,4 +5588,5 @@ table input[type=checkbox], input[type=radio]{
 /*.table td .operatBtn{color:#2C7DFA;}*/
 /*.table td .operatBtn,.table td .confirmBtn{color:#8E8E8E;}*/
 .table td .operatBtn,.table td .confirmBtn{color:#2C7DFA;}
+.navi>.nav>li>a>i{font-size:22px;}
 

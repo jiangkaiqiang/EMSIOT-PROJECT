@@ -40,7 +40,7 @@
     </div>
 </nav>
 
-<!-- 表格操作区域开始 -->
+<!-- 表格开始部分 -->
 <div class="tableArea countent no-padding shadow">
     <table class="table table-striped" id="tableArea" ng-model="Allusers">
         <thead>
@@ -81,7 +81,7 @@
         </tbody>
     </table>
     <div class="page">
-        <!-- 翻页功能 -->
+        <!-- 表格分页 -->
         <div class="row" style="text-align:center">
             <pagination ng-change="pageChanged()" total-items="bigTotalItems"
                         ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
@@ -91,7 +91,7 @@
 </div>
 
 
-<!--  添加用户模态框 -->
+<!--  添加用户弹框 -->
 <div class="modal fade" id="addUser" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -100,7 +100,7 @@
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title" id="">
+                <h4 class="modal-title">
                     添加用户
                 </h4>
             </div>
@@ -161,11 +161,12 @@
                         </div>
 
 
-                        <!--监控台权限管理开始-->
+                            <!--监控台权限管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items">
                                 <div class="title-text">
-                                    <img src="app/img/config-home.png" alt=""/>
+                                    <!--<img src="app/img/config-home.png" alt=""/>-->
+                                    <i class="glyphicon glyphicon-home" style="font-size:15px;margin-right:5px;"></i>
                                     <span>监控台</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -176,7 +177,7 @@
                             </div>
                             <div class="search-container flex-items">
                                 <button class="btn btn-white flex-items" type="button">
-                                    <span class="margin-right-block">轨迹查询</span>
+                                    <span class="margin-right-block">查询轨迹</span>
                                     <input type="checkbox" class="form-control" id="traceSearch">
                                 </button>
                                 <button class="btn btn-white flex-items" type="button">
@@ -185,13 +186,13 @@
                                 </button>
                             </div>
                         </nav>
-                        <!--监控台权限管理结束-->
+                            <!--监控台权限管理结束-->
 
-                        <!--车辆管理开始-->
+                            <!--车辆管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/config-car.png" alt=""/>
+                                    <i class="iconfont icon-cheliangguanli"></i>
                                     <span>车辆管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -204,7 +205,7 @@
                             <ul class="search-container">
                                 <li class="tab1-car flex-wrap">
                                     <button class="btn btn-white flex-items" type="button">
-                                        <span class="margin-right-block">车辆备案</span>
+                                        <span class="margin-right-block">车辆备案</span>
                                         <input type="checkbox" class="form-control" id="electRecord">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
@@ -250,13 +251,13 @@
                                 </li>
                             </ul>
                         </nav>
-                        <!--车辆管理开始结束-->
+                            <!--车辆管理开始结束-->
 
-                        <!--基站管理开始-->
+                            <!--基站管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/stations-title.png" alt=""/>
+                                    <i class="iconfont icon-jizhanguanli"></i>
                                     <span>基站管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -294,13 +295,13 @@
                                 </li>
                             </ul>
                         </nav>
-                        <!--基站管理开始结束-->
+                            <!--基站管理开始结束-->
 
-                        <!--特殊区域管理开始-->
+                            <!--特殊区域管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/teshu.png" alt=""/>
+                                    <i class="iconfont icon-teshuquyuguanli1"></i>
                                     <span>特殊区域管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -323,13 +324,13 @@
                                 </li>
                             </ul>
                         </nav>
-                        <!--特殊区域管理开始结束-->
+                            <!--特殊区域管理开始结束-->
 
-                        <!--区域报警管理开始-->
+                            <!--区域报警管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/teshu.png" alt=""/>
+                                    <i class="iconfont icon-quyubaojingguanli"></i>
                                     <span>区域报警管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -352,14 +353,14 @@
                                 </li>
                             </ul>
                         </nav>
-                        <!--区域报警管理结束-->
+                            <!--区域报警管理结束-->
 
 
-                        <!--图表统计开始-->
+                            <!--图表统计开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/charts.png" alt=""/>
+                                    <i class="glyphicon glyphicon-stats" style="font-size:15px;margin-right:5px;"></i>
                                     <span>图表统计</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -369,13 +370,13 @@
                                 </ul>
                             </div>
                         </nav>
-                        <!--图表统计结束-->
+                            <!--图表统计结束-->
 
-                        <!--用户管理开始-->
+                            <!--用户管理开始-->
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/userIcon.png" alt=""/>
+                                    <i class="iconfont icon-yonghuguanli"></i>
                                     <span>用户管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -401,14 +402,14 @@
                                 </li>
                             </ul>
                         </nav>
-                        <!--用户管理结束-->
-                        
-                        
-                         <!--隐私管理开始-->
+                            <!--用户管理结束-->
+
+
+                            <!--隐私管理开始-->
                          <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
-                                <div class="title-text">
-                                    <img src="app/img/teshu.png" alt=""/>
+                                <div class="title-text flex-items">
+                                    <i class="iconfont icon-denglu-mima" style="margin-right:5px;"></i>
                                     <span>隐私权限</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -418,7 +419,7 @@
                                 </ul>
                             </div>
                         </nav>
-                        <!--隐私管理结束-->
+                            <!--隐私管理结束-->
 
 
                         <div class="divider-line"></div>
@@ -443,7 +444,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="" class="col-sm-4 control-label">
-                                        昵称：
+                                       昵称：
                                     </label>
 
                                     <div class="col-sm-8">
@@ -487,7 +488,7 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label for="" class="control-label col-md-4">
-                                    手机号：
+                                   手机号：
                                 </label>
 
                                 <div class="col-sm-8">
@@ -525,7 +526,7 @@
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title" id="">
+                <h4 class="modal-title">
                     编辑用户
                 </h4>
             </div>
@@ -559,7 +560,7 @@
                             <div class="form-group flex" id="userAreaSelect">
                                 <label for="" class="control-label">
                                     <i>*</i>
-                                    地区：
+                                    地区
                                 </label>
                                 <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control"
                                         ng-model="userForUpdate.sysUser.pro_power" ng-disabled="editable"
@@ -591,7 +592,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items">
                                 <div class="title-text">
-                                    <img src="app/img/config-home.png" alt=""/>
+                                    <i class="glyphicon glyphicon-home" style="font-size:15px;margin-right:5px;"></i>
                                     <span>监控台</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -617,7 +618,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/config-car.png" alt=""/>
+                                    <i class="iconfont icon-cheliangguanli"></i>
                                     <span>车辆管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -630,7 +631,7 @@
                             <ul class="search-container">
                                 <li class="tab1-car flex-wrap">
                                     <button class="btn btn-white flex-items" type="button">
-                                        <span class="margin-right-block">车辆备案</span>
+                                        <span class="margin-right-block">车辆备案</span>
                                         <input type="checkbox" class="form-control" id="electRecordChange">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
@@ -682,7 +683,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/stations-title.png" alt=""/>
+                                    <i class="iconfont icon-jizhanguanli"></i>
                                     <span>基站管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -698,7 +699,7 @@
                                         <input type="checkbox" class="form-control" id="stationManageChange">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
-                                        <span class="margin-right-block">基站设备管理</span>
+                                        <span class="margin-right-block">接站设备管理</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceManageChange">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
@@ -726,7 +727,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/teshu.png" alt=""/>
+                                    <i class="iconfont icon-teshuquyuguanli1"></i>
                                     <span>特殊区域管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -755,7 +756,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/teshu.png" alt=""/>
+                                    <i class="iconfont icon-quyubaojingguanli"></i>
                                     <span>区域报警管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -785,7 +786,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/charts.png" alt=""/>
+                                    <i class="glyphicon glyphicon-stats" style="font-size:15px;margin-right:5px;"></i>
                                     <span>图表统计</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -802,7 +803,7 @@
                         <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
                                 <div class="title-text">
-                                    <img src="app/img/userIcon.png" alt=""/>
+                                    <i class="iconfont icon-yonghuguanli"></i>
                                     <span>用户管理</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -833,8 +834,8 @@
                         <!--隐私管理开始-->
                          <nav class="page-title">
                             <div class="title-brand flex-between align-items inputParent">
-                                <div class="title-text">
-                                    <img src="app/img/teshu.png" alt=""/>
+                                <div class="title-text flex-items">
+                                    <i class="iconfont icon-denglu-mima"  style="margin-right:5px;"></i>
                                     <span>隐私权限</span>
                                 </div>
                                 <ul class="title-nav flex flex-items">
@@ -855,7 +856,7 @@
                                 <div class="form-group ">
                                     <label for="" class="control-label col-md-4">
                                         <i>*</i>
-                                        登陆账户：
+                                       登陆账户：
                                     </label>
 
                                     <div class="col-sm-8">
@@ -881,38 +882,38 @@
                         </div>
 
 
-                        <!-- <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group ">
-                                    <label for="" class="control-label col-md-4">
-                                        <i>*</i>
-                                        密码：
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="password1Change">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="" class="col-sm-4 control-label">
-                                        <i>*</i>
-                                        确认密码：
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="password2Change">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group ">-->
+                                    <!--<label for="" class="control-label col-md-4">-->
+                                        <!--<i>*</i>-->
+                                        <!--密码：-->
+                                    <!--</label>-->
+                                    <!--<div class="col-sm-8">-->
+                                        <!--<input type="text" class="form-control" ng-model="password1Change">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group">-->
+                                    <!--<label for="" class="col-sm-4 control-label">-->
+                                        <!--<i>*</i>-->
+                                       <!--确认密码：-->
+                                    <!--</label>-->
+                                    <!--<div class="col-sm-8">-->
+                                        <!--<input type="text" class="form-control" ng-model="password2Change">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label for="" class="control-label col-md-4">
-                                        手机号：
+                                        手机：
                                     </label>
 
                                     <div class="col-sm-8">
@@ -922,6 +923,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
                 </form>
             </div>
