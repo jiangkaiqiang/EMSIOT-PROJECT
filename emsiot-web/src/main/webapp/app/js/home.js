@@ -126,6 +126,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         });
         local.search(myValue);
     }
+
+    //显示基站和聚合
     var markerClusterer=null;
     function showStation() {
         var sHtml = "<div id='positionTable' class='shadow'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
@@ -135,10 +137,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var endHtml = "</tbody></table></div></div>";
         var pt;
         var marker2;
-        var sContent = sHtml;
         var markers = []; //存放聚合的基站
         //var infoWindow;
         var tmpStation;
+
+        //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
@@ -150,9 +153,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 var time = new Date().getTime();
+                console.log(time);
                 var start = new Date(time - 60 * 60 * 1000);//一分钟
                 var end = new Date(time);
-                console.log(title_add[0]);
+                $scope.electsInStation = [];
+                //console.log(title_add[0]);
                 showElectsInStation(start, end, title_add[0]);  //根据物理编号查找
                 var electInfo = '';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
@@ -162,8 +167,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 var p = e.target;
                 var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
                 map.openInfoWindow(infoWindow, point);
-
-
             });
             markers.push(marker2);
         }
@@ -220,7 +223,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 //
 
     //根据时间和基站id获取基站下面的当前所有车辆
-    $scope.electsInStation = [];
     function showElectsInStation(startTime, endTime, stationPhyNum) {
         $http.get('/i/elect/findElectsByStationIdAndTime', {
             params: {
@@ -231,7 +233,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }).success(function (data) {
             //$scope.electsInStation = data.slice(2,8);
             $scope.electsInStation = data;
-            //console.log($scope.electsInStation);
+            console.log($scope.electsInStation);
         });
     }
 
@@ -283,16 +285,18 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             //console.log(elecMarker);
         });
         $("#dingweiModal").modal("hide");
-    }
+    };
+
     //根据条件查询车辆轨迹
     var walking;
-
     function drawLine(p1, p2) {
-        //walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+       // walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
         walking.search(p1, p2);
     }
 
     $scope.findElectTrace = function () {            //显示车辆轨迹
+        map.clearOverlays();
+        showStation();
         if ($scope.keywordTypeForTrace == "1") {
             $scope.plateNum = $scope.keywordForTrace;
             $scope.electNumForTraceTable = $scope.plateNum;
@@ -314,6 +318,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }).success(function (data) {
             $scope.traceStations = data;
             $scope.traceStationsLength = data.length;
+            console.log(data)
             $("#positionTable").addClass("rightToggle");
             if (data.length == 1)
                 alert("该车辆仅经过一个基站：" + data[0].station.station_name);
@@ -321,30 +326,68 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 alert("该车辆没有经过任何基站！");
             else
                 for (var i = 0; i < data.length - 1; i++) {
-                    walking = new BMap.WalkingRoute(map, {renderOptions: {map: map, autoViewport: true}});
+                    walking = new BMap.WalkingRoute(map, {renderOptions: {map: map, autoViewport: true},
+                        onPolylinesSet:function(routes) {
+                            searchRoute = routes[0].getPolyline();//导航路线
+                            map.addOverlay(searchRoute);
+                        },
+                        onMarkersSet:function(routes) {
+                            var myIcon3 = new BMap.Icon("/app/img/jingP.png", new BMap.Size(40,60));
+                            var markerstart = new BMap.Marker(routes[0].marker.getPosition() ,{icon:myIcon3}); // 创建点
+
+                            map.removeOverlay(routes[0].marker); //删除起点
+
+                             map.addOverlay(markerstart);
+                            var markerend = new BMap.Marker(routes[1].marker.getPosition() ,{icon:myIcon3}); // 创建点
+
+                            map.removeOverlay(routes[1].marker);//删除终点
+
+                            //            map.addOverlay(markerend);
+                        }
+
+
+
+                    });
                     var p1 = new BMap.Point(data[i].station.longitude, data[i].station.latitude);
                     var p2 = new BMap.Point(data[i + 1].station.longitude, data[i + 1].station.latitude);
+
                     drawLine(p1, p2);
                 }
+            //增加覆盖物
+            var startP = new BMap.Point(data[0].station.longitude, data[0].station.latitude);
+            console.log(data[data.length-1].station.longitude)
+            var endP = new BMap.Point(data[data.length-1].station.longitude, data[data.length-1].station.latitude);
+           var myIcon = new BMap.Icon("/app/img/startP.png", new BMap.Size(40,60));
+            var marker2 = new BMap.Marker(startP,{icon:myIcon});  // 创建标注
+            map.addOverlay(marker2);            // 将标注添加到地图中
+            
+            var endIcon = new BMap.Icon("/app/img/endP.png", new BMap.Size(40,60));
+            var marker3 = new BMap.Marker(endP,{icon:endIcon});  // 创建标注
+            marker3.setZIndex(1);
+            marker2.setZIndex(1);
+            map.addOverlay(marker3);              // 将标注添加到地图中
+
+
         });
         $("#guijiModal").modal("hide");
         $("#positionTable .dismisPosition").removeClass("fa-angle-left").addClass("fa-angle-right");
-    }
+    };
+
     $scope.clearElectTrace = function () {
         //walking.clearResults();
         $("#guijiModal").modal("hide");
         map.clearOverlays();
         showStation();
-    }
+    };
+
     $scope.goHome = function () {
         $state.reload();
-    }
-    var navBtn = $(".home-title a")
-    //console.log(navBtn);
+    };
+
+    var navBtn = $(".home-title a");
     navBtn.click(function () {
         navBtn.removeClass("active");
         $(this).addClass("active");
-        //console.log("点击了一次");
 
     });
     //轨迹选择日期
@@ -384,6 +427,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             heatmap();
         });
     };
+
     //热力图开关选项控制
     $scope.relituFlag = 0;
     $('#relitu').parent(".swichWrap").click(function () {
@@ -470,11 +514,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var left = $(param).css('left');
         left = parseInt(left);
         if (left == 0) {
-            $(param).css('background-color', '#66b3ff'),
+            $(param).css('background-color', '#66b3ff');
                 $(param).parent().css('background-color', '#66b3ff');
             $(param).parent().parent().addClass("active");
         } else {
-            $(param).css('background-color', '#fff'),
+            $(param).css('background-color', '#fff');
                 $(param).parent().css('background-color', '#ccc');
             $(param).parent().parent().removeClass("active");
         }

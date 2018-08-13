@@ -941,11 +941,11 @@ body {
   float: none;
   height: auto;
   padding: 12px 10px 0 0;
-  font-size: 18px;
+  font-size: 1.8rem;
   /*font-weight: 700;*/
   /*line-height: 50px;*/
   text-align: center;
-  line-height:22px;
+  line-height:19px;
 }
 
 .navbar-brand:hover {
@@ -953,7 +953,7 @@ body {
 }
 
 .navbar-brand img {
-  max-height: 50px;
+  max-height: 45px;
   margin-top: 0px;
   vertical-align: middle;
   margin-right:5px;
@@ -4666,8 +4666,8 @@ button.searchInput:hover{
 
 .thumb-lg {
   display: inline-block;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   /*margin-left: 5px;*/
   margin-right: 5px;
 }
@@ -5059,8 +5059,8 @@ button.searchInput:hover{
   display: -webkit-flex; /* 新版本语法: Chrome 21+ */
   display: flex;         /* 新版本语法: Opera 12.1, Firefox 22+ */
   justify-content:center;
-  line-height:22px;
-  padding:0;
+  line-height:16px;
+  padding:10px 0 0 0;
 }
 #aside-user>.wrapper>a:last-child{
   /*margin-top:6px;*/

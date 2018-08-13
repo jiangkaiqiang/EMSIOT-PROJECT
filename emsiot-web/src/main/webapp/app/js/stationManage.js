@@ -165,6 +165,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
 			$scope.AllStations = data.list;
+			console.log($scope.AllStations);
 		});
 	}
 
