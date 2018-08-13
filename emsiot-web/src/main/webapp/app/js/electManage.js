@@ -270,7 +270,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $http.get('/i/city/findProvinceList').success(function (data) {
         $scope.provinces = data;
         $scope.addProvinceID = data[0].province_id;
-        $scope.getCitis();
+        //$scope.getCitis();
     });
     //根据省ID获取全部市For ADD
     $scope.getCitis = function () {
