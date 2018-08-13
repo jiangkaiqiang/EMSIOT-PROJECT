@@ -20,7 +20,8 @@ public interface LimitAreaMapper {
 
     int updateByPrimaryKey(LimitArea record);
     
-    Page<LimitArea> findAllLimitAreas(@Param("limitAreaID")Integer limitAreaID,@Param("limitAreaName")String limitAreaName);
+    Page<LimitArea> findAllLimitAreas(@Param("limitAreaID")Integer limitAreaID,@Param("limitAreaName")String limitAreaName
+    		,@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
     
     List<LimitArea> findAll();
     /**

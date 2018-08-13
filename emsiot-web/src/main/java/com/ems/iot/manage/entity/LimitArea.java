@@ -12,6 +12,12 @@ public class LimitArea {
     private Date add_time;
 
     private String black_list_elects;
+    
+    private Integer pro_id;
+    
+    private Integer city_id;
+    
+    private Integer area_id;
 
     public Integer getLimit_area_id() {
         return limit_area_id;
@@ -52,4 +58,30 @@ public class LimitArea {
     public void setBlack_list_elects(String black_list_elects) {
         this.black_list_elects = black_list_elects == null ? null : black_list_elects.trim();
     }
+
+	public Integer getPro_id() {
+		return pro_id;
+	}
+
+	public void setPro_id(Integer pro_id) {
+		this.pro_id = pro_id;
+	}
+
+	public Integer getCity_id() {
+		return city_id;
+	}
+
+	public void setCity_id(Integer city_id) {
+		this.city_id = city_id;
+	}
+
+	public Integer getArea_id() {
+		return area_id;
+	}
+
+	public void setArea_id(Integer area_id) {
+		this.area_id = area_id;
+	}
+    
+    
 }

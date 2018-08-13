@@ -7,9 +7,12 @@
     <result column="station_ids" jdbcType="VARCHAR" property="station_ids" />
     <result column="add_time" jdbcType="TIMESTAMP" property="add_time" />
     <result column="black_list_elects" jdbcType="VARCHAR" property="black_list_elects" />
+    <result column="pro_id" jdbcType="INTEGER" property="pro_id" />
+    <result column="city_id" jdbcType="INTEGER" property="city_id" />
+    <result column="area_id" jdbcType="INTEGER" property="area_id" />
   </resultMap>
   <sql id="Base_Column_List">
-    limit_area_id, limit_area_name, station_ids, add_time, black_list_elects
+    limit_area_id, limit_area_name, station_ids, add_time, black_list_elects, pro_id, city_id, area_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -26,6 +29,15 @@
 			<if test="limitAreaName != null and limitAreaName != ''">
 				AND  limit_area_name= #{limitAreaName}
 			</if>
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
 		</where>
    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -34,9 +46,10 @@
   </delete>
   <insert id="insert" parameterType="com.ems.iot.manage.entity.LimitArea">
     insert into limit_area (limit_area_id, limit_area_name, station_ids, 
-      add_time, black_list_elects)
+      add_time, black_list_elects, pro_id, city_id, area_id)
     values (#{limit_area_id,jdbcType=INTEGER}, #{limit_area_name,jdbcType=VARCHAR}, #{station_ids,jdbcType=VARCHAR}, 
-      #{add_time,jdbcType=TIMESTAMP}, #{black_list_elects,jdbcType=VARCHAR})
+      #{add_time,jdbcType=TIMESTAMP}, #{black_list_elects,jdbcType=VARCHAR},  
+      #{pro_id,jdbcType=INTEGER}, #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.LimitArea">
     insert into limit_area

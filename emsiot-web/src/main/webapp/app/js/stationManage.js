@@ -140,7 +140,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state, $cooki
 	// 显示最大页数
     $scope.maxSize = 7;
     // 总条目数(默认每页十条)
-    $scope.bigTotalItems = 10;
+    $scope.bigTotalItems = 7;
     // 当前页
     $scope.bigCurrentPage = 1;
 	$scope.AllStations = [];

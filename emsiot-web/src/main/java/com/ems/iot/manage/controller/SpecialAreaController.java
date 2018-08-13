@@ -42,11 +42,23 @@ public class SpecialAreaController {
 	public Object showAllLimitArea(@RequestParam(value="limitAreaID",required = false) Integer limitAreaID,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
 			@RequestParam(value="limitAreaName", required = false) String limitAreaName){
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 12 : pageSize;
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		PageHelper.startPage(pageNum, pageSize);
-		Page<LimitArea> limitAreas= limitAreaMapper.findAllLimitAreas(limitAreaID, limitAreaName);
+		Page<LimitArea> limitAreas= limitAreaMapper.findAllLimitAreas(limitAreaID, limitAreaName, proPower, cityPower, areaPower);
 		return new PageInfo<LimitArea>(limitAreas);
 	}
 	/**
@@ -79,7 +91,10 @@ public class SpecialAreaController {
 	@ResponseBody
 	public Object addBlackelect(@RequestParam(value = "addLimitAreaName", required = false) String addLimitAreaName,
 			@RequestParam(value = "addStationNames", required = false) String addStationNames,
-			@RequestParam(value = "addBlackelectPlatenum", required = false) String addBlackelectPlatenum){
+			@RequestParam(value = "addBlackelectPlatenum", required = false) String addBlackelectPlatenum,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower){
 		if (addLimitAreaName==null||addLimitAreaName.equals("")) {
 			return new ResultDto(-1, "限制区域的名称不能为空");
 		}
@@ -102,6 +117,9 @@ public class SpecialAreaController {
 		}
 		limitArea.setStation_ids(stationIDs);
 		limitArea.setBlack_list_elects(addBlackelectPlatenum);
+		limitArea.setPro_id(proPower);
+		limitArea.setCity_id(cityPower);
+		limitArea.setArea_id(areaPower);
 		limitAreaMapper.insert(limitArea);
 		return new ResultDto(0, "添加成功");
 	}

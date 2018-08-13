@@ -31,7 +31,10 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
 				limitAreaName: $scope.LimitAreaName,
-				limitAreaID:$scope.limitAreaID
+				limitAreaID:$scope.limitAreaID,
+				proPower : $rootScope.admin.pro_power,
+				cityPower : $rootScope.admin.city_power,
+				areaPower : $rootScope.admin.area_power
 			}
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
@@ -219,6 +222,9 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 			  				addLimitAreaName: $scope.addLimitAreaName,
 			  				addStationNames: $scope.addStationNames,
 			  				addBlackelectPlatenum: $scope.addBlackelectPlatenum,
+			  				proPower : $rootScope.admin.pro_power,
+							cityPower : $rootScope.admin.city_power,
+							areaPower : $rootScope.admin.area_power
 			  			}}).success(function (data) {
 			  			  if(data.success){
 			  				alert(data.message);
