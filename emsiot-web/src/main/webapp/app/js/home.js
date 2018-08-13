@@ -355,17 +355,27 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 }
             //增加覆盖物
             var startP = new BMap.Point(data[0].station.longitude, data[0].station.latitude);
-            console.log(data[data.length-1].station.longitude)
             var endP = new BMap.Point(data[data.length-1].station.longitude, data[data.length-1].station.latitude);
-           var myIcon = new BMap.Icon("/app/img/startP.png", new BMap.Size(40,60));
-            var marker2 = new BMap.Marker(startP,{icon:myIcon});  // 创建标注
-            map.addOverlay(marker2);            // 将标注添加到地图中
-            
-            var endIcon = new BMap.Icon("/app/img/endP.png", new BMap.Size(40,60));
-            var marker3 = new BMap.Marker(endP,{icon:endIcon});  // 创建标注
-            marker3.setZIndex(1);
-            marker2.setZIndex(1);
-            map.addOverlay(marker3);              // 将标注添加到地图中
+            var marker2;
+            var marker3;
+            var marker4
+            var myIcon;
+            if(data[0].station.longitude== data[data.length-1].station.longitude  &&  data[0].station.latitude==data[data.length-1].station.latitude){
+                myIcon = new BMap.Icon("/app/img/addP.png", new BMap.Size(40,60));
+                marker4 = new BMap.Marker(startP,{icon:myIcon});
+                map.addOverlay(marker4);
+                marker4.setZIndex(1);
+            }else{
+                myIcon = new BMap.Icon("/app/img/startP.png", new BMap.Size(40,60));
+                marker2 = new BMap.Marker(startP,{icon:myIcon});  // 创建标注
+                map.addOverlay(marker2);            // 将标注添加到地图中
+                var endIcon = new BMap.Icon("/app/img/endP.png", new BMap.Size(40,60));
+                marker3 = new BMap.Marker(endP,{icon:endIcon});  // 创建标注
+                map.addOverlay(marker3);              // 将标注添加到地图中
+                marker3.setZIndex(1);
+                marker2.setZIndex(1);
+            }
+
 
 
         });
