@@ -37,17 +37,17 @@
         <div class="navbar-header bg-dark">
             <a onclick="location.href='index.html'" class="navbar-brand text-lt">
                 <ul>
-                    <li>
+                    <li style="padding-top:10px;">
                         <img class="logo" src="app/img/logo.png">
                     </li>
-                    <li ng-style style="text-align:center;">
+                    <li ng-style style="text-align:center;padding-top:8px;">
                         <p ng-show="rootUserPowerDto.sysUser.pro_power==-1" ng-style style="font-size:13px;" class="hidden-folded">公安局</p>
                         <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power==-1"
-                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}公安局</p>
+                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}</p>
                         <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power==-1"
-                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}{{rootUserPowerDto.city_name}}公安局</p>
+                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.pro_name}}{{rootUserPowerDto.city_name}}</p>
                         <p ng-show="rootUserPowerDto.sysUser.pro_power!=-1&&rootUserPowerDto.sysUser.city_power!=-1&&rootUserPowerDto.sysUser.area_power!=-1"
-                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.city_name}}{{rootUserPowerDto.area_name}}公安局</p>
+                           ng-style style="font-size:13px;" class="hidden-folded">{{rootUserPowerDto.city_name}}{{rootUserPowerDto.area_name}}</p>
                         <span class="hidden-folded">电动车监管系统</span>
                     </li>
                 </ul>
