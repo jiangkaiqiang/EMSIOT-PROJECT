@@ -106,39 +106,40 @@ public class HardAcceptController extends BaseController {
 //					}
 //				} 
 //			} 
-			// 插入报警表中
-			ElectAlarm electAlarm = new ElectAlarm();
-			electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
-			electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
-			electAlarmMapper.insert(electAlarm);
-			
+		}
+		// 插入报警表中
+		ElectAlarm electAlarm = new ElectAlarm();
+		electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
+		electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
+		electAlarmMapper.insert(electAlarm);
+		
 //			//处理限制区域报警
-		    List<LimitArea> limitAreas = limitAreaMapper.findAll();
-		    for (LimitArea limitArea : limitAreas) {
-		    	String[] limitStationIDs = limitArea.getStation_ids().split(";");
+		List<LimitArea> limitAreas = limitAreaMapper.findAll();
+		for (LimitArea limitArea : limitAreas) {
+			String[] limitStationIDs = limitArea.getStation_ids().split(";");
 //		    	String[] limitElects = limitArea.getBlack_list_elects().split(";");
-		    	List<Integer> limitStationPhyNumsList = new ArrayList<Integer>();
-		    	for (String limitStationID : limitStationIDs) {
-		    		Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(limitStationID));
-		    		if (station!=null) {
-		    			limitStationPhyNumsList.add(station.getStation_phy_num());
-					}
+			List<Integer> limitStationPhyNumsList = new ArrayList<Integer>();
+			for (String limitStationID : limitStationIDs) {
+				Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(limitStationID));
+				if (station!=null) {
+					limitStationPhyNumsList.add(station.getStation_phy_num());
 				}
-		    	if (limitStationPhyNumsList.contains(stationPhyNum)) {
-		    		
-		    		MessageEntity messageEntityLimit = new MessageEntity();
-		    		messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
-					+"限制区域报警：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-					+ electrombileStation.getEle_gua_card_num() + "!");
-					CometUtil cometUtilLimit = new CometUtil();
-					cometUtilLimit.pushToLimit(messageEntityLimit);
-		    		
-		    		AreaAlarm areaAlarm = new AreaAlarm();
-		    		areaAlarm.setArea_name(limitArea.getLimit_area_name());
-		    		areaAlarm.setArea_type(2);//2表示限制区域
-		    		areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
-		    		areaAlarmMapper.insert(areaAlarm);
-				}
+			}
+			if (limitStationPhyNumsList.contains(stationPhyNum)) {
+				
+				MessageEntity messageEntityLimit = new MessageEntity();
+				messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
+						+"限制区域报警：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
+						+ electrombileStation.getEle_gua_card_num() + "!");
+				CometUtil cometUtilLimit = new CometUtil();
+				cometUtilLimit.pushToLimit(messageEntityLimit);
+				
+				AreaAlarm areaAlarm = new AreaAlarm();
+				areaAlarm.setArea_name(limitArea.getLimit_area_name());
+				areaAlarm.setArea_type(2);//2表示限制区域
+				areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
+				areaAlarm.setProcess_state(0);//0未处理，没有默认值sql报错Column 'process_state' cannot be null;
+				areaAlarmMapper.insert(areaAlarm);
 			}
 		}
 		// 插入车辆基站关系表中
