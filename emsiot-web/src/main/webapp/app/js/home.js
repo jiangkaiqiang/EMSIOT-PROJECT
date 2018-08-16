@@ -17,7 +17,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 "proID": $scope.user.pro_power
             }
         }).success(function (data) {
-            $scope.cityName = data.name;
+            //$scope.cityName = data.name;
+            $scope.cityName = "芒市";
+            console.log($scope.cityName)
             map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
             //map.setMapStyle({style:'light'})
@@ -153,7 +155,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 var time = new Date().getTime();
-                console.log(time);
+               // console.log(time);
                 var start = new Date(time - 60 * 60 * 1000);//一分钟
                 var end = new Date(time);
                 $scope.electsInStation = [];
@@ -233,7 +235,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }).success(function (data) {
             //$scope.electsInStation = data.slice(2,8);
             $scope.electsInStation = data;
-            console.log($scope.electsInStation);
+           // console.log($scope.electsInStation);
         });
     }
 
@@ -318,7 +320,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }).success(function (data) {
             $scope.traceStations = data;
             $scope.traceStationsLength = data.length;
-            console.log(data)
+            //console.log(data)
             $("#positionTable").addClass("rightToggle");
             if (data.length == 1)
                 alert("该车辆仅经过一个基站：" + data[0].station.station_name);

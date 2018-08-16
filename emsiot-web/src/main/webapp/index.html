@@ -67,6 +67,13 @@
                     <i class="fa fa-indent fa-fw text-active"></i>
                 </a>
             </div>
+            <div class="nav navbar-nav hidden-xs">
+                <a href="#" class="no-shadow navbar-btn">
+
+                    <p ng-show="rootUserPowerDto.sysUser.area_power==-1" ng-style style="font-size:1.8rem">上海新思通电动车管理系统</p>
+                </a>
+
+            </div>
             <!-- / buttons -->
 
             <!-- nabar right -->
@@ -81,15 +88,6 @@
                         <i class="iconfont icon-baojingxinxi" ng-style style="font-size:20px;"></i>
                         <span>报警管理</span>
                     </a>
-                </li>
-
-            </ul>
-            <ul class="nav navbar-nav navbar-right" style="margin-right: 20px">
-                <li style="height:70px;line-height:70px; ">
-                   <div>
-                        <p ng-show="rootUserPowerDto.area_name=='芒市'"
-                           ng-style style="font-size:13px;" class="hidden-folded">上海新思通物联网有限公司</p>
-                   </div>
                 </li>
 
             </ul>
