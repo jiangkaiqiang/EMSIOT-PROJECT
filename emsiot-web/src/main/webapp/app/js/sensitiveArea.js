@@ -109,10 +109,10 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		      		});
 		      		
 		      		
-		            e.overlay.addEventListener("click", function(){ 
-		            		alert("stations");
+		            e.overlay.addEventListener("click", function(){
+						$("#addSensitiveArea").modal("show");
 
-		            				        	  });
+					});
 		      		
 		      		overlaysDraw.push(e.overlay);
 			};
@@ -144,6 +144,32 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		        }
 				overlaysDraw.length = 0   
 		    }
+
+	//新增选择日期
+	$('#startTime').datetimepicker({
+		format: 'yyyy-mm-dd',
+		minView: "month",
+		autoclose: true,
+		maxDate: new Date(),
+		pickerPosition: "bottom-left"
+	});
+
+	$('#endTime').datetimepicker({
+		format: 'yyyy-mm-dd',
+		minView: "month",
+		autoclose: true,
+		maxDate: new Date(),
+		pickerPosition: "bottom-left"
+	});
+
+	$scope.electDefault = "0";
+	$scope.electsList =[
+		{id : "0", name : "全部"},
+		{id : "1", name : "电G22H65"},
+		{id : "2", name : "电Q11H82"},
+		{id : "3", name : "电Q11H83"},
+		{id : "4", name : "电Q19H82"}
+	];
 
 	//----------------表格收缩功能-----------------
 

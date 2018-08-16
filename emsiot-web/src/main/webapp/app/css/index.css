@@ -727,3 +727,7 @@ footer{
 	margin-top:-3px;
 	margin-right:5px;
 }
+.navbar-header ul li a{float:left;}
+.navbar-header ul,.navbar-header ul li,.navbar-header ul li a{height:100%;}
+.navbar-header ul li a:first-child{height:100%;line-height:70px;margin-left:5px;}
+.navbar-header ul li a:last-child{padding-top:15px;}

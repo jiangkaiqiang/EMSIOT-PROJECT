@@ -92,5 +92,130 @@
     <div class="dismis closeStationPosition fa fa-fw fa-angle-left"></div>
 </div>
 
+<!--  添加敏感区域模态框 start -->
+<div class="modal fade" id="addSensitiveArea" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-attr-type type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <div class="modal-title" id="">新增敏感区域</div>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="electForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label"> <i>*</i>
+                                    敏感区域名：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input ng-attr-type type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label"> <i>*</i>关联基站名： </label>
+
+                                <div class="col-sm-8">
+                                    <input ng-attr-type type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    关联车牌号：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <select name="" ng-options="x.id as x.name for x in electsList"
+                                            ng-model="electDefault"
+                                            class="form-control">
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    出现次数：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input ng-attr-type type="number" class="form-control" min="0" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    启动时间：
+                                </label>
+
+                                <div class="col-sm-8 input-group date" id="startTime">
+                                    <input ng-attr-type type="text" class="form-control">
+                                     <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                     </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                        结束时间：
+                                    </label>
+
+                                    <div class="col-sm-8 input-group date" id="endTime">
+                                        <input ng-attr-type type="text" class="form-control">
+                                         <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+						                </span>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">
+                                    报警启动按钮：
+                                </label>
+
+                                <div class="col-sm-8">
+                                    <input ng-attr-type type="checkbox" class="form-control" ng-style style="margin-top:10px;">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button ng-attr-type type="button" class="btn btn-primary">
+                    添加
+                </button>
+                <button ng-attr-type type="button" class="btn btn-default" data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--  添加敏感区域模态框 end -->
+
+
 <!--以下市可视化内容-->
-<div id="sensitiveAreaMap" style="width:100%;height:800px;ground:#ddd;">bbdbgf</div>
+<div id="sensitiveAreaMap" style="width:100%;height:800px;ground:#ddd;"></div>
