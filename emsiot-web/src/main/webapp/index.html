@@ -70,6 +70,7 @@
             <!-- / buttons -->
 
             <!-- nabar right -->
+            
             <ul class="nav navbar-nav navbar-right">
                 <li ng-style style="height:70px;line-height:70px;">
                     <span id="message" ng-style style="color:red;"></span>
@@ -80,6 +81,15 @@
                         <i class="iconfont icon-baojingxinxi" ng-style style="font-size:20px;"></i>
                         <span>报警管理</span>
                     </a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="margin-right: 20px">
+                <li style="height:70px;line-height:70px; ">
+                   <div>
+                        <p ng-show="rootUserPowerDto.area_name=='芒市'"
+                           ng-style style="font-size:13px;" class="hidden-folded">上海新思通物联网有限公司</p>
+                   </div>
                 </li>
 
             </ul>
