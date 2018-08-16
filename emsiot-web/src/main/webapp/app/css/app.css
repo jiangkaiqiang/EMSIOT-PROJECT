@@ -1306,7 +1306,7 @@ html {
   }
   .app-aside-folded .navi > ul > li > a {
     position: relative;
-    height: 50px;
+    height: 45px;
     text-align: center;
     padding:0 10px 0 0;
     line-height:50px;
@@ -1323,8 +1323,8 @@ html {
     float: none;
     width: auto;
     margin: 0;
-    font-size: 16px;
-    line-height: 50px;
+    font-size: 1.8rem;
+    line-height: 45px;
     border: none !important;
   }
   .app-aside-folded .navi > ul > li > a i b {
@@ -3963,7 +3963,7 @@ button.searchInput:hover{
 }
 
 .text-xs {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .text-xxs {
@@ -5193,7 +5193,7 @@ button.searchInput:hover{
 
 
 .title-text{
-  font-size:15px;
+  font-size:1.3rem;
   font-weight:bold;
   color:#333;
 }
@@ -5558,12 +5558,12 @@ table input[type=checkbox], input[type=radio]{
   vertical-align:middle;
 }
 @media screen and (max-width:1367px){
-  body{font-size:1em;}
-  .navbar-brand{font-size:1.6em;}
-  .btn{font-size:1em;}
-  .title-text{font-size:1.2em;}
-  .form-control{font-size:1em;height:30px;padding:5px 12px;}
-  .tableArea thead th{font-size:1em;}
+  body{font-size:1.2rem;}
+  .navbar-brand{font-size:1.6rem;}
+  .btn{font-size:1.2rem;}
+  .title-text{font-size:1.2rem;}
+  .form-control{font-size:1.2rem;height:30px;padding:5px 12px;}
+  .tableArea thead th{font-size:1.2rem;}
   .app-aside,
   .navbar-header {
     width: 180px;
@@ -5575,13 +5575,13 @@ table input[type=checkbox], input[type=radio]{
     /*transition:all 0.3s;*/
   }
   .navi ul.nav li a{
-    line-height:33px;
+    line-height:24px;
   }
   .navbar-brand img{margin-right:3px;}
   #aside-user{padding:10px 0;}
-  #aside-user>div:first-child>a:last-child>span>span:first-child{font-size:1.3em;}
-  td .dropdown span[data-toggle='dropdown']{font-size:1em;}
-  .modal-title, .myModalTitle{font-size:1.3em;}
+  #aside-user>div:first-child>a:last-child>span>span:first-child{font-size:1.2rem;}
+  td .dropdown span[data-toggle='dropdown']{font-size:1.2rem;}
+  .modal-title, .myModalTitle{font-size:1.2rem;}
   .nav>li>a{padding:10px;}
 
 
@@ -5589,5 +5589,5 @@ table input[type=checkbox], input[type=radio]{
 /*.table td .operatBtn{color:#2C7DFA;}*/
 /*.table td .operatBtn,.table td .confirmBtn{color:#8E8E8E;}*/
 .table td .operatBtn,.table td .confirmBtn{color:#2C7DFA;}
-.navi>.nav>li>a>i{font-size:22px;}
+.navi>.nav>li>a>i{font-size:1.8rem;}
 
