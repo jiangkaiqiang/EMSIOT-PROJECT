@@ -27,7 +27,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			                "proID": $scope.user.pro_power
 			            }
 			  }).success(function (data) {
-				$scope.cityName = data.name;
+//				$scope.cityName = data.name;
+				$scope.cityName = "芒市";
 				sensitiveAreaMap.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
 				sensitiveAreaMap.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 				// 获取基站
