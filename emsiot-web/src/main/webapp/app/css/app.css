@@ -5575,7 +5575,7 @@ table input[type=checkbox], input[type=radio]{
     /*transition:all 0.3s;*/
   }
   .navi ul.nav li a{
-    line-height:24px;
+    line-height:26px;
   }
   .navbar-brand img{margin-right:3px;}
   #aside-user{padding:10px 0;}
