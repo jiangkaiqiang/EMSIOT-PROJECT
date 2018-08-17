@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ems.iot.manage.dao.LimitAreaMapper;
 import com.ems.iot.manage.dao.SensitiveAreaMapper;
 import com.ems.iot.manage.dao.StationMapper;
+import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.LimitArea;
 import com.ems.iot.manage.entity.SensitiveArea;
 import com.ems.iot.manage.entity.Station;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Controller
 @RequestMapping("/SensitiveArea")
@@ -81,5 +85,50 @@ public class SensitiveAreaController {
 //		
 		return new ResultDto(0, "添加成功");
 	}
+	
+	
+	
+	/**
+	 * 查找在限制区域
+	 * @return
+	 */	
+	@RequestMapping(value = "/findSensitiveByOptions",method=RequestMethod.POST)
+	@ResponseBody
+	public Object showAllSensitiveArea(@RequestParam(value="sensitiveAreaID",required = false) Integer sensitiveAreaID,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
+			@RequestParam(value="sensitiveAreaName", required = false) String sensitiveAreaName){
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 12 : pageSize;
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		PageHelper.startPage(pageNum, pageSize);
+		Page<SensitiveArea> sensitiveAreas= sensitiveAreaMapper.findAllSensitiveAreas(sensitiveAreaID, sensitiveAreaName, proPower, cityPower, areaPower);
+		return new PageInfo<SensitiveArea>(sensitiveAreas);
+	}
+	
+	
+	/**
+	 * 删除限制区域
+	 * @return
+	 */
+	@RequestMapping(value="/deleteSensitiveAreaByID")
+	@ResponseBody
+	public Object deleteSensitiveAreaByID(@RequestParam("sensitiveAreaID")Integer sensitiveAreaID){
+		sensitiveAreaMapper.deleteByPrimaryKey(sensitiveAreaID);
+		return new BaseDto(0);
+	}
+	
+	
 	
 }

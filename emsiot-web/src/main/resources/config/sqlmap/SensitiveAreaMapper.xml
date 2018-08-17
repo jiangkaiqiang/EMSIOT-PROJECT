@@ -149,4 +149,32 @@
 			</if>
 		</where>
    </select>
+   
+  
+   <select id="findAllSensitiveAreas" parameterType="map" resultType="com.ems.iot.manage.entity.SensitiveArea">
+        SELECT  * FROM `sensitive_area`
+        <where>
+			<if test="sensitiveAreaID != null and sensitiveAreaID != ''">
+				sensitive_area_id = #{sensitiveAreaID}
+			</if>
+			<if test="sensitiveAreaName != null and sensitiveAreaName != ''">
+				AND  sensitive_area_name= #{sensitiveAreaName}
+			</if>
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+		</where>
+   </select>
+   
+    <select id="findAll" parameterType="map" resultType="com.ems.iot.manage.entity.SensitiveArea">
+        SELECT  * FROM `sensitive_area`
+   </select>
+  
+  
 </mapper>
