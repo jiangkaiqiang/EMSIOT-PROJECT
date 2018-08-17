@@ -1,5 +1,8 @@
 package com.ems.iot.manage.dao;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.ems.iot.manage.entity.LimitArea;
 import com.ems.iot.manage.entity.SensitiveArea;
 
 public interface SensitiveAreaMapper {
@@ -14,4 +17,12 @@ public interface SensitiveAreaMapper {
     int updateByPrimaryKeySelective(SensitiveArea record);
 
     int updateByPrimaryKey(SensitiveArea record);
+    
+    
+    /**
+     * 防止出现相同名字的限制区域
+     * @param limitAreaName
+     * @return
+     */
+    LimitArea findSensitiveAreaForFilter(@Param("limitAreaName")String sensitiveAreaName);
 }

@@ -11,6 +11,8 @@ public class SensitiveArea {
 
     private Date add_time;
 
+    private String list_elects;
+    
     private String black_list_elects;
 
     private Date sens_start_time;
@@ -18,6 +20,15 @@ public class SensitiveArea {
     private Date sens_end_time;
 
     private Integer enter_num;
+    
+    private Integer stauts;
+    
+    private Integer pro_id;
+    
+    private Integer city_id;
+    
+    private Integer area_id;
+
 
     public Integer getSensitive_area_id() {
         return sensitive_area_id;
@@ -82,4 +93,46 @@ public class SensitiveArea {
     public void setEnter_num(Integer enter_num) {
         this.enter_num = enter_num;
     }
+
+	public Integer getStauts() {
+		return stauts;
+	}
+
+	public void setStauts(Integer stauts) {
+		this.stauts = stauts;
+	}
+
+	public String getList_elects() {
+		return list_elects;
+	}
+
+	public void setList_elects(String list_elects) {
+		this.list_elects = list_elects;
+	}
+
+	public Integer getPro_id() {
+		return pro_id;
+	}
+
+	public void setPro_id(Integer pro_id) {
+		this.pro_id = pro_id;
+	}
+
+	public Integer getCity_id() {
+		return city_id;
+	}
+
+	public void setCity_id(Integer city_id) {
+		this.city_id = city_id;
+	}
+
+	public Integer getArea_id() {
+		return area_id;
+	}
+
+	public void setArea_id(Integer area_id) {
+		this.area_id = area_id;
+	}
+    
+	
 }
