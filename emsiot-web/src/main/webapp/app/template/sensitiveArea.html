@@ -9,12 +9,12 @@
                           role="search">
                         <div class="form-group border-bottom">
                             <div class="input-group">
-                                <input type="text" ng-model="selected"
+                                <input type="text" ng-model="sensitiveAreaName"
                                        typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                        class="form-control input-sm bg-light no-border searchInput no-padding"
                                        placeholder="请输入基站编号搜索" style="color:#333;">
                         <span class="input-group-btn">
-                             <button type="submit" class="btn btn-sm bg-light searchInput text-right">
+                             <button type="submit" class="btn btn-sm bg-light searchInput text-right" ng-click="goSearch()">
                                  <img src="app/img/search .png" alt="" class="pull-right"/>
                              </button>
                         </span>
@@ -25,7 +25,7 @@
                 <li class="border-dashed" style="height:15px;color:#7D7C82;"></li>
                 <li>
                     <a href="" style="color:#7D7C82;">
-                        <button class="btn btn-guiji">
+                        <button class="btn btn-guiji" ng-click="goDeleteLimitAreas()">
                             <i class="glyphicon glyphicon-trash"></i>
                             批量删除
                         </button>
@@ -42,7 +42,7 @@
 
         <!-- 表格操作区域开始 -->
         <div class="tableArea no-padding full-width no-margin">
-            <table class="table table-striped table-bordered" id="tableArea" ng-model="Allusers">
+            <table class="table table-striped table-bordered" id="tableArea" ng-model="AllSensitiveAreas">
                 <thead>
                 <tr>
                     <th>
@@ -51,29 +51,28 @@
                         </div>
                     </th>
                     <!--<th>序号</th>-->
-                    <th>限制区域名</th>
-                    <th>起点站编号</th>
-                    <th>终点站编号</th>
-                    <th>总站数</th>
+                    <th>敏感区域名</th>
+                    <th>关联基站</th>
+                    <th>关联车辆</th>
+                    <th>启动时间</th>
+                    <th>结束时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in Allusers">
+                <tr ng-repeat="user in AllSensitiveAreas">
                     <td>
                         <input type="checkbox" ng-checked="exists(user, selected)"
                                ng-click="toggle(user, selected)"/>
                     </td>
-                    <!-- <td>{{user.sysUser.user_id}}</td> -->
-                    <td>{{$index+1}}</td>
-                    <td>{{user.sysUser.user_tel}}</td>
-                    <td>{{user.sysUser.user_tel}}</td>
-                    <td>{{user.sysUser.company}}</td>
+
+                    <td>{{user.sensitive_area_name}}</td>
+                    <td>{{user.station_ids}}</td>
+                    <td>{{user.list_elects}}</td>
+                    <td>{{user.sens_start_time}}</td>
+                    <td>{{user.sens_end_time}}</td>
                     <td>
-                        <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
-                                ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                        </button>
+                        <i class="glyphicon glyphicon-trash" ng-click="goDeleteSensitiveAreas(user.sensitive_area_id)"></i>
                     </td>
                 </tr>
                 </tbody>
@@ -189,7 +188,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="checkbox" class="form-control" ng-style style="margin-top:10px;" ng-model="status" id="status">
+                                    <input ng-attr-type type="checkbox" class="form-control" ng-style style="margin-top:10px;" ng-model="status" id="sentivesStatus">
                                 </div>
                             </div>
                         </div>
@@ -198,7 +197,6 @@
                                 <label for="" class="col-sm-4 control-label">
                                     出现次数：
                                 </label>
-
                                 <div class="col-sm-8">
                                     <input ng-attr-type type="number" class="form-control" min="0" value="0" ng-model="enterNum">
                                 </div>

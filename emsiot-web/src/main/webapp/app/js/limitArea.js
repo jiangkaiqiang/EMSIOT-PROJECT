@@ -40,7 +40,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 			$scope.bigTotalItems = data.total;
 			$scope.AllLimitAreas = data.list;
 		});
-	}
+	};
     $scope.getLimitAreaByOptions();
     $scope.goSearch = function () {
   		$scope.getLimitAreaByOptions();
