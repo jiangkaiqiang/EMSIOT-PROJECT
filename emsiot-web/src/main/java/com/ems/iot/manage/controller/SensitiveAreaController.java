@@ -34,7 +34,10 @@ public class SensitiveAreaController {
 			@RequestParam(value = "addStationNames", required = false) String addStationNames,
 			@RequestParam(value = "addBlackelectPlatenum", required = false) String addBlackelectPlatenum,
 			@RequestParam(value = "addElectPlatenum", required = false) String addElectPlatenum,
-			@RequestParam(value = "status", required = false) String status,
+			@RequestParam(value = "enterNum", required = false) Integer enterNum,
+			@RequestParam(value = "status", required = false) Integer status,
+			@RequestParam(value = "sensStartTime", required = false) String sensStartTime,
+			@RequestParam(value = "sensEndTime", required = false) String sensEndTime,
 			@RequestParam(value="proPower", required=false) Integer proPower,
 			@RequestParam(value="cityPower", required=false) Integer cityPower,
 			@RequestParam(value="areaPower", required=false) Integer areaPower){
@@ -66,6 +69,11 @@ public class SensitiveAreaController {
 //		
 		sensitiveArea.setStation_ids(stationIDs);
 		sensitiveArea.setBlack_list_elects(addBlackelectPlatenum);
+		sensitiveArea.setList_elects(addElectPlatenum);
+		sensitiveArea.setSens_start_time(sensStartTime);
+		sensitiveArea.setSens_end_time(sensEndTime);
+		sensitiveArea.setStatus(status);
+		sensitiveArea.setEnter_num(enterNum);
 		sensitiveArea.setPro_id(proPower);
 		sensitiveArea.setCity_id(cityPower);
 		sensitiveArea.setArea_id(areaPower);

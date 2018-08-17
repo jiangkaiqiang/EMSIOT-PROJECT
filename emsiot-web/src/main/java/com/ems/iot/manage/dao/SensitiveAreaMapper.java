@@ -24,5 +24,5 @@ public interface SensitiveAreaMapper {
      * @param limitAreaName
      * @return
      */
-    LimitArea findSensitiveAreaForFilter(@Param("limitAreaName")String sensitiveAreaName);
+    SensitiveArea findSensitiveAreaForFilter(@Param("sensitiveAreaName")String sensitiveAreaName);
 }

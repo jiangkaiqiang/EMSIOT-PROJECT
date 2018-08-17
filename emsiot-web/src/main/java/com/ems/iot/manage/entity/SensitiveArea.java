@@ -15,13 +15,13 @@ public class SensitiveArea {
     
     private String black_list_elects;
 
-    private Date sens_start_time;
+    private String sens_start_time;
 
-    private Date sens_end_time;
+    private String sens_end_time;
 
     private Integer enter_num;
     
-    private Integer stauts;
+    private Integer status;
     
     private Integer pro_id;
     
@@ -70,19 +70,19 @@ public class SensitiveArea {
         this.black_list_elects = black_list_elects == null ? null : black_list_elects.trim();
     }
 
-    public Date getSens_start_time() {
+    public String getSens_start_time() {
         return sens_start_time;
     }
 
-    public void setSens_start_time(Date sens_start_time) {
+    public void setSens_start_time(String sens_start_time) {
         this.sens_start_time = sens_start_time;
     }
 
-    public Date getSens_end_time() {
+    public String getSens_end_time() {
         return sens_end_time;
     }
 
-    public void setSens_end_time(Date sens_end_time) {
+    public void setSens_end_time(String sens_end_time) {
         this.sens_end_time = sens_end_time;
     }
 
@@ -94,12 +94,14 @@ public class SensitiveArea {
         this.enter_num = enter_num;
     }
 
-	public Integer getStauts() {
-		return stauts;
+	
+
+	public Integer getStatus() {
+		return status;
 	}
 
-	public void setStauts(Integer stauts) {
-		this.stauts = stauts;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getList_elects() {

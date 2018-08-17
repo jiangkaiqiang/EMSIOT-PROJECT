@@ -102,16 +102,27 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
 		    var overlaysDraw = [];
 			var overlaycomplete = function(e){
-					var borderPoints=e.overlay.getPath();//多边形轨迹数据点
+					$scope.borderPoints=e.overlay.getPath();//多边形轨迹数据点
 		      		//console.log(e.overlay.getPath());
-		      		$http.post('/path',borderPoints).success(function(data){
-		      			
-		      			
-		      		});
+		      		//$http.post('/path',borderPoints).success(function(data){
+		      		//
+		      		//
+		      		//});
 		      		
 		      		
 		            e.overlay.addEventListener("click", function(){
-						$("#addSensitiveArea").modal("show");
+						$http({
+							method : 'POST',
+							url : '/i/specialArea/findStations',
+							params : {
+								area_power:$scope.user.area_power,
+								city_power:$scope.user.city_power,
+								pro_power: $scope.user.pro_power,
+								borderPoints:$scope.borderPoints
+							}}).success(function (data) {
+							$scope.addStationNames=data;
+							$("#addSensitiveArea").modal("show");
+						})
 
 					});
 		      		
@@ -171,6 +182,65 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		{id : "3", name : "电Q11H83"},
 		{id : "4", name : "电Q19H82"}
 	];
+
+
+	//添加
+	if($("#status").checked){
+		$scope.status=1
+	}else{
+		$scope.status=0
+	}
+	$scope.addSensitiveArea = function(){
+		$http({
+			method : 'POST',
+			url : '/i/SensitiveArea/addSensitiveArea',
+			params : {
+				addSensitiveAreaName: $scope.addSensitiveAreaName,
+				addStationNames: $scope.addStationNames,
+				addBlackelectPlatenum: $scope.addBlackelectPlatenum,
+				addElectPlatenum: $scope.addElectPlatenum,
+				enterNum: $scope.enterNum,
+				status: $scope.status,
+				sensStartTime: $scope.sensStartTime,
+				sensEndTime: $scope.sensEndTime,
+				proPower :$scope.user.pro_power,
+				cityPower : $scope.user.city_power,
+				areaPower : $scope.user.area_power
+			}}).success(function (data) {
+			if(data.success){
+				console.log(data);
+				//$scope.getLimitAreaByOptions();
+				//$("#addSensitiveArea").modal("hide");
+			}
+			else{
+				alert(data.message);
+			}
+		});
+		//if(checkInputInfo()){
+		//	$http({
+		//		method : 'POST',
+		//		url : '/i/specialArea/addSpecialArea',
+		//		params : {
+		//			addLimitAreaName: $scope.addLimitAreaName,
+		//			addStationNames: $scope.addStationNames,
+		//			addBlackelectPlatenum: $scope.addBlackelectPlatenum,
+		//			proPower : $rootScope.admin.pro_power,
+		//			cityPower : $rootScope.admin.city_power,
+		//			areaPower : $rootScope.admin.area_power
+		//		}}).success(function (data) {
+		//		if(data.success){
+		//			alert(data.message);
+		//			$scope.getLimitAreaByOptions();
+		//			$("#addLimitArea").modal("hide");
+		//		}
+		//		else{
+		//			alert(data.message);
+		//		}
+		//	})
+		//}else{
+		//	alert("限制区域名和基站ID不能为空！")
+		//}
+	}
 
 	//----------------表格收缩功能-----------------
 
