@@ -129,6 +129,17 @@ public class SensitiveAreaController {
 		return new BaseDto(0);
 	}
 	
-	
+	/**
+	 * 删除多个限制区域
+	 * @return
+	 */
+	@RequestMapping(value="/deleteSensitiveAreaByIDs")
+	@ResponseBody
+	public Object deleteSensitiveAreaByIDs(@RequestParam("sensitiveAreaIDs")Integer[] sensitiveAreaIDs){
+		for (int i = 0; i < sensitiveAreaIDs.length; i++) {
+			sensitiveAreaMapper.deleteByPrimaryKey(sensitiveAreaIDs[i]);
+		}		
+		return new BaseDto(0);
+	}
 	
 }
