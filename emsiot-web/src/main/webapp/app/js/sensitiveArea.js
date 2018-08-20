@@ -107,20 +107,27 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			$scope.selected = $scope.AllSensitiveAreas.slice(0);
 		}
 	};
+	function delcfm() {
+		if (!confirm("确认要删除？")) {
+			return false;
+		}
+		return true;
+	}
 	$scope.goDeleteSensitiveAreas=function(userID){
-		//if(delcfm()){
+		if(delcfm()){
 			$http.get('/i/SensitiveArea/deleteSensitiveAreaByID', {
 				params: {
 					"sensitiveAreaID": userID
 				}
 			}).success(function (data) {
 				$scope.getSensitiveAreaByOptions();
+				alert("删除成功！")
 			});
-		//}
+		}
 	}
 
 	$scope.goDeleteLimitAreas = function(){
-		//if(delcfm()){
+		if(delcfm()){
 			var limitAreaIDs = [];
 			for(i in $scope.selected){
 				limitAreaIDs.push($scope.selected[i].sensitive_area_id);
@@ -134,9 +141,10 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 					}
 				}).success(function (data) {
 					$scope.getSensitiveAreaByOptions();
+					alert("删除成功！")
 				});
 			}
-		//}
+		}
 	}
 
 		 function showStationForAera(map){
@@ -273,38 +281,60 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 
 
 	//添加
-	if($("#sentivesStatus").checked){
-		$scope.status=1
-	}else{
-		$scope.status=0
+	function checkInputInfo(){
+	var flag = true;
+	// 检查必须填写项
+	if ($scope.addSensitiveAreaName == undefined || $scope.addLimitAreaName == '') {
+		flag = false;
+		alert("敏感区域名不可为空！")
 	}
+	if ($scope.addStationNames == undefined || $scope.addStationNames == '') {
+		flag = false;
+		alert("基站名不可为空！")
+	}
+	return flag;
+}
+	//var inputStatus=$("#sentivesStatus").get(0).checked;
+	function aaa(){
+		var inputStatus=$("#sentivesStatus").get(0).checked;
+		console.log(inputStatus)
+		if(inputStatus){
+			return $scope.status=1
+		}else{
+			return $scope.status=0
+		}
+	}
+
 	$scope.addSensitiveArea = function(){
-		$http({
-			method : 'POST',
-			url : '/i/SensitiveArea/addSensitiveArea',
-			params : {
-				addSensitiveAreaName: $scope.addSensitiveAreaName,
-				addStationNames: $scope.addStationNames,
-				addBlackelectPlatenum: $scope.addBlackelectPlatenum,
-				addElectPlatenum: $scope.addElectPlatenum,
-				enterNum: $scope.enterNum,
-				status: $scope.status,
-				sensStartTime: $scope.sensStartTime,
-				sensEndTime: $scope.sensEndTime,
-				proPower :$scope.user.pro_power,
-				cityPower : $scope.user.city_power,
-				areaPower : $scope.user.area_power
-			}}).success(function (data) {
-			if(data.success){
-				console.log(data);
-				//$scope.getLimitAreaByOptions();
-				$scope.getSensitiveAreaByOptions();
-				$("#addSensitiveArea").modal("hide");
-			}
-			else{
-				alert(data.message);
-			}
-		});
+		if(checkInputInfo()) {
+			$http({
+				method: 'POST',
+				url: '/i/SensitiveArea/addSensitiveArea',
+				params: {
+					addSensitiveAreaName: $scope.addSensitiveAreaName,
+					addStationNames: $scope.addStationNames,
+					addBlackelectPlatenum: $scope.addBlackelectPlatenum,
+					addElectPlatenum: $scope.addElectPlatenum,
+					enterNum: $scope.enterNum,
+					status:aaa(),
+					sensStartTime: $scope.sensStartTime,
+					sensEndTime: $scope.sensEndTime,
+					proPower: $scope.user.pro_power,
+					cityPower: $scope.user.city_power,
+					areaPower: $scope.user.area_power
+				}
+			}).success(function (data) {
+				if (data.success) {
+					console.log(data);
+					$scope.getSensitiveAreaByOptions();
+					$("#addSensitiveArea").modal("hide");
+					alert("添加成功")
+				}
+				else {
+					alert(data.message);
+				}
+			})
+		};
 	}
 
 	//----------------表格收缩功能-----------------
