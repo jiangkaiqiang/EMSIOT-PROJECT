@@ -151,23 +151,33 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
             //统计一分钟内经过改基站的车辆的数
             var time = new Date().getTime();//当前时间
-            var start = new Date(time - 60*1000*60);//一分钟
+            var start = new Date(time - 60*1000*60*60*2);//一分钟
             var end = new Date(time);
+
             var num = tmpStation.station_phy_num;
             function FormatDate (strTime) {
                 var date = new Date(strTime);
                 return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+ date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
             }
+            console.log(FormatDate(start) ,FormatDate(end) );
             showElectsInStation(FormatDate(start), FormatDate(end), num);
             console.log(FormatDate(start));
             console.log(FormatDate(end));
             console.log(num);
-            //setTimeout("",500)
-
             var carNum=$scope.electsInStation.length;
             console.log(carNum)
 
-            var label = new BMap.Label(carNum,{offset:new BMap.Size(4,-15)});
+            var label = new BMap.Label(carNum,{offset:new BMap.Size(0,-15)});
+            if(carNum==0){
+                label.setStyle({
+                    color : "transparent",
+                    fontSize : "16px",
+                    backgroundColor :"transparent",
+                    border :"0",
+                    fontWeight :"bold",
+                    width:'80px'
+                });
+            }else{
             label.setStyle({
                 color : "rgb(102, 179, 255)",
                 fontSize : "16px",
@@ -176,6 +186,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 fontWeight :"bold",
                 width:'80px'
             });
+            }
+            //label.setStyle({
+            //    color : "rgb(102, 179, 255)",
+            //    fontSize : "16px",
+            //    backgroundColor :"transparent",
+            //    border :"0",
+            //    fontWeight :"bold",
+            //    width:'80px'
+            //});
             marker2.setLabel(label);
             marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address);
             //console.log($scope.stations.length);
@@ -470,6 +489,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         map.addOverlay(heatmapOverlay);
         heatmapOverlay.setDataSet({data: $scope.thermodynamics, max: 5});
         heatmapOverlay.show();
+        //var label2 = new BMap.Label("标题显示",{offset:new BMap.Size(4,-15)});
+        //heatmapOverlay.setLabel(label2);
     }
     $scope.showReLiTu = function () {
         $http.get('/i/elect/findElectsNumByStations', {
