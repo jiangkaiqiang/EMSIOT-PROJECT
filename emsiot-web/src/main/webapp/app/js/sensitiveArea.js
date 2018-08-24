@@ -1,9 +1,3 @@
-/**
- * Created by SAIHE01 on 2018/4/8.
- */
-/**
- * Created by SAIHE01 on 2018/4/8.
- */
 coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cookies, $http, $location) {
 	 var sensitiveAreaMap = new BMap.Map("sensitiveAreaMap",{
 	   	  minZoom:5,
@@ -147,6 +141,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		}
 	}
 
+	//显示基站
 		 function showStationForAera(map){
 			 var sHtml="<div id='positionTable' class='shadow'><ul class='flex-between'><li class='flex-items'><img src='app\img\station.png'/><h4>";
 		     var sHtml2 = "</h4></li><li>";
@@ -199,12 +194,20 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 	 			//console.log($scope.electsInStation);
 	 		});
 		 }
-	     
+
 		 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
 		    var overlaysDraw = [];
 			var overlaycomplete = function(e){
 					$scope.borderPoints=e.overlay.getPath();//多边形轨迹数据点
-		      		
+					console.log($scope.borderPoints);
+					//返回上一部轨迹
+				$scope.backOne = function(){
+					$scope.borderPoints.pop();
+					console.log($scope.borderPoints);
+					console.log(e.overlay);
+
+					drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+				};
 		            e.overlay.addEventListener("click", function(){
 						$http({
 							method : 'POST',
@@ -222,6 +225,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 					});
 		      		
 		      		overlaysDraw.push(e.overlay);
+
 			};
 
 		    var styleOptions = {
@@ -246,7 +250,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		        polygonOptions: styleOptions //多边形的样式
 		    }); 
 		    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
-		    function clearAll() {
+		    $scope.clearAll=function() {
 				for(var i = 0; i < overlaysDraw.length; i++){
 					sensitiveAreaMap.removeOverlay(overlaysDraw[i]);
 		        }

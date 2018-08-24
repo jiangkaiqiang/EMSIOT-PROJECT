@@ -89,7 +89,7 @@ font-weight:bold;
     /*right:20px;*/
     width:500px;
     padding:10px;
-    background:#fff;
+    background:rgba(255,255,255,0.7);
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
 }

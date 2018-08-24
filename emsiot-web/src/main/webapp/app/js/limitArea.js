@@ -178,7 +178,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		            fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
 		            strokeWeight: 3,       //边线的宽度，以像素为单位。
 		            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
-		            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+		            fillOpacity: 0.5,      //填充的透明度，取值范围0 - 1。
 		            strokeStyle: 'solid' //边线的样式，solid或dashed。
 		        }
 		    //实例化鼠标绘制工具
@@ -195,7 +195,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		        polygonOptions: styleOptions //多边形的样式
 		    }); 
 		    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
-		    function clearAll() {
+		   $scope.clearAll= function () {
 				for(var i = 0; i < overlaysDraw.length; i++){
 					limitAreaMap.removeOverlay(overlaysDraw[i]);
 		        }
@@ -285,14 +285,14 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 			  			method:'DELETE',
 			  			url:'/i/specialArea/deleteLimitAreaByIDs',
 			  			params:{
-			  				"limitAreaIDs": limitAreaIDs,
+			  				"limitAreaIDs": limitAreaIDs
 			  			}
 			  		}).success(function (data) {
 			  			 $scope.getLimitAreaByOptions();
 			          });
 			  	}
 			  	}
-			  }
+			  };
 
 	//----------------表格收缩功能-----------------
 

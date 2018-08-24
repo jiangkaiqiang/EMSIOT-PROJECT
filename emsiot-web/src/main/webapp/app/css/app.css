@@ -5567,12 +5567,10 @@ table input[type=checkbox], input[type=radio]{
   .app-aside,
   .navbar-header {
     width: 180px;
-    /*transition:all 0.3s;*/
   }
   .navbar-collapse,
   .app-footer {
     margin-left: 180px;
-    /*transition:all 0.3s;*/
   }
   .navi ul.nav li a{
     line-height:26px;
@@ -5586,8 +5584,12 @@ table input[type=checkbox], input[type=radio]{
 
 
 }
-/*.table td .operatBtn{color:#2C7DFA;}*/
-/*.table td .operatBtn,.table td .confirmBtn{color:#8E8E8E;}*/
 .table td .operatBtn,.table td .confirmBtn{color:#2C7DFA;}
 .navi>.nav>li>a>i{font-size:1.8rem;}
+.btn-grop{
+  position:absolute;
+  top:60px;
+  right:5px;
+}
+.btn-grop .btn-guiji{background:rgba(255,255,255,0.7)}
 

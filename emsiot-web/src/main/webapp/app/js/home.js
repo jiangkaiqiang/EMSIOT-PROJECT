@@ -148,6 +148,35 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             tmpStation = $scope.stations[i];
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
             marker2 = new BMap.Marker(pt);
+
+            //统计一分钟内经过改基站的车辆的数
+            var time = new Date().getTime();//当前时间
+            var start = new Date(time - 60*1000*60);//一分钟
+            var end = new Date(time);
+            var num = tmpStation.station_phy_num;
+            function FormatDate (strTime) {
+                var date = new Date(strTime);
+                return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+ date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            }
+            showElectsInStation(FormatDate(start), FormatDate(end), num);
+            console.log(FormatDate(start));
+            console.log(FormatDate(end));
+            console.log(num);
+            //setTimeout("",500)
+
+            var carNum=$scope.electsInStation.length;
+            console.log(carNum)
+
+            var label = new BMap.Label(carNum,{offset:new BMap.Size(4,-15)});
+            label.setStyle({
+                color : "rgb(102, 179, 255)",
+                fontSize : "16px",
+                backgroundColor :"transparent",
+                border :"0",
+                fontWeight :"bold",
+                width:'80px'
+            });
+            marker2.setLabel(label);
             marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address);
             //console.log($scope.stations.length);
 
@@ -160,7 +189,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 var end = new Date(time);
                 $scope.electsInStation = [];
                 //console.log(title_add[0]);
-                showElectsInStation(start, end, title_add[0]);  //根据物理编号查找
+
+                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
                 var electInfo = '';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
                     electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (k + 1) + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].plate_num + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
@@ -226,18 +256,32 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     //根据时间和基站id获取基站下面的当前所有车辆
     function showElectsInStation(startTime, endTime, stationPhyNum) {
-        $http.get('/i/elect/findElectsByStationIdAndTime', {
-            params: {
+        //$http.get('/i/elect/findElectsByStationIdAndTime', {
+        //    params: {
+        //        "startTime": startTime,
+        //        "endTime": endTime,
+        //        "stationPhyNum": stationPhyNum
+        //    }
+        //}).success(function (data) {
+        //    //$scope.electsInStation = data.slice(2,8);
+        //    $scope.electsInStation = data;
+        //    console.log($scope.electsInStation.length);
+        //});
+        $.ajax({
+            method: 'GET',
+            url :'/i/elect/findElectsByStationIdAndTime',
+            async:false,
+            data : {
                 "startTime": startTime,
                 "endTime": endTime,
                 "stationPhyNum": stationPhyNum
             }
-        }).success(function (data) {
-            //$scope.electsInStation = data.slice(2,8);
+        }).success(function(data){
+            console.log(data)
             $scope.electsInStation = data;
-           // console.log($scope.electsInStation);
-        });
+        })
     }
+
 
 
     //定义轨迹及定位查询条件的类型
