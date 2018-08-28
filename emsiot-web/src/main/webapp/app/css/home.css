@@ -93,6 +93,7 @@ font-weight:bold;
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
 }
+.position-car-table{width:600px!important;}
 #positionTable>ul:first-child>li:last-child{
     background:#2C7DFA;
     color:#fff;

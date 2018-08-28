@@ -65,7 +65,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
 			$scope.AllSensitiveAreas = data.list;
-			console.log(data.list)
+			//console.log(data.list)
 		});
 	};
 
@@ -143,7 +143,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 
 	//显示基站
 		 function showStationForAera(map){
-			 var sHtml="<div id='positionTable' class='shadow'><ul class='flex-between'><li class='flex-items'><img src='app\img\station.png'/><h4>";
+			 var sHtml="<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
 		     var sHtml2 = "</h4></li><li>";
 		     var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
 			 var sHtml4= "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'> <table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
@@ -183,23 +183,26 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		 
 		 //根据时间和基站id获取基站下面的当前所有车辆
 	     function showElectsInStation(startTime,endTime,stationPhyNum){
-	    	 $http.get('/i/elect/findElectsByStationIdAndTime', {
-	 			params : {
-	 				"startTime" : startTime,
-	 				"endTime" : endTime,
-	 				"stationPhyNum" : stationPhyNum
-	 			}
-	 		}).success(function(data) {
-	 			$scope.electsInStation = data.slice(2,8);
-	 			//console.log($scope.electsInStation);
-	 		});
+			 $.ajax({
+				 method : "GET",
+				 url : "/i/elect/findElectsByStationIdAndTime",
+				 async : false,
+				 data : {
+					 "startTime" : startTime,
+					 "endTime" : endTime,
+					 "stationPhyNum" : stationPhyNum
+				 }
+			 }).success(function(data){
+				 //$scope.electsInStation = data.slice(2,8);
+				 $scope.electsInStation = data;
+			 });
 		 }
 
 		 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
 		    var overlaysDraw = [];
 			var overlaycomplete = function(e){
 					$scope.borderPoints=e.overlay.getPath();//多边形轨迹数据点
-					console.log($scope.borderPoints);
+					//console.log($scope.borderPoints);
 					//返回上一部轨迹
 				$scope.backOne = function(){
 					$scope.borderPoints.pop();
@@ -301,7 +304,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 	//var inputStatus=$("#sentivesStatus").get(0).checked;
 	function aaa(){
 		var inputStatus=$("#sentivesStatus").get(0).checked;
-		console.log(inputStatus)
+		//console.log(inputStatus)
 		if(inputStatus){
 			return $scope.status=1
 		}else{
@@ -329,10 +332,11 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 				}
 			}).success(function (data) {
 				if (data.success) {
-					console.log(data);
+					//console.log(data);
+					alert(data.message);
 					$scope.getSensitiveAreaByOptions();
 					$("#addSensitiveArea").modal("hide");
-					alert("添加成功")
+					$scope.clearAll();
 				}
 				else {
 					alert(data.message);

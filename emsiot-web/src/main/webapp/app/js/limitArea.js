@@ -93,7 +93,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 	 });
 		
 		 function showStationForAera(map){
-			 var sHtml="<div id='positionTable' class='shadow'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
+			 var sHtml="<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
 		     var sHtml2 ="</h4></li><li>";
 		     var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
 			 var sHtml4= "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
@@ -133,16 +133,19 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		 
 		 //根据时间和基站id获取基站下面的当前所有车辆
 	     function showElectsInStation(startTime,endTime,stationPhyNum){
-	    	 $http.get('/i/elect/findElectsByStationIdAndTime', {
-	 			params : {
-	 				"startTime" : startTime,
-	 				"endTime" : endTime,
-	 				"stationPhyNum" : stationPhyNum
-	 			}
-	 		}).success(function(data) {
-	 			$scope.electsInStation = data.slice(2,8);
-	 			//console.log($scope.electsInStation);
-	 		});
+			 $.ajax({
+				 method: "GET",
+				 url: "/i/elect/findElectsByStationIdAndTime",
+				 async:false,
+				 data : {
+					 "startTime" : startTime,
+					 "endTime" : endTime,
+					 "stationPhyNum" : stationPhyNum
+				 }
+			 }).success(function(data){
+				 //$scope.electsInStation = data.slice(2,8);
+				 $scope.electsInStation = data;
+			 });
 		 }
 	     
 		 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
@@ -150,7 +153,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		    //var borderPoints;
 			var overlaycomplete = function(e){
 				 $scope.borderPoints=e.overlay.getPath();//多边形轨迹数据点
-	      		console.log(e.overlay.getPath());  //多边形轨迹数据点
+	      		//console.log(e.overlay.getPath());  //多边形轨迹数据点
 //	      		$http.post('/path',borderPoints).success(function(data){
 //	      			
 //	      		});
@@ -200,7 +203,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 					limitAreaMap.removeOverlay(overlaysDraw[i]);
 		        }
 				overlaysDraw.length = 0   
-		    }
+		    };
 		  //添加限制区域
 		    function checkInputInfo(){
 		        var flag = true;
@@ -214,7 +217,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		        return flag;
 		    }
 		   $scope.addLimitArea = function(){
-			   console.log($scope.borderPoints);
+			   //console.log($scope.borderPoints);
 			   if(checkInputInfo()){
 				   $http({
 			  			method : 'POST',
@@ -231,9 +234,10 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 			  				alert(data.message);
 			  				$scope.getLimitAreaByOptions();
 			  				$("#addLimitArea").modal("hide");
+							  $scope.clearAll();
 			  				}
 			  			  else{
-			  				alert(data.message); 
+			  				alert(data.message);
 			  			  }
 			  			})
 			   }else{
