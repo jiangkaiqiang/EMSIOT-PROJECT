@@ -232,6 +232,8 @@ font-weight:bold;
     }
 }
 
+#allmap label{max-width:none!important;}
+
 
 
 

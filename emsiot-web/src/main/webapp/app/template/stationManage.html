@@ -95,10 +95,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button ng-attr-type type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
+                        data-dismiss="modal" aria-hidden="true" class="disModal">
                     &times;
                 </button>
-                <div class="modal-title" id="">
+                <div class="modal-title">
                     添加基站
                 </div>
             </div>
@@ -172,7 +172,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="addStationType" ng-disabled="editable"
                                             ng-options="x.id as x.name for x in AllStationType"></select>
                                 </div>
@@ -186,7 +186,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="addStationStatus" ng-disabled="editable"
                                             ng-options="x.id as x.name for x in AllStationStatus"></select>
                                 </div>
@@ -286,7 +286,7 @@
                 <button ng-attr-type type="button" ng-click="submit()" class="btn btn-primary">
                     添加
                 </button>
-                <button ng-attr-type type="button" class="btn btn-default"
+                <button ng-attr-type type="button" class="btn btn-default disModal"
                         data-dismiss="modal">取消
                 </button>
             </div>
