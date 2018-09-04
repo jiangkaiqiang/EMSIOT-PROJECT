@@ -1,271 +1,253 @@
 <div class="home-title flex flex-between shadow">
-    <ul class="flex home-nav">
-        <li>
-            <a href="#/electManage">
-                <ul class="flex flex-items">
-                    <li>
-                        <i class="iconfont icon-beiandengji"></i>
-                    </li>
-                    <li>
-                        <p>{{elects.length}}</p>
-                        <span>登记车辆</span>
-                    </li>
-                </ul>
-            </a>
-        </li>
-        <li>
-            <a  href="#/blackListManage">
-                <ul class="flex flex-items">
-                    <li>
-                        <i class="iconfont icon-heimingdancheliang"></i>
-                    </li>
-                    <li>
-                        <p>{{blackElects.length}}</p>
-                        <span>黑名单车辆</span>
-                    </li>
-                </ul>
-            </a>
-        </li>
-        <li>
-            <a href="#/electManage">
-                <ul class="flex flex-items">
-                    <li><i class="iconfont icon-zaixiancheliang"></i></li>
-                    <li>
-                        <p>{{inlineElects}}</p>
-                        <span> 在线车辆</span>
-                    </li>
-                </ul>
-            </a>
-        </li>
-        <li>
-            <a href="#/alarmTrack">
-                <ul class="flex flex-items">
-                    <li><i class="iconfont icon-baojingcheliang1"></i></li>
-                    <li>
-                        <p>{{electAlarms.length}}</p>
-                        <span> 报警数量</span>
-                    </li>
-                </ul>
-            </a>
-        </li>
-    </ul>
+	<ul class="flex home-nav">
+		<li><a href="#/electManage">
+				<ul class="flex flex-items">
+					<li><i class="iconfont icon-beiandengji"></i></li>
+					<li>
+						<p>{{elects.length}}</p> <span>登记车辆</span>
+					</li>
+				</ul>
+		</a></li>
+		<li><a href="#/blackListManage">
+				<ul class="flex flex-items">
+					<li><i class="iconfont icon-heimingdancheliang"></i></li>
+					<li>
+						<p>{{blackElects.length}}</p> <span>黑名单车辆</span>
+					</li>
+				</ul>
+		</a></li>
+		<li><a href="#/electManage">
+				<ul class="flex flex-items">
+					<li><i class="iconfont icon-zaixiancheliang"></i></li>
+					<li>
+						<p>{{inlineElects}}</p> <span> 在线车辆</span>
+					</li>
+				</ul>
+		</a></li>
+		<li><a href="#/alarmTrack">
+				<ul class="flex flex-items">
+					<li><i class="iconfont icon-baojingcheliang1"></i></li>
+					<li>
+						<p>{{electAlarms.length}}</p> <span> 报警数量</span>
+					</li>
+				</ul>
+		</a></li>
+	</ul>
 
-    <ul class="flex home-nav-right flex-items">
+	<ul class="flex home-nav-right flex-items">
 
-        <li class="flex-items">
-            <div class="swichWrap">
-                <div class="guijiCircle" id="xsjizhan"></div>
-            </div>
-            <div>显示基站</div>
-        </li>
-        <li class="flex-items">
-            <div class="swichWrap">
-                <div class="guijiCircle" id="jizhanjuhe"></div>
-            </div>
-            <div>基站聚合</div>
-        </li>
-        <li class="flex-items">
-            <div class="swichWrap">
-                <div class="guijiCircle" id="relitu"></div>
-            </div>
-            <div> 车辆热力图</div>
-        </li>
-        <li ng-show="rootUserPowerDto.traceSearch==1" class="flex-items">
-            <a href="" data-toggle="modal" data-target="#guijiModal" class="flex flex-items">
-                <i class="iconfont icon-guijichaxun"></i>
-                <span>轨迹查询</span>
-            </a>
-        </li>
-        <li ng-show="rootUserPowerDto.location==1" style="height:60px;">
-            <a href="" data-toggle="modal" data-target="#dingweiModal"  class="flex flex-items" style="height:100%;">
-                <i class="iconfont icon-dingwei1" style="font-size:25px;display:block;"></i>
-                <span style="display:block;">定位</span>
-            </a>
-        </li>
-    </ul>
+		<li class="flex-items">
+			<div class="swichWrap">
+				<div class="guijiCircle" id="xsjizhan"></div>
+			</div>
+			<div>显示基站</div>
+		</li>
+		<li class="flex-items">
+			<div class="swichWrap">
+				<div class="guijiCircle" id="jizhanjuhe"></div>
+			</div>
+			<div>基站聚合</div>
+		</li>
+		<li class="flex-items">
+			<div class="swichWrap">
+				<div class="guijiCircle" id="relitu"></div>
+			</div>
+			<div>车辆热力图</div>
+		</li>
+		<li ng-show="rootUserPowerDto.traceSearch==1" class="flex-items">
+			<a href="" data-toggle="modal" data-target="#guijiModal"
+			class="flex flex-items"> <i class="iconfont icon-guijichaxun"></i>
+				<span>轨迹查询</span>
+		</a>
+		</li>
+		<li ng-show="rootUserPowerDto.location==1" style="height: 60px;">
+			<a href="" data-toggle="modal" data-target="#dingweiModal"
+			class="flex flex-items" style="height: 100%;"> <i
+				class="iconfont icon-dingwei1"
+				style="font-size: 25px; display: block;"></i> <span
+				style="display: block;">定位</span>
+		</a>
+		</li>
+	</ul>
 
 </div>
-    
-    
-    <!--轨迹查询模态框-->
-    <div class="modal fade" id="guijiModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button ng-attr-type type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="">
-                        轨迹查询
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" name="">
-                        <div class="form-group">
-                            <label for="" class="control-label col-md-3">
-                                查询条件：
-                            </label>
-
-                            <div class="col-sm-7">
-                                <div class="col-sm-3">
-                                    <select name="" id="" class="form-control">
-                                        <option value="">电动车</option>
-                                        <option value="">摩托车</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4" ng-style style="margin:0 5px;">
-                                    <select id="" class="form-control"
-                                            ng-model="keywordTypeForTrace" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
-                                </div>
-                                <div class="col-sm-4">
-                                    <input ng-attr-type type="text" ng-attr-placeholder placeholder="请输入关键词" class="form-control"
-                                           ng-model="keywordForTrace"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label col-md-3">
-                                日期从：
-                            </label>
-
-                            <div class="col-sm-7 flex">
-                                <div class='input-group date' id='homeDateStart'>
-                                    <input ng-attr-type type='text' class="form-control" ng-model="startTimeForTrace"
-                                           ng-attr-placeholder placeholder="选择开始时间" readonly/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-						            </span>
-                                </div>
-                                &nbsp;
-                                <div class="dandu">至</div>
-                                &nbsp;
-                                <div class='input-group date' id='homeDateEnd'>
-                                    <input ng-attr-type type='text' class="form-control" ng-model="endTimeForTrace"
-                                           ng-attr-placeholder placeholder="选择结束时间" readonly/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-						            </span>
-                                </div>
-
-                            </div>
-                        </div>
-                 </form>
-                </div>
-                <div class="modal-footer">
-                    <button ng-attr-type type="button" ng-click="findElectTrace()" class="btn btn-primary">
-                        查询轨迹
-                    </button>
-                    <button ng-attr-type type="button" ng-click="clearElectTrace()" class="btn btn-guiji">
-                        清除轨迹
-                    </button>
-
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-    </div>
 
 
-    <!--定位模态框-->
-    <div class="modal fade" id="dingweiModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button ng-attr-type type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="">
-                        车辆定位
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" name="">
-                        <div class="form-group">
-                            <label for="" class="control-label col-md-3">
-                                定位条件：
-                            </label>
+<!--轨迹查询模态框-->
+<div class="modal fade" id="guijiModal" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button ng-attr-type type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="">轨迹查询</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="">
+					<div class="form-group">
+						<label for="" class="control-label col-md-3"> 查询条件： </label>
 
-                            <div class="col-sm-7">
-                                <div class="col-sm-3">
-                                    <select name="" id="" class="form-control">
-                                        <option value="">电动车</option>
-                                        <option value="">摩托车</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4" ng-style style="margin:0 5px;">
-                                    <select id="" class="form-control"
-                                            ng-model="keywordTypeForLocation" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllKeywordType"></select>
-                                </div>
-                                <div class="col-sm-4">
-                                    <input ng-attr-type type="text" ng-attr-placeholder placeholder="请输入关键词" class="form-control"
-                                           ng-model="keywordForLocation"/>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button ng-attr-type type="button" ng-click="findElectLocation()" class="btn btn-primary">
-                        确定
-                    </button>
-                    <button ng-attr-type type="button" ng-click="clearElectLocation()" class="btn btn-guiji" ui-sref="home">
-                        清除定位
-                    </button>
+						<div class="col-sm-7">
+							<div class="col-sm-3">
+								<select name="" id="" class="form-control">
+									<option value="">电动车</option>
+									<option value="">摩托车</option>
+								</select>
+							</div>
+							<div class="col-sm-4" ng-style style="margin: 0 5px;">
+								<select id="" class="form-control"
+									ng-model="keywordTypeForTrace" ng-disabled="editable"
+									ng-options="x.id as x.name for x in AllKeywordType"></select>
+							</div>
+							<div class="col-sm-4">
+								<input ng-attr-type type="text" ng-attr-placeholder
+									placeholder="请输入关键词" class="form-control"
+									ng-model="keywordForTrace" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="" class="control-label col-md-3"> 日期从： </label>
 
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-    </div>
-    
-    
+						<div class="col-sm-7 flex">
+							<div class='input-group date' id='homeDateStart'>
+								<input ng-attr-type type='text' class="form-control"
+									ng-model="startTimeForTrace" ng-attr-placeholder
+									placeholder="选择开始时间" readonly /> <span
+									class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+							&nbsp;
+							<div class="dandu">至</div>
+							&nbsp;
+							<div class='input-group date' id='homeDateEnd'>
+								<input ng-attr-type type='text' class="form-control"
+									ng-model="endTimeForTrace" ng-attr-placeholder
+									placeholder="选择结束时间" readonly /> <span
+									class="input-group-addon"> <span
+									class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-attr-type type="button" ng-click="findElectTrace()"
+					class="btn btn-primary">查询轨迹</button>
+				<button ng-attr-type type="button" ng-click="clearElectTrace()"
+					class="btn btn-guiji">清除轨迹</button>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
+</div>
+
+
+<!--定位模态框-->
+<div class="modal fade" id="dingweiModal" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button ng-attr-type type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="">车辆定位</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="">
+					<div class="form-group">
+						<label for="" class="control-label col-md-3"> 定位条件： </label>
+
+						<div class="col-sm-7">
+							<div class="col-sm-3">
+								<select name="" id="" class="form-control">
+									<option value="">电动车</option>
+									<option value="">摩托车</option>
+								</select>
+							</div>
+							<div class="col-sm-4" ng-style style="margin: 0 5px;">
+								<select id="" class="form-control"
+									ng-model="keywordTypeForLocation" ng-disabled="editable"
+									ng-options="x.id as x.name for x in AllKeywordType"></select>
+							</div>
+							<div class="col-sm-4">
+								<input ng-attr-type type="text" ng-attr-placeholder
+									placeholder="请输入关键词" class="form-control"
+									ng-model="keywordForLocation" />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-attr-type type="button" ng-click="findElectLocation()"
+					class="btn btn-primary">确定</button>
+				<button ng-attr-type type="button" ng-click="clearElectLocation()"
+					class="btn btn-guiji" ui-sref="home">清除定位</button>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
+</div>
+
+
 <!--以下市可视化地图的内容-->
-<div id="allmap" ng-style style="width:100%;height:800px;"></div>
-<div id="result" style="width:100%;"></div>
-<button id="run">开始</button>
-<button id="stop">停止</button>
-<button id="pause">暂停</button>
-<button id="hide">隐藏信息窗口</button>
-<button id="show">展示信息窗口</button>
+<div id="allmap" ng-style style="width: 100%; height: 800px;"></div>
+<div id="result" ng-style style="width: 100%;"></div>
+<div class="btn-group">
+	<button id="run">开始</button>
+	<button id="stop">停止</button>
+	<button id="pause">暂停</button>
+	<button id="hide">隐藏信息窗口</button>
+	<button id="show">展示信息窗口</button>
+</div>
 <div id="mapSearch">
-    <div id="r-result" class="form-group has-feedback">
-        <input ng-attr-type type="text" id="suggestId" size="20" ng-attr-value value="百度" class="form-control" ng-attr-placeholder placeholder="搜索地址、区域"/>
-        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-    </div>
-    <div id="searchResultPanel" ng-style style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+	<div id="r-result" class="form-group has-feedback">
+		<input ng-attr-type type="text" id="suggestId" size="20" ng-attr-value
+			value="百度" class="form-control" ng-attr-placeholder
+			placeholder="搜索地址、区域" /> <span
+			class="glyphicon glyphicon-search form-control-feedback"
+			aria-hidden="true"></span>
+	</div>
+	<div id="searchResultPanel" ng-style
+		style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 </div>
 <!--车辆经过的基站-->
-<div id="positionTable" class="shadow" ng-style style="position:absolute;top:150px;right:-490px;">
-    <ul class="flex-between">
-        <li class="flex-items">
-            <i class="iconfont icon-cheliangguanli" style="color:#2C7DFA;font-size:25px;"></i>
-            <h4>车辆&nbsp;{{electNumForTraceTable}}</h4>
-        </li>
-        <li>经过{{traceStationsLength}}个&nbsp;基站</li>
-    </ul>
-    <div class="tableArea" ng-style style="margin-top:5%;">
-        <table class="table table-striped " id="tableArea" ng-model="traceStations">
-            <thead>
-            <tr>
-                <th ng-style style="width:100px!important;">基站名称</th>
-                <th>基站地址</th>
-                <th>经过时间</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="traceStation in traceStations">
-                <td title="{{traceStation.station.station_name}}">{{traceStation.station.station_name}}</td>
-                <td title="{{traceStation.station.station_address}}">{{traceStation.station.station_address}}</td>
-                <td title="{{traceStation.crossTime}}">{{traceStation.crossTime}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="dismis dismisPosition fa fa-fw fa-angle-left"></div>
+<div id="positionTable" class="shadow" ng-style
+	style="position: absolute; top: 150px; right: -490px;">
+	<ul class="flex-between">
+		<li class="flex-items"><i class="iconfont icon-cheliangguanli"
+			style="color: #2C7DFA; font-size: 25px;"></i>
+			<h4>车辆&nbsp;{{electNumForTraceTable}}</h4></li>
+		<li>经过{{traceStationsLength}}个&nbsp;基站</li>
+	</ul>
+	<div class="tableArea" ng-style style="margin-top: 5%;">
+		<table class="table table-striped table-hover" id="tableArea"
+			ng-model="traceStations">
+			<thead>
+				<tr>
+					<th ng-style style="width: 100px !important;">基站名称</th>
+					<th>基站地址</th>
+					<th>经过时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="traceStation in traceStations"
+					style="cursor: pointer;">
+					<td title="{{traceStation.station.station_name}}">{{traceStation.station.station_name}}</td>
+					<td title="{{traceStation.station.station_address}}">{{traceStation.station.station_address}}</td>
+					<td title="{{traceStation.crossTime}}">{{traceStation.crossTime}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="dismis dismisPosition fa fa-fw fa-angle-left"></div>
 </div>

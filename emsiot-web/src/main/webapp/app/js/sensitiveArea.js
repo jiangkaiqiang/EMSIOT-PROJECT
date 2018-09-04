@@ -203,14 +203,14 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			var overlaycomplete = function(e){
 					$scope.borderPoints=e.overlay.getPath();//多边形轨迹数据点
 					//console.log($scope.borderPoints);
-					//返回上一部轨迹
-				$scope.backOne = function(){
-					$scope.borderPoints.pop();
-					console.log($scope.borderPoints);
-					console.log(e.overlay);
-
-					drawingManager.addEventListener('overlaycomplete', overlaycomplete);
-				};
+				//	//返回上一部轨迹
+				//$scope.backOne = function(){
+				//	$scope.borderPoints.pop();
+				//	console.log($scope.borderPoints);
+				//	console.log(e.overlay);
+                //
+				//	drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+				//};
 		            e.overlay.addEventListener("click", function(){
 						$http({
 							method : 'POST',
@@ -237,7 +237,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		            strokeWeight: 3,       //边线的宽度，以像素为单位。
 		            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
 		            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
-		            strokeStyle: 'solid' //边线的样式，solid或dashed。
+		            strokeStyle: 'solid', //边线的样式，solid或dashed。
+					enableEditing:true
 		        }
 		    //实例化鼠标绘制工具
 		    var drawingManager = new BMapLib.DrawingManager(sensitiveAreaMap, {

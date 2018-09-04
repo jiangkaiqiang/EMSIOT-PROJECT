@@ -230,64 +230,40 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     }
 
+    $scope.csshi=null;
+    $scope.csshi1=null;
+
     //表格选中行，对应标注体现出来
     $('#tableArea tbody').on('click','tr',function(e){
-        console.log($(this));
-        var tablePoint =  $(this).context.cells[1].innerHTML;
-        console.log(tablePoint);
-        // console.log($scope.stations);
+
+        var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
         for(var g =0;g < $scope.stations.length; g++){
-            if(tablePoint==$scope.stations[g].station_address){
-                var allOverlay = map.getOverlays();
-                var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
-                map.removeOverlay(allOverlay[g]);
-                var markers = new BMap.Marker(pts);  // 创建标注
-                map.addOverlay(markers);               // 将标注添加到地图中
-                markers.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+            if(tablePoint==$scope.stations[g].station_address){//表格获取到的地址等于循环基站时的基站地址
+               // console.log(tablePoint==$scope.stations[g].station_address);
+                var map1=$scope.csshi;
+                console.log(map1);
+                var allOverlay = $scope.csshi1;
+               // console.log(allOverlay);
+                var markers;
+                console.log(markers==null);
+                if(markers==null){
+                    map1.removeOverlay(allOverlay[g]);//移除当前基站并添加一个动画效果的基站
+                    var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
+                    markers = new BMap.Marker(pts);  // 创建标注
+                    console.log(markers==null);
+                    map1.addOverlay(markers);               // 将标注添加到地图中
+                    markers.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                }else{
+                    markers=null;
+                }
+                return;
             }
         }
-    })
+    });
 
     function clusterStation() {  //对基站进行聚合
         var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: markers});
     }
-
-//	 //鼠标绘制多边形，选择区域并弹出信息框，展示显示的基站
-//	    var overlaysDraw = [];
-//		var overlaycomplete = function(e){
-//	      		console.log(e.overlay.getPath());  //多边形轨迹
-//	      		
-//	      		overlaysDraw.push(e.overlay);
-//		};
-//	    var styleOptions = {
-//	            strokeColor:"blue",    //边线颜色。
-//	            fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
-//	            strokeWeight: 3,       //边线的宽度，以像素为单位。
-//	            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
-//	            fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
-//	            strokeStyle: 'solid' //边线的样式，solid或dashed。
-//	        }
-//	    //实例化鼠标绘制工具
-//	    var drawingManager = new BMapLib.DrawingManager(map, {
-//	        isOpen: false, //是否开启绘制模式
-//	        enableDrawingTool: true, //是否显示工具栏
-//	        drawingToolOptions: {
-//	            anchor: BMAP_ANCHOR_TOP_LEFT, //位置
-//	            offset: new BMap.Size(5, 5), //偏离值
-//	          drawingModes : [
-//	            BMAP_DRAWING_POLYGON,
-//	         ]
-//	        },
-//	        polygonOptions: styleOptions //多边形的样式
-//	    }); 
-//	    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
-//	    function clearAll() {
-//			for(var i = 0; i < overlaysDraw.length; i++){
-//	            map.removeOverlay(overlaysDraw[i]);
-//	        }
-//			overlaysDraw.length = 0   
-//	    }
-//
 
     //根据时间和基站id获取基站下面的当前所有车辆
     function showElectsInStation(startTime, endTime, stationPhyNum) {
@@ -593,6 +569,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         $("#positionTable").addClass("rightToggle");
         $("#guijiModal").modal("hide");
         $("#positionTable .dismisPosition").removeClass("fa-angle-left").addClass("fa-angle-right");
+        $scope.csshi=map;
+        $scope.csshi1=map.getOverlays();
     };
 
 

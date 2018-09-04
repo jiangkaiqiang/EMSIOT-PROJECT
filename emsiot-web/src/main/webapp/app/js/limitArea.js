@@ -182,7 +182,8 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
 		            strokeWeight: 3,       //边线的宽度，以像素为单位。
 		            strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
 		            fillOpacity: 0.5,      //填充的透明度，取值范围0 - 1。
-		            strokeStyle: 'solid' //边线的样式，solid或dashed。
+		            strokeStyle: 'solid', //边线的样式，solid或dashed。
+					enableEditing:true
 		        }
 		    //实例化鼠标绘制工具
 		    var drawingManager = new BMapLib.DrawingManager(limitAreaMap, {
