@@ -146,4 +146,35 @@ public class HardAcceptController extends BaseController {
 		electrombileStationMapper.insert(electrombileStation);
 		return ResponseData.newSuccess("接受成功");
 	}
+	
+	
+	/**
+	 * 接收硬件数据，并判断基站是否正常
+	 * 
+	 * @param eleGuaCardNum
+	 * @param stationPhyNum
+	 * @param hardReadTime
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/accepterStatis")
+	@ResponseBody
+	public Object accepterStatis(HttpServletRequest request,
+			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum,
+			@RequestParam(value = "stationStatus", required = false) Integer stationStatus)
+			throws UnsupportedEncodingException {
+		
+		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
+
+		if(station.getStation_status() == 0 || station.getStation_status() == 1) {
+			Station sta = new Station();
+			sta.setStation_phy_num(stationPhyNum);
+			sta.setStation_status(stationStatus);
+			stationMapper.updateStatusByStationNum(sta);
+			
+		}
+		return ResponseData.newSuccess("接受成功");
+		
+	}
+	
 }

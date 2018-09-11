@@ -18,6 +18,8 @@ public interface StationMapper {
     Station selectByStationName(@Param("stationName")String stationName);
 
     int updateByPrimaryKeySelective(Station record);
+    
+    int updateStatusByStationNum(Station record);
 
     int updateByPrimaryKey(Station record);
     

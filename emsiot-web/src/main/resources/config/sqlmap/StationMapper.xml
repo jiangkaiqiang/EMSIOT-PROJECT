@@ -295,4 +295,11 @@
 		</where>
 		order by `install_date` desc
 	</select>
+	
+	<update id="updateStatusByStationNum" parameterType="com.ems.iot.manage.entity.Station">
+    update `station`
+    set
+        station_status = #{station_status}
+    where station_phy_num = #{station_phy_num}
+  </update>
 </mapper>
