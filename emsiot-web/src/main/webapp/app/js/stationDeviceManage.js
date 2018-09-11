@@ -21,7 +21,7 @@ $scope.bigTotalItems = 10;
 // 当前页
 $scope.bigCurrentPage = 1;
 $scope.AllStations = [];
-$scope.stationStatus;
+$scope.stationStatus = "0";
  // 获取当前基站的列表
 $scope.getStations = function() {
 	$http({
@@ -42,7 +42,7 @@ $scope.getStations = function() {
 	}).success(function(data) {
 		$scope.bigTotalItems = data.total;
 		$scope.AllStations = data.list;
-		$scope.stationStatus = '0';
+
 	});
 }
 
