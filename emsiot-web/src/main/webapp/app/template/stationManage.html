@@ -55,13 +55,13 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="station in AllStations">
-                    <td>
+                    <td ng-style="{true: myClass, false: ''}[station.station_status==1]">
                         <input ng-attr-type type="checkbox" ng-checked="exists(station, selected)"
                                ng-click="toggle(station, selected)"/>
                     </td>
-                    <td>{{station.station_phy_num}}</td>
-                    <td>{{station.station_name}}</td>
-                    <td>
+                    <td ng-style="{true: myClass, false: ''}[station.station_status==1]">{{station.station_phy_num}}</td>
+                    <td ng-style="{true: myClass, false: ''}[station.station_status==1]">{{station.station_name}}</td>
+                    <td ng-style="{true: myClass, false: ''}[station.station_status==1]">
                         <i ng-show="rootUserPowerDto.stationDelete==1" class="glyphicon glyphicon-trash"
                            ng-click="goDeleteStation(station.station_id)"></i>
                         <i class="glyphicon glyphicon-map-marker" ng-click="goStationLocation(station.station_id)"

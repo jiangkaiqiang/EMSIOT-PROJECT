@@ -168,9 +168,9 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 	});
 	$scope.load();
 	// 显示最大页数
-	$scope.maxSize = 7;
+	$scope.maxSize = 10;
 	// 总条目数(默认每页十条)
-	$scope.bigTotalItems = 7;
+	$scope.bigTotalItems = 10;
 	// 当前页
 	$scope.bigCurrentPage = 1;
 	$scope.AllStations = [];
@@ -423,4 +423,7 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 			$(this).removeClass("fa-angle-right").addClass("fa-angle-left");
 		}
 	});
+	$scope.myClass = {
+		"background-color" : "rgba(204, 204, 204, 0.48)",
+	}
 });

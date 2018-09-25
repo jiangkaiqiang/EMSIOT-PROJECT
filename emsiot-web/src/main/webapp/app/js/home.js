@@ -176,12 +176,19 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var markers = []; //存放聚合的基站
         //var infoWindow;
         var tmpStation;
-
+console.log($scope.stations)
         //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
-            marker2 = new BMap.Marker(pt);
+            //基站异常图标
+            if(tmpStation.station_status==1){
+            	var myIcon = new BMap.Icon("/app/img/marker_gray.png", new BMap.Size(19,25));
+            	marker2 = new BMap.Marker(pt,{icon:myIcon});
+            }else{
+            	
+            	marker2 = new BMap.Marker(pt);
+            }
 
             //统计一分钟内经过改基站的车辆的数
             var time = new Date().getTime();//当前时间
