@@ -28,13 +28,13 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
         $state.reload();
     }
     $('#electAlarmDate').datetimepicker({
-        format: 'yyyy-mm-dd  hh:mm:ss',
+        format: 'yyyy-mm-dd  hh:ii:00',
         autoclose:true,
         maxDate:new Date(),
         pickerPosition: "bottom-left"
     });
     $('#electAlarmDateUpdate').datetimepicker({
-        format: 'yyyy-mm-dd  hh:mm:ss',
+        format: 'yyyy-mm-dd  hh:ii:00',
         autoclose:true,
         maxDate:new Date(),
         pickerPosition: "bottom-left"

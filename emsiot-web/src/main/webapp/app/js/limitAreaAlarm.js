@@ -39,7 +39,7 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 		url: '/i/limitareaalarm/findAllLimitAreaAlarmByOptions',
 		params :{
 			"pageNum" : $scope.bigCurrentPage,
-			"pageSize" :$scope.bigTotalItems,
+			"pageSize" :$scope.maxSize,
 			"plateNum" :$scope.plateNum,
 			"areaName" :$scope.limitAreaName,
 			"alarmDateStart" : $scope.startTime ,
@@ -50,12 +50,16 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 		}
 	}).success(function(data){
 		console.log(data);
+		$scope.bigTotalItems = data.data.total;
 		$scope.AllLimitAlarmElects = data.data.list;
 		console.log($scope.AllLimitAlarmElects);
 	});
 	};
 	$scope.load();
 	$scope.limitAlarmElects();
+	$scope.pageChanged = function() {
+		$scope.limitAlarmElects();
+	}
 	$scope.goSearchForPlate = function(){
 		$scope.limitAlarmElects();
 	};
@@ -137,14 +141,14 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 	//选择日期
 
 	$('#alarmDateStart').datetimepicker({
-		format : 'yyyy-mm-dd - hh:mm:ss',
+		format : 'yyyy-mm-dd - hh:ii:00',
 		//minView: "month",
 		autoclose : true,
 		maxDate : new Date(),
 		pickerPosition : "bottom-left"
 	});
 	$("#alarmDateEnd").datetimepicker({
-		format : 'yyyy-mm-dd - hh:mm:ss',
+		format : 'yyyy-mm-dd - hh:ii:00',
 		//minView: 'month',
 		autoclose : true,
 		maxDate : new Date(),

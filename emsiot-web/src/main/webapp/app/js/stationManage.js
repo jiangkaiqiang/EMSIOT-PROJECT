@@ -161,7 +161,7 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 	}
 
 	$('#electAlarmDate').datetimepicker({
-		format : 'yyyy-mm-dd  hh:mm:ss',
+		format : 'yyyy-mm-dd  hh:ii:00',
 		autoclose : true,
 		maxDate : new Date(),
 		pickerPosition : "bottom-left"

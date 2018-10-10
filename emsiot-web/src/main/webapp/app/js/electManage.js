@@ -687,28 +687,28 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		pickerPosition: "bottom-left"
 	});
 	$('#guijiSearchStart').datetimepicker({
-		format: 'yyyy-mm-dd - hh:mm:ss',
+		format: 'yyyy-mm-dd - hh:ii:00',
 		//minView: "month",
 		autoclose:true,
 		maxDate:new Date(),
 		pickerPosition: "bottom-left"
 	});
 	$("#guijiSearchEnd").datetimepicker({
-		format : 'yyyy-mm-dd - hh:mm:ss',
+		format : 'yyyy-mm-dd - hh:ii:00',
 		//minView: 'month',
 		autoclose:true,
 		maxDate:new Date(),
 		pickerPosition: "bottom-left"
 	});
 	$('#electDateStart').datetimepicker({
-		format: 'yyyy-mm-dd - hh:mm:ss',//时间格式
+		format: 'yyyy-mm-dd - hh:ii:00',//时间格式
 		//minView: "month",//最小选择到月
 		autoclose:true,//选择好时间关闭弹框
 		maxDate:new Date(),//默认当前时间
 		pickerPosition: "bottom-left"//位置左下
 	});
 	$("#electDateEnd").datetimepicker({
-		format : 'yyyy-mm-dd - hh:mm:ss',
+		format : 'yyyy-mm-dd - hh:ii:00',
 		//minView: 'month',
 		autoclose:true,
 		maxDate:new Date(),

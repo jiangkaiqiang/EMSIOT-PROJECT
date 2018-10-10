@@ -300,6 +300,13 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		flag = false;
 		alert("基站名不可为空！")
 	}
+	if ($scope.enterNum == undefined || $scope.enterNum == '') {
+		flag = false;
+		alert("出现次数不可为空！")
+	}else if($scope.enterNum<=0){
+		flag = false;
+		alert("出现次数必须大于0！")
+	}
 	return flag;
 }
 	//var inputStatus=$("#sentivesStatus").get(0).checked;
@@ -312,7 +319,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			return $scope.status=0
 		}
 	}
-
+	$scope.enterNum = 1;
 	$scope.addSensitiveArea = function(){
 		if(checkInputInfo()) {
 			$http({
