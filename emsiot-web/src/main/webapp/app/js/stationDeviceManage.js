@@ -265,9 +265,9 @@ $scope.dropInstallPic = function(installPic){
 	
     //选择日期
      $('#electAlarmDate').datetimepicker({
-        format: 'yyyy-mm-dd  hh:mm:ss',
+        format: 'yyyy-mm-dd hh:ii:ss.s',
         autoclose:true,
-        maxDate:new Date(),
+        //maxDate:new Date(),
         pickerPosition: "bottom-left"
      });
     $('#alarmDateStart').datetimepicker({

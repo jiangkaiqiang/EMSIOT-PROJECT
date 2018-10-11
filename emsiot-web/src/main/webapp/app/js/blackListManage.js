@@ -34,9 +34,9 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
         pickerPosition: "bottom-left"
     });
     $('#electAlarmDateUpdate').datetimepicker({
-        format: 'yyyy-mm-dd  hh:ii:00',
+        format: 'yyyy-mm-dd hh:ii:ss.s',
         autoclose:true,
-        maxDate:new Date(),
+        //maxDate:new Date(),
         pickerPosition: "bottom-left"
     });
     
