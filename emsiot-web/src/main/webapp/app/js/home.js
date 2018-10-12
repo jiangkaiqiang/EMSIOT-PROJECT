@@ -80,7 +80,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             });
         });
     });
-
+    var lushu=null;
     function G(id) {
         return document.getElementById(id);
     }
@@ -169,17 +169,19 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
         var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
-        var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
+        var sHtml4 = "</p><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
+        //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
         var endHtml = "</tbody></table></div></div>";
         var pt;
         var marker2;
         var markers = []; //存放聚合的基站
         //var infoWindow;
         var tmpStation;
-console.log($scope.stations)
+        //console.log($scope.stations)
         //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
+            //console.log(tmpStation)
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
             //基站异常图标
             if(tmpStation.station_status==1){
@@ -192,9 +194,8 @@ console.log($scope.stations)
 
             //统计一分钟内经过改基站的车辆的数
             var time = new Date().getTime();//当前时间
-            var start = new Date(time - 60*1000);//一分钟
+            var start = new Date(time - 60*1000*60);//一分钟
             var end = new Date(time);
-
             var num = tmpStation.station_phy_num;
             function FormatDate (strTime) {
                 var date = new Date(strTime);
@@ -241,32 +242,32 @@ console.log($scope.stations)
     $scope.csshi1=null;
 
     //表格选中行，对应标注体现出来
-    $('#tableArea tbody').on('click','tr',function(e){
-
-        var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
-        for(var g =0;g < $scope.stations.length; g++){
-            if(tablePoint==$scope.stations[g].station_address){//表格获取到的地址等于循环基站时的基站地址
-               // console.log(tablePoint==$scope.stations[g].station_address);
-                var map1=$scope.csshi;
-                console.log(map1);
-                var allOverlay = $scope.csshi1;
-               // console.log(allOverlay);
-                var markers;
-                console.log(markers==null);
-                if(markers==null){
-                    map1.removeOverlay(allOverlay[g]);//移除当前基站并添加一个动画效果的基站
-                    var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
-                    markers = new BMap.Marker(pts);  // 创建标注
-                    console.log(markers==null);
-                    map1.addOverlay(markers);               // 将标注添加到地图中
-                    markers.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-                }else{
-                    markers=null;
-                }
-                return;
-            }
-        }
-    });
+    //$('#tableArea tbody').on('click','tr',function(e){
+    //
+    //    var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
+    //    for(var g =0;g < $scope.stations.length; g++){
+    //        if(tablePoint==$scope.stations[g].station_address){//表格获取到的地址等于循环基站时的基站地址
+    //           // console.log(tablePoint==$scope.stations[g].station_address);
+    //            var map1=$scope.csshi;
+    //            console.log(map1);
+    //            var allOverlay = $scope.csshi1;
+    //           // console.log(allOverlay);
+    //            var markers;
+    //            //console.log(markers==null);
+    //            if(markers==null){
+    //                map1.removeOverlay(allOverlay[g]);//移除当前基站并添加一个动画效果的基站
+    //                var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
+    //                markers = new BMap.Marker(pts);  // 创建标注
+    //                //console.log(markers==null);
+    //                map1.addOverlay(markers);               // 将标注添加到地图中
+    //                markers.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+    //            }else{
+    //                markers=null;
+    //            }
+    //            return;
+    //        }
+    //    }
+    //});
 
     function clusterStation() {  //对基站进行聚合
         var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: markers});
@@ -284,9 +285,7 @@ console.log($scope.stations)
                 "stationPhyNum": stationPhyNum
             }
         }).success(function(data){
-           // console.log(data);
             $scope.electsInStation = data;
-            //$scope.electsInStation1 = data.slice(2,8);
         })
     }
 
@@ -301,13 +300,9 @@ console.log($scope.stations)
     $scope.keywordTypeForTrace = "0";
     //清除定位
     var stationIDforDelete;
-    $scope.clearElectLocation = function () {
-        // map.clearOverlays()
+    $scope.clearElectLocation = function() {
         $scope.elecMarker.hide();
         $("#dingweiModal").modal("hide");
-       // $state.reload('home');
-       //$(".modal-backdrop.fade.in").removeClass("modal-backdrop");
-
     };
     //根据条件定位车辆
     $scope.findElectLocation = function () {
@@ -375,17 +370,13 @@ console.log($scope.stations)
         }).success(function (data) {
             $scope.traceStations = data;
             $scope.traceStationsLength = data.length;
-            //$("#positionTable").addClass("rightToggle");
-           // console.log(data);
             $scope.pointsArr = [];
             for(var j=0;j<data.length;j++){
                 var pointsJ = data[j].station.longitude;
                 var pointsW = data[j].station.latitude;
                 $scope.pointsArr.push(new BMap.Point(pointsJ,pointsW));
             }
-            //console.log($scope.pointsArr);
-            //var arrPois=[new BMap.Point(116.403984,39.914004),new BMap.Point(116.402116,39.913938),new BMap.Point(116.402116,39.913938)];
-            var lushu=null;
+
             if (data.length == 1)
                 alert("该车辆仅经过一个基站：" + data[0].station.station_name);
             else if (data.length == 0)
@@ -393,9 +384,8 @@ console.log($scope.stations)
             else
                 for (var i = 0; i < data.length - 1; i++) {
                     var marker;
-                    var lushu;
+                   // var lushu;
                     var arrPois=$scope.pointsArr;
-                    //    sensitiveAreaMap.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'})); //不画线
                     map.setViewport(arrPois);
                     if(lushu==null){
 	                    marker=new BMap.Marker(arrPois[0],{
@@ -498,9 +488,11 @@ console.log($scope.stations)
                         lushu.start();
                         //map.clearOverlays();    //清除所有覆盖物
                     }
-                    $("stop").onclick = function(){
-                        lushu.stop();
-                    }
+                    //$("stop").onclick = function(){
+                    //    marker.enableMassClear();
+                    //    marker.hide();
+                    //    lushu.stop();
+                    //}
                     $("pause").onclick = function(){
                         lushu.pause();
                     }
@@ -580,14 +572,12 @@ console.log($scope.stations)
         $scope.csshi1=map.getOverlays();
     };
 
-
-
-
-
-
-
     $scope.clearElectTrace = function () {
         //walking.clearResults();
+    	console.log(lushu);
+    	if(lushu!=null){
+    		lushu.stop();
+    	}
         $("#guijiModal").modal("hide");
         map.clearOverlays();
         relitu1();
@@ -607,7 +597,7 @@ console.log($scope.stations)
     };
 
     $scope.goHome = function () {
-        $state.reload();
+        $state.reload('home');
     };
 
     var navBtn = $(".home-title a");

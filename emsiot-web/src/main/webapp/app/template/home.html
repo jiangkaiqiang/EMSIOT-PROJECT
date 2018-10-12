@@ -81,7 +81,7 @@
 			<div class="modal-header">
 				<button ng-attr-type type="button" class="close"
 					data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="">轨迹查询</h4>
+				<h4 class="modal-title">轨迹查询</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" name="">
@@ -90,13 +90,13 @@
 
 						<div class="col-sm-7">
 							<div class="col-sm-3">
-								<select name="" id="" class="form-control">
+								<select name="" class="form-control">
 									<option value="">电动车</option>
 									<option value="">摩托车</option>
 								</select>
 							</div>
 							<div class="col-sm-4" ng-style style="margin: 0 5px;">
-								<select id="" class="form-control"
+								<select class="form-control"
 									ng-model="keywordTypeForTrace" ng-disabled="editable"
 									ng-options="x.id as x.name for x in AllKeywordType"></select>
 							</div>
@@ -204,7 +204,7 @@
 <div id="result" ng-style style="width: 100%;"></div>
 <div class="btn-group">
 	<button id="run">开始</button>
-	<button id="stop">停止</button>
+	<!--<button id="stop">停止</button>-->
 	<button id="pause">暂停</button>
 	<button id="hide">隐藏信息窗口</button>
 	<button id="show">展示信息窗口</button>
