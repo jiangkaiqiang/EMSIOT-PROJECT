@@ -309,10 +309,10 @@ public class ElectController extends BaseController {
 		if (pro_id==null) {
 			return new ResultDto(-1, "车牌号所属省不能为空");
 		}
-		if (city_id==null) {
+		if (city_id==null || city_id==-1) {
 			return new ResultDto(-1, "车牌号所属市不能为空");
 		}
-		if (area_id==null) {
+		if (area_id==null || area_id==-1) {
 			return new ResultDto(-1, "车牌号所属区/县不能为空");
 		}
 		if (owner_tele==null){

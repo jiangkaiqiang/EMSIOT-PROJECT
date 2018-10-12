@@ -7,6 +7,7 @@ public class ElectAlarmDto {
 	private String statioAddress;
 	private String ownerTele;
 	private String ownerName;
+	private String ownerPlateNum;
 	public ElectAlarm getElectAlarm() {
 		return electAlarm;
 	}
@@ -31,4 +32,11 @@ public class ElectAlarmDto {
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
 	}
+	public String getOwnerPlateNum() {
+		return ownerPlateNum;
+	}
+	public void setOwnerPlateNum(String ownerPlateNum) {
+		this.ownerPlateNum = ownerPlateNum;
+	}
+	
 }

@@ -21,6 +21,7 @@ import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectAlarmDto;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.Station;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -85,10 +86,18 @@ public class ElectAlarmController extends BaseController {
 		for(ElectAlarm electAlarm:electAlarms){
 			ElectAlarmDto electAlarmDto = new ElectAlarmDto();
 			electAlarmDto.setElectAlarm(electAlarm);
-			electAlarmDto.setStatioAddress(stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null,null,null,null).get(0).getStation_address());
-			Electrombile electrombile=electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
-			electAlarmDto.setOwnerName(electrombile.getOwner_name());
-			electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
+			Page<Station> station = stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null,null,null,null);
+			if(station.size()>0) {
+				electAlarmDto.setStatioAddress(station.get(0).getStation_address());
+			}
+			Electrombile elect = electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
+			Electrombile electrombile = new Electrombile();
+			if(elect!=null) {
+				electrombile = elect;
+				electAlarmDto.setOwnerName(electrombile.getOwner_name());
+				electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
+				electAlarmDto.setOwnerPlateNum(electrombile.getPlate_num());
+			}
 			electAlarmDtos.add(electAlarmDto);
 		}
 		electAlarmDtos.setPageSize(electAlarms.getPageSize());

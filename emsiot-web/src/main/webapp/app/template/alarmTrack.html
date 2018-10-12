@@ -62,6 +62,7 @@
             </th>
             <th>序号</th>
             <th>报警基站</th>
+            <th>报警芯片</th>
             <th>报警车牌号</th>
             <th>报警详细位置</th>
             <th>车主姓名</th>
@@ -79,6 +80,7 @@
             <td>{{electAlarmDto.electAlarm.elect_alarm_id}}</td>
             <td>{{electAlarmDto.electAlarm.alarm_station_phy_num}}</td>
             <td>{{electAlarmDto.electAlarm.alarm_gua_card_num}}</td>
+            <td>{{electAlarmDto.ownerPlateNum}}</td>
             <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.statioAddress}}">{{electAlarmDto.statioAddress}}</td>
             <td>{{electAlarmDto.ownerName}}</td>
             <td>{{electAlarmDto.ownerTele}}</td>
