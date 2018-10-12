@@ -9,7 +9,7 @@
 		password, opt_power, menu_power,pro_power,city_power,
 		area_power,
 		login_time, create_time,
-		user_tel)
+		user_tel,company)
 		values (#{user_id,jdbcType=INTEGER},
 		#{user_name,jdbcType=VARCHAR},
 		#{nickname,jdbcType=VARCHAR},
@@ -17,7 +17,7 @@
 		#{menu_power,jdbcType=VARCHAR},#{pro_power,jdbcType=INTEGER},#{city_power,jdbcType=INTEGER},
 		#{area_power,jdbcType=INTEGER}, now(),
 		now(),
-		#{user_tel,jdbcType=VARCHAR})
+		#{user_tel,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR})
 	</insert>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
@@ -59,6 +59,9 @@
 			</if>
 			<if test="user_tel != null">
 				user_tel = #{user_tel,jdbcType=VARCHAR},
+			</if>
+			<if test="company != null">
+				company = #{company,jdbcType=VARCHAR},
 			</if>
 		</set>
 		where user_id = #{user_id,jdbcType=INTEGER}

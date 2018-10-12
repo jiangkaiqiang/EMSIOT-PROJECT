@@ -81,6 +81,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
 			$scope.Allusers = data.list;
+			console.log($scope.Allusers)
 		});
 	}
 
@@ -382,6 +383,13 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  if($scope.addAreaID==undefined || $scope.addAreaID==null){
         		  $scope.addAreaID = $scope.userPowerDto.sysUser.area_power;
         	  }
+        	  if($scope.company==undefined || $scope.company==null){
+        		  if($scope.userPowerDto.sysUser.company!=-1){
+        			  $scope.company = $scope.userPowerDto.sysUser.company;
+        		  }else{
+        			  $scope.company = -1;
+        		  }
+        	  }
               $http({
             	method : 'GET', 
     			url:'/i/user/addUser',
@@ -394,7 +402,8 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
     				'pro_power' : $scope.addProvinceID,
     				'city_power' : $scope.addCityID,
     				'area_power' : $scope.addAreaID,
-    				'menu_power' : menuPower
+    				'menu_power' : menuPower,
+    				'company' : $scope.company
     			}
     		}).then(function (resp) {
     		   if(resp.data.success){
@@ -791,7 +800,8 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		    				'pro_power' : $scope.userForUpdate.sysUser.pro_power,
 		    				'city_power' : $scope.userForUpdate.sysUser.city_power,
 		    				'menu_power' : menuPower,
-		    				'user_tel' : $scope.userForUpdate.sysUser.user_tel
+		    				'user_tel' : $scope.userForUpdate.sysUser.user_tel,
+		    				'company' : $scope.userForUpdate.sysUser.company
 		    			}
 		    		}).then(function (resp) {
 		    		  if(resp.data.success){

@@ -496,8 +496,21 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <!-- 附加 -->
+                        <div ng-show="rootUserPowerDto.sysUser.area_power==-1" class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 control-label">
+                                          企业名称：
+                                    </label>
 
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="company">
+                                    </div>
+                                </div>
+                            </div>
+                   
+					<!-- 附加 -->
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -922,6 +935,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- 附加 -->
+                        <div ng-show="userPowerDto.sysUser.area_power==-1 && userForUpdate.sysUser.company!=-1" class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 control-label">
+                                        企业名称：
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="userForUpdate.sysUser.company">
+                                    </div>
+                                </div>
+                            </div>
+                   
+					<!-- 附加 -->
                         </div>
                     </div>
 

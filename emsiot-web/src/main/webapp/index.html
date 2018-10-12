@@ -83,6 +83,7 @@
                 <a href="#" class="no-shadow navbar-btn">
 
                     <p ng-show="rootUserPowerDto.sysUser.area_power==-1" ng-style style="font-size:1.6rem">上海新思通电动车管理系统</p>
+                    <p ng-show="rootUserPowerDto.sysUser.area_power!=-1 && rootUserPowerDto.sysUser.company!=-1" ng-style style="font-size:1.6rem">{{rootUserPowerDto.sysUser.company}}</p>
                 </a>
 
             </div>

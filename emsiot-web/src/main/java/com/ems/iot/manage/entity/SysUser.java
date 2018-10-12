@@ -23,9 +23,11 @@ public class SysUser {
 
     private Date login_time;
 
-    private Date create_time;
+    private String create_time;
 
     private String user_tel;
+    
+    private String company;
 
     public Integer getUser_id() {
         return user_id;
@@ -91,11 +93,11 @@ public class SysUser {
         this.login_time = login_time;
     }
 
-    public Date getCreate_time() {
+    public String getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Date create_time) {
+    public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
 
@@ -121,6 +123,14 @@ public class SysUser {
 
 	public void setCity_power(String city_power) {
 		this.city_power = city_power;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
 	}
     
     
