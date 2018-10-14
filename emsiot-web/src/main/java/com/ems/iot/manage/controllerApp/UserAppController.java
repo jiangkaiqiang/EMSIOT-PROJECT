@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
 import com.ems.iot.manage.dao.AppUserMapper;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.ResultDto;
@@ -15,6 +17,7 @@ import com.ems.iot.manage.entity.AppUser;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.util.StringUtil;
+import com.ems.iot.manage.util.TelephoneVerifyUtil;
 /**
  * @author Barry
  * @date 2018年3月20日下午3:33:14  
@@ -94,6 +97,45 @@ public class UserAppController extends AppBaseController {
 	}
 	
 	/**
+	 * 校验验证码是否正确
+	 * @param request
+	 * @param signUpCode
+	 * @return
+	 */
+	@RequestMapping(value = "/verifySignUpCode")
+	@ResponseBody
+	public Object verifySignUpCode(HttpServletRequest request, String signUpCode) {
+		String sessyzm=""+request.getSession().getAttribute("signUpCode");
+		if(signUpCode==null||!(sessyzm).equalsIgnoreCase(signUpCode))
+		    return new AppResultDto(3001,"验证码输入错误",false);
+		else 
+		    return new AppResultDto(1001,"验证码验证成功"); 
+	}
+	
+	/**
+	 * 发送验证码
+	 * @param request
+	 * @param telephone
+	 * @return
+	 * @throws ServerException
+	 * @throws ClientException
+	 */
+	@RequestMapping(value = "/sendSignUpCode")
+	@ResponseBody
+	public Object sendSignUpCode(HttpServletRequest request,@RequestParam(value="telephone",required=true) String telephone) throws ServerException, ClientException {
+		if(telephone!=null&&!telephone.equals("")){
+			TelephoneVerifyUtil teleVerify = new TelephoneVerifyUtil();
+			String signUpCode = teleVerify.signUpVerify(telephone);
+            if (signUpCode==null) {
+            	return new AppResultDto(3001,"获取验证码失败",false);
+			}
+			request.getSession().setAttribute("signUpCode", signUpCode);
+			return new AppResultDto(1001,"验证码已发送，请查收！"); 
+		}
+		return new AppResultDto(3001,"请输入手机号",false);
+	}
+	
+	/**
 	 * 个人用户注册
 	 * @param sysUser
 	 * @return
@@ -101,16 +143,23 @@ public class UserAppController extends AppBaseController {
 	 */
 	@RequestMapping(value = "/addAppUser")
 	@ResponseBody
-	public Object addAppUser(AppUser appUser) throws UnsupportedEncodingException {
-		if (appUser.getUser_name() == null || appUser.getPassword() == null) {
-			return new AppResultDto(3001, "用户名和密码不能为空",false);
+	public Object addAppUser(String password,String userTele,String nickname) throws UnsupportedEncodingException {
+		if (password == null||userTele==null) {
+			return new AppResultDto(3001, "手机号和密码不能为空",false);
 		}
-		appUser.setUser_name(appUser.getUser_tele());
+		AppUser appUser = new AppUser();
+		appUser.setNickname(nickname);
+		appUser.setPassword(password);
+		/**
+		 * 在此将用户名和手机号都设置为手机号，用户注册只需要输入手机号即可
+		 */
+		appUser.setUser_name(userTele);
+		appUser.setUser_tele(userTele);
 		if (appUserMapper.findUserByName(appUser.getUser_name())!=null) {
-			return new AppResultDto(3001, "用户名已存在", false);
+			return new AppResultDto(3001, "用户手机号已存在", false);
 		}
 		appUserMapper.insert(appUser);
-		return new AppResultDto(1001,"添加成功");
+		return new AppResultDto(1001,"注册成功");
 	}
 	
 	/**
