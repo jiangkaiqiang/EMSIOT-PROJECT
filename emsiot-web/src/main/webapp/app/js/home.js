@@ -199,7 +199,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             var num = tmpStation.station_phy_num;
             function FormatDate (strTime) {
                 var date = new Date(strTime);
-                return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+ date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                //2018-10-15 修改
+                var year = date.getFullYear();
+                var month = (date.getMonth()+1) < 10?"0"+(date.getMonth()+1):(date.getMonth()+1);
+                var day = date.getDate() < 10?"0"+date.getDate():date.getDate();
+                var hours = date.getHours() < 10?"0"+date.getHours():date.getHours();
+                var min = date.getMinutes() < 10?"0"+date.getMinutes():date.getMinutes();
+                var seconds = date.getSeconds() < 10?"0"+date.getSeconds():date.getSeconds();
+                return year + "-" + month + "-" + day + " " + hours + ":" + min + ":" +seconds
+                //return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+ date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
             }
             //console.log(FormatDate(start) ,FormatDate(end) );
             showElectsInStation(FormatDate(start), FormatDate(end), num);
@@ -213,10 +221,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
-                showElectsInStation(null,null,title_add[0]);  //根据物理编号查找
+                showElectsInStation(FormatDate(start), FormatDate(end),title_add[0]);  //根据物理编号查找
                 var electInfo='';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
-                    electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (k + 1) + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].plate_num + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
+                    //electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (k + 1) + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].plate_num + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
+                    //2018-10-15 修改
+                	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.electsInStation[k].plate_num + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].plate_num + "</td>" + "<td title='" + $scope.electsInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
                 }
                 var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 + $scope.electsInStation.length+"辆" + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
                 var p = e.target;
@@ -275,6 +285,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     //根据时间和基站id获取基站下面的当前所有车辆
     function showElectsInStation(startTime, endTime, stationPhyNum) {
+    	console.log(startTime)
+    	console.log(endTime)
+    	
         $.ajax({
             method: 'GET',
             url :'/i/elect/findElectsByStationIdAndTime',
