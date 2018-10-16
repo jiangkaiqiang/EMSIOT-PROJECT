@@ -165,6 +165,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     //显示基站和聚合
     var markerClusterer=null;
+    var marker2;
+    //var markers = []
     function showStation() {
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
@@ -173,7 +175,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
         var endHtml = "</tbody></table></div></div>";
         var pt;
-        var marker2;
+        //var marker2;
         var markers = []; //存放聚合的基站
         //var infoWindow;
         var tmpStation;
@@ -250,34 +252,43 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     $scope.csshi=null;
     $scope.csshi1=null;
-
+    $scope.tiao=null;
     //表格选中行，对应标注体现出来
-    //$('#tableArea tbody').on('click','tr',function(e){
-    //
-    //    var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
-    //    for(var g =0;g < $scope.stations.length; g++){
-    //        if(tablePoint==$scope.stations[g].station_address){//表格获取到的地址等于循环基站时的基站地址
-    //           // console.log(tablePoint==$scope.stations[g].station_address);
-    //            var map1=$scope.csshi;
-    //            console.log(map1);
-    //            var allOverlay = $scope.csshi1;
-    //           // console.log(allOverlay);
-    //            var markers;
-    //            //console.log(markers==null);
-    //            if(markers==null){
-    //                map1.removeOverlay(allOverlay[g]);//移除当前基站并添加一个动画效果的基站
-    //                var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
-    //                markers = new BMap.Marker(pts);  // 创建标注
-    //                //console.log(markers==null);
-    //                map1.addOverlay(markers);               // 将标注添加到地图中
-    //                markers.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-    //            }else{
-    //                markers=null;
-    //            }
-    //            return;
-    //        }
-    //    }
-    //});
+    $('#tableArea tbody').on('click','tr',function(e){
+    	if($scope.tiao!=null){
+    		console.log($scope.tiao.setAnimation(null));
+    	}
+        var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
+        for(var g =0;g < $scope.stations.length; g++){
+            if(tablePoint==$scope.stations[g].station_address){//表格获取到的地址等于循环基站时的基站地址
+               // console.log(tablePoint==$scope.stations[g].station_address);
+                var map1=$scope.csshi;
+                console.log(map1);
+                var allOverlay = $scope.csshi1;
+                console.log(allOverlay)
+               
+                var Oe=null
+                for (var i = 0; i < allOverlay.length; i++) {
+					Oe = allOverlay[i].point
+	                if(Oe.lng==$scope.stations[g].longitude && Oe.lat==$scope.stations[g].latitude){
+	                   
+	                	/*map1.removeOverlay(allOverlay[g]);//移除当前基站并添加一个动画效果的基站
+	                    var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
+	                    markers = new BMap.Marker(pts);  // 创建标注
+	                    console.log(markers);
+	                    //map1.addOverlay(markers);               // 将标注添加到地图中
+	                    console.log(pts)*/
+	                	$scope.tiao = allOverlay[i];
+	                	allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+	                    //return;
+	                }else{
+	                    //markers=null;
+	                }
+                }
+                return;
+            }
+        }
+    });
 
     function clusterStation() {  //对基站进行聚合
         var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: markers});
@@ -285,9 +296,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     //根据时间和基站id获取基站下面的当前所有车辆
     function showElectsInStation(startTime, endTime, stationPhyNum) {
-    	console.log(startTime)
-    	console.log(endTime)
-    	
         $.ajax({
             method: 'GET',
             url :'/i/elect/findElectsByStationIdAndTime',
@@ -360,6 +368,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     /*----------重要内容，不能删除----------------*/
 
     $scope.findElectTrace = function () {            //显示车辆轨迹
+    	//$scope.jizhanjuheFlag = 0;
+    	//$scope.jizhankongzhi();
+    	if(lushu!=null){
+    		lushu.stop();
+    		lushu=null;
+    	}
         map.clearOverlays();
         showStation();
         if ($scope.keywordTypeForTrace == "1") {
@@ -718,7 +732,33 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     //基站聚合开关选项控制
     $scope.jizhanjuheFlag = 1;
     $('#jizhanjuhe').parent(".swichWrap").click(function () {
-        if($scope.jizhanFlag == 1){
+    	$scope.jizhankongzhi();
+//        if($scope.jizhanFlag == 1){
+//            if ($scope.jizhanjuheFlag == 1) {
+//                $scope.jizhanjuheFlag = 0;
+//                showStation();
+//            }
+//            else if ($scope.jizhanjuheFlag == 0) {
+//                //markers=null;
+//                map.clearOverlays();
+//                $scope.jizhanjuheFlag = 1;
+//                showStation();
+//                if(markerClusterer!=null){
+//                    markerClusterer.clearMarkers();
+//                }
+//                relitu1();
+//
+//            }
+//            showCssFlag('#jizhanjuhe');
+//        }else{
+//            alert("请打开基站按钮");
+//        }
+
+    });
+    
+//    基站聚合函数
+     $scope.jizhankongzhi = function(){
+    	if($scope.jizhanFlag == 1){
             if ($scope.jizhanjuheFlag == 1) {
                 $scope.jizhanjuheFlag = 0;
                 showStation();
@@ -738,8 +778,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }else{
             alert("请打开基站按钮");
         }
-
-    });
+    }
 
     function showCssFlag(param) {
         $(param).toggleClass("active");

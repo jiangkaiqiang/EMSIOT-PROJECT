@@ -106,12 +106,12 @@ public class HardAcceptController extends BaseController {
 //					}
 //				} 
 //			} 
+			// 插入报警表中
+			ElectAlarm electAlarm = new ElectAlarm();
+			electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
+			electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
+			electAlarmMapper.insert(electAlarm);
 		}
-		// 插入报警表中
-		ElectAlarm electAlarm = new ElectAlarm();
-		electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
-		electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
-		electAlarmMapper.insert(electAlarm);
 		
 //			//处理限制区域报警
 		List<LimitArea> limitAreas = limitAreaMapper.findAll();
