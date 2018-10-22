@@ -247,40 +247,31 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 map.addOverlay(markers[i]);
             }
         }
-
+      //用于基站跳动
+        $scope.jizhanBounce=map.getOverlays();
     }
 
-    $scope.csshi=null;
-    $scope.csshi1=null;
+  //用于基站跳动的参数
+    $scope.jizhanBounce=null;
     $scope.tiao=null;
     //表格选中行，对应标注体现出来
     $('#tableArea tbody').on('click','tr',function(e){
     	if($scope.tiao!=null){
-    		console.log($scope.tiao.setAnimation(null));
+    		$scope.tiao.setAnimation(null);
     	}
         var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
         for(var g =0;g < $scope.stations.length; g++){
             if(tablePoint==$scope.stations[g].station_address){//表格获取到的地址等于循环基站时的基站地址
                // console.log(tablePoint==$scope.stations[g].station_address);
-                var map1=$scope.csshi;
-                console.log(map1);
-                var allOverlay = $scope.csshi1;
-                console.log(allOverlay)
-               
+                var allOverlay = $scope.jizhanBounce;
+                //console.log(allOverlay)
                 var Oe=null
                 for (var i = 0; i < allOverlay.length; i++) {
 					Oe = allOverlay[i].point
 	                if(Oe.lng==$scope.stations[g].longitude && Oe.lat==$scope.stations[g].latitude){
-	                   
-	                	/*map1.removeOverlay(allOverlay[g]);//移除当前基站并添加一个动画效果的基站
-	                    var pts =  new BMap.Point($scope.stations[g].longitude, $scope.stations[g].latitude);
-	                    markers = new BMap.Marker(pts);  // 创建标注
-	                    console.log(markers);
-	                    //map1.addOverlay(markers);               // 将标注添加到地图中
-	                    console.log(pts)*/
-	                	$scope.tiao = allOverlay[i];
+	                	$scope.tiao = allOverlay[i];//保存上一次跳动的基站
 	                	allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-	                    //return;
+	                    return;
 	                }else{
 	                    //markers=null;
 	                }
@@ -354,6 +345,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             map.addOverlay($scope.elecMarker);
             map.centerAndZoom($scope.elecPt, 17);
             //console.log(elecMarker);
+          //用于基站跳动
+            $scope.jizhanBounce=map.getOverlays();
         });
         $("#dingweiModal").modal("hide");
     };
@@ -595,8 +588,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         $("#positionTable").addClass("rightToggle");
         $("#guijiModal").modal("hide");
         $("#positionTable .dismisPosition").removeClass("fa-angle-left").addClass("fa-angle-right");
-        $scope.csshi=map;
-        $scope.csshi1=map.getOverlays();
+        //用于基站跳动
+        $scope.jizhanBounce=map.getOverlays();
     };
 
     $scope.clearElectTrace = function () {
