@@ -348,7 +348,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
             stationIDforDelete = data.station_phy_num;
             $scope.elecPt = new BMap.Point($scope.longitude, $scope.latitude);
-            $scope.elecIcon = new BMap.Icon("../app/img/eb.jpg", new BMap.Size(67, 51));
+            $scope.elecIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
             $scope.elecMarker = new BMap.Marker($scope.elecPt, {icon: $scope.elecIcon});
 
             map.addOverlay($scope.elecMarker);
@@ -416,7 +416,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     map.setViewport(arrPois);
                     if(lushu==null){
 	                    marker=new BMap.Marker(arrPois[0],{
-	                        icon  : new BMap.Icon('../app/img/eb.jpg', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
+	                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
 	                    var label = new BMap.Label($scope.electNumForTraceTable,{offset:new BMap.Size(0,-30)});
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
@@ -490,7 +490,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     lushu = new BMapLib.LuShu(map,arrPois,{
                         defaultContent:$scope.electNumForTraceTable,//"从天安门到百度大厦"
                         autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                        icon  : new BMap.Icon('../app/img/eb.jpg', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
+                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
                         speed: 350,
                         enableRotation:true,//是否设置marker随着道路的走向进行旋转
                         landmarkPois:[
