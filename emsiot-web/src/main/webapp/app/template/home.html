@@ -110,7 +110,7 @@
 					<div class="form-group">
 						<label for="" class="control-label col-md-3"> 日期从： </label>
 
-						<div class="col-sm-7 flex">
+						<div class="col-sm-7 flex-items">
 							<div class='input-group date' id='homeDateStart'>
 								<input ng-attr-type type='text' class="form-control"
 									ng-model="startTimeForTrace" ng-attr-placeholder
@@ -202,12 +202,12 @@
 <!--以下市可视化地图的内容-->
 <div id="allmap" ng-style style="width: 100%; height: 800px;"></div>
 <div id="result" ng-style style="width: 100%;"></div>
-<div class="btn-group">
-	<button id="run">开始</button>
+<div class="btn-group" ng-style style="margin:5px 10px;">
+	<button id="run" class="btn btn-guiji">开始</button>
 	<!--<button id="stop">停止</button>-->
-	<button id="pause">暂停</button>
-	<button id="hide">隐藏信息窗口</button>
-	<button id="show">展示信息窗口</button>
+	<button id="pause" class="btn btn-guiji">暂停</button>
+	<button id="hide" class="btn btn-guiji">隐藏信息窗口</button>
+	<button id="show" class="btn btn-guiji">展示信息窗口</button>
 </div>
 <div id="mapSearch">
 	<div id="r-result" class="form-group has-feedback">
@@ -219,6 +219,12 @@
 	</div>
 	<div id="searchResultPanel" ng-style
 		style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
+</div>
+<div class="btn-grop ng-scope" style="top: 81px;right: 265px;">
+<button class="btn btn-guiji" ng-click="clearElectTrace()">
+    <i class="glyphicon glyphicon-trash"></i>
+    清除轨迹
+</button>
 </div>
 <!--车辆经过的基站-->
 <div id="positionTable" class="shadow" ng-style
