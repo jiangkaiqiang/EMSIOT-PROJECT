@@ -242,8 +242,14 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (gua_card_num == null) {
 			return new AppResultDto(3001, "防盗芯片编号不能为空",false);
 		}
+		if (gua_card_num.toString().length()>20) {
+			return new AppResultDto(3001, "防盗芯片编号最多为20位",false);
+		}
 		if (plate_num == null) {
 			return new AppResultDto(3001, "车牌号不能为空", false);
+		}
+		if (plate_num.length()>20) {
+			return new AppResultDto(3001, "车牌号最多为20位",false);
 		}
 		if (pro_id==null) {
 			return new AppResultDto(3001, "车牌号所属省不能为空", false);
@@ -276,7 +282,9 @@ public class ElectSysUserAppController extends AppBaseController {
 		electrombile.setPlate_num(plate_num);
 		electrombile.setVe_id_num(ve_id_num);
 		electrombile.setElect_brand(elect_brand);
-		electrombile.setBuy_date(buy_date);
+		if (buy_date!=null&&!buy_date.equals("")) {
+			electrombile.setBuy_date(buy_date);
+		}
 		electrombile.setElect_color(elect_color);
 		electrombile.setMotor_num(motor_num);
 		electrombile.setNote(note);

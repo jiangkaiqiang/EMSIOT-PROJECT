@@ -17,9 +17,13 @@ public class TelephoneVerifyUtil {
 	// 初始化ascClient需要的几个参数
 	final String product = "Dysmsapi";// 短信API产品名称（短信产品名固定，无需修改）
 	final String domain = "dysmsapi.aliyuncs.com";// 短信API产品域名（接口地址固定，无需修改）
-	// 替换成你的AK
+	// 替换成你的AK 车去哪了AK
 	final String accessKeyId = "LTAIAiMSprSiH8Vt";// 你的accessKeyId,参考本文档步骤2
 	final String accessKeySecret = "O06kgfFkdEHwEkA7rKTFUWzS4KDUKF";// 你的accessKeySecret，参考本文档步骤2
+	
+	// 替换成你的AK 蔚蓝树AK
+    //final String accessKeyId = "23581395";// 你的accessKeyId,参考本文档步骤2
+	//final String accessKeySecret = "a1fe24f669df3f81006d002858d7c079";// 你的accessKeySecret，参考本文档步骤2
 	// 初始化ascClient,暂时不支持多region（请勿修改）
 	IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
 	/**
@@ -43,8 +47,10 @@ public class TelephoneVerifyUtil {
 		request.setPhoneNumbers(telephone);
 		// 必填:短信签名-可在短信控制台中找到
 		request.setSignName("车去哪儿了");
+		//request.setSignName("蔚蓝树");
 		// 必填:短信模板-可在短信控制台中找到，发送国际/港澳台消息时，请使用国际/港澳台短信模版
 		request.setTemplateCode("SMS_147910527");
+		//request.setTemplateCode("SMS_37865075");
 		// 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
 		// 友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
 		request.setTemplateParam("{\"code\":" + "\"" + code + "\"}");
