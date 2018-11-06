@@ -162,6 +162,9 @@
 				AND electrombile.area_id = #{areaPower}
 			</if>
 		</where>
-     AND electrombile_station.update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by electrombile_station.ele_gua_card_num   
+		<!-- 2018-11-01 wuzhongliang 条件改为当天的在线车辆 -->
+	 AND DATE_FORMAT(electrombile_station.update_time,'%Y-%m-%d')=DATE_FORMAT(NOW(),'%Y-%m-%d') group by electrombile_station.ele_gua_card_num  
+     <!-- 2018-11-01 wuzhongliang 隐藏 -->
+     <!-- AND electrombile_station.update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by electrombile_station.ele_gua_card_num    -->
 	</select>
 </mapper>

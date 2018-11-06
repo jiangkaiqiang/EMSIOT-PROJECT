@@ -157,6 +157,8 @@ public class BlackelectController extends BaseController {
 		blackelect.setBlack_id(blackID);
 		blackelect.setDeal_status(2);
 		blackelect.setDeal_sysuser_name(deal_sysuser_name);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		blackelect.setDeal_sysuser_time(sdf.format(new Date()));
 		blackelectMapper.updateByPrimaryKeySelective(blackelect);
 		return new BaseDto(0);
 	}

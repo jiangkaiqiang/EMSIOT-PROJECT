@@ -26,11 +26,23 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 				"proID" : $scope.admin.pro_power
 			}
 		}).success(function(data) {
-			// $scope.cityName = data.name;
-			$scope.cityName = "芒市";
+			$scope.cityName = data.name;
+			//$scope.cityName = "芒市";
 			mapStation.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
 			mapStation.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
 			mapStation.disableDoubleClickZoom();
+			// 获取基站
+            $http.get('/i/station/findAllStationsForMap', {
+                params: {
+                    "proPower": $scope.admin.pro_power,
+                    "cityPower": $scope.admin.city_power,
+                    "areaPower": $scope.admin.area_power
+                }
+            }).success(function (data) {
+                $scope.stations = data;
+                //console.log(data)
+                showStation();
+            });
 		});
 	};
 
@@ -102,7 +114,7 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 	var geoc = new BMap.Geocoder();
 
 	mapStation.addEventListener("dblclick", function(e) { // 双击添加基站，显示图标
-		if ($rootScope.rootUserPowerDto.stationAdd != "1") {
+		if ($rootScope.rootUserPowerDto.stationAdd != "1" || $rootScope.rootUserPowerDto.sysUser.opt_power != "1") {
 			alert("没有添加基站权限！");
 			return;
 		}
@@ -116,12 +128,12 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 				$scope.addStationAddress = "获取不到具体位置";
 			} else {
 				var addComp = rs.addressComponents;
-				console.log(rs);
-				console.log(addComp);
+				/*console.log(rs);
+				console.log(addComp);*/
 				$scope.addStationAddress = addComp.province + ","
 						+ addComp.city + "," + addComp.district + ", "
 						+ addComp.street + "," + addComp.streetNumber;
-				console.log($scope.addStationAddress);
+				//console.log($scope.addStationAddress);
 			}
 			$("#addStation").modal("show");
 			$("#addStationLng").val($scope.addStationLng);
@@ -150,18 +162,20 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 		}).success(function(data) {
 			$scope.locationStation = data;
 			// 这里我得到了基站的信息包括经纬度等，需要将其显示在地图
-			mapStation.clearOverlays();
+			$scope.doBounce(data.longitude, data.latitude);
+			//单个基站跳动
+			/*mapStation.clearOverlays();
 			var findStationPt = new BMap.Point(data.longitude, data.latitude);
 			var findStationMarker = new BMap.Marker(findStationPt);
 			mapStation.addOverlay(findStationMarker);
 			findStationMarker.setAnimation(BMAP_ANIMATION_BOUNCE);
-			mapStation.centerAndZoom(findStationPt, 17);
+			mapStation.centerAndZoom(findStationPt, 17);*/
 
 		});
 	}
 
 	$('#electAlarmDate').datetimepicker({
-		format : 'yyyy-mm-dd  hh:ii:00',
+		format : 'yyyy-mm-dd  hh:ii:ss.s',
 		autoclose : true,
 		maxDate : new Date(),
 		pickerPosition : "bottom-left"
@@ -195,7 +209,7 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
 			$scope.AllStations = data.list;
-			console.log($scope.AllStations);
+			//console.log($scope.AllStations);
 		});
 	}
 
@@ -426,4 +440,156 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 	$scope.myClass = {
 		"background-color" : "rgba(204, 204, 204, 0.48)",
 	}
+	
+	
+	
+	
+	
+	$scope.jizhanBounce=null;
+	var markerClusterer=null;
+    var marker2;
+    
+	function showStation() {
+		var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
+	    
+        var sHtml4 = "</p><hr/><div class='tableArea margin-top2' style='overflow-y: hidden;'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th style='text-align: center; width: 25%!important; '>基站物理编号</th><th style='text-align: center; width: 25%!important;'>状态</th><th style='text-align: center;width: 50%!important;'>记录时间</th></tr></thead><tbody>";
+        //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
+        var endHtml = "</tbody></table></div></div>";
+        var pt;
+        //var marker2;
+        var markers = []; //存放聚合的基站
+        //var infoWindow;
+        var tmpStation;
+        //console.log($scope.stations)
+        //给每一个基站添加监听事件 和窗口信息
+        //console.log($scope.stations);
+        for (var i = 0; i < $scope.stations.length; i++) {
+            tmpStation = $scope.stations[i];
+            //console.log(tmpStation)
+            pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
+            //基站异常图标
+            if(tmpStation.station_status==1){
+            	var myIcon = new BMap.Icon("/app/img/marker_gray.png", new BMap.Size(19,25));
+            	marker2 = new BMap.Marker(pt,{icon:myIcon});
+            }else{
+            	marker2 = new BMap.Marker(pt);
+            }
+            //var carNum=$scope.electsInStation.length;
+           // console.log(carNum)
+            //$scope.labelSet(carNum,marker2);
+            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_name + '\t' + tmpStation.station_status);
+            //marker2.setTitle(tmpStation.station_id);
+            //console.log($scope.stations.length);
+
+            marker2.addEventListener("click", function (e) {
+            	var title_add = new Array();
+                title_add = this.getTitle().split('\t');
+                //showSingleStation(title_add);  //根据物理编号查找
+                showStationRecord(title_add[0])
+                var electInfo='';
+                var sHtml2='';
+                var sHtml3='';
+                
+                var status = "";
+                var statusColor=""
+                if(title_add[2] == 0){
+                	status = "正常";
+                }else if(title_add[2] == 1){
+                	status = "故障";
+                	statusColor = "style='background:#CCC!important;'";
+                }else if(title_add[2] == 2){
+                	status = "检测中";
+                	statusColor = "style='background:#fad733!important;'";
+                }
+                
+                sHtml2 += "</h4>" + title_add[0] + "</li><li " + statusColor + " >"+ status;
+        	    sHtml3 += "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i>" + title_add[1]+ "<span>";
+                
+        	    var station_status = '';
+                for (var k = 0; k < $scope.stationRecord.length; k++) {
+                	
+                	if($scope.stationRecord[k].station_status == 0){
+                		station_status = "正常";
+                	}else{
+                		station_status = "故障";
+                	}
+                	electInfo += "<tr><td title='" + $scope.stationRecord[k].station_phy_num + "'>" + $scope.stationRecord[k].station_phy_num + "</td>" + "<td title='" + station_status + "'>" + station_status + "</td>" + "<td title='" + $scope.stationRecord[k].update_time + "'>" + $scope.stationRecord[k].update_time + "</td></tr>";
+                }
+                var infoWindow = new BMap.InfoWindow(sHtml + sHtml2 + sHtml3 + sHtml4 + electInfo + endHtml);
+                var p = e.target;
+                var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                mapStation.openInfoWindow(infoWindow, point);
+
+            });
+            markers.push(marker2);
+        }
+        if ($scope.jizhanjuheFlag == 0) {
+            markerClusterer = new BMapLib.MarkerClusterer(mapStation, {markers: markers});
+        }
+        
+        mapStation.clearOverlays();
+        for (var i = 0; i < markers.length; i++) {
+        	mapStation.addOverlay(markers[i]);
+        }
+        
+      //用于基站跳动
+        $scope.jizhanBounce=mapStation.getOverlays();
+    }
+	
+	
+	//表格选中行，对应标注体现出来
+    $scope.doBounce = function(longitude, latitude){
+    	if($scope.tiao!=null){
+    		$scope.tiao.setAnimation(null);
+    	}
+        for(var g =0;g < $scope.stations.length; g++){
+               // console.log(tablePoint==$scope.stations[g].station_address);
+                var allOverlay = $scope.jizhanBounce;
+                //console.log(allOverlay)
+                var Oe=null
+                for (var i = 0; i < allOverlay.length; i++) {
+					Oe = allOverlay[i].point
+	                if(Oe.lng==longitude && Oe.lat==latitude){
+	                	$scope.tiao = allOverlay[i];//保存上一次跳动的基站
+	                	allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+	                    return;
+	                }else{
+	                    //markers=null;
+	                }
+                }
+                return;
+            
+        }
+    };
+    
+    
+    function showSingleStation(stationID) {		
+		 $.ajax({
+	            method: 'GET',
+	            url :'/i/station/findStationByID',
+	            async:false,
+	            data : {
+	            	"stationID" : stationID
+	            }
+	        }).success(function(data){
+	            $scope.singleStation = data;
+	        })
+	}
+    $scope.limit=10;
+    function showStationRecord(stationPhyNum) {		
+    	$.ajax({
+    		method: 'GET',
+    		url :'/i/station/findStationRecordByStationNumAndLimit',
+    		async:false,
+    		data : {
+    			"stationPhyNum" : stationPhyNum,
+    			"limit" : $scope.limit
+    		}
+    	}).success(function(data){
+    		$scope.stationRecord = data;
+    	})
+    }
+	
+    
+	
 });

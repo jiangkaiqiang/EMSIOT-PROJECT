@@ -389,16 +389,16 @@
 				AND area_id = #{areaPower}
 			</if>
 			<if test="ownerTele != null">
-				AND owner_tele = #{ownerTele}
+				AND owner_tele like "%"#{ownerTele}"%"
 			</if>
 			<if test="ownerID != null">
-				AND owner_id = #{ownerID}
+				AND owner_id like "%"#{ownerID}"%"
 			</if>
 			<if test="plateNum != null">
-				AND plate_num = #{plateNum}
+				AND plate_num like "%"#{plateNum}"%"
 			</if>
 			<if test="guaCardNum != null">
-				AND gua_card_num = #{guaCardNum}
+				AND gua_card_num like "%"#{guaCardNum}"%"
 			</if>
 			<if test="ownerName != null">
 				AND owner_name like "%"#{ownerName}"%"

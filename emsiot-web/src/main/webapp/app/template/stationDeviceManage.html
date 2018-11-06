@@ -21,7 +21,7 @@
                     </div>
                 </form>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.sysUser.opt_power==1">
                 <a href="">
                      <b class="border-dashed-left"></b>
 
@@ -101,8 +101,8 @@
                     <td ng-bind="getStatus(station.station_status)"></td>
                     <td data-toggle="tooltip" data-placement="right" title="{{station.install_date}}">{{station.install_date}}</td>
                     <td>
-                        <i ng-show="rootUserPowerDto.stationDeviceDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteStation(station.station_id)"></i>
-                        <i  ng-show="rootUserPowerDto.stationDeviceUpdate==1" class="glyphicon glyphicon-edit" ng-click="goStationUpdate(station.station_id)" data-toggle="modal" data-target="#updateStation"></i>
+                        <i ng-show="rootUserPowerDto.stationDeviceDelete==1 && rootUserPowerDto.sysUser.opt_power==1" class="glyphicon glyphicon-trash" ng-click="goDeleteStation(station.station_id)"></i>
+                        <i  ng-show="rootUserPowerDto.stationDeviceUpdate==1 && rootUserPowerDto.sysUser.opt_power==1" class="glyphicon glyphicon-edit" ng-click="goStationUpdate(station.station_id)" data-toggle="modal" data-target="#updateStation"></i>
                         <i class="glyphicon glyphicon-eye-open" data-toggle="modal" data-target="#viewStation" ng-click="goStationView(station.station_id)"></i>
                     </td>
          </tr>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aliyun.oss.OSSClient;
 import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.StationMapper;
+import com.ems.iot.manage.dao.StationStatusRecordMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.StationElectDto;
+import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.entity.StationStatusRecord;
 import com.ems.iot.manage.service.OssService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -34,6 +40,8 @@ import com.github.pagehelper.Page;
 public class StationController extends BaseController {
 	@Autowired
 	private StationMapper stationMapper;
+	@Autowired
+	private StationStatusRecordMapper stationStatusRecordMapper;
 	@Autowired
 	private CityMapper cityMapper;
 	private static String baseDir = "picture";
@@ -348,4 +356,87 @@ public class StationController extends BaseController {
 		List<Station> staions= stationMapper.findStationsByStatus(stationStatus, proPower, cityPower, areaPower);
 		return staions;
 	}
+	
+	
+	
+	/**
+	 * 根据基站的物理编号，查询某个基站异常记录，为页面点击基站显示基站下的异常记录信息
+	 * 
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findStationRecordByStationNumAndLimit")
+	@ResponseBody
+	public Object findStationRecordByStationNumAndLimit(@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
+			throws UnsupportedEncodingException {
+		
+		List<StationStatusRecord> stationStatusRecord = stationStatusRecordMapper
+				.findStationsRecordByStationNumAndLimit(stationPhyNum, limit);
+		
+		return stationStatusRecord;
+	}
+	
+	
+	/**
+	 * 基站异常记录管理
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findAllStationStatusRecord")
+	@ResponseBody
+	public Object findAllStationStatusRecord(@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize") Integer pageSize,
+			@RequestParam(value="startTime", required=false) String startTime,
+			@RequestParam(value="endTime", required=false) String endTime,
+			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower,
+			@RequestParam(value = "stationStatus", required = false) Integer stationStatus
+			) throws UnsupportedEncodingException {
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 12 : pageSize;
+		PageHelper.startPage(pageNum, pageSize);
+		Page<StationStatusRecord> staions= stationStatusRecordMapper.findAllStationsRecordByKey(startTime, endTime, stationPhyNum, stationStatus, proPower, cityPower, areaPower);
+		return new PageInfo<StationStatusRecord>(staions);
+	}
+	
+	/**
+	 * 批量删除基站异常记录
+	 * @param stationIDs
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteStationRecordByID")
+	@ResponseBody
+	public Object deleteStationRecordByID(Integer stationID) {
+		stationStatusRecordMapper.deleteByPrimaryKey(stationID);
+		return new BaseDto(0);
+	}
+	
+	/**
+	 * 批量删除基站异常记录
+	 * @param stationIDs
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteStationRecordByIDs")
+	@ResponseBody
+	public Object deleteStationRecordByIDs(Integer[] stationIDs) {
+		for(Integer stationID:stationIDs){
+			stationStatusRecordMapper.deleteByPrimaryKey(stationID);
+		}
+		return new BaseDto(0);
+	}
+	
 }

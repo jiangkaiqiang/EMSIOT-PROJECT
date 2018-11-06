@@ -271,14 +271,14 @@ $scope.dropInstallPic = function(installPic){
         pickerPosition: "bottom-left"
      });
     $('#alarmDateStart').datetimepicker({
-        format: 'yyyy-mm-dd - hh:ii:00',
+        format: 'yyyy-mm-dd - hh:ii:ss.s',
         //minView: "month",
         autoclose:true,
         maxDate:new Date(),
         pickerPosition: "bottom-left"
     });
     $("#alarmDateEnd").datetimepicker({
-        format : 'yyyy-mm-dd - hh:ii:00',
+        format : 'yyyy-mm-dd - hh:ii:ss.s',
         //minView: 'month',
         autoclose:true,
         maxDate:new Date(),

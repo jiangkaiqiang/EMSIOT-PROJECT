@@ -20,7 +20,7 @@
                     </div>
                 </form>
             </li>
-            <li ng-show="rootUserPowerDto.userDelete==1">
+            <li ng-show="rootUserPowerDto.userDelete==1 && rootUserPowerDto.sysUser.opt_power==1">
                 <a href="">
                     <b class="border-dashed-left"></b>
                     <button class="btn btn-guiji" ng-click="deleteUsers()">
@@ -30,7 +30,7 @@
                     <b class="border-dashed"></b>
                 </a>
             </li>
-            <li ng-show="rootUserPowerDto.userAdd==1">
+            <li ng-show="rootUserPowerDto.userAdd==1 && rootUserPowerDto.sysUser.opt_power==1">
                 <a href="" data-toggle="modal" data-target="#addUser">
                     <i class="glyphicon glyphicon-plus"></i>
                     添加用户
@@ -275,6 +275,15 @@
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">基站设备管理</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceManage">
+                                    </button>
+                                    <!-- //附加基站异常记录管理 -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">异常记录管理</span>
+                                        <input type="checkbox" class="form-control" id="stationDeviceManage">
+                                    </button>
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">异常记录管理-删除记录</span>
+                                        <input type="checkbox" class="form-control" id="stationExceptionRecprdDelete">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">基站管理-添加基站</span>
@@ -712,8 +721,17 @@
                                         <input type="checkbox" class="form-control" id="stationManageChange">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
-                                        <span class="margin-right-block">接站设备管理</span>
+                                        <span class="margin-right-block">基站设备管理</span>
                                         <input type="checkbox" class="form-control" id="stationDeviceManageChange">
+                                    </button>
+                                    <!-- //附加基站异常记录管理 -->
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">异常记录管理</span>
+                                        <input type="checkbox" class="form-control" id="stationExceptionRecprdManageChange">
+                                    </button>
+                                    <button class="btn btn-white flex-items" type="button">
+                                        <span class="margin-right-block">异常记录管理-删除记录</span>
+                                        <input type="checkbox" class="form-control" id="stationExceptionRecprdDeleteChange">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">基站管理-添加基站</span>

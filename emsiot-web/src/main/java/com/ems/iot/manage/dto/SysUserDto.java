@@ -54,6 +54,10 @@ public class SysUserDto {
 	private String stationManage = "0";//基站管理-基站管理分菜单
 	
 	private String stationDeviceManage = "0";//基站管理-基站设备管理
+	
+	private String stationExceptionRecprdManage = "0";//基站管理-异常记录管理
+	
+	private String stationExceptionRecprdDelete = "0";//基站管理-异常记录管理-记录删除
 
 	private String stationAdd = "0";//基站管理-基站管理分菜单-基站添加
 	
@@ -389,6 +393,22 @@ public class SysUserDto {
 
 	public void setPrivatePower(String privatePower) {
 		this.privatePower = privatePower;
+	}
+
+	public String getStationExceptionRecprdManage() {
+		return stationExceptionRecprdManage;
+	}
+
+	public void setStationExceptionRecprdManage(String stationExceptionRecprdManage) {
+		this.stationExceptionRecprdManage = stationExceptionRecprdManage;
+	}
+
+	public String getStationExceptionRecprdDelete() {
+		return stationExceptionRecprdDelete;
+	}
+
+	public void setStationExceptionRecprdDelete(String stationExceptionRecprdDelete) {
+		this.stationExceptionRecprdDelete = stationExceptionRecprdDelete;
 	}
 	
 }

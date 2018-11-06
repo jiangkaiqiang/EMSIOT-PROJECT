@@ -1,7 +1,7 @@
 <nav class="page-title shadow electAlarm">
 	<div class="title-brand flex-between align-items">
-		<div class="title-text">车辆黑名单</div>
-		<ul class="title-nav flex align-items">
+		<div class="title-text">车辆报警管理</div>
+		<ul class="title-nav flex align-items" ng-show="rootUserPowerDto.sysUser.opt_power==1">
 			<li ng-show="rootUserPowerDto.blackDelete==1">
 			     <a href="">
 					<button class=" btn btn-guiji" ng-click="goDeleteBlackElects()">
@@ -34,6 +34,7 @@
 						<option ng-attr-value value="8">未确认</option>
 						<option ng-attr-value value="1">已确认</option>
 						<option ng-attr-value value="2">已处理</option>
+						<option ng-attr-value value="" selected="selected">全部</option>
 					</select>
 				</div>
 
@@ -58,7 +59,7 @@
 						<label for="allSecSon"></label>
 					</div>
 				</th>
-				<th>序号</th>
+				<!-- <th>序号</th> -->
 				<th>车牌号</th>
 				<th>车主姓名</th>
 				<th>车主手机号</th>
@@ -66,8 +67,9 @@
 				<th>报案时间</th>
 				<th>确认人</th>
 				<th>处理人</th>
-				<th>操作</th>
-				<th>处理</th>
+				<th>处理时间</th>				
+				<th ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
+				<th ng-show="rootUserPowerDto.sysUser.opt_power==1">处理</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -75,7 +77,7 @@
 				<td><input ng-attr-type type="checkbox"
 					ng-checked="exists(blackelectDto, selected)"
 					ng-click="toggle(blackelectDto, selected)" /></td>
-				<td>{{blackelectDto.blackelect.black_id}}</td>
+				<!-- <td>{{blackelectDto.blackelect.black_id}}</td> -->
 				<td>{{blackelectDto.plateNum}}</td>
 				<td>{{blackelectDto.blackelect.owner_name}}</td>
 				<td>{{blackelectDto.blackelect.owner_tele}}</td>
@@ -83,16 +85,17 @@
 				<td data-toggle="tooltip" data-placement="right" title="{{blackelectDto.blackelect.case_occur_time}}">{{blackelectDto.blackelect.case_occur_time}}</td>
 				<td>{{blackelectDto.blackelect.comfirm_sysuser_name}}</td>
 				<td>{{blackelectDto.blackelect.deal_sysuser_name}}</td>
-				<td>
+				<td>{{blackelectDto.blackelect.deal_sysuser_time}}</td>
+				<td ng-show="rootUserPowerDto.sysUser.opt_power==1">
 					<i ng-show="rootUserPowerDto.blackDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteBlackElect(blackelectDto.blackelect.black_id,blackelectDto.blackelect.plate_num)"></i>
 					<i ng-show="rootUserPowerDto.blackEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateBlackelect(blackelectDto.blackelect.black_id)" data-toggle="modal"
 					   data-target="#updateBlackelect"></i>
 				</td>
-				<td>
+				<td ng-show="rootUserPowerDto.sysUser.opt_power==1">
 				<span 	style="margin-right:5px;"
 						ng-click="confirmBlackElect(blackelectDto.blackelect.black_id, blackelectDto.blackelect.plate_num)"
 					  	ng-show="showConfirmBtn(blackelectDto.blackelect.deal_status)"
-						 title="确认加入黑名单"
+						 title="确认加入报警管理"
 					  	class="confirmBtn">
 					<i class="glyphicon glyphicon-saved"></i>
 				</span>
@@ -126,7 +129,7 @@
 			<div class="modal-header">
 				<button ng-attr-type type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<div class="modal-title">新增车辆并加入黑名单</div>
+				<div class="modal-title">新增车辆报警并加入黑名单</div>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" name="electForm">
@@ -302,7 +305,7 @@
 			<div class="modal-header">
 				<button ng-attr-type type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<div class="modal-title">修改黑名单</div>
+				<div class="modal-title">修改报警信息</div>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" name="blackelectForm">

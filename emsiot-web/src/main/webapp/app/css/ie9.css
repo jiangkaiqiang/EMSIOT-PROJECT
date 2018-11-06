@@ -1,6 +1,6 @@
-/*´ËÎÄ¼þÎª¼æÈÝie9ÑùÊ½µÄÎÄ¼þ£¬²»¿ÉÉ¾³ý*/
+/*ï¿½ï¿½ï¿½Ä¼ï¿½Îªï¿½ï¿½ï¿½ï¿½ie9ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½*/
 
-/*¹«¹²ÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 .page-title>.title-brand>div.title-text{float:left;}
 .page-title>.title-brand>ul.title-nav{float:right;}
 .page-title>.title-brand{height:50px;line-height:50px;}
@@ -18,7 +18,7 @@
     float:left;
 }
 
-/*indexÑùÊ½*/
+/*indexï¿½ï¿½Ê½*/
 #app>.app-header>.navbar-header>.navbar-brand>ul>li{
     float:left;
 }
@@ -30,7 +30,7 @@
     padding:15px 10px;
 }
 
-/*homeÑùÊ½*/
+/*homeï¿½ï¿½Ê½*/
 .home-title>ul.home-nav{
     float:left;
 }
@@ -70,39 +70,44 @@
     float:left;
 }
 
-/*³µÁ¾±¸°¸ÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 #addCar .modal-body .myModalTitle>img,#updateCar .modal-body .myModalTitle>img,#viewModalElec .modal-body .myModalTitle>img{float:left;}
 #addCar .modal-body .myModalTitle>div,#updateCar .modal-body .myModalTitle>div,#viewModalElec .modal-body .myModalTitle>div{float:left;}
 #addCar .modal-body .myModalTitle,#updateCar .modal-body .myModalTitle,#viewModalElec .modal-body .myModalTitle{height:25px;margin-bottom:10px;}
 
-/*ºÚÃûµ¥¹ÜÀíÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 .electAlarm>.title-brand>.title-nav>li.border-dashed{margin-top:20px;}
 
-/*±¨¾¯×·×ÙÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½×·ï¿½ï¿½ï¿½ï¿½Ê½*/
 .alarmTrack>.title-brand{height:50px;line-height:50px;}
 
-/*»ùÕ¾ÑùÊ½*/
+/*ï¿½ï¿½Õ¾ï¿½ï¿½Ê½*/
 .station-content>.page-title>.title-brand>select{float:left;margin-top:20px;}
 .station-content>.page-title>.title-brand>ul.title-nav{float:right;}
 .station-content>.page-title>.title-brand>ul.title-nav>li.border-dashed{margin-top:36px;}
 .station-content>.page-title>.title-brand>ul.title-nav>li>a{margin-top:15px;}
 
-/*»ùÕ¾Éè±¸¹ÜÀíÑùÊ½*/
+/*ï¿½ï¿½Õ¾ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 .stationDeviceManage.page-title> .title-brand{height:70px;line-height:50px;}
 .stationDeviceManage>.title-brand>.title-nav form{height:45px;}
 .stationDeviceManage .title-brand .navbar-form button{margin-bottom:15px;}
 
-/*ÏÞÖÆÇøÓò¹ÜÀíÑùÊ½*/
+/* é™„åŠ åŸºç«™å¼‚å¸¸è®°å½•ç®¡ç† */
+.stationExceptionRecprdManage.page-title> .title-brand{height:70px;line-height:50px;}
+.stationExceptionRecprdManage>.title-brand>.title-nav form{height:45px;}
+.stationExceptionRecprdManage .title-brand .navbar-form button{margin-bottom:15px;}
+
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 .limitArea-content > .page-title > .title-brand > .title-text{margin-top:20px;}
 .limitArea-content > .page-title > .title-brand > .title-nav>li.border-dashed{margin-top:36px;}
 .limitArea-content > .page-title > .title-brand > .title-nav>li>a{margin-top:15px;}
 
-/*ÏÞÖÆÇøÓò±¨¾¯¹ÜÀí ÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò±¨¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê½*/
 .page-title.alarmManage-content > .title-brand{height:70px;line-height:50px;}
 .alarmManage-content > .title-brand > .title-nav form{height:45px;}
 .alarmManage-content .title-brand .navbar-form button{margin-bottom:15px;}
 
-/*ÓÃ»§¹ÜÀíÑùÊ½*/
+/*ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 .userManage>.title-brand{height:70px;}
 .userManage>.title-brand>.title-nav form{height:45px;}
 .userManage>.title-brand>.title-nav form button{margin-bottom:10px;}

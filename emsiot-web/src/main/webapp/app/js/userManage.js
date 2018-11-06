@@ -323,6 +323,10 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  if($("#stationDeviceManage").is(":checked")){
         		  menuPower = menuPower+"stationDeviceManage;";
         	  }
+        	  //附加基站异常记录管理
+        	  if($("#stationExceptionRecprdManage").is(":checked")){
+        		  menuPower = menuPower+"stationExceptionRecprdManage;";
+        	  }
         	  if($("#stationAdd").is(":checked")){
         		  menuPower = menuPower+"stationAdd;";
         	  }
@@ -332,6 +336,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  }
         	  if($("#stationDeviceDelete").is(":checked")){
         		  menuPower = menuPower+"stationDeviceDelete;";
+        	  }
+        	  if($("#stationExceptionRecprdDelete").is(":checked")){
+        		  menuPower = menuPower+"stationExceptionRecprdDelete;";
         	  }
         	  if($("#stationDeviceUpdate").is(":checked")){
         		  menuPower = menuPower+"stationDeviceUpdate;";
@@ -561,6 +568,13 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 else{
 						 $("#stationDeviceManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
+					//附加基站异常记录管理
+					 if($scope.userForUpdate.stationExceptionRecprdManage=="1"){
+						 $("#stationExceptionRecprdManageChange").prop("checked",true).parent(".btn-white").addClass("active");
+					 }
+					 else{
+						 $("#stationExceptionRecprdManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
+					 }
 					 if($scope.userForUpdate.stationAdd=="1"){
 						 $("#stationAddChange").prop("checked",true).parent(".btn-white").addClass("active");
 					 }
@@ -578,6 +592,12 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 }
 					 else{
 						 $("#stationDeviceDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
+					 }
+					 if($scope.userForUpdate.stationExceptionRecprdDelete=="1"){
+						 $("#stationExceptionRecprdDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
+					 }
+					 else{
+						 $("#stationExceptionRecprdDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.stationDeviceUpdate=="1"){
 						 $("#stationDeviceUpdateChange").prop("checked",true).parent(".btn-white").addClass("active");
@@ -736,6 +756,10 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  if($("#stationDeviceManageChange").is(":checked")){
 	        		  menuPower = menuPower+"stationDeviceManage;";
 	        	  }
+	        	//附加基站异常记录管理
+	        	  if($("#stationExceptionRecprdManageChange").is(":checked")){
+	        		  menuPower = menuPower+"stationExceptionRecprdManage;";
+	        	  }
 	        	  if($("#stationAddChange").is(":checked")){
 	        		  menuPower = menuPower+"stationAdd;";
 	        	  }
@@ -745,6 +769,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  }
 	        	  if($("#stationDeviceDeleteChange").is(":checked")){
 	        		  menuPower = menuPower+"stationDeviceDelete;";
+	        	  }
+	        	  if($("#stationExceptionRecprdDeleteChange").is(":checked")){
+	        		  menuPower = menuPower+"stationExceptionRecprdDelete;";
 	        	  }
 	        	  if($("#stationDeviceUpdateChange").is(":checked")){
 	        		  menuPower = menuPower+"stationDeviceUpdate;";

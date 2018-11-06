@@ -364,5 +364,18 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		}
 	});
 
+	
+        $('#example-enableCollapsibleOptGroups-enableClickableOptGroups-enableFiltering-includeSelectAllOption').multiselect({
+            enableClickableOptGroups: true,
+            //optgroups将是可折叠
+            enableCollapsibleOptGroups: true,
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            selectAllText:"全部",
+            allSelectedText:"全部选中",
+            nSelectedText:"选中",
+            nonSelectedText:"请选择"
+        });
+   
 
 });

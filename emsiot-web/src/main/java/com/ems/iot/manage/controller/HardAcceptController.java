@@ -1,6 +1,7 @@
 package com.ems.iot.manage.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
 import com.ems.iot.manage.dao.LimitAreaMapper;
 import com.ems.iot.manage.dao.StationMapper;
+import com.ems.iot.manage.dao.StationStatusRecordMapper;
 import com.ems.iot.manage.entity.AreaAlarm;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
@@ -26,6 +28,7 @@ import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.LimitArea;
 import com.ems.iot.manage.entity.MessageEntity;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.entity.StationStatusRecord;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.util.ResponseData;
 import com.ems.iot.manage.util.CometUtil;
@@ -48,6 +51,8 @@ public class HardAcceptController extends BaseController {
 	private LimitAreaMapper limitAreaMapper;
 	@Autowired
 	private StationMapper stationMapper;
+	@Autowired
+	private StationStatusRecordMapper stationStatusRecordMapper;
 	@Autowired
 	private AreaAlarmMapper areaAlarmMapper;
 
@@ -165,8 +170,27 @@ public class HardAcceptController extends BaseController {
 			throws UnsupportedEncodingException {
 		
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
-
+		
+		
 		if(station.getStation_status() == 0 || station.getStation_status() == 1) {
+			StationStatusRecord record = stationStatusRecordMapper.selectByStationPhyNumLimitOne(stationPhyNum);
+			if(record == null ) {
+				StationStatusRecord stationRecord = new StationStatusRecord();
+				stationRecord.setStation_phy_num(stationPhyNum);
+				stationRecord.setStation_status(stationStatus);
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				stationRecord.setUpdate_time(sdf.format(new Date()));
+				stationStatusRecordMapper.insert(stationRecord);
+			}else {
+				if(record.getStation_status() != stationStatus) {
+					StationStatusRecord stationRecord = new StationStatusRecord();
+					stationRecord.setStation_phy_num(stationPhyNum);
+					stationRecord.setStation_status(stationStatus);
+					SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					stationRecord.setUpdate_time(sdf.format(new Date()));
+					stationStatusRecordMapper.insert(stationRecord);
+				}
+			}
 			Station sta = new Station();
 			sta.setStation_phy_num(stationPhyNum);
 			sta.setStation_status(stationStatus);

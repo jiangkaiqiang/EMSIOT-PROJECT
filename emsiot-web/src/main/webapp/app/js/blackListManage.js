@@ -28,7 +28,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
         $state.reload();
     }
     $('#electAlarmDate').datetimepicker({
-        format: 'yyyy-mm-dd  hh:ii:00',
+        format: 'yyyy-mm-dd  hh:ii:ss.s',
         autoclose:true,
         maxDate:new Date(),
         pickerPosition: "bottom-left"
@@ -336,6 +336,8 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
           	 alert(data.message);
           	 $scope.getBlackelectsByOptions();
                $("#addBlackelect").modal("hide"); 
+          }else{
+        	  alert(data.message);
           }
       });
         }

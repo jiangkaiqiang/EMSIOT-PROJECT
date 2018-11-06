@@ -134,6 +134,10 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("stationDeviceManage")) {
 	    	 sysUserDto.setStationDeviceManage("1");
 		 }
+	     //附加基站异常记录管理权限
+	     if (menuPowerList.contains("stationExceptionRecprdManage")) {
+	    	 sysUserDto.setStationExceptionRecprdManage("1");
+	     }
 	     if (menuPowerList.contains("stationAdd")) {
 	    	 sysUserDto.setStationAdd("1");
 		 }
@@ -143,6 +147,9 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("stationDeviceDelete")) {
 			sysUserDto.setStationDeviceDelete("1");
 		 }
+	     if (menuPowerList.contains("stationExceptionRecprdDelete")) {
+	    	 sysUserDto.setStationExceptionRecprdDelete("1");
+	     }
 	     if (menuPowerList.contains("stationDeviceUpdate")) {
 			sysUserDto.setStationDeviceUpdate("1");
 		 }

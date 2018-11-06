@@ -32,6 +32,8 @@ public class Blackelect {
     private String comfirm_sysuser_name;
     
     private String deal_sysuser_name;
+    
+    private String deal_sysuser_time;
 
     public String getDetail_address() {
 		return detail_address;
@@ -151,6 +153,14 @@ public class Blackelect {
 
 	public void setDeal_sysuser_name(String deal_sysuser_name) {
 		this.deal_sysuser_name = deal_sysuser_name;
+	}
+
+	public String getDeal_sysuser_time() {
+		return deal_sysuser_time;
+	}
+
+	public void setDeal_sysuser_time(String deal_sysuser_time) {
+		this.deal_sysuser_time = deal_sysuser_time;
 	}
     
 }

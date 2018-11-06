@@ -1,0 +1,119 @@
+<nav class="page-title shadow stationExceptionRecprdManage">
+    <div class="title-brand flex-between align-items">
+        <div class="title-text flex-items">
+            异常记录管理
+        </div>
+        <ul class="title-nav flex align-items">
+            <li>
+                <form class="navbar-form navbar-form-sm navbar-left" ui-shift="prependTo"
+                      data-target=".navbar-collapse" role="search">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input ng-attr-type type="text" ng-model="stationPhyNum"
+                                   typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                                   class="form-control input-sm bg-light no-border searchInput padder"
+                                   ng-attr-placeholder placeholder="基站编号查询">
+                                 <span class="input-group-btn">
+                                    <button ng-click="goSearch()" class="btn btn-sm bg-light searchInput"><i
+                                            class="fa fa-search margin-right"></i></button>
+                                </span>
+                        </div>
+                    </div>
+                </form>
+            </li>
+            <li ng-show="rootUserPowerDto.sysUser.opt_power==1">
+                <a href="">
+                     <b class="border-dashed-left"></b>
+
+                    <button ng-show="rootUserPowerDto.stationExceptionRecprdDelete==1" ng-click="goDeleteStations()" class="btn btn-guiji">
+                         <i class="glyphicon glyphicon-trash"></i>
+                        批量删除
+                    </button>
+                </a >
+            </li>
+        </ul>
+    </div>
+    <div class="search-container">
+        <form class="form-inline">
+            <div class="block-content">
+                <div class="form-group">
+                    <label for="importUser">基站状态&nbsp;&nbsp;&nbsp;</label>
+                    <select id="" class="form-control"
+                                            ng-model="stationStatus" ng-disabled="editable"
+                                            ng-options="x.id as x.name for x in AllStationStatus"></select>
+                </div>
+
+                <div class="form-group datePicker">
+                    <label>记录时间：</label>
+                    <!--指定 date标记-->
+                    <div class='input-group date' id='alarmDateStart'>
+                        <input ng-attr-type type='text' class="form-control" id="startTime"  ng-attr-placeholder placeholder="选择开始时间" readonly ng-style style="width:200px;"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    --
+                    <div class='input-group date' id='alarmDateEnd'>
+                        <input ng-attr-type type='text' class="form-control" id="endTime"  ng-attr-placeholder placeholder="选择结束时间" readonly ng-style style="width:200px;"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button ng-attr-type type="button" class="btn btn-primary" ng-click="goSearch()">搜索</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</nav>
+
+<!-- 表格操作区域开始 -->
+<div class="tableArea shadow countent no-padding">
+    <table class="table table-striped" id="tableArea" ng-model="AllStations">
+        <thead>
+        <tr>
+            <th>
+                <div>
+                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                    <label for="allSecSon"></label>
+                </div>
+            </th>
+            <th>基站名称</th>
+            <th>基站编号</th>
+            <th>基站地址</th>
+            <th>基站状态</th>
+            <th>记录时间</th>
+            <th ng-show="rootUserPowerDto.stationExceptionRecprdDelete==1 && rootUserPowerDto.sysUser.opt_power==1">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="stationRecord in AllStationRecord">
+                    <td>
+                        <input ng-attr-type type="checkbox" ng-checked="exists(stationRecord, selected)"
+                               ng-click="toggle(stationRecord, selected)"/>
+                    </td>
+                    <td>{{stationRecord.station_name}}</td>
+                    <td>{{stationRecord.station_phy_num}}</td>
+                    <td data-toggle="tooltip" data-placement="right" title="{{stationRecord.station_address}}">{{stationRecord.station_address}}</td>
+                    <td ng-bind="getStatus(stationRecord.station_status)"></td>
+                    <td data-toggle="tooltip" data-placement="right" title="{{stationRecord.update_time}}">{{stationRecord.update_time}}</td>
+                    <td ng-show="rootUserPowerDto.stationExceptionRecprdDelete==1 && rootUserPowerDto.sysUser.opt_power==1">
+                        <i class="glyphicon glyphicon-trash" ng-click="goDeleteStation(stationRecord.station_status_id)"></i>
+                    </td>
+         </tr>
+        </tbody>
+    </table>
+    <div class="page">
+        <!-- 翻页功能 -->
+        <div class="row" ng-style style="text-align:center">
+            <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                        ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                        boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+    </div>
+</div>
+<!-- 表格操作区域结束 -->
+

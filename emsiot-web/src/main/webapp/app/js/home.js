@@ -18,8 +18,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 "proID": $scope.user.pro_power
             }
         }).success(function (data) {
-            //$scope.cityName = data.name;
-            $scope.cityName = "芒市";
+            $scope.cityName = data.name;
+            //$scope.cityName = "芒市";
             //console.log($scope.cityName)
             map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -583,15 +583,22 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             //}
             /*-----------------重要内容，不要删除-------------------*/
 
-
+        
         });
+        $scope.showOperation = true;
+        $scope.showTable = true;
         $("#positionTable").addClass("rightToggle");
         $("#guijiModal").modal("hide");
         $("#positionTable .dismisPosition").removeClass("fa-angle-left").addClass("fa-angle-right");
         //用于基站跳动
         $scope.jizhanBounce=map.getOverlays();
     };
-
+    $scope.showOperation = false;
+    $scope.showTable = false;
+    
+    $scope.showDetail = function () {
+    	$scope.showTable = !($scope.showTable);
+    }
     $scope.clearElectTrace = function () {
         //walking.clearResults();
     	console.log(lushu);
@@ -599,6 +606,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     		lushu.stop();
     	}
         $("#guijiModal").modal("hide");
+        $scope.showOperation = false;
+        $scope.showTable = false;
         map.clearOverlays();
         relitu1();
         if ($scope.jizhanFlag == 0) {

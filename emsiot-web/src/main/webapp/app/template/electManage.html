@@ -1,7 +1,7 @@
 <nav class="page-title shadow electManage">
     <div class="title-brand flex-between align-items">
         <div class="title-text">车辆备案</div>
-        <ul class="title-nav flex align-items">
+        <ul class="title-nav flex align-items" ng-show="rootUserPowerDto.sysUser.opt_power==1">
             <li ng-show="rootUserPowerDto.electExport==1">
                 <a href="" class="flex-items">
                     <i class="iconfont icon-daochu"></i>
@@ -124,7 +124,7 @@
             <th>联系电话</th>
             <!-- <th>是否有效</th> -->
             <th>添加时间</th>
-            <th>操作</th>
+            <th ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -155,7 +155,7 @@
             <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
             
             <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.recorder_time}}">{{electDto.electrombile.recorder_time}}</td>
-            <td class="flex-items flex-center" ng-style style="overflow:visible;">
+            <td class="flex-items flex-center" ng-style style="overflow:visible;" ng-show="rootUserPowerDto.sysUser.opt_power==1">
                 <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
                 <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#updateCar"></i>
 

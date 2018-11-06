@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.StationStatusRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.StationStatusRecord">
+    <id column="station_status_id" jdbcType="INTEGER" property="station_status_id" />
+    <result column="station_phy_num" jdbcType="INTEGER" property="station_phy_num" />
+    <result column="station_status" jdbcType="INTEGER" property="station_status" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    station_status_id, station_phy_num, station_status, update_time
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from station_status_record
+    where station_status_id = #{station_status_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.StationStatusRecord">
+    insert into station_status_record (station_status_id, station_phy_num,  
+      station_status, update_time)
+    values (#{station_status_id,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER},
+      #{station_status,jdbcType=INTEGER}, #{update_time,jdbcType=TIMESTAMP})
+  </insert>
+  <select id="findStationsRecordByStationNumAndLimit" parameterType="map" resultType="com.ems.iot.manage.entity.StationStatusRecord">
+        SELECT * FROM `station_status_record`
+        <where>
+            station_phy_num = #{stationPhyNum}
+        </where>
+        order by `update_time` desc limit #{limit}
+    </select>
+    <select id="findAllStationsRecordByKey" parameterType="map" resultType="com.ems.iot.manage.entity.StationStatusRecord">
+		SELECT * FROM `station_status_record` left join station on station.station_phy_num = station_status_record.station_phy_num
+		<where>
+		    <if test="proPower != null">
+				station.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND station.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND station.area_id = #{areaPower}
+			</if>
+			<if test="stationStatus != null">
+				AND station_status_record.station_status = #{stationStatus}
+			</if>
+			<if test="stationPhyNum != null">
+				AND station_status_record.station_phy_num = #{stationPhyNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND update_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND update_time &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+
+    <select id="selectByStationPhyNumLimitOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from station_status_record
+    where station_phy_num = #{stationPhyNum,jdbcType=INTEGER} 
+    order by `update_time` desc limit 1
+  </select>
+    
+</mapper>

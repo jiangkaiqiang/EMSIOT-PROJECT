@@ -233,6 +233,9 @@ font-weight:bold;
 }
 
 #allmap label{max-width:none!important;}
+.home-title>ul>li i{
+	color:rgb(102, 179, 255)
+}
 
 
 

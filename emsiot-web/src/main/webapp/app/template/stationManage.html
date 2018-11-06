@@ -1,17 +1,20 @@
 <div class="station-content shadow">
     <nav class="page-title no-margin no-padding full-width">
         <div class="title-brand flex align-items no-border">
-            <select id="" class="form-control" ng-style style="width:25%;margin-left:20px;"
+            <!-- <select id="" class="form-control" ng-style style="width:25%;margin-left:20px;"
                     ng-model="stationStatusForShow" ng-disabled="editable" ng-change="stationStatusShow()"
                     ng-options="x.id as x.name for x in AllStationStatusForShow">
 
-            </select>
+            </select> -->
             <ul class="title-nav flex-around align-items margin-left">
+            <li> 基站编号搜索：</li>
                 <li>
                     <form class="navbar-form navbar-form-sm" ui-shift="prependTo" data-target=".navbar-collapse"
                           role="search">
                         <div class="form-group border-bottom">
+                         
                             <div class="input-group">
+                          
                                 <input ng-attr-type type="text" ng-model="stationPhyNum"
                                        typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                        class="form-control input-sm bg-light no-border searchInput no-padding"
@@ -26,7 +29,7 @@
                     </form>
                 </li>
                 <li class="border-dashed" ng-style style="height:15px;color:#2C7DFA;"></li>
-                <li ng-show="rootUserPowerDto.stationDelete==1">
+                <li ng-show="rootUserPowerDto.stationDelete==1 && rootUserPowerDto.sysUser.opt_power==1">
                     <a href="">
                         <button ng-click="goDeleteStations()" class="btn btn-guiji">
                             <i class="glyphicon glyphicon-trash"></i>
@@ -62,7 +65,7 @@
                     <td ng-style="{true: myClass, false: ''}[station.station_status==1]">{{station.station_phy_num}}</td>
                     <td ng-style="{true: myClass, false: ''}[station.station_status==1]">{{station.station_name}}</td>
                     <td ng-style="{true: myClass, false: ''}[station.station_status==1]">
-                        <i ng-show="rootUserPowerDto.stationDelete==1" class="glyphicon glyphicon-trash"
+                        <i ng-show="rootUserPowerDto.stationDelete==1 && rootUserPowerDto.sysUser.opt_power==1" class="glyphicon glyphicon-trash"
                            ng-click="goDeleteStation(station.station_id)"></i>
                         <i class="glyphicon glyphicon-map-marker" ng-click="goStationLocation(station.station_id)"
                            title="查看位置" ng-style style="color:#3C7ADA;"></i>

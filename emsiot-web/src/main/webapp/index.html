@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta http-equiv="x-ua-compatible" content="IE=edge">
+     <link rel="stylesheet" type="text/css"  href="bower_components/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css"/>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="assets/css/animate.css">
@@ -82,8 +83,8 @@
             <div class="nav navbar-nav hidden-xs">
                 <a href="#" class="no-shadow navbar-btn">
 
-                    <p ng-show="rootUserPowerDto.sysUser.area_power==-1" ng-style style="font-size:1.6rem">上海新思通电动车管理系统</p>
-                    <p ng-show="rootUserPowerDto.sysUser.area_power!=-1 && rootUserPowerDto.sysUser.company!=-1" ng-style style="font-size:1.6rem">{{rootUserPowerDto.sysUser.company}}</p>
+                   <!--  <p ng-show="rootUserPowerDto.sysUser.area_power==-1" ng-style style="font-size:1.6rem">上海新思通电动车管理系统</p> -->
+                    <p ng-style style="font-size:1.6rem">{{rootUserPowerDto.sysUser.company}}</p>
                 </a>
 
             </div>
@@ -99,7 +100,7 @@
                 <li>
                     <a href="#/alarmTrack">
                         <i class="iconfont icon-baojingxinxi" ng-style style="font-size:2rem"></i>
-                        <span>报警管理</span>
+                        <span>报警追踪</span>
                     </a>
                 </li>
 
@@ -166,7 +167,7 @@
                                 </li>
                                 <li ui-sref-active="active" ng-show="rootUserPowerDto.electManage==1 && rootUserPowerDto.blackManage==1">
                                     <a  href="#/blackListManage">
-                                        <span>黑名单管理</span>
+                                        <span>报警管理</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active" ng-show="rootUserPowerDto.electManage==1 && rootUserPowerDto.alarmTrack==1">
@@ -195,6 +196,11 @@
                                 <li ui-sref-active="active" ng-show="rootUserPowerDto.stationManageWhole==1 && rootUserPowerDto.stationDeviceManage==1">
                                     <a href="#/stationDeviceManage">
                                         <span>基站设备管理</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.stationManageWhole==1 && rootUserPowerDto.stationExceptionRecprdManage==1">
+                                    <a href="#/stationExceptionRecprdManage">
+                                        <span>异常记录管理</span>
                                     </a>
                                 </li>
                             </ul>
@@ -341,6 +347,7 @@
 <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
 <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 <script src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
+<script src="bower_components/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js"></script>
 <script src="bower_components/angucomplete/angucomplete.js"></script>
 <script src="bower_components/at-table/dist/angular-table.min.js"></script>
 <script src="bower_components/bootstrap/js/carousel.js"></script>
@@ -379,6 +386,7 @@
 <script src="app/js/blackListManage.js"></script>
 <script src="app/js/alarmTrack.js"></script>
 <script src="app/js/stationDeviceManage.js"></script>
+<script src="app/js/stationExceptionRecprdManage.js"></script>
 <script type="text/javascript">
     +function ($) {
         $(function () {

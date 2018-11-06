@@ -3,7 +3,7 @@
         <div class="title-text flex-items">
             报警追踪
         </div>
-        <ul class="title-nav flex align-items">
+        <ul class="title-nav flex align-items" ng-show="rootUserPowerDto.sysUser.opt_power==1">
             <li ng-show="rootUserPowerDto.alarmDelete==1">
                 <a href="">
                     <button class=" btn btn-guiji" ng-click="goDeleteElectAlarms()">
@@ -61,14 +61,14 @@
                 </div>
             </th>
             <th>序号</th>
-            <th>报警基站</th>
-            <th>报警芯片</th>
             <th>报警车牌号</th>
             <th>报警详细位置</th>
             <th>车主姓名</th>
             <th>车主手机号</th>
             <th>报警时间</th>
-            <th>操作</th>
+            <th>报警基站</th>
+            <th>报警芯片</th>
+            <th ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -78,14 +78,14 @@
                        ng-click="toggle(electAlarmDto, selected)"/></td>
             <!-- <td>{{user.sysUser.user_id}}</td> -->
             <td>{{electAlarmDto.electAlarm.elect_alarm_id}}</td>
-            <td>{{electAlarmDto.electAlarm.alarm_station_phy_num}}</td>
-            <td>{{electAlarmDto.electAlarm.alarm_gua_card_num}}</td>
             <td>{{electAlarmDto.ownerPlateNum}}</td>
             <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.statioAddress}}">{{electAlarmDto.statioAddress}}</td>
             <td>{{electAlarmDto.ownerName}}</td>
             <td>{{electAlarmDto.ownerTele}}</td>
             <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.electAlarm.alarm_time}}">{{electAlarmDto.electAlarm.alarm_time}}</td>
-            <td>
+            <td>{{electAlarmDto.electAlarm.alarm_station_phy_num}}</td>
+            <td>{{electAlarmDto.electAlarm.alarm_gua_card_num}}</td>
+            <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
                 <i ng-show="rootUserPowerDto.alarmDelete==1" class="glyphicon glyphicon-trash"  ng-click="goDeleteElectAlarm(electAlarmDto.electAlarm.elect_alarm_id)"></i>
             </td>
         </tr>

@@ -173,5 +173,9 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/stationDeviceManage',
         controller: 'stationDeviceManage',
         templateUrl: 'app/template/stationDeviceManage.html'
+    }).state('stationExceptionRecprdManage', {
+        url: '/stationExceptionRecprdManage',
+        controller: 'stationExceptionRecprdManage',
+        templateUrl: 'app/template/stationExceptionRecprdManage.html'
     });
 });

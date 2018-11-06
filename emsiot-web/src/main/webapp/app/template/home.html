@@ -28,7 +28,7 @@
 				<ul class="flex flex-items">
 					<li><i class="iconfont icon-baojingcheliang1"></i></li>
 					<li>
-						<p>{{electAlarms.length}}</p> <span> 报警数量</span>
+						<p style="color:red;" ng-style">{{electAlarms.length}}</p> <span> 报警数量</span>
 					</li>
 				</ul>
 		</a></li>
@@ -42,12 +42,12 @@
 			</div>
 			<div>显示基站</div>
 		</li>
-		<li class="flex-items">
+		<!-- <li class="flex-items">
 			<div class="swichWrap">
 				<div class="guijiCircle" id="jizhanjuhe"></div>
 			</div>
 			<div>基站聚合</div>
-		</li>
+		</li> -->
 		<li class="flex-items">
 			<div class="swichWrap">
 				<div class="guijiCircle" id="relitu"></div>
@@ -202,13 +202,7 @@
 <!--以下市可视化地图的内容-->
 <div id="allmap" ng-style style="width: 100%; height: 800px;"></div>
 <div id="result" ng-style style="width: 100%;"></div>
-<div class="btn-group" ng-style style="margin:5px 10px;">
-	<button id="run" class="btn btn-guiji">开始</button>
-	<!--<button id="stop">停止</button>-->
-	<button id="pause" class="btn btn-guiji">暂停</button>
-	<button id="hide" class="btn btn-guiji">隐藏信息窗口</button>
-	<button id="show" class="btn btn-guiji">展示信息窗口</button>
-</div>
+
 <div id="mapSearch">
 	<div id="r-result" class="form-group has-feedback">
 		<input ng-attr-type type="text" id="suggestId" size="20" ng-attr-value
@@ -220,15 +214,28 @@
 	<div id="searchResultPanel" ng-style
 		style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 </div>
-<div class="btn-grop ng-scope" style="top: 81px;right: 265px;">
-<button class="btn btn-guiji" ng-click="clearElectTrace()">
-    <i class="glyphicon glyphicon-trash"></i>
-    清除轨迹
-</button>
-</div>
 <!--车辆经过的基站-->
-<div id="positionTable" class="shadow" ng-style
-	style="position: absolute; top: 150px; right: -490px;">
+<div id="trackOperation" class="shadow" ng-show="showOperation"
+	style="position: absolute; top: 130px; right: 10px;">
+	<div class="btn-group" ng-style style="margin:5px 10px;">
+		<button id="run" class="btn btn-guiji">开始</button>
+		<!--<button id="stop">停止</button>-->
+		<button id="pause" class="btn btn-guiji">暂停</button>
+		<button id="hide" class="btn btn-guiji">隐藏信息窗口</button>
+		<button id="show" class="btn btn-guiji">展示信息窗口</button>
+		<button class="btn btn-guiji" ng-click="clearElectTrace()">
+		    <i class="glyphicon glyphicon-trash"></i>
+		    清除轨迹
+		</button>
+		<button id="detail" ng-click="showDetail()" class="btn btn-guiji">详细</button>
+	</div>
+	<!-- clearElectTrace()清除轨迹的方法 -->
+	<div class="dismis dismisPosition fa fa-fw" ng-click="clearElectTrace()">×</div>
+</div>
+<!-- <div id="positionTable" class="shadow" ng-style
+	style="position: absolute; top: 160px; right: -490px;"> -->
+<div id="positionTable" class="shadow" ng-style ng-show="showTable"
+	style="position: absolute; top: 170px; right: 10px;">
 	<ul class="flex-between">
 		<li class="flex-items"><i class="iconfont icon-cheliangguanli"
 			style="color: #2C7DFA; font-size: 25px;"></i>
@@ -255,5 +262,5 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="dismis dismisPosition fa fa-fw fa-angle-left"></div>
+	<!-- <div class="dismis dismisPosition fa fa-fw fa-angle-left"></div> -->
 </div>

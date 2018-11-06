@@ -28,14 +28,14 @@ coldWeb.controller('alarmTrack', function($rootScope, $scope, $state, $cookies, 
 	//选择日期
 
 	$('#alarmDateStart').datetimepicker({
-		format : 'yyyy-mm-dd - hh:ii:00',
+		format : 'yyyy-mm-dd - hh:ii:ss.s',
 		//minView: "month",
 		autoclose : true,
 		maxDate : new Date(),
 		pickerPosition : "bottom-left"
 	});
 	$("#alarmDateEnd").datetimepicker({
-		format : 'yyyy-mm-dd - hh:ii:00',
+		format : 'yyyy-mm-dd - hh:ii:ss.s',
 		//minView: 'month',
 		autoclose : true,
 		maxDate : new Date(),

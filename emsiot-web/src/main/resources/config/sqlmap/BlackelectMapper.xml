@@ -170,6 +170,9 @@
        <if test="deal_sysuser_name != null">
         deal_sysuser_name = #{deal_sysuser_name,jdbcType=INTEGER},
       </if>
+       <if test="deal_sysuser_time != null">
+        deal_sysuser_time = #{deal_sysuser_time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where black_id = #{black_id,jdbcType=INTEGER}
   </update>
