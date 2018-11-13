@@ -1,9 +1,11 @@
 package com.ems.iot.manage.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.entity.AreaAlarm;
 import com.ems.iot.manage.entity.LimitArea;
 import com.ems.iot.manage.entity.SensitiveArea;
 import com.github.pagehelper.Page;
@@ -32,4 +34,7 @@ public interface SensitiveAreaMapper {
      * @return
      */
     SensitiveArea findSensitiveAreaForFilter(@Param("sensitiveAreaName")String sensitiveAreaName);
+    
+    Page<AreaAlarm> findAllSensitiveAreaAlarmByOptions(@Param("plateNum")String plateNum, @Param("areaName")String areaName, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
+    		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }

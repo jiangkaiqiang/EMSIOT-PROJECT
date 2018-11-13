@@ -194,9 +194,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             	marker2 = new BMap.Marker(pt);
             }
 
-            //统计一分钟内经过改基站的车辆的数
+            //统计时间内经过改基站的车辆的数
             var time = new Date().getTime();//当前时间
-            var start = new Date(time - 60*1000*60);//一分钟
+            var start = new Date(time - 60*1000*60);//一小时
             var end = new Date(time);
             var num = tmpStation.station_phy_num;
             function FormatDate (strTime) {
@@ -336,7 +336,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }).success(function (data) {
             $scope.longitude = data.longitude;
             $scope.latitude = data.latitude;
-
+            
+            if($scope.longitude == undefined || $scope.longitude == null){
+            	return alert("未查到相应数据！");
+            }
+            
             stationIDforDelete = data.station_phy_num;
             $scope.elecPt = new BMap.Point($scope.longitude, $scope.latitude);
             $scope.elecIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
@@ -601,7 +605,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     }
     $scope.clearElectTrace = function () {
         //walking.clearResults();
-    	console.log(lushu);
+    	//console.log(lushu);
     	if(lushu!=null){
     		lushu.stop();
     	}

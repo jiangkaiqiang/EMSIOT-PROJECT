@@ -180,5 +180,41 @@
         SELECT  * FROM `sensitive_area`
    </select>
   
+    
+    
+    <select id="findAllSensitiveAreaAlarmByOptions" parameterType="map" resultType="com.ems.iot.manage.entity.AreaAlarm">
+        SELECT  area_alarm.*,electrombile.owner_name,electrombile.owner_tele,station.station_name FROM `area_alarm` LEFT join  `electrombile` on area_alarm.`enter_plate_num` =electrombile.`plate_num`
+			<!-- 关联基站表 -->
+			LEFT JOIN station ON area_alarm.alarm_station_phy_num = station.station_phy_num
+			<!-- 关联敏感区域表 -->
+			<!-- LEFT JOIN sensitive_area ON area_alarm.area_name = sensitive_area.sensitive_area_name -->
+        <where>
+        	<if test="plateNum != null and plateNum != ''">
+				<!-- area_alarm.enter_plate_num = #{plateNum} -->
+				area_alarm.enter_plate_num like "%"#{plateNum}"%"
+			</if>
+			
+			<if test="areaName != null and areaName != ''">
+				AND area_alarm.area_name like "%"#{areaName}"%"
+			</if>
+			<if test="alarmDateStart != null and alarmDateStart != ''">
+				AND area_alarm.enter_time  &gt;= #{alarmDateStart}
+			</if>
+			<if test="alarmDateEnd != null and alarmDateEnd != ''">
+				AND area_alarm.enter_time &lt;= #{alarmDateEnd}
+			</if>
+			<if test="proPower != null">
+			    AND electrombile.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.`area_id` = #{areaPower}
+			</if>
+			</where>
+			order by area_alarm.enter_time desc
+   </select>
+    
   
 </mapper>

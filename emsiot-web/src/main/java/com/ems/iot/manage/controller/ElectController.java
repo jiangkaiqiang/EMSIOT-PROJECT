@@ -708,6 +708,38 @@ public class ElectController extends BaseController {
 		List<Electrombile> electrombiles = electrombileMapper.findElectsList(proPower, cityPower, areaPower);
 		return electrombiles;
 	}
+	
+	
+	/**
+	 * 获取某状态的备案登记车辆
+	 * @param proPower
+	 * @param cityPower
+	 * @param areaPower
+	 * @param electState
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	 
+	 
+	@RequestMapping(value = "/findElectsListByElectState")
+	@ResponseBody
+	public Object findElectsListByElectState(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower,
+			@RequestParam(value = "electState", required = false) Integer electState)
+					throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<Electrombile> electrombiles = electrombileMapper.findElectsListByElectState(proPower, cityPower, areaPower, electState);
+		return electrombiles;
+	}
 
 	// @RequestMapping(value = "/findElectTracePages")
 	// @ResponseBody

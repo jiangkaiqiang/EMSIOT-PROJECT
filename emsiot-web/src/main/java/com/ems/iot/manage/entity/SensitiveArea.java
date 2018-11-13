@@ -29,6 +29,13 @@ public class SensitiveArea {
     
     private Integer area_id;
 
+    //基站名称
+    private String station_names;
+    
+    //电动车名称
+    private String black_list_elects_names;
+
+    
 
     public Integer getSensitive_area_id() {
         return sensitive_area_id;
@@ -135,6 +142,22 @@ public class SensitiveArea {
 	public void setArea_id(Integer area_id) {
 		this.area_id = area_id;
 	}
-    
-	
+
+	public String getStation_names() {
+		return station_names;
+	}
+
+	public void setStation_names(String station_names) {
+		this.station_names = station_names;
+	}
+
+	public String getBlack_list_elects_names() {
+		return black_list_elects_names;
+	}
+
+	public void setBlack_list_elects_names(String black_list_elects_names) {
+		this.black_list_elects_names = black_list_elects_names;
+	}
+
+
 }

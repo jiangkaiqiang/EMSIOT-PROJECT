@@ -25,7 +25,7 @@
             <li>
                 <a href="">
                     <b class="border-dashed-left"></b>
-                        <button class="btn btn-guiji">
+                        <button class="btn btn-guiji" ng-click="goDeleteAlarms()">
                             <i class="glyphicon glyphicon-trash"></i>
                             批量删除
                         </button>
@@ -38,27 +38,21 @@
             <div class="block-content">
                 <div class="form-group">
                     <label for="importUser">报警区域&nbsp;&nbsp;&nbsp;</label>
-                    <select class="form-control" id="importUser">
-                        <option value="" disabled selected style="display:none;">-请选择-</option>
-                        <option>区域1</option>
-                        <option>区域2</option>
-                        <option>区域3</option>
-                        <option>区域4</option>
-                    </select>
+                    <input type="text" placeholder placeholder="限制区域名" ng-model="sensitiveAreaName" class="form-control"/>
                 </div>
 
                 <div class="form-group datePicker">
                     <label>报警时间：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='alarmDateStart'>
-                        <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;"/>
+                        <input type='text' class="form-control" placeholder="选择开始时间" readonly style="width:200px;" ng-model="startTime"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                     --
                     <div class='input-group date' id='alarmDateEnd'>
-                        <input type='text' class="form-control" placeholder="选择结束时间" readonly style="width:200px;"/>
+                        <input type='text' class="form-control" placeholder="选择结束时间" readonly style="width:200px;" ng-model="endTime"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -66,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary">搜索</button>
+                    <button type="button" ng-click="sensitiveAlarmElects()" class="btn btn-primary">搜索</button>
                 </div>
 
             </div>
@@ -87,35 +81,36 @@
             </th>
             <th>序号</th>
             <th>报警区域</th>
-            <th>报警车辆编号</th>
+            <th>报警车牌号</th>
             <th>报警时间</th>
-            <th>车辆颜色</th>
-            <th>状态</th>
-            <th>所在区域</th>
+            <!-- <th>区域开启时间</th>
+            <th>区域结束时间</th> -->
+            <th>基站名</th>
+            <th>车主</th>
             <th>车主手机号</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in Allusers">
+        <tr ng-repeat="sensitive in AllSensitiveAlarmElects">
             <td>
-                <input type="checkbox" ng-checked="exists(user, selected)"
-                       ng-click="toggle(user, selected)"/>
+                <input type="checkbox" ng-checked="exists(sensitive, selected)"
+                       ng-click="toggle(sensitive, selected)"/>
             </td>
             <!-- <td>{{user.sysUser.user_id}}</td> -->
             <td>{{$index+1}}</td>
-            <td>{{user.sysUser.user_name}}</td>
-            <td>{{user.sysUser.user_tel}}</td>
-            <td>{{user.sysUser.company}}</td>
-            <td>{{user.projectName}}</td>
-            <td>{{user.compFactoryName}}</td>
-            <td>{{user.userRoleName}}</td>
-            <td ng-bind="getAudit(user.sysUser.valid_status)"></td>
+            <td>{{sensitive.area_name}}</td>
+            <td>{{sensitive.enter_plate_num}}</td>
+            <td>{{sensitive.enter_time}}</td>
+            <td>{{sensitive.station_name}}</td>
+            <td>{{sensitive.owner_name}}</td>
+            <td>{{sensitive.owner_tele}}</td>
+            <!-- <td ng-bind="getAudit(user.sysUser.valid_status)"></td> -->
             <td>
-                <button class="delete" ng-click="goDeleteUser(user.sysUser.user_id)"></button>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
+                <i class="glyphicon glyphicon-trash" ng-click="goDeleteAlarm(sensitive.alarm_id)"></i>
+                <!-- <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
                         ng-click="goUpdateUser(user.sysUser.user_id)">编辑
-                </button>
+                </button> -->
             </td>
         </tr>
         </tbody>

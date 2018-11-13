@@ -1,6 +1,7 @@
 package com.ems.iot.manage.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +23,8 @@ public interface AreaAlarmMapper {
     
     Page<AreaAlarm> findAllAreaAlarmByOptions(@Param("plateNum")String plateNum, @Param("areaName")String areaName, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
     		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
+    List<AreaAlarm> findAreaAlarmByStationNumAndTime(@Param("alarmStationPhyNum")String alarmStationPhyNum, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
+    		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
 }

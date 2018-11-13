@@ -14,6 +14,16 @@ public class AreaAlarm {
     private String enter_time;
 
     private Integer process_state;
+    
+    private Integer alarm_station_phy_num;
+    
+    
+    //基站名称
+    private String station_name;
+    //车主
+    private String owner_name;
+    //车主手机号
+    private String owner_tele;
 
     public Integer getAlarm_id() {
         return alarm_id;
@@ -62,4 +72,39 @@ public class AreaAlarm {
     public void setProcess_state(Integer process_state) {
         this.process_state = process_state;
     }
+
+	public Integer getAlarm_station_phy_num() {
+		return alarm_station_phy_num;
+	}
+
+	public void setAlarm_station_phy_num(Integer alarm_station_phy_num) {
+		this.alarm_station_phy_num = alarm_station_phy_num;
+	}
+
+	
+
+	public String getStation_name() {
+		return station_name;
+	}
+
+	public void setStation_name(String station_name) {
+		this.station_name = station_name;
+	}
+
+	public String getOwner_name() {
+		return owner_name;
+	}
+
+	public void setOwner_name(String owner_name) {
+		this.owner_name = owner_name;
+	}
+
+	public String getOwner_tele() {
+		return owner_tele;
+	}
+
+	public void setOwner_tele(String owner_tele) {
+		this.owner_tele = owner_tele;
+	}
+    
 }

@@ -713,4 +713,23 @@
 		</where>
 		order by `recorder_time` desc
 	</select>
+	
+	<select id="findElectsListByElectState" parameterType="map" resultType="Electrombile">
+		SELECT * FROM `electrombile`
+		<where>
+			<if test="proPower != null">
+			    pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+			<if test="electState != null">
+				AND elect_state = #{electState}
+			</if>
+		</where>
+	</select>
+	
 </mapper>

@@ -95,4 +95,15 @@ public interface ElectrombileMapper {
      * @return
      */
     Electrombile findElectForFilter(@Param("guaCardNum") Integer guaCardNum, @Param("plateNum") String plateNum);
+
+    /**
+     * 查询某状态的车辆，用于多选分类下拉框。（特殊需要限制车辆的选择列表）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param electState
+     * @return
+     */
+    List<Electrombile> findElectsListByElectState(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower,@Param("electState") Integer electState);
+    
 }

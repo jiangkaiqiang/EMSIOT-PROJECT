@@ -1,4 +1,4 @@
-coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
 	 var sensitiveAreaMap = new BMap.Map("sensitiveAreaMap",{
 	   	  minZoom:5,
 	   	  maxZoom:30
@@ -18,8 +18,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 					"proID": $scope.user.pro_power
 				}
 			}).success(function (data) {
-//				$scope.cityName = data.name;
-				$scope.cityName = "芒市";
+				$scope.cityName = data.name;
+				//$scope.cityName = "芒市";
 				sensitiveAreaMap.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
 				sensitiveAreaMap.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 				// 获取基站
@@ -37,6 +37,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			});
 
 			$scope.getSensitiveAreaByOptions();
+			$scope.electNormalVehicle();
+	        $scope.selectedMultiselect();
 		});
 	};
 	$scope.load();
@@ -52,7 +54,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 	$scope.getSensitiveAreaByOptions = function() {
 		$http({
 			method : 'POST',
-			url : '/i/SensitiveArea/findSensitiveByOptions',
+			url : '/i/sensitiveArea/findSensitiveByOptions',
 			params : {
 				pageNum : $scope.bigCurrentPage,
 				pageSize : $scope.maxSize,
@@ -109,7 +111,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 	}
 	$scope.goDeleteSensitiveAreas=function(userID){
 		if(delcfm()){
-			$http.get('/i/SensitiveArea/deleteSensitiveAreaByID', {
+			$http.get('/i/sensitiveArea/deleteSensitiveAreaByID', {
 				params: {
 					"sensitiveAreaID": userID
 				}
@@ -129,7 +131,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			if(limitAreaIDs.length >0 ){
 				$http({
 					method:'DELETE',
-					url:'/i/SensitiveArea/deleteSensitiveAreaByIDs',
+					url:'/i/sensitiveArea/deleteSensitiveAreaByIDs',
 					params:{
 						"sensitiveAreaIDs": limitAreaIDs
 					}
@@ -146,7 +148,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			 var sHtml="<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
 		     var sHtml2 = "</h4></li><li>";
 		     var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
-			 var sHtml4= "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'> <table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
+			 var sHtml4= "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'> <table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th style='width:25%!important'>限制区域</th><th style='width:25%!important'>车辆编号</th><th style='width:50%!important'>经过时间</th></tr></thead><tbody>";
 			 var endHtml = "</tbody></table></div></div>";
 			 var pt;
 			 var marker2;
@@ -157,17 +159,44 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			for (var i = 0; i < $scope.stations.length; i++) {
 				tmpStation=$scope.stations[i];
 				pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
-				marker2 = new BMap.Marker(pt);
+				
+				//基站异常图标
+	            if(tmpStation.station_status==1){
+	            	var myIcon = new BMap.Icon("/app/img/marker_gray.png", new BMap.Size(19,25));
+	            	marker2 = new BMap.Marker(pt,{icon:myIcon});
+	            }else{
+	            	
+	            	marker2 = new BMap.Marker(pt);
+	            }
+	            
+	            //统计时间内经过改基站的车辆的数
+	            var time = new Date().getTime();//当前时间
+	            var start = new Date(time - 60*1000*60);//一小时
+	            var end = new Date(time);
+	           // var num = tmpStation.station_phy_num;
+	            function FormatDate (strTime) {
+	                var date = new Date(strTime);
+	                //2018-10-15 修改
+	                var year = date.getFullYear();
+	                var month = (date.getMonth()+1) < 10?"0"+(date.getMonth()+1):(date.getMonth()+1);
+	                var day = date.getDate() < 10?"0"+date.getDate():date.getDate();
+	                var hours = date.getHours() < 10?"0"+date.getHours():date.getHours();
+	                var min = date.getMinutes() < 10?"0"+date.getMinutes():date.getMinutes();
+	                var seconds = date.getSeconds() < 10?"0"+date.getSeconds():date.getSeconds();
+	                return year + "-" + month + "-" + day + " " + hours + ":" + min + ":" +seconds
+	                //return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+ date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+	            }
+				//marker2 = new BMap.Marker(pt);
 				marker2.setTitle(tmpStation.station_phy_num+'\t'+tmpStation.station_address);
 				//console.log($scope.stations.length);
 
 				marker2.addEventListener("click", function(e) {
 					var title_add = new Array();
 					title_add = this.getTitle().split('\t');
-					showElectsInStation(null,null,title_add[0]);  //根据物理编号查找
+					showElectsInStation(FormatDate(start), FormatDate(end),title_add[0]);  //根据物理编号查找
 					var electInfo='';
 					for(var k=0; k<$scope.electsInStation.length;k++){
-						electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(k+1)+"</td>"+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+$scope.electsInStation[k].plate_num+"</td>"+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+$scope.electsInStation[k].corssTime+"</td></tr>";
+						electInfo += "<tr><td title='"+$scope.electsInStation[k].area_name+"'>"+$scope.electsInStation[k].area_name+"</td>"+"<td title='"+$scope.electsInStation[k].enter_plate_num+"'>"+$scope.electsInStation[k].enter_plate_num+"</td>"+"<td title='"+$scope.electsInStation[k].enter_time+"'>"+$scope.electsInStation[k].enter_time+"</td></tr>";
 					}
 					
 					var infoWindow = new BMap.InfoWindow(sHtml+title_add[0]+sHtml2+$scope.electsInStation.length+sHtml3+title_add[1]+sHtml4+electInfo+endHtml);
@@ -185,12 +214,12 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 	     function showElectsInStation(startTime,endTime,stationPhyNum){
 			 $.ajax({
 				 method : "GET",
-				 url : "/i/elect/findElectsByStationIdAndTime",
+				 url : "/i/limitareaalarm/findLimitAreaAlarmByStationNumAndTime",
 				 async : false,
 				 data : {
-					 "startTime" : startTime,
-					 "endTime" : endTime,
-					 "stationPhyNum" : stationPhyNum
+					 "alarmDateStart" : startTime,
+					 "alarmDateEnd" : endTime,
+					 "alarmStationPhyNum" : stationPhyNum
 				 }
 			 }).success(function(data){
 				 //$scope.electsInStation = data.slice(2,8);
@@ -277,6 +306,20 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		maxDate: new Date(),
 		pickerPosition: "bottom-left"
 	});
+	$('#viewStartTime').datetimepicker({
+		format: 'yyyy-mm-dd',
+		minView: "month",
+		autoclose: true,
+		maxDate: new Date(),
+		pickerPosition: "bottom-left"
+	});
+	$('#viewEndTime').datetimepicker({
+		format: 'yyyy-mm-dd',
+		minView: "month",
+		autoclose: true,
+		maxDate: new Date(),
+		pickerPosition: "bottom-left"
+	});
 
 	$scope.electDefault = "0";
 	$scope.electsList =[
@@ -319,17 +362,30 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 			return $scope.status=0
 		}
 	}
+	function updateSentivesStatus(){
+		console.log($("#updateStatus"))
+		console.log($("#sentivesStatus"))
+		var inputStatus=$("#updateStatus").get(0).checked;
+		//console.log(inputStatus)
+		if(inputStatus){
+			return $scope.updateSensitiveArea.status=1
+		}else{
+			return $scope.updateSensitiveArea.status=0
+		}
+	}
 	$scope.enterNum = 1;
 	$scope.addSensitiveArea = function(){
+		$scope.addBlackelectPlatenum = $scope.selectLimitVehicle("addBlackelectPlatenum");
 		if(checkInputInfo()) {
 			$http({
 				method: 'POST',
-				url: '/i/SensitiveArea/addSensitiveArea',
+				url: '/i/sensitiveArea/addSensitiveArea',
 				params: {
 					addSensitiveAreaName: $scope.addSensitiveAreaName,
 					addStationNames: $scope.addStationNames,
 					addBlackelectPlatenum: $scope.addBlackelectPlatenum,
 					addElectPlatenum: $scope.addElectPlatenum,
+					enterNum: $scope.enterNum,
 					enterNum: $scope.enterNum,
 					status:aaa(),
 					sensStartTime: $scope.sensStartTime,
@@ -353,6 +409,91 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		};
 	}
 
+	
+	//------------修改-------------------
+	 $scope.goUpdateSensitiveArea = function(electID) {
+		 $http({
+				method: 'POST',
+				url: '/i/sensitiveArea/findSensitiveAreaByID',
+				params: {
+					sensitiveAreaID: electID,
+				}
+			}).success(function (data) {
+				$scope.updateSensitiveArea = data;
+		    	   
+		    	   var valObj = "";
+					if($scope.updateSensitiveArea.black_list_elects != null){
+						valObj = $scope.updateSensitiveArea.black_list_elects.split(";")
+					}
+					if($scope.updateSensitiveArea.status==0){
+						$(":checkbox[id='updateStatus']").prop("checked", "");
+		   		    }else if($scope.updateSensitiveArea.status==1){
+		   		    	$(":checkbox[id='updateStatus']").prop("checked", "checked");
+		   		    }
+						$('#updateBlackelectPlatenum').multiselect( "select" , valObj)
+			    	   
+			  })
+		 
+	 };
+	 $scope.update = function() {
+			$scope.updateBlackelectPlatenum = $scope.selectLimitVehicle("updateBlackelectPlatenum");
+			if(checkInputForUpdate()) {
+				Upload.upload({
+					method: 'POST',
+					url: '/i/sensitiveArea/updateSensitiveArea',
+					params: {
+						sensitive_area_id : $scope.updateSensitiveArea.sensitive_area_id,
+						updateSensitiveAreaName: $scope.updateSensitiveArea.sensitive_area_name,
+						updateStationNames: $scope.updateSensitiveArea.station_names,
+						updateBlackelectPlatenum: $scope.updateBlackelectPlatenum,
+						updateElectPlatenum: $scope.updateSensitiveArea.list_elects,
+						enterNum: $scope.updateSensitiveArea.enter_num,
+						status:updateSentivesStatus(),
+						sensStartTime: $scope.updateSensitiveArea.sens_start_time,
+						sensEndTime: $scope.updateSensitiveArea.sens_end_time,
+						proPower: $scope.user.pro_power,
+						cityPower: $scope.user.city_power,
+						areaPower: $scope.user.area_power
+					}
+				}).success(function (data) {
+					if (data.success) {
+						//console.log(data);
+						alert(data.message);
+						$scope.getSensitiveAreaByOptions();
+						$("#updateSensitiveArea").modal("hide");
+						$scope.clearAll();
+					}
+					else {
+						alert(data.message);
+					}
+				})
+			};
+	 };
+	 
+	//修改验证
+	function checkInputForUpdate(){
+		var flag = true;
+		// 检查必须填写项
+		if ($scope.updateSensitiveArea.sensitive_area_name == undefined || $scope.updateSensitiveArea.sensitive_area_name == '') {
+			flag = false;
+			alert("敏感区域名不可为空！")
+		}
+		if ($scope.updateSensitiveArea.station_names == undefined || $scope.updateSensitiveArea.station_names == '') {
+			flag = false;
+			alert("基站名不可为空！")
+		}
+		if ($scope.updateSensitiveArea.enter_num == undefined || $scope.updateSensitiveArea.enter_num == '') {
+			flag = false;
+			alert("出现次数不可为空！")
+		}else if($scope.updateSensitiveArea.enter_num<=0){
+			flag = false;
+			alert("出现次数必须大于0！")
+		}
+		return flag;
+	}
+	
+	
+	
 	//----------------表格收缩功能-----------------
 
 	$(".closeStationPosition").click(function(){
@@ -364,18 +505,114 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		}
 	});
 
-	
-        $('#example-enableCollapsibleOptGroups-enableClickableOptGroups-enableFiltering-includeSelectAllOption').multiselect({
-            enableClickableOptGroups: true,
-            //optgroups将是可折叠
-            enableCollapsibleOptGroups: true,
-            enableFiltering: true,
-            includeSelectAllOption: true,
-            selectAllText:"全部",
-            allSelectedText:"全部选中",
-            nSelectedText:"选中",
-            nonSelectedText:"请选择"
+	//获取选择的车辆ID用 逗号","分割
+	$scope.selectLimitVehicle = function(elementId){
+		var selected = [];
+        $('#'+elementId+' option:selected').each(function() {
+        	console.log()
+            selected.push([$(this).val(), $(this).text()]);
         });
-   
+        selected.sort(function(a, b) {
+            return a[1] - b[1];
+        });
 
+        var text = '';
+        for (var i = 0; i < selected.length; i++) {
+            text += selected[i][0] + ';';
+        }
+        text = text.substring(0, text.length - 1);
+        return text;
+	}
+	
+	//多选下拉框插件
+	$scope.selectedMultiselect = function(){
+        $('.addBlackelectPlatenum').multiselect({
+            enableClickableOptGroups : true,
+            //optgroups将是可折叠
+            enableCollapsibleOptGroups : true,
+            enableFiltering : true,
+            includeSelectAllOption : true,
+            selectAllJustVisible : false,
+            selectAllText : "全部",
+            allSelectedText : "全部选中",
+            nSelectedText : "选中",
+            nonSelectedText : "请选择",
+            maxHeight : 400 ,
+            
+        });
+	}
+   
+        //多选下来分类：查询正常的车辆（正常：1，报警：2）
+        $scope.electNormalVehicle = function(){
+    		
+        	 $.ajax({
+    				method: 'POST',
+    				url: '/i/elect/findElectsListByElectState',
+    				async:false,
+    				data: {
+    					electState: 1,
+    					proPower: $scope.user.pro_power,
+    					cityPower: $scope.user.city_power,
+    					areaPower: $scope.user.area_power
+    				}
+    			}).success(function (data) {
+    				$scope.normalVehicle = data
+    				var normalStr = "";
+    				for (var i = 0; i < data.length; i++) {
+    					normalStr+='<option value="'+data[i].elect_id+'">'+data[i].plate_num+'</option>'
+					}
+    				$(".addBlackelectPlatenum").find("#normal").html(normalStr);
+    			})
+    			
+    			$.ajax({
+    				method: 'POST',
+    				url: '/i/elect/findElectsListByElectState',
+    				async:false,
+    				data: {
+    						electState: 2,
+    						proPower: $scope.user.pro_power,
+    						cityPower: $scope.user.city_power,
+    						areaPower: $scope.user.area_power
+    					}
+    				}).success(function (data) {
+    					$scope.alarmVehicle = data;
+    					var alarmStr="";
+        				for (var i = 0; i < data.length; i++) {
+        					alarmStr+='<option value="'+data[i].elect_id+'">'+data[i].plate_num+'</option>'
+    					}
+        				$(".addBlackelectPlatenum").find("#alarm").html(alarmStr);
+    					
+    				})
+    		
+    			//$scope.selectedMultiselect();	
+    	}
+        
+        
+        
+        //显示详情
+        $scope.showSensitiveArea = function (sensitiveAreaID){
+        	$http({
+				method: 'POST',
+				url: '/i/sensitiveArea/findSensitiveAreaByID',
+				params: {
+					sensitiveAreaID: sensitiveAreaID,
+				}
+			}).success(function (data) {
+				$scope.sensitiveArea = data
+				var valObj = "";
+				if(data.black_list_elects != null){
+					valObj = data.black_list_elects.split(";")
+				}
+				if($scope.sensitiveArea.status==0){
+    		        $(":checkbox[id='viewStatus']").prop("checked", "");
+    		    }else if($scope.sensitiveArea.status==1){
+    		    	$(":checkbox[id='viewStatus']").prop("checked", "checked");
+    		    }
+				$('#viewBlackelectPlatenum').multiselect( "select" , valObj)
+			})
+
+        }
+       
+        
+        
 });

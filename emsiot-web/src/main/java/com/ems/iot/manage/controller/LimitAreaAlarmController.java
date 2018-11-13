@@ -114,4 +114,48 @@ public class LimitAreaAlarmController extends BaseController {
 		}
 		return new ResultDto(0,"删除成功");
 	}
+	
+	
+	
+	
+	/**
+	 * 根据条件查询限制区域报警信息
+	 * 
+	 * @returnx
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/findLimitAreaAlarmByStationNumAndTime")
+	@ResponseBody
+	public Object findLimitAreaAlarmByStationNumAndTime(@RequestParam(value="alarmStationPhyNum",required=false) String alarmStationPhyNum,
+			@RequestParam(value="alarmDateStart",required=false) String alarmDateStartStr,
+			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower
+			) throws UnsupportedEncodingException, ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date alarmDateStart=null;
+		Date alarmDateEnd=null;
+		if(alarmDateStartStr!="" && alarmDateStartStr!=null){
+			alarmDateStart=sdf.parse(alarmDateStartStr);
+		}
+		if(alarmDateEndStr!="" && alarmDateEndStr!=null){
+			alarmDateEnd=sdf.parse(alarmDateEndStr);
+		}
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<AreaAlarm> areaAlarms = areaAlarmMapper.findAreaAlarmByStationNumAndTime(alarmStationPhyNum, alarmDateStart, alarmDateEnd, proPower, cityPower, areaPower);
+		return areaAlarms;
+	}
+	
+	
+	
 }
