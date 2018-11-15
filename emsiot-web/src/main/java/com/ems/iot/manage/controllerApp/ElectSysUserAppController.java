@@ -298,7 +298,11 @@ public class ElectSysUserAppController extends AppBaseController {
 		electrombile.setOwner_address(owner_address);
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
-		electrombile.setElect_state(elect_state);
+		if(elect_state==null) {
+			electrombile.setElect_state(1);
+		}else {
+			electrombile.setElect_state(elect_state);
+		}
 		electrombile.setElect_pic(elect_pic);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		electrombile.setIndentity_card_pic(indentity_card_pic);
 		electrombile.setRecord_pic(record_pic);

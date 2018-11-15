@@ -10,19 +10,19 @@
                       data-target=".navbar-collapse" role="search">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" ng-model="selected"
+                            <input type="text" ng-model="plateNum"
                                    typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                    class="form-control input-sm bg-light no-border searchInput padder"
-                                   placeholder="账户查询">
+                                   placeholder="车牌号查询">
                                  <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm bg-light searchInput"><i
-                                            class="fa fa-search margin-right"></i></button>
+                                            class="fa fa-search margin-right" ng-click="goSearch()"></i></button>
                                 </span>
                         </div>
                     </div>
                 </form>
             </li>
-            <li>
+            <li ng-show="rootUserPowerDto.sensitiveAlarmDelete==1 && rootUserPowerDto.sysUser.opt_power==1">
                 <a href="">
                     <b class="border-dashed-left"></b>
                         <button class="btn btn-guiji" ng-click="goDeleteAlarms()">
@@ -88,7 +88,7 @@
             <th>基站名</th>
             <th>车主</th>
             <th>车主手机号</th>
-            <th>操作</th>
+            <th ng-show="rootUserPowerDto.sensitiveAlarmDelete==1 && rootUserPowerDto.sysUser.opt_power==1">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -106,7 +106,7 @@
             <td>{{sensitive.owner_name}}</td>
             <td>{{sensitive.owner_tele}}</td>
             <!-- <td ng-bind="getAudit(user.sysUser.valid_status)"></td> -->
-            <td>
+            <td ng-show="rootUserPowerDto.sensitiveAlarmDelete==1 && rootUserPowerDto.sysUser.opt_power==1">
                 <i class="glyphicon glyphicon-trash" ng-click="goDeleteAlarm(sensitive.alarm_id)"></i>
                 <!-- <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateUser"
                         ng-click="goUpdateUser(user.sysUser.user_id)">编辑

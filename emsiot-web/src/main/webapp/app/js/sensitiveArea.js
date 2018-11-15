@@ -207,14 +207,15 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 				});
    	 			map.addOverlay(marker2); 
 
-	    	  }		     
+	    	  }
+			$scope.jizhanBounce=map.getOverlays();
 		 }
 		 
 		 //根据时间和基站id获取基站下面的当前所有车辆
 	     function showElectsInStation(startTime,endTime,stationPhyNum){
 			 $.ajax({
 				 method : "GET",
-				 url : "/i/limitareaalarm/findLimitAreaAlarmByStationNumAndTime",
+				 url : "/i/sensitiveArea/findSensitiveAreaAlarmByStationNumAndTime",
 				 async : false,
 				 data : {
 					 "alarmDateStart" : startTime,
@@ -241,6 +242,12 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 				//	drawingManager.addEventListener('overlaycomplete', overlaycomplete);
 				//};
 		            e.overlay.addEventListener("click", function(){
+		            	
+			            if($rootScope.rootUserPowerDto.sensitiveAreaAdd != "1" ||  $rootScope.rootUserPowerDto.sysUser.opt_power != "1"){
+			            	alert("没有添加区域权限！");
+			    			return;
+		            	}
+		            	
 						$http({
 							method : 'POST',
 							url : '/i/specialArea/findStations',
@@ -287,6 +294,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 				for(var i = 0; i < overlaysDraw.length; i++){
 					sensitiveAreaMap.removeOverlay(overlaysDraw[i]);
 		        }
+				cancelTiao()
 				overlaysDraw.length = 0   
 		    }
 
@@ -363,8 +371,6 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 		}
 	}
 	function updateSentivesStatus(){
-		console.log($("#updateStatus"))
-		console.log($("#sentivesStatus"))
 		var inputStatus=$("#updateStatus").get(0).checked;
 		//console.log(inputStatus)
 		if(inputStatus){
@@ -509,7 +515,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 	$scope.selectLimitVehicle = function(elementId){
 		var selected = [];
         $('#'+elementId+' option:selected').each(function() {
-        	console.log()
+        	
             selected.push([$(this).val(), $(this).text()]);
         });
         selected.sort(function(a, b) {
@@ -614,5 +620,67 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
         }
        
         
+        $scope.goStationLocation = function(stationIDs) {
+        	
+        	
+	    	$http.get('/i/station/findStationByIDs', {
+	    		params : {
+	    			"stationIDs" : stationIDs
+	    		}
+	    	}).success(function(data) {
+	    		$scope.locationStation = data;
+	    		// 这里我得到了基站的信息包括经纬度等，需要将其显示在地图
+	    		$scope.doBounce()
+	    	});
+        	
+    	}
+        
+        
+      //用于基站跳动的参数
+        $scope.jizhanBounce=null;
+        $scope.tiao=[];
+        
+      //表格选中行，对应标注体现出来
+        $scope.doBounce = function(){
+        	
+        	for (var i = 0; i < $scope.tiao.length; i++) {
+        		$scope.tiao[i].setAnimation(null);
+			}    
+            var allOverlay = $scope.jizhanBounce;
+            var Oe=null
+            var index=0;
+            $scope.tiao=[];
+            for (var k = 0; k < $scope.locationStation.length; k++) {
+	            for (var i = 0; i < allOverlay.length; i++) {
+	            	 Oe = allOverlay[i].point
+	            	 if(Oe==null){
+	            		 continue;
+	            	 }
+	    	        if(Oe.lng==$scope.locationStation[k].longitude && Oe.lat==$scope.locationStation[k].latitude){
+		    	         $scope.tiao[index] = allOverlay[i];//保存上一次跳动的基站
+		    	         index++
+		    	         allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+		    	         //return;
+	    	        }
+	             }
+             }
+        };
+        
+      function cancelTiao(){
+    	  //取消跳动
+    	  for (var i = 0; i < $scope.tiao.length; i++) {
+    		  $scope.tiao[i].setAnimation(null);
+    	  } 
+    	  $scope.tiao=[];
+      }
         
 });
+Array.prototype.contains = function (obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}

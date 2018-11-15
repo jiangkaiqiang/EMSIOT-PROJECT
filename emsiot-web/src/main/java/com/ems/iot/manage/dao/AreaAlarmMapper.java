@@ -27,4 +27,7 @@ public interface AreaAlarmMapper {
     List<AreaAlarm> findAreaAlarmByStationNumAndTime(@Param("alarmStationPhyNum")String alarmStationPhyNum, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
     		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
+    Integer findAreaAlarmCountByStationNumAndTime(@Param("alarmStationPhyNum")String alarmStationPhyNum, @Param("areaName")String areaName, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
+    		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
 }

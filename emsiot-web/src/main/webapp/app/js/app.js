@@ -177,5 +177,9 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/stationExceptionRecprdManage',
         controller: 'stationExceptionRecprdManage',
         templateUrl: 'app/template/stationExceptionRecprdManage.html'
+    }).state('alarmTrackMap', {
+        url: '/alarmTrackMap',
+        controller: 'alarmTrackMap',
+        templateUrl: 'app/template/alarmTrackMap.html'
     });
 });

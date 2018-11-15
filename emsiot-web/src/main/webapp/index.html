@@ -175,6 +175,11 @@
                                         <span>报警追踪</span>
                                     </a>
                                 </li>
+                                <li ui-sref-active="active" ng-show="rootUserPowerDto.electManage==1 && rootUserPowerDto.alarmTrack==1">
+                                    <a href="#/alarmTrackMap">
+                                        <span>报警追踪(地图版)</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         
@@ -387,6 +392,7 @@
 <script src="app/js/alarmTrack.js"></script>
 <script src="app/js/stationDeviceManage.js"></script>
 <script src="app/js/stationExceptionRecprdManage.js"></script>
+<script src="app/js/alarmTrackMap.js"></script>
 <script type="text/javascript">
     +function ($) {
         $(function () {

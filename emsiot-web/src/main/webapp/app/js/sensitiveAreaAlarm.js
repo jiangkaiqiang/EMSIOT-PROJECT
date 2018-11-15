@@ -5,7 +5,7 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
-			 console.log(data);
+			
 				if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
@@ -41,6 +41,7 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 			"pageNum" : $scope.bigCurrentPage,
 			"pageSize" :$scope.maxSize,
 			"areaName" :$scope.sensitiveAreaName,
+			"plateNum" :$scope.plateNum,
 			"alarmDateStart" : $scope.startTime ,
 			"alarmDateEnd" : $scope.endTime,
 			"proPower" : $scope.admin.pro_power,
@@ -48,10 +49,9 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 			"areaPower" : $scope.admin.area_power
 		}
 	}).success(function(data){
-		console.log(data);
 		$scope.bigTotalItems = data.data.total;
 		$scope.AllSensitiveAlarmElects = data.data.list;
-		console.log($scope.AllSensitiveAlarmElects);
+		
 	});
 	};
 	$scope.load();
@@ -62,7 +62,9 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 	$scope.goSearchForPlate = function(){
 		$scope.sensitiveAlarmElects();
 	};
-
+	$scope.goSearch = function () {
+		$scope.sensitiveAlarmElects();
+	}
 
  //实现表格全选或者单选
 	$scope.selected = [];

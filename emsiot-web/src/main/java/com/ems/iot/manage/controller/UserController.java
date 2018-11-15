@@ -162,6 +162,15 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("sensitiveAreaManage")) {
 	    	 sysUserDto.setSensitiveAreaManage("1");
 		 }
+	     if (menuPowerList.contains("sensitiveAreaAdd")) {
+	    	 sysUserDto.setSensitiveAreaAdd("1");
+	     }
+	     if (menuPowerList.contains("sensitiveAreaDelete")) {
+	    	 sysUserDto.setSensitiveAreaDelete("1");
+	     }
+	     if (menuPowerList.contains("sensitiveAreaUpdate")) {
+	    	 sysUserDto.setSensitiveAreaUpdate("1");
+	     }
 	     if (menuPowerList.contains("AreaAlarmManage")) {
 	    	 sysUserDto.setAreaAlarmManage("1");
 		 }
@@ -171,6 +180,9 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("sensitiveAlarmManage")) {
 			sysUserDto.setSensitiveAlarmManage("1");
 		 }
+	     if (menuPowerList.contains("sensitiveAlarmDelete")) {
+	    	 sysUserDto.setSensitiveAlarmDelete("1");
+	     }
 	     if (menuPowerList.contains("dataAnalysis")) {
 	    	 sysUserDto.setDataAnalysis("1");
 		 }

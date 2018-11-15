@@ -353,6 +353,15 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  if($("#sensitiveAreaManage").is(":checked")){
         		  menuPower = menuPower+"sensitiveAreaManage;";
         	  }
+        	  if($("#sensitiveAreaAdd").is(":checked")){
+        		  menuPower = menuPower+"sensitiveAreaAdd;";
+        	  }
+        	  if($("#sensitiveAreaDelete").is(":checked")){
+        		  menuPower = menuPower+"sensitiveAreaDelete;";
+        	  }
+        	  if($("#sensitiveAreaUpdate").is(":checked")){
+        		  menuPower = menuPower+"sensitiveAreaUpdate;";
+        	  }
         	  if($("#AreaAlarmManage").is(":checked")){
         		  menuPower = menuPower+"AreaAlarmManage;";
         	  }
@@ -362,6 +371,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  
         	  if($("#sensitiveAlarmManage").is(":checked")){
         		  menuPower = menuPower+"sensitiveAlarmManage;";
+        	  }
+        	  if($("#sensitiveAlarmDelete").is(":checked")){
+        		  menuPower = menuPower+"sensitiveAlarmDelete;";
         	  }
         	  if($("#dataAnalysis").is(":checked")){
         		  menuPower = menuPower+"dataAnalysis;";
@@ -623,6 +635,26 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 else{
 						 $("#sensitiveAreaManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
+					 
+					 if($scope.userForUpdate.sensitiveAreaAdd=="1"){
+						 $("#sensitiveAreaAddChange").prop("checked",true).parent(".btn-white").addClass("active");
+					 }
+					 else{
+						 $("#sensitiveAreaAddChange").prop("checked",false).parent(".btn-white").removeClass("active");
+					 }
+					 if($scope.userForUpdate.sensitiveAreaDelete=="1"){
+						 $("#sensitiveAreaDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
+					 }
+					 else{
+						 $("#sensitiveAreaDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
+					 }
+					 if($scope.userForUpdate.sensitiveAreaUpdate=="1"){
+						 $("#sensitiveAreaUpdateChange").prop("checked",true).parent(".btn-white").addClass("active");
+					 }
+					 else{
+						 $("#sensitiveAreaUpdateChange").prop("checked",false).parent(".btn-white").removeClass("active");
+					 }
+					 
 					 if($scope.userForUpdate.AreaAlarmManage=="1"){
 						 $("#AreaAlarmManageChange").prop("checked",true);//1
 					 }
@@ -640,6 +672,12 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 }
 					 else{
 						 $("#sensitiveAlarmManageChange").prop("checked",false).parent(".btn-white").removeClass("active");
+					 }
+					 if($scope.userForUpdate.sensitiveAlarmDelete=="1"){
+						 $("#sensitiveAlarmDeleteChange").prop("checked",true).parent(".btn-white").addClass("active");
+					 }
+					 else{
+						 $("#sensitiveAlarmDeleteChange").prop("checked",false).parent(".btn-white").removeClass("active");
 					 }
 					 if($scope.userForUpdate.dataAnalysis=="1"){
 						 $("#dataAnalysisChange").prop("checked",true);//1
@@ -786,6 +824,15 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  if($("#sensitiveAreaManageChange").is(":checked")){
 	        		  menuPower = menuPower+"sensitiveAreaManage;";
 	        	  }
+	        	  if($("#sensitiveAreaAddChange").is(":checked")){
+	        		  menuPower = menuPower+"sensitiveAreaAdd;";
+	        	  }
+	        	  if($("#sensitiveAreaDeleteChange").is(":checked")){
+	        		  menuPower = menuPower+"sensitiveAreaDelete;";
+	        	  }
+	        	  if($("#sensitiveAreaUpdateChange").is(":checked")){
+	        		  menuPower = menuPower+"sensitiveAreaUpdate;";
+	        	  }
 	        	  if($("#AreaAlarmManageChange").is(":checked")){
 	        		  menuPower = menuPower+"AreaAlarmManage;";
 	        	  }
@@ -795,6 +842,9 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  
 	        	  if($("#sensitiveAlarmManageChange").is(":checked")){
 	        		  menuPower = menuPower+"sensitiveAlarmManage;";
+	        	  }
+	        	  if($("#sensitiveAlarmDeleteChange").is(":checked")){
+	        		  menuPower = menuPower+"sensitiveAlarmDelete;";
 	        	  }
 	        	  if($("#dataAnalysisChange").is(":checked")){
 	        		  menuPower = menuPower+"dataAnalysis;";

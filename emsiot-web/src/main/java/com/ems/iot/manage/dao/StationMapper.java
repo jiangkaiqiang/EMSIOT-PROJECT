@@ -15,6 +15,8 @@ public interface StationMapper {
 
     Station selectByPrimaryKey(Integer station_id);
     
+    List<Station> selectByPrimaryKeyIn(@Param("listIds")List<Integer> listIds);
+    
     Station selectByStationName(@Param("stationName")String stationName);
 
     int updateByPrimaryKeySelective(Station record);

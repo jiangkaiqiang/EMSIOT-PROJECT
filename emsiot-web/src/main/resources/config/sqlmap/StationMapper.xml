@@ -28,6 +28,16 @@
     from station
     where station_id = #{station_id,jdbcType=INTEGER}
   </select>
+  <select id="selectByPrimaryKeyIn" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from station
+    where station_id in 
+    	<foreach collection="listIds" item="item" index="index" open="(" separator="," close=")">
+              #{item}
+    	</foreach>
+    
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from station
     where station_id = #{station_id,jdbcType=INTEGER}

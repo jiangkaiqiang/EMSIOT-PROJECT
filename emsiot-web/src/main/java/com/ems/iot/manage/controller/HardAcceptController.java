@@ -171,26 +171,33 @@ public class HardAcceptController extends BaseController {
 //	    	String[] limitElects = limitArea.getBlack_list_elects().split(";");
 		List<Integer> sensitiveStationPhyNumsList = new ArrayList<Integer>();
 		
+		//是否有开启0未开启1开启
 		if(sensitiveArea.getStatus()==0) {
 			continue;
 		}
 		//判断是否有时间，没有时间就始终进行，有时间就按不同时间进行
+		Date startTime = null;
+		Date endTime = null;
 		try {
 			Long sysDateL=sdf.parse(sdf.format(sysDate)).getTime();
-			if(sensitiveArea.getSens_start_time()!=null && sensitiveArea.getSens_end_time()!=null) {
 			
+			if(sensitiveArea.getSens_start_time()!=null && sensitiveArea.getSens_end_time()!=null) {
+				startTime = sdf.parse(sensitiveArea.getSens_start_time());
+				endTime = sdf.parse(sensitiveArea.getSens_end_time());
 				
-				if(!(sysDateL>=sdf.parse(sensitiveArea.getSens_start_time()).getTime() && sysDateL<=sdf.parse(sensitiveArea.getSens_end_time()).getTime())) {
+				if(!(sysDateL>=startTime.getTime() && sysDateL<=endTime.getTime())) {
 					continue;
 				}
 			
 			}else if(sensitiveArea.getSens_start_time()!=null && sensitiveArea.getSens_end_time()==null){
-				if(!(sysDateL>=sdf.parse(sensitiveArea.getSens_start_time()).getTime())) {
+				startTime = sdf.parse(sensitiveArea.getSens_start_time());
+				if(!(sysDateL>=startTime.getTime())) {
 					continue;
 				}
 				
 			}else if(sensitiveArea.getSens_start_time()==null && sensitiveArea.getSens_end_time()!=null){
-				if(!(sysDateL<=sdf.parse(sensitiveArea.getSens_end_time()).getTime())) {
+				endTime = sdf.parse(sensitiveArea.getSens_end_time());
+				if(!(sysDateL<=endTime.getTime())) {
 					continue;
 				}
 			}
@@ -201,6 +208,20 @@ public class HardAcceptController extends BaseController {
 			continue;
 		}
 		
+		
+		//是否是限制车辆
+		String elects = sensitiveArea.getBlack_list_elects();
+		if(elects!=null) {
+			System.err.println(elects.indexOf(electrombile.getElect_id()+""));
+			if(elects.indexOf(electrombile.getElect_id()+"") == -1) {
+				continue;
+			}
+		}else {
+			continue;
+		}
+		
+		
+		
 		for (String sensitiveStationID : sensitiveStationIDs) {
 			Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(sensitiveStationID));
 			if (station!=null) {
@@ -209,14 +230,17 @@ public class HardAcceptController extends BaseController {
 		}
 		
 		
-		
 		if (sensitiveStationPhyNumsList.contains(stationPhyNum)) {
-			MessageEntity messageEntityLimit = new MessageEntity();
-			messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
-					+"限制区域报警：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-					+ electrombileStation.getEle_gua_card_num() + "!");
-			CometUtil cometUtilLimit = new CometUtil();
-			cometUtilLimit.pushToLimit(messageEntityLimit);
+			Integer areaAlarmCount = areaAlarmMapper.findAreaAlarmCountByStationNumAndTime(electrombile.getPlate_num(), sensitiveArea.getSensitive_area_name(), startTime, endTime, null, null, null);
+			//此车辆超出出现次数进行提示
+			if(sensitiveArea.getEnter_num() <= areaAlarmCount) {
+				MessageEntity messageEntityLimit = new MessageEntity();
+				messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
+						+"经过限制区域 '"+sensitiveArea.getSensitive_area_name()+"' "+(areaAlarmCount+1)+"次。 报警基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
+						+ electrombileStation.getEle_gua_card_num() + "!");
+				CometUtil cometUtilLimit = new CometUtil();
+				cometUtilLimit.pushToLimit(messageEntityLimit);
+			}
 			
 			AreaAlarm areaAlarm = new AreaAlarm();
 			areaAlarm.setArea_name(sensitiveArea.getSensitive_area_name());

@@ -542,7 +542,7 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
     	if($scope.tiao!=null){
     		$scope.tiao.setAnimation(null);
     	}
-        for(var g =0;g < $scope.stations.length; g++){
+        //for(var g =0;g < $scope.stations.length; g++){
                // console.log(tablePoint==$scope.stations[g].station_address);
                 var allOverlay = $scope.jizhanBounce;
                 //console.log(allOverlay)
@@ -557,9 +557,9 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 	                    //markers=null;
 	                }
                 }
-                return;
+                //return;
             
-        }
+        //}
     };
     
     

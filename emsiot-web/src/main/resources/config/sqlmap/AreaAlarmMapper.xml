@@ -145,6 +145,8 @@
   
   <select id="findAreaAlarmByStationNumAndTime" parameterType="map" resultType="com.ems.iot.manage.entity.AreaAlarm">
         SELECT  area_alarm.* FROM `area_alarm` LEFT join  `electrombile` on area_alarm.`enter_plate_num` =electrombile.`plate_num`
+       		<!-- 关联敏感区域表 -->
+			LEFT JOIN sensitive_area ON area_alarm.area_name = sensitive_area.sensitive_area_name
         <where>
 			<if test="alarmStationPhyNum != null and alarmStationPhyNum != ''">
 				area_alarm.alarm_station_phy_num = #{alarmStationPhyNum}
@@ -162,13 +164,49 @@
 				AND area_alarm.enter_time &lt;= #{alarmDateEnd}
 			</if>
 			<if test="proPower != null">
-			    AND electrombile.`pro_id` = #{proPower}
+			    AND sensitive_area.`pro_id` = #{proPower}
 			</if>
 			<if test="cityPower != null">
-				AND electrombile.`city_id` = #{cityPower}
+				AND sensitive_area.`city_id` = #{cityPower}
 			</if>
 			<if test="areaPower != null">
-				AND electrombile.`area_id` = #{areaPower}
+				AND sensitive_area.`area_id` = #{areaPower}
+			</if>
+			</where>
+   </select>
+  
+  
+   <select id="findAreaAlarmCountByStationNumAndTime" parameterType="map" resultType="java.lang.Integer">
+        SELECT  count(*) FROM `area_alarm` LEFT join  `electrombile` on area_alarm.`enter_plate_num` =electrombile.`plate_num`
+       		<!-- 关联敏感区域表 -->
+			LEFT JOIN sensitive_area ON area_alarm.area_name = sensitive_area.sensitive_area_name
+        <where>
+			<if test="alarmStationPhyNum != null and alarmStationPhyNum != ''">
+				area_alarm.enter_plate_num = #{alarmStationPhyNum}
+			</if>
+			<if test="areaName != null and areaName != ''">
+				AND area_alarm.area_name = #{areaName}
+			</if>
+			<!-- <if test="areaType != null and areaType != ''">
+				AND area_alarm.area_type = #{areaType}
+			</if> -->
+			<!-- <if test="processState != null and processState != ''">
+				AND area_alarm.process_state = #{processState}
+			</if> -->
+			<if test="alarmDateStart != null and alarmDateStart != ''">
+				AND area_alarm.enter_time  &gt;= #{alarmDateStart}
+			</if>
+			<if test="alarmDateEnd != null and alarmDateEnd != ''">
+				AND area_alarm.enter_time &lt;= #{alarmDateEnd}
+			</if>
+			<if test="proPower != null">
+			    AND sensitive_area.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND sensitive_area.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND sensitive_area.`area_id` = #{areaPower}
 			</if>
 			</where>
    </select>

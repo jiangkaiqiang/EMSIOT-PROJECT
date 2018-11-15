@@ -123,6 +123,16 @@ public class StationController extends BaseController {
 	public Object findStationByID(Integer stationID) { 
 		 return stationMapper.selectByPrimaryKey(stationID);
 	}
+	@RequestMapping(value = "/findStationByIDs")
+	@ResponseBody
+	public Object findStationByIDs(String stationIDs) { 
+		String[] ids=stationIDs.split(";");
+		List<Integer> listIds=new ArrayList<Integer>();
+		for (String id : ids) {
+			listIds.add(Integer.valueOf(id));
+		}
+		return stationMapper.selectByPrimaryKeyIn(listIds);
+	}
 	
 	/**
 	 * 批量删除基站

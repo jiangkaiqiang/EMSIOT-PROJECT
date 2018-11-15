@@ -162,7 +162,7 @@
 				sensitive_area_id = #{sensitiveAreaID}
 			</if>
 			<if test="sensitiveAreaName != null and sensitiveAreaName != ''">
-				AND  sensitive_area_name= #{sensitiveAreaName}
+				AND  sensitive_area_name like "%"#{sensitiveAreaName}"%"
 			</if>
 			<if test="proPower != null">
 				AND pro_id = #{proPower}
@@ -187,7 +187,7 @@
 			<!-- 关联基站表 -->
 			LEFT JOIN station ON area_alarm.alarm_station_phy_num = station.station_phy_num
 			<!-- 关联敏感区域表 -->
-			<!-- LEFT JOIN sensitive_area ON area_alarm.area_name = sensitive_area.sensitive_area_name -->
+			LEFT JOIN sensitive_area ON area_alarm.area_name = sensitive_area.sensitive_area_name
         <where>
         	<if test="plateNum != null and plateNum != ''">
 				<!-- area_alarm.enter_plate_num = #{plateNum} -->
@@ -204,13 +204,13 @@
 				AND area_alarm.enter_time &lt;= #{alarmDateEnd}
 			</if>
 			<if test="proPower != null">
-			    AND electrombile.`pro_id` = #{proPower}
+			    AND sensitive_area.`pro_id` = #{proPower}
 			</if>
 			<if test="cityPower != null">
-				AND electrombile.`city_id` = #{cityPower}
+				AND sensitive_area.`city_id` = #{cityPower}
 			</if>
 			<if test="areaPower != null">
-				AND electrombile.`area_id` = #{areaPower}
+				AND sensitive_area.`area_id` = #{areaPower}
 			</if>
 			</where>
 			order by area_alarm.enter_time desc

@@ -73,11 +73,19 @@ public class SysUserDto {
 	
 	private String sensitiveAreaManage = "0";//特殊区域管理-敏感区域管理
 	
+	private String sensitiveAreaAdd = "0";//特殊区域管理-敏感区域管理-添加区域
+	
+	private String sensitiveAreaDelete = "0";//特殊区域管理-敏感区域管理-删除区域
+	
+	private String sensitiveAreaUpdate = "0";//特殊区域管理-敏感区域管理-修改区域
+	
 	private String AreaAlarmManage = "0";//区域报警管理
 	
 	private String limitAlarmManage = "0";//区域报警管理-限制区域报警管理
 	
 	private String sensitiveAlarmManage = "0";//区域报警管理-敏感区域报警管理
+	
+	private String sensitiveAlarmDelete = "0";//区域报警管理-敏感区域报警管理-删除报警
 	
 	private String dataAnalysis = "0";//图表统计
 	
@@ -409,6 +417,38 @@ public class SysUserDto {
 
 	public void setStationExceptionRecprdDelete(String stationExceptionRecprdDelete) {
 		this.stationExceptionRecprdDelete = stationExceptionRecprdDelete;
+	}
+
+	public String getSensitiveAreaAdd() {
+		return sensitiveAreaAdd;
+	}
+
+	public void setSensitiveAreaAdd(String sensitiveAreaAdd) {
+		this.sensitiveAreaAdd = sensitiveAreaAdd;
+	}
+
+	public String getSensitiveAreaDelete() {
+		return sensitiveAreaDelete;
+	}
+
+	public void setSensitiveAreaDelete(String sensitiveAreaDelete) {
+		this.sensitiveAreaDelete = sensitiveAreaDelete;
+	}
+
+	public String getSensitiveAreaUpdate() {
+		return sensitiveAreaUpdate;
+	}
+
+	public void setSensitiveAreaUpdate(String sensitiveAreaUpdate) {
+		this.sensitiveAreaUpdate = sensitiveAreaUpdate;
+	}
+
+	public String getSensitiveAlarmDelete() {
+		return sensitiveAlarmDelete;
+	}
+
+	public void setSensitiveAlarmDelete(String sensitiveAlarmDelete) {
+		this.sensitiveAlarmDelete = sensitiveAlarmDelete;
 	}
 	
 }

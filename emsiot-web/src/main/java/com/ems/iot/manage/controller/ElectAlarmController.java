@@ -3,6 +3,7 @@ package com.ems.iot.manage.controller;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,10 @@ import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectAlarmDto;
+import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -89,6 +92,7 @@ public class ElectAlarmController extends BaseController {
 			Page<Station> station = stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null,null,null,null);
 			if(station.size()>0) {
 				electAlarmDto.setStatioAddress(station.get(0).getStation_address());
+				electAlarmDto.setStatioName(station.get(0).getStation_name());
 			}
 			Electrombile elect = electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
 			Electrombile electrombile = new Electrombile();
@@ -153,4 +157,61 @@ public class ElectAlarmController extends BaseController {
 				areaPower);
 		return electAlarms;
 	}
+	
+	
+	
+	/**
+	 * 查询报警车辆轨迹
+	 * 
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @param startTimeForTrace
+	 * @param endTimeForTrace
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectAlarmTrace")
+	@ResponseBody
+	public Object findElectAlarmTrace(@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
+			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
+			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
+			throws UnsupportedEncodingException {
+		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
+		Page<ElectAlarmDto> traceStationDtos = new Page<ElectAlarmDto>();
+		if (null != electrombile) {
+			Page<ElectAlarm> electAlarms = electAlarmMapper
+					.selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
+			for (ElectAlarm electAlarm : electAlarms) {
+				ElectAlarmDto traceStationDto = new ElectAlarmDto();
+				//报警时间
+				//traceStationDto.setCrossTime(electAlarm.getAlarm_time());
+				traceStationDto.setElectAlarm(electAlarm);
+				//基站信息
+				Station station = stationMapper.selectByStationPhyNum(electAlarm.getAlarm_station_phy_num());
+				if(station!=null) {
+					traceStationDto.setStatioAddress(station.getStation_address());
+					traceStationDto.setStatioName(station.getStation_name());
+				}
+				traceStationDto
+						.setStation(station);
+				traceStationDtos.add(traceStationDto);
+				
+				if(electrombile!=null) {
+					traceStationDto.setOwnerName(electrombile.getOwner_name());
+					traceStationDto.setOwnerTele(electrombile.getOwner_tele());
+					traceStationDto.setOwnerPlateNum(electrombile.getPlate_num());
+				}
+				
+			}
+			traceStationDtos.setPageSize(electAlarms.getPageSize());
+			traceStationDtos.setPages(electAlarms.getPages());
+			traceStationDtos.setTotal(electAlarms.getTotal());
+		}
+		return traceStationDtos;
+	}
+	
+	
+	
+	
 }

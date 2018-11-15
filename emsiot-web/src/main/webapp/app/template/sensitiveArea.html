@@ -23,7 +23,7 @@
                     </form>
                 </li>
                 <li class="border-dashed" style="height:15px;color:#7D7C82;"></li>
-                <li>
+                <li ng-show="rootUserPowerDto.sensitiveAreaDelete==1 && rootUserPowerDto.sysUser.opt_power==1">
                     <a href="" style="color:#7D7C82;">
                         <button class="btn btn-guiji" ng-click="goDeleteLimitAreas()">
                             <i class="glyphicon glyphicon-trash"></i>
@@ -60,21 +60,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in AllSensitiveAreas">
+                <tr ng-repeat="sensitive in AllSensitiveAreas">
                     <td>
-                        <input type="checkbox" ng-checked="exists(user, selected)"
-                               ng-click="toggle(user, selected)"/>
+                        <input type="checkbox" ng-checked="exists(sensitive, selected)"
+                               ng-click="toggle(sensitive, selected)"/>
                     </td>
 
-                    <td title="{{user.sensitive_area_name}}">{{user.sensitive_area_name}}</td>
-                    <td title="{{user.station_names}}">{{user.station_names}}</td>
-                    <td title="{{user.black_list_elects_names}}">{{user.black_list_elects_names}}</td>
-                    <td title="{{user.sens_start_time}}">{{user.sens_start_time}}</td>
-                    <td title="{{user.sens_end_time}}">{{user.sens_end_time}}</td>
+                    <td title="{{sensitive.sensitive_area_name}}">{{sensitive.sensitive_area_name}}</td>
+                    <td title="{{sensitive.station_names}}">{{sensitive.station_names}}</td>
+                    <td title="{{sensitive.black_list_elects_names}}">{{sensitive.black_list_elects_names}}</td>
+                    <td title="{{sensitive.sens_start_time}}">{{sensitive.sens_start_time}}</td>
+                    <td title="{{sensitive.sens_end_time}}">{{sensitive.sens_end_time}}</td>
                     <td>
-                        <i class="glyphicon glyphicon-trash" ng-click="goDeleteSensitiveAreas(user.sensitive_area_id)"></i>
-                       	<i ng-show="true" class="glyphicon glyphicon-edit" ng-click="goUpdateSensitiveArea(user.sensitive_area_id)" data-toggle="modal" data-target="#updateSensitiveArea"></i>
-                        <i class="glyphicon glyphicon-eye-open" ng-click="showSensitiveArea(user.sensitive_area_id)" data-target="#viewSensitiveArea"  data-toggle="modal"></i>
+                        <i class="glyphicon glyphicon-trash" ng-show="rootUserPowerDto.sensitiveAreaDelete==1 && rootUserPowerDto.sysUser.opt_power==1" ng-click="goDeleteSensitiveAreas(sensitive.sensitive_area_id)"></i>
+                       	<i class="glyphicon glyphicon-edit" ng-show="rootUserPowerDto.sensitiveAreaUpdate==1 && rootUserPowerDto.sysUser.opt_power==1" ng-click="goUpdateSensitiveArea(sensitive.sensitive_area_id)" data-toggle="modal" data-target="#updateSensitiveArea"></i>
+                        <i class="glyphicon glyphicon-eye-open" ng-click="showSensitiveArea(sensitive.sensitive_area_id)" data-target="#viewSensitiveArea"  data-toggle="modal"></i>
+                        <i class="glyphicon glyphicon-map-marker" ng-click="goStationLocation(sensitive.station_ids)"
+                           title="查看位置" ng-style style="color:#3C7ADA;"></i>
                     </td>
                 </tr>
                 </tbody>
