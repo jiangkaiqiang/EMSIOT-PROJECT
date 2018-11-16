@@ -395,18 +395,18 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     	}
     }
     
-    $scope.goExportElects = function(){
-    	var electIDs = [];
-    	for(i in $scope.selected){
-    		electIDs.push($scope.selected[i].electrombile.elect_id);
-    	}
-    	if(electIDs.length >0 ){
-    		window.location.href="/i/elect/exportElectByIDs?electIDs="+electIDs;
-    	}
-    	else{
-    		alert("请先选择要导出的车辆！");
-    	}
-    }
+    //$scope.goExportElects = function(){
+    //	var electIDs = [];
+    //	for(i in $scope.selected){
+    //		electIDs.push($scope.selected[i].electrombile.elect_id);
+    //	}
+    //	if(electIDs.length >0 ){
+    //		window.location.href="/i/elect/exportElectByIDs?electIDs="+electIDs;
+    //	}
+    //	else{
+    //		alert("请先选择要导出的车辆！");
+    //	}
+    //}
    
     $scope.selected = [];
     $scope.toggle = function (electDto, list) {
