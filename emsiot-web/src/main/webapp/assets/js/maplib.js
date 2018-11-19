@@ -101,19 +101,19 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *@exports MarkerClusterer as BMapLib.MarkerClusterer
      */
     var MarkerClusterer =
-        /**
-         * MarkerClusterer
-         * @class 用来解决加载大量点要素到地图上产生覆盖现象的问题，并提高性能
-         * @constructor
-         * @param {Map} map 地图的一个实例。
-         * @param {Json Object} options 可选参数，可选项包括：<br />
-         *    markers {Array<Marker>} 要聚合的标记数组<br />
-         *    girdSize {Number} 聚合计算时网格的像素大小，默认60<br />
-         *    maxZoom {Number} 最大的聚合级别，大于该级别就不进行相应的聚合<br />
-         *    minClusterSize {Number} 最小的聚合数量，小于该数量的不能成为一个聚合，默认为2<br />
-         *    isAverangeCenter {Boolean} 聚合点的落脚位置是否是所有聚合在内点的平均值，默认为否，落脚在聚合内的第一个点<br />
-         *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
-         */
+    /**
+     * MarkerClusterer
+     * @class 用来解决加载大量点要素到地图上产生覆盖现象的问题，并提高性能
+     * @constructor
+     * @param {Map} map 地图的一个实例。
+     * @param {Json Object} options 可选参数，可选项包括：<br />
+     *    markers {Array<Marker>} 要聚合的标记数组<br />
+     *    girdSize {Number} 聚合计算时网格的像素大小，默认60<br />
+     *    maxZoom {Number} 最大的聚合级别，大于该级别就不进行相应的聚合<br />
+     *    minClusterSize {Number} 最小的聚合数量，小于该数量的不能成为一个聚合，默认为2<br />
+     *    isAverangeCenter {Boolean} 聚合点的落脚位置是否是所有聚合在内点的平均值，默认为否，落脚在聚合内的第一个点<br />
+     *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
+     */
         BMapLib.MarkerClusterer = function(map, options){
             if (!map){
                 return;
@@ -138,7 +138,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             });
 
             this._map.addEventListener("moveend",function(){
-                 that._redraw();
+                that._redraw();
             });
 
             var mkrs = opts["markers"];
@@ -415,7 +415,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @return {Map} Map的示例。
      */
     MarkerClusterer.prototype.getMap = function() {
-      return this._map;
+        return this._map;
     };
 
     /**
@@ -432,10 +432,10 @@ var BMapLib = window.BMapLib = BMapLib || {};
      */
     MarkerClusterer.prototype.getClustersCount = function() {
         var count = 0;
-		for(var i = 0, cluster; cluster = this._clusters[i]; i++){
+        for(var i = 0, cluster; cluster = this._clusters[i]; i++){
             cluster.isReal() && count++;
         }
-		return count;
+        return count;
     };
 
     /**
@@ -453,10 +453,10 @@ var BMapLib = window.BMapLib = BMapLib || {};
         this._center = null;//落脚位置
         this._markers = [];//这个Cluster中所包含的markers
         this._gridBounds = null;//以中心点为准，向四边扩大gridSize个像素的范围，也即网格范围
-		this._isReal = false; //真的是个聚合
+        this._isReal = false; //真的是个聚合
         this._styles = markerClusterer.getStyles();
         this._labels = [];
-        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, {name:'共找到',value : this._markers.length}, {"styles":this._markerClusterer.getStyles()});
+        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, {name:'经过车辆',value : this._markers.length}, {"styles":this._markerClusterer.getStyles()});
         //this._map.addOverlay(this._clusterMarker);
     }
 
@@ -489,7 +489,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var len = this._markers.length;
         if(len < this._minClusterSize ){
             this._map.addOverlay(marker);
-			//this.updateClusterMarker();
+            //this.updateClusterMarker();
             return true;
         } else if (len === this._minClusterSize) {
             for (var i = 0; i < len; i++) {
@@ -498,7 +498,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
         }
         this._map.addOverlay(this._clusterMarker);
-		this._isReal = true;
+        this._isReal = true;
         this.updateClusterMarker();
         return true;
     };
@@ -530,7 +530,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         return this._gridBounds.containsPoint(marker.getPosition());
     };
 
-	Cluster.prototype.isReal = function(marker) {
+    Cluster.prototype.isReal = function(marker) {
         return this._isReal;
     };
 
@@ -586,7 +586,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
         this._clusterMarker.setPosition(this._center);
 
-        this._clusterMarker.setText({name : '' , value : this._markers.length});
+        this._clusterMarker.setText({name : '经过车辆' , value : this._markers.length});
 
         var thatMap = this._map;
         var thatBounds = this.getBounds();
@@ -609,7 +609,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      */
     Cluster.prototype.remove = function(){
         for (var i = 0, m; m = this._labels[i]; i++) {
-                this._map.removeOverlay(m);
+            this._map.removeOverlay(m);
         }//清除散的标记点
 
         this._map.removeOverlay(this._clusterMarker);
