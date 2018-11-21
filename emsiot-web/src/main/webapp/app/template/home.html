@@ -54,9 +54,15 @@
             </div>
             <div>车辆热力图</div>
         </li>-->
+        <li ng-show="rootUserPowerDto.traceSearch==1" class="">
+            <a class="flex flex-items">
+                <i class="iconfont icon-yonghuguanli"></i>
+                <span>快速定位</span>
+            </a>
+        </li>
         <li ng-show="rootUserPowerDto.traceSearch==1" class="flex-items">
             <a href="" data-toggle="modal" data-target="#guijiModal"
-               class="flex flex-items" ng-click="aa()"> <i class="iconfont icon-guijichaxun"></i>
+               class="flex flex-items"> <i class="iconfont icon-guijichaxun"></i>
                 <span>轨迹查询</span>
             </a>
         </li>

@@ -134,6 +134,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
             var that = this;
             this._map.addEventListener("zoomend",function(){
+                //console.log(map.Oa)
                 that._redraw();
             });
 
@@ -549,21 +550,23 @@ var BMapLib = window.BMapLib = BMapLib || {};
     Cluster.prototype.addLabel = function (marker) {
         //获取marker的坐标
         var position = marker.getPosition();
+        var titleAdds = marker.getTitle().split('\t')[2];
         //创建label
-        var label = new BMap.Label(0, {offset: new BMap.Size(0, -30)});
+        var label = new BMap.Label('经过车辆：'+titleAdds, {offset: new BMap.Size(0, -27)});
         label.setStyle({
-            color: "rgb(102, 179, 255)",
-            fontSize: "16px",
-            backgroundColor: "#fff",
+            color: "#fff",
+            fontSize: "14px",
+            backgroundColor: "#66B3FF",
             border: "1px solid rgb(102, 179, 255)",
-            fontWeight: "bold",
+            fontWeight: "normal",
             display: "block",
-            borderShadow: "0 5px 15px rgba(0, 0, 0, .5)",
+            borderShadow: "0 5px 15px rgba(0, 0, 0, 0.6)",
             minHeight: "20px",
-            minWidth: "25px",
+            minWidth: "40px",
             lineHeight: "20px",
             borderRadius: "5px",
-            textAlign: "center"
+            textAlign: "center",
+            padding:"1px 8px"
         });
 
         marker.setLabel(label);
