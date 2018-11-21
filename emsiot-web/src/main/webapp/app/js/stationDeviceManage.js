@@ -219,11 +219,14 @@ $scope.dropInstallPic = function(installPic){
         if ($scope.stationForUpdate.station_name == undefined || $scope.stationForUpdate.station_name == '') {
             flag = false;
        }
+        if ($scope.stationForUpdate.install_date == undefined || $scope.stationForUpdate.install_date == '') {
+			flag = false;
+		}
         return flag;
 	}   
     $scope.goUpdateStation = function(){
 	        if (!checkInputForUpdate()){
-	    	  alert("请填写基站编号和基站名!");
+	    	  alert("请填写基站编号、基站名和安装时间!");
     	      return;
             }
 	    	var stationType="";

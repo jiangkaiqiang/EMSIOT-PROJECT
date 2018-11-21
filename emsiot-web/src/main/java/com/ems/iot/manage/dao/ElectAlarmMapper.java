@@ -37,4 +37,42 @@ public interface ElectAlarmMapper {
     Page<ElectAlarm> selectByGuaCardNumForTrace(@Param("guaCardNum") int guaCardNum,
     		@Param("startTimeForTrace") String startTimeForTrace, @Param("endTimeForTrace") String endTimeForTrace);
     
+    /**
+     * 返回当前时间范围内报警车辆的数量；如果需要修改时间大小则修改时间范围，需要根据车号进行分组过滤，
+     * 即如果一辆车在该范围内经过了多个基站，则认为报警车辆只有一辆
+     * @return
+     */
+    List<Integer> selectElectsByEleGuaCardNumNow(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
+    
+    /**
+     * 根据基站的物理编号和时间，查询某个基站下的车辆
+     * @param station_phy_num
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<ElectAlarm> selectElectsByStationPhyNumAndTime(@Param("stationPhyNum") int stationPhyNum,
+    		@Param("startTime") String startTime, @Param("endTime") String endTime);
+    
+    /**
+     * 根据车辆的物理编号和时间，查询某个车辆下的基站
+     * @param station_phy_num
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<ElectAlarm> selectElectsByGuaCardNumNumAndTime(@Param("guaCardNum") int guaCardNum,
+    		@Param("startTime") String startTime, @Param("endTime") String endTime);
+    
+    
+    /**
+     * 根据报警数据获得最后一次出现的车辆数据
+     * @param station_phy_num
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<ElectAlarm> selectElectAlarmVehicleByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    
 }

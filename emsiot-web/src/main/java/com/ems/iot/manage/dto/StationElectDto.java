@@ -8,6 +8,8 @@ public class StationElectDto {
 	private String plate_num;
 	private String owner_name;
 	private String corssTime;
+	//基站名
+	private String station_name;
 	public String getPlate_num() {
 		return plate_num;
 	}
@@ -25,6 +27,12 @@ public class StationElectDto {
 	}
 	public void setCorssTime(String corssTime) {
 		this.corssTime = corssTime;
+	}
+	public String getStation_name() {
+		return station_name;
+	}
+	public void setStation_name(String station_name) {
+		this.station_name = station_name;
 	}
 	
 }

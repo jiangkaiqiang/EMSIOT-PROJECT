@@ -311,4 +311,14 @@ public class HardAcceptController extends BaseController {
 		
 	}
 	
+	@RequestMapping(value = "/test")
+	@ResponseBody
+	public Object test() {
+		MessageEntity messageEntityLimit = new MessageEntity();
+		messageEntityLimit.setContent("测试;测试;测试;测试!");
+		CometUtil cometUtilLimit = new CometUtil();
+		cometUtilLimit.pushToLimit(messageEntityLimit);
+		return ResponseData.newSuccess("接受成功");
+	}
+	
 }

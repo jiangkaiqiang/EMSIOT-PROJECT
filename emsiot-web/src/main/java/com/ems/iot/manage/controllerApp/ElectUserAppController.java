@@ -208,7 +208,7 @@ public class ElectUserAppController extends AppBaseController {
 			throws UnsupportedEncodingException, ParseException {
 		Blackelect blackelect = new Blackelect();
 		if (plate_num == null) {
-			return new AppResultDto(3001, "车牌号不能为空！");
+			return new AppResultDto(3001, "车牌号不能为空！", false);
 		}
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
 		 if (effectiveCookie==null) {
@@ -216,11 +216,11 @@ public class ElectUserAppController extends AppBaseController {
 	     }
 		List<Blackelect> blackelectExist = blackelectMapper.findAllBlackelectByOptions(plate_num, null, null, null, null, null);
 		if (blackelectExist.size()>0) {
-			return new ResultDto(3001, "该车辆已经报警成功！");
+			return new AppResultDto(3001, "该车辆已经报警成功！", false);
 		}
 		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plate_num);
 		if(electrombile==null){
-			return new ResultDto(3001, "该车牌号不存在！");
+			return new AppResultDto(3001, "该车牌号不存在！", false);
 		}
 		blackelect.setPlate_num(electrombile.getPlate_num());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

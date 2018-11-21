@@ -369,6 +369,9 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 		if ($scope.addStationName == undefined || $scope.addStationName == '') {
 			flag = false;
 		}
+		if ($scope.addInstallDate == undefined || $scope.addInstallDate == '') {
+			flag = false;
+		}
 		return flag;
 	}
 	$scope.addInstallPic = function() {
@@ -416,7 +419,7 @@ coldWeb.controller('stationManage', function($rootScope, $scope, $state,
 				}
 			});
 		} else {
-			alert("请填写基站编号和基站名!");
+			alert("请填写基站编号、基站名和安装时间!");
 		}
 	}
 	$('#datetimepicker1').datetimepicker({

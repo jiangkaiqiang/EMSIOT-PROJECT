@@ -39,6 +39,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				            	var city = {"city_id":"-1","name":"不限"};
 				            	$scope.citisForSearch.push(city);
 				            });
+				    	}else{
+				    		$scope.getPro();
 				    	}
 				    	if($scope.userPowerDto.sysUser.city_power != "-1"){
 				    		$http.get('/i/city/findAreasByCityId', {
@@ -56,6 +58,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				    	if($scope.userPowerDto.sysUser.area_power != "-1"){
 				    		$scope.addAreaID = $scope.userPowerDto.sysUser.area_power;
 				    	}
+				    	}else{
+				    		$scope.getCitis();
 				    	}
 				    	 //获取全部管理员
 				        $http.get('/i/user/findAllUsers',{
@@ -267,11 +271,14 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	}
     
     //获取全部省For ADD
-    $http.get('/i/city/findProvinceList').success(function (data) {
-        $scope.provinces = data;
-        $scope.addProvinceID = data[0].province_id;
-        $scope.getCitis();
-    });
+	$scope.getPro = function(){
+		
+	    $http.get('/i/city/findProvinceList').success(function (data) {
+	        $scope.provinces = data;
+	        $scope.addProvinceID = data[0].province_id;
+	        $scope.getCitis();
+	    });
+	}
     //根据省ID获取全部市For ADD
     $scope.getCitis = function () {
     	$http.get('/i/city/findCitysByProvinceId', {

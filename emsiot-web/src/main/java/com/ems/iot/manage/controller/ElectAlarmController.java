@@ -20,6 +20,7 @@ import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectAlarmDto;
+import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
@@ -212,6 +213,96 @@ public class ElectAlarmController extends BaseController {
 	}
 	
 	
+	/**
+	 * 找到最近一段时间的报警车辆，为报警车辆功能提供服务
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findInlineElectsNum")
+	@ResponseBody
+	public Object findInlineElectsNum(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+			throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<Integer> inlineList = electAlarmMapper.selectElectsByEleGuaCardNumNow(proPower, cityPower,
+				areaPower);
+		return inlineList.size();
+	}
+	
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectsByStationIdAndTime")
+	@ResponseBody
+	public Object findElectsByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
+			throws UnsupportedEncodingException {
+		List<ElectAlarm> electAlarms = electAlarmMapper
+				.selectElectsByGuaCardNumNumAndTime(guaCardNum, startTime, endTime);
+		List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
+		for (ElectAlarm electAlarm : electAlarms) {
+			StationElectDto stationElectDto = new StationElectDto();
+			stationElectDto.setCorssTime(electAlarm.getAlarm_time());
+			Station station = stationMapper
+					.selectByStationPhyNum(electAlarm.getAlarm_station_phy_num());
+			stationElectDto.setStation_name(station.getStation_name());
+			stationElectDtos.add(stationElectDto);
+		}
+		return stationElectDtos;
+	}
+	
+	
+	
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/selectElectAlarmVehicleLocationByTime")
+	@ResponseBody
+	public Object selectElectAlarmVehicleLocationByTime(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime)
+					throws UnsupportedEncodingException {
+		List<ElectAlarm> electAlarms = electAlarmMapper
+				.selectElectAlarmVehicleByTime(startTime, endTime);
+		List<ElectAlarmDto> electAlarmDtos = new ArrayList<ElectAlarmDto>();
+		for (ElectAlarm electAlarm : electAlarms) {
+			ElectAlarmDto electAlarmDto = new ElectAlarmDto();
+			Station station = stationMapper.selectByStationPhyNum(electAlarm.getAlarm_station_phy_num());
+			electAlarmDto.setStation(station);
+			electAlarmDto.setElectAlarm(electAlarm);
+			Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
+			if(electrombile!=null) {
+				electAlarmDto.setOwnerPlateNum(electrombile.getPlate_num());
+				electAlarmDto.setOwnerName(electrombile.getOwner_name());
+				electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
+			}
+			electAlarmDtos.add(electAlarmDto);
+		}
+		
+		return electAlarmDtos;
+	}
 	
 	
 }
