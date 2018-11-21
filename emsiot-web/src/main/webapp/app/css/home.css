@@ -243,7 +243,21 @@ font-weight:bold;
     transition: all 0.3s;
 }
 
-
+#trackOperation{
+    position: absolute;
+    top: 130px;
+    right: 10px;
+    background:#fff;
+    padding:10px 5px;
+    transition:all 0.3s;
+}
+#trackOperation>.btn-group{margin:5px 10px;}
+#searchResultPanel{
+    border: 1px solid #C0C0C0;
+    width: 150px;
+    height: auto;
+    display: none;
+}
 
 
 

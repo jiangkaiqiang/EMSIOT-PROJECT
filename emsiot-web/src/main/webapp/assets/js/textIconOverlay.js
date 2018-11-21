@@ -8,7 +8,7 @@
  */
 
 
- /**
+/**
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
 var BMapLib = window.BMapLib = BMapLib || {};
@@ -19,7 +19,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 声明baidu包
      */
     var T,
-    baidu = T = baidu || {version: "1.3.8"};
+        baidu = T = baidu || {version: "1.3.8"};
 
     (function (){
         //提出guid，防止在与老版本Tangram混用时
@@ -31,9 +31,9 @@ var BMapLib = window.BMapLib = BMapLib || {};
         window[baidu.guid] = window[baidu.guid] || {};
 
         /**
-        * @ignore
-        * @namespace baidu.dom 操作dom的方法。
-        */
+         * @ignore
+         * @namespace baidu.dom 操作dom的方法。
+         */
         baidu.dom = baidu.dom || {};
 
 
@@ -78,9 +78,9 @@ var BMapLib = window.BMapLib = BMapLib || {};
         };
 
         /**
-           * @ignore
+         * @ignore
          * @namespace baidu.lang 对语言层面的封装，包括类型判断、模块扩展、继承基类以及对象自定义事件的支持。
-        */
+         */
         baidu.lang = baidu.lang || {};
 
         /**
@@ -137,7 +137,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
              * @shortcut ie
              * @see baidu.browser.firefox,baidu.browser.safari,baidu.browser.opera,baidu.browser.chrome,baidu.browser.maxthon
              */
-           baidu.browser.ie = baidu.ie = document.documentMode || + RegExp['\x241'];
+            baidu.browser.ie = baidu.ie = document.documentMode || + RegExp['\x241'];
         }
 
         /**
@@ -193,7 +193,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         };
 
         /**
-           * @ignore
+         * @ignore
          * @namespace baidu.string 操作字符串的方法。
          */
         baidu.string = baidu.string || {};
@@ -245,8 +245,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
             key = baidu.string.toCamelCase(key);
             //computed style, then cascaded style, then explicitly set style.
             var value = element.style[key] ||
-                        (element.currentStyle ? element.currentStyle[key] : "") ||
-                        dom.getComputedStyle(element, key);
+                (element.currentStyle ? element.currentStyle[key] : "") ||
+                dom.getComputedStyle(element, key);
 
             // 在取不到值的时候，用fixer进行修正
             if (!value) {
@@ -269,13 +269,13 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
 
         if (/opera\/(\d+\.\d)/i.test(navigator.userAgent)) {
-        /**
-         * 判断是否为opera浏览器
-         * @property opera opera版本号
-         * @grammar baidu.browser.opera
-         * @meta standard
-         * @see baidu.browser.ie,baidu.browser.firefox,baidu.browser.safari,baidu.browser.chrome
-         */
+            /**
+             * 判断是否为opera浏览器
+             * @property opera opera版本号
+             * @grammar baidu.browser.opera
+             * @meta standard
+             * @see baidu.browser.ie,baidu.browser.firefox,baidu.browser.safari,baidu.browser.chrome
+             */
             baidu.browser.opera = + RegExp['\x241'];
         }
 
@@ -325,9 +325,9 @@ var BMapLib = window.BMapLib = BMapLib || {};
             // 对于这些有bug的情况
             // 使用递归查找的方式
                 BUGGY_GECKO_BOX_OBJECT = browser.isGecko > 0 &&
-                                         doc.getBoxObjectFor &&
-                                         getStyle(element, 'position') == 'absolute' &&
-                                         (element.style.top === '' || element.style.left === ''),
+                    doc.getBoxObjectFor &&
+                    getStyle(element, 'position') == 'absolute' &&
+                    (element.style.top === '' || element.style.left === ''),
                 pos = {"left":0,"top":0},
                 viewport = (browser.ie && !browser.isStrict) ? doc.body : doc.documentElement,
                 parent,
@@ -355,7 +355,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 pos.top  -= doc.documentElement.clientTop;
 
                 var htmlDom = doc.body,
-                    // 在这里，不使用element.style.borderLeftWidth，只有computedStyle是可信的
+                // 在这里，不使用element.style.borderLeftWidth，只有computedStyle是可信的
                     htmlBorderLeftWidth = parseInt(getStyle(htmlDom, 'borderLeftWidth')),
                     htmlBorderTopWidth = parseInt(getStyle(htmlDom, 'borderTopWidth'));
                 if(browser.ie && !browser.isStrict){
@@ -427,8 +427,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {Function} listener 需要添加的监听器
          * @remark
          *
-        1. 不支持跨浏览器的鼠标滚轮事件监听器添加<br>
-        2. 改方法不为监听器灌入事件对象，以防止跨iframe事件挂载的事件对象获取失败
+         1. 不支持跨浏览器的鼠标滚轮事件监听器添加<br>
+         2. 改方法不为监听器灌入事件对象，以防止跨iframe事件挂载的事件对象获取失败
 
          * @shortcut on
          * @meta standard
@@ -650,8 +650,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {baidu.lang.Event|String} event 	Event对象，或事件名称(1.1.1起支持)
          * @param {Object} 					options 扩展参数,所含属性键值会扩展到Event对象上(1.2起支持)
          * @remark 处理会调用通过addEventListenr绑定的自定义事件回调函数之外，还会调用直接绑定到对象上面的自定义事件。例如：<br>
-        myobj.onMyEvent = function(){}<br>
-        myobj.addEventListener("onMyEvent", function(){});
+         myobj.onMyEvent = function(){}<br>
+         myobj.addEventListener("onMyEvent", function(){});
          */
         baidu.lang.Class.prototype.dispatchEvent = function (event, options) {
             if (baidu.lang.isString(event)) {
@@ -713,13 +713,13 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @type {String}
 
      */
-    var _IMAGE_PATH = './img/blue';
+    var _IMAGE_PATH = 'http://api.map.baidu.com/library/TextIconOverlay/1.2/src/images/m';
 
     /**
 
      * 图片的后缀名
 
-      * @private
+     * @private
      * @type {String}
 
      */
@@ -729,23 +729,23 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *@exports TextIconOverlay as BMapLib.TextIconOverlay
      */
     var TextIconOverlay =
-        /**
-        * TextIconOverlay
-        * @class 此类表示地图上的一个覆盖物，该覆盖物由文字和图标组成，从Overlay继承。文字通常是数字（0-9）或字母（A-Z ），而文字与图标之间有一定的映射关系。
-        *该覆盖物适用于以下类似的场景：需要在地图上添加一系列覆盖物，这些覆盖物之间用不同的图标和文字来区分，文字可能表示了该覆盖物的某一属性值，根据该文字和一定的映射关系，自动匹配相应颜色和大小的图标。
-        *
-        *@constructor
-        *@param {Point} position 表示一个经纬度坐标位置。
-        *@param {String} text 表示该覆盖物显示的文字信息。//秦改成obj形式吧
-        *@param {Json Object} options 可选参数，可选项包括：<br />
-        *"<b>styles</b>":{Array<IconStyle>} 一组图标风格。单个图表风格包括以下几个属性：<br />
-        *   url	{String}	 图片的url地址。(必选)<br />
-        *   size {Size}	图片的大小。（必选）<br />
-        *   anchor {Size} 图标定位在地图上的位置相对于图标左上角的偏移值，默认偏移值为图标的中心位置。（可选）<br />
-        *   offset {Size} 图片相对于可视区域的偏移值，此功能的作用等同于CSS中的background-position属性。（可选）<br />
-        *   textSize {Number} 文字的大小。（可选，默认10）<br />
-        *   textColor {String} 文字的颜色。（可选，默认black）<br />
-        */
+    /**
+     * TextIconOverlay
+     * @class 此类表示地图上的一个覆盖物，该覆盖物由文字和图标组成，从Overlay继承。文字通常是数字（0-9）或字母（A-Z ），而文字与图标之间有一定的映射关系。
+     *该覆盖物适用于以下类似的场景：需要在地图上添加一系列覆盖物，这些覆盖物之间用不同的图标和文字来区分，文字可能表示了该覆盖物的某一属性值，根据该文字和一定的映射关系，自动匹配相应颜色和大小的图标。
+     *
+     *@constructor
+     *@param {Point} position 表示一个经纬度坐标位置。
+     *@param {String} text 表示该覆盖物显示的文字信息。
+     *@param {Json Object} options 可选参数，可选项包括：<br />
+     *"<b>styles</b>":{Array<IconStyle>} 一组图标风格。单个图表风格包括以下几个属性：<br />
+     *   url	{String}	 图片的url地址。(必选)<br />
+     *   size {Size}	图片的大小。（必选）<br />
+     *   anchor {Size} 图标定位在地图上的位置相对于图标左上角的偏移值，默认偏移值为图标的中心位置。（可选）<br />
+     *   offset {Size} 图片相对于可视区域的偏移值，此功能的作用等同于CSS中的background-position属性。（可选）<br />
+     *   textSize {Number} 文字的大小。（可选，默认10）<br />
+     *   textColor {String} 文字的颜色。（可选，默认black）<br />
+     */
         BMapLib.TextIconOverlay = function(position, text, options){
             this._position = position;
             this._text = text;
@@ -757,24 +757,20 @@ var BMapLib = window.BMapLib = BMapLib || {};
     T.lang.inherits(TextIconOverlay, BMap.Overlay, "TextIconOverlay");
 
     TextIconOverlay.prototype._setupDefaultStyles = function(){
-        //var sizes = [53, 56, 66, 78, 92];
-        // for(var i = 0, size; size = sizes[i]; i++){
-
-        // }//for循环的简洁写法
-        // 聚合的数据
-        this._styles.push({
-            url:_IMAGE_PATH + '.' + _IMAGE_EXTENSION,
-            size: new BMap.Size(92, 92)
-        });
-        //单条数据
-
+        var sizes = [53, 56, 66, 78, 90];
+        for(var i = 0, size; size = sizes[i]; i++){
+            this._styles.push({
+                url:_IMAGE_PATH + i + '.' + _IMAGE_EXTENSION,
+                size: new BMap.Size(size, size)
+            });
+        }//for循环的简洁写法
     };
 
     /**
-    *继承Overlay的intialize方法，自定义覆盖物时必须。
-    *@param {Map} map BMap.Map的实例化对象。
-    *@return {HTMLElement} 返回覆盖物对应的HTML元素。
-    */
+     *继承Overlay的intialize方法，自定义覆盖物时必须。
+     *@param {Map} map BMap.Map的实例化对象。
+     *@return {HTMLElement} 返回覆盖物对应的HTML元素。
+     */
     TextIconOverlay.prototype.initialize = function(map){
         this._map = map;
 
@@ -790,26 +786,26 @@ var BMapLib = window.BMapLib = BMapLib || {};
     };
 
     /**
-    *继承Overlay的draw方法，自定义覆盖物时必须。
-    *@return 无返回值。
-    */
+     *继承Overlay的draw方法，自定义覆盖物时必须。
+     *@return 无返回值。
+     */
     TextIconOverlay.prototype.draw = function(){
         this._map && this._updatePosition();
     };
 
     /**
-    *获取该覆盖物上的文字。
-    *@return {String} 该覆盖物上的文字。
-    */
+     *获取该覆盖物上的文字。
+     *@return {String} 该覆盖物上的文字。
+     */
     TextIconOverlay.prototype.getText = function(){
         return this._text;
     };
 
     /**
-    *设置该覆盖物上的文字。
-    *@param {String} text 要设置的文字，通常是字母A-Z或数字0-9。
-    *@return 无返回值。
-    */
+     *设置该覆盖物上的文字。
+     *@param {String} text 要设置的文字，通常是字母A-Z或数字0-9。
+     *@return 无返回值。
+     */
     TextIconOverlay.prototype.setText = function(text){
         if(text && (!this._text || (this._text.value != text.value) || (this._text.name != text.name))){
             this._text = text;
@@ -820,18 +816,18 @@ var BMapLib = window.BMapLib = BMapLib || {};
     };
 
     /**
-    *获取该覆盖物的位置。
-    *@return {Point} 该覆盖物的经纬度坐标。
-    */
+     *获取该覆盖物的位置。
+     *@return {Point} 该覆盖物的经纬度坐标。
+     */
     TextIconOverlay.prototype.getPosition = function () {
         return this._position;
     };
 
     /**
-    *设置该覆盖物的位置。
-    *@param {Point}  position 要设置的经纬度坐标。
-    *@return 无返回值。
-    */
+     *设置该覆盖物的位置。
+     *@param {Point}  position 要设置的经纬度坐标。
+     *@return 无返回值。
+     */
     TextIconOverlay.prototype.setPosition = function (position) {
         if(position && (!this._position || !this._position.equals(position))){
             this._position = position;
@@ -840,26 +836,25 @@ var BMapLib = window.BMapLib = BMapLib || {};
     };
 
     /**
-    *由文字信息获取风格数组的对应索引值。
-    *内部默认的对应函数为文字转换为数字除以10的结果，比如文字8返回索引0，文字25返回索引2.
-    *如果需要自定义映射关系，请覆盖该函数。
-    *@param {String} text  文字。
-    *@param {Array<IconStyle>}  styles 一组图标风格。
-    *@return {Number} 对应的索引值。
-    *2017-2-17 09:03:58废除
-    */
-    // TextIconOverlay.prototype.getStyleByText = function(text, styles){
-    //     var count = parseInt(text.value);
-    //     var index = parseInt(count / 10);
-    //     index = Math.max(0, index);
-    //     index = Math.min(index, styles.length - 1);
-    //     return styles[index];
-    // }
+     *由文字信息获取风格数组的对应索引值。
+     *内部默认的对应函数为文字转换为数字除以10的结果，比如文字8返回索引0，文字25返回索引2.
+     *如果需要自定义映射关系，请覆盖该函数。
+     *@param {String} text  文字。
+     *@param {Array<IconStyle>}  styles 一组图标风格。
+     *@return {Number} 对应的索引值。
+     */
+    /*TextIconOverlay.prototype.getStyleByText = function(text, styles){
+        var count = parseInt(text);
+        var index = parseInt(count / 10);
+        index = Math.max(0, index);
+        index = Math.min(index, styles.length - 1);
+        return styles[index];
+    }*/
 
     /**
-    *更新相应的CSS。
-    *@return 无返回值。
-    */
+     *更新相应的CSS。
+     *@return 无返回值。
+     */
     TextIconOverlay.prototype._updateCss = function(){
         //var style = this.getStyleByText(this._text, this._styles);
         var style = this._styles[0];
@@ -867,19 +862,19 @@ var BMapLib = window.BMapLib = BMapLib || {};
     };
 
     /**
-    *更新覆盖物的显示文字。
-    *@return 无返回值。
-    */
+     *更新覆盖物的显示文字。
+     *@return 无返回值。
+     */
     TextIconOverlay.prototype._updateText = function(){
         if (this._domElement) {
-            this._domElement.innerHTML = '<p>'+this._text.name+'</p>'+'<p>'+this._text.value+'</p>';
+            this._domElement.innerHTML = '<p style="margin-top:18px;">'+this._text.name+'</p>'+'<p>'+this._text.value+'</p>';
         }
     };
 
     /**
-    *调整覆盖物在地图上的位置更新覆盖物的显示文字。
-    *@return 无返回值。
-    */
+     *调整覆盖物在地图上的位置更新覆盖物的显示文字。
+     *@return 无返回值。
+     */
     TextIconOverlay.prototype._updatePosition = function(){
         if (this._domElement && this._position) {
             var style = this._domElement.style;
@@ -892,23 +887,25 @@ var BMapLib = window.BMapLib = BMapLib || {};
     };
 
     /**
-    * 为该覆盖物的HTML元素构建CSS
-    * @param {IconStyle}  一个图标的风格。
-    * @return {String} 构建完成的CSSTEXT。
-    */
+     * 为该覆盖物的HTML元素构建CSS
+     * @param {IconStyle}  一个图标的风格。
+     * @return {String} 构建完成的CSSTEXT。
+     */
     TextIconOverlay.prototype._buildCssText = function(style) {
         //根据style来确定一些默认值
         var url = style['url'];
         var size = style['size'];
         var anchor = style['anchor'];
         var offset = style['offset'];
-        var textColor = style['textColor'] || '#fff';
+        var textColor = style['textColor'] || 'black';
         var textSize = style['textSize'] || 10;
+        var lineHeight = style['lineHeight'] || 10;
+        var paddingTop = style['paddingTop'] || 10;
 
         var csstext = [];
         if (T.browser["ie"] < 7) {
             csstext.push('filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(' +
-                'sizingMethod=scale,src="' + url + '");')
+            'sizingMethod=scale,src="' + url + '");');
         } else {
             csstext.push('background-image:url(' + url + ');');
             var backgroundPosition = '0 0';
@@ -919,19 +916,19 @@ var BMapLib = window.BMapLib = BMapLib || {};
         if (size instanceof BMap.Size){
             if (anchor instanceof BMap.Size) {
                 if (anchor.height > 0 && anchor.height < size.height) {
-                      csstext.push('height:' + (size.height - anchor.height) + 'px; padding-top:' + anchor.height + 'px;');
+                    csstext.push('height:' + (size.height - anchor.height) + 'px; padding-top:' + paddingTop + 'px;');
                 }
                 if(anchor.width > 0 && anchor.width < size.width){
                     csstext.push('width:' + (size.width - anchor.width) + 'px; padding-left:' + anchor.width + 'px;');
                 }
             } else {
-                csstext.push('height:' + size.height + 'px; line-height:' + 20 + 'px;');
+                csstext.push('height:' + size.height + 'px; line-height:' + lineHeight + 'px;');
                 csstext.push('width:' + size.width + 'px; text-align:center;');
             }
         }
 
         csstext.push('cursor:pointer; color:' + textColor + '; position:absolute; font-size:' +
-            textSize + 'px; font-family:Arial,sans-serif; font-weight:bold');
+        textSize + 'px; font-family:Arial,sans-serif; font-weight:normal;');
         return csstext.join('');
     };
 
@@ -1007,10 +1004,10 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
 
     /**
-    * 为该覆盖物绑定一系列事件
-    * 当前支持click mouseover mouseout
-    * @return 无返回值。
-    */
+     * 为该覆盖物绑定一系列事件
+     * 当前支持click mouseover mouseout
+     * @return 无返回值。
+     */
     TextIconOverlay.prototype._bind = function(){
         if (!this._domElement){
             return;

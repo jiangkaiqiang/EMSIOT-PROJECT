@@ -120,7 +120,7 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
         url: '/home',
         controller: 'home',
-        templateUrl: 'app/template/home1.html'
+        templateUrl: 'app/template/home.html'
     }).state('userManage', {
         url: '/userManage',
         controller: 'userManage',
