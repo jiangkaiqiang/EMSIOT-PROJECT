@@ -5,7 +5,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     });    // 创建Map实例
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
-        console.log(data)
+        //console.log(data);
         if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
             url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
             window.location.href = url;
@@ -152,13 +152,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             textAlign: "center"
         });
         value2.setLabel(label);
-    }
+    };
 
 
     //显示基站和聚合
     var markerClusterer = null;
     var marker2;
-    var markers = []
+    var markers = [];
 
     function showStation() {
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
@@ -168,8 +168,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
         var endHtml = "</tbody></table></div></div>";
         var pt;
-     /*   var bluemarkers = []; //存放聚合的基站
-        var grymarkers = [];*/
+        /*   var bluemarkers = []; //存放聚合的基站
+         var grymarkers = [];*/
         var tmpStation;
         //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.stations.length; i++) {
@@ -244,8 +244,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         markerClusterer.setGridSize(40);
 
         //用于基站跳动
-        $scope.jizhanBounce = map.getOverlays();
- }
+        $scope.jizhanBounce = markers;
+    }
 
     //用于基站跳动的参数
     $scope.jizhanBounce = null;
@@ -256,12 +256,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.tiao.setAnimation(null);
         }
         var tablePoint = $(this).context.cells[1].innerHTML;//获取单击表格时的地址
+        console.log(tablePoint);
         for (var g = 0; g < $scope.stations.length; g++) {
             if (tablePoint == $scope.stations[g].station_address) {//表格获取到的地址等于循环基站时的基站地址
+                console.log(tablePoint == $scope.stations[g].station_address)
                 var allOverlay = $scope.jizhanBounce;
-                var Oe = null
+                console.log($scope.jizhanBounce)
+                var Oe = null;
                 for (var i = 0; i < allOverlay.length; i++) {
-                    Oe = allOverlay[i].point
+                    Oe = allOverlay[i].point;
                     if (Oe.lng == $scope.stations[g].longitude && Oe.lat == $scope.stations[g].latitude) {
                         $scope.tiao = allOverlay[i];//保存上一次跳动的基站
                         allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
@@ -326,7 +329,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 "guaCardNum": $scope.guaCardNum
             }
         }).success(function (data) {
-            console.log(data)
+            console.log(data);
             $scope.longitude = data.longitude;
             $scope.latitude = data.latitude;
             if ($scope.longitude == undefined || $scope.longitude == null) {
@@ -344,9 +347,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             map.centerAndZoom($scope.elecPt, 17);
             //用于基站跳动
-           // $scope.jizhanBounce = map.getOverlays();
+            $scope.jizhanBounce = map.getOverlays();
             $("#dingweiModal").modal("hide");
-        }).error(function(){
+        }).error(function () {
             alert("请输入正确的车牌号或者芯片号！")
         });
     };
@@ -403,8 +406,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     if (lushu == null) {
                         marker = new BMap.Marker(arrPois[0], {
                             icon: new BMap.Icon('../app/img/eb.png',
-                            new BMap.Size(50, 30),
-                            {anchor: new BMap.Size(27, 23)} )
+                                new BMap.Size(50, 30),
+                                {anchor: new BMap.Size(27, 23)})
                         });
                         marker.setZIndex(10);//设置单个marker的index
                         var label = new BMap.Label($scope.electNumForTraceTable, {offset: new BMap.Size(0, -30)});
@@ -529,9 +532,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.showTable = false;
             alert("请填写正确的车牌号或者防盗芯片ID!");
         });
-
-        //用于基站跳动
-        $scope.jizhanBounce = map.getOverlays();
     };
     $scope.showOperation = false;
     $scope.showTable = false;
@@ -586,74 +586,14 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         pickerPosition: "bottom-left"
     });
 
-
-    map.addEventListener("dragend", function(){
-        var center =map.getCenter();
-        alert("地图中心点变更为："+ center.lng +", "+ center.lat);
-    });
-  /*  $scope.aa = function(){
-        console.log("111");
-        var cp = map.getBounds();
-        var centerPt = cp.getCenter();
-        var centerLat = centerPt.lat;
-        var centerLng = centerPt.lng;
-        console.log(centerLat);
-        console.log(centerLng);
-    };*/
-    //热力图
-    /*var heatmapOverlay;
-
-    function heatmap() {
-        heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 20});
-        map.addOverlay(heatmapOverlay);
-        heatmapOverlay.setDataSet({data: $scope.thermodynamics, max: 10});
-        // console.log($scope.thermodynamics);
-        heatmapOverlay.show();
-        //var label2 = new BMap.Label("标题显示",{offset:new BMap.Size(4,-15)});
-        //heatmapOverlay.setLabel(label2);
-    }*/
-
-   /* $scope.showReLiTu = function () {
-        $http.get('/i/elect/findElectsNumByStations', {
-            params: {
-                "proPower": $scope.user.pro_power,
-                "cityPower": $scope.user.city_power,
-                "areaPower": $scope.user.area_power
-            }
-        }).success(function (data) {
-            $scope.thermodynamics = data;
-            heatmap();
-        });
-    };*/
-
-    //热力图开关选项控制
-   /* $scope.relituFlag = 0;
-    $('#relitu').parent(".swichWrap").click(function () {
-        if ($scope.relituFlag == 0) {
-            $scope.showReLiTu();
-            $scope.relituFlag = 1;
-        }
-        else if ($scope.relituFlag == 1) {
-            //alert("隐藏热力图");
-            heatmapOverlay.hide();
-            $scope.relituFlag = 0;
-        }
-        showCssFlag('#relitu');
-    });*/
-
-   /* function relitu1() {
-        if ($scope.relituFlag == 1) {
-            //alert("显示热力图");
-            $scope.relituFlag = 1;
-            $scope.showReLiTu();
-        } else if ($scope.relituFlag == 0) {
-            //alert("隐藏热力图");
-            $scope.relituFlag = 0;
-            if (heatmapOverlay) {
-                heatmapOverlay.hide();
-            }
-        }
-    }*/
+    $scope.getZoom = function () {
+        $scope.center = map.getCenter();
+        $scope.centerLat = $scope.center.lat;
+        $scope.centerLng = $scope.center.lng;
+        $scope.zoomNow = map.getZoom();
+        console.log($scope.zoomNow);
+        alert("当前地图中心点坐标为：" + $scope.centerLng + ", " + $scope.centerLat + "当前地图缩放级别为：" + $scope.zoomNow)
+    };
 
     //显示基站开关选项控制
     $scope.jizhanFlag = 1;
@@ -666,10 +606,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         else if ($scope.jizhanFlag == 1) {
             alert("隐藏基站");
             $scope.jizhanFlag = 0;
-            //判断内容
-           /* if ($scope.elecMarker != null) {
-                map.addOverlay($scope.elecMarker);
-            }*/
             if (markerClusterer != null) {
                 markerClusterer.clearMarkers();
             }
@@ -677,57 +613,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }
         showCssFlag('#xsjizhan');
     });
-
-    //基站聚合开关选项控制
-    //$scope.jizhanjuheFlag = 1;
-    /*$('#jizhanjuhe').parent(".swichWrap").click(function () {
-        $scope.jizhankongzhi();*/
-//        if($scope.jizhanFlag == 1){
-//            if ($scope.jizhanjuheFlag == 1) {
-//                $scope.jizhanjuheFlag = 0;
-//                showStation();
-//            }
-//            else if ($scope.jizhanjuheFlag == 0) {
-//                //markers=null;
-//                map.clearOverlays();
-//                $scope.jizhanjuheFlag = 1;
-//                showStation();
-//                if(markerClusterer!=null){
-//                    markerClusterer.clearMarkers();
-//                }
-//                relitu1();
-//
-//            }
-//            showCssFlag('#jizhanjuhe');
-//        }else{
-//            alert("请打开基站按钮");
-//        }
-
-   /* });*/
-
-//    基站聚合函数
-   /* $scope.jizhankongzhi = function () {
-        if ($scope.jizhanFlag == 1) {
-            if ($scope.jizhanjuheFlag == 1) {
-                $scope.jizhanjuheFlag = 0;
-                showStation();
-            }
-            else if ($scope.jizhanjuheFlag == 0) {
-                //markers=null;
-                map.clearOverlays();
-                $scope.jizhanjuheFlag = 1;
-                showStation();
-                if (markerClusterer != null) {
-                    markerClusterer.clearMarkers();
-                }
-                relitu1();
-
-            }
-            showCssFlag('#jizhanjuhe');
-        } else {
-            alert("请打开基站按钮");
-        }
-    }*/
 
     function showCssFlag(param) {
         $(param).toggleClass("active");

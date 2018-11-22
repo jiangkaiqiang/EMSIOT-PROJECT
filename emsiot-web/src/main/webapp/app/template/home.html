@@ -42,22 +42,10 @@
             </div>
             <div>显示基站</div>
         </li>
-        <!-- <li class="flex-items">
-            <div class="swichWrap">
-                <div class="guijiCircle" id="jizhanjuhe"></div>
-            </div>
-            <div>基站聚合</div>
-        </li> -->
-        <!--<li class="flex-items">
-            <div class="swichWrap">
-                <div class="guijiCircle" id="relitu"></div>
-            </div>
-            <div>车辆热力图</div>
-        </li>-->
-        <li ng-show="rootUserPowerDto.traceSearch==1" class="">
-            <a class="flex flex-items">
-                <i class="iconfont icon-yonghuguanli"></i>
-                <span>快速定位</span>
+        <li ng-show="rootUserPowerDto.traceSearch==1">
+            <a class="flex flex-items" data-toggle="modal" data-target="#cog">
+                <i class="glyphicon glyphicon-cog" style="font-size:21px;margin-right:5px;margin-bottom:3px;"></i>
+                <span>地图级别/中心点</span>
             </a>
         </li>
         <li ng-show="rootUserPowerDto.traceSearch==1" class="flex-items">
@@ -165,7 +153,7 @@
             <div class="modal-header">
                 <button ng-attr-type type="button" class="close"
                         data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="">车辆定位</h4>
+                <h4 class="modal-title">车辆定位</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="">
@@ -174,13 +162,13 @@
 
                         <div class="col-sm-7">
                             <div class="col-sm-3">
-                                <select name="" id="" class="form-control">
+                                <select name="" class="form-control">
                                     <option value="">电动车</option>
                                     <option value="">摩托车</option>
                                 </select>
                             </div>
                             <div class="col-sm-4" ng-style style="margin: 0 5px;">
-                                <select id="" class="form-control"
+                                <select class="form-control"
                                         ng-model="keywordTypeForLocation" ng-disabled="editable"
                                         ng-options="x.id as x.name for x in AllKeywordType"></select>
                             </div>
@@ -202,6 +190,49 @@
                 </button>
 
             </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="cog" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-attr-type type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">首页配置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="">
+                    <div class="form-group">
+                        <label class="control-label col-md-3"> 地图级别： </label>
+                        <div class="col-sm-7">
+                            <input ng-attr-type type="number" ng-attr-placeholder  placeholder="请输入地图级别" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">经纬度： </label>
+                        <div class="col-sm-7 flex-items flex-between">
+                            <input ng-attr-type type="text" ng-attr-placeholder  placeholder="请输入经度" class="form-control" ng-style style="margin-right:5px;"/>
+                            <input ng-attr-type type="text" ng-attr-placeholder  placeholder="请输入维度" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">数据查询时间： </label>
+                        <div class="col-sm-7 flex-items">
+                            <input ng-attr-type type="text" ng-attr-placeholder  placeholder="时间以分钟为单位" class="form-control"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button ng-attr-type type="button" class="btn btn-primary">确定 </button>
+                <button ng-attr-type type="button" class="btn btn-guiji" data-dismiss="modal">取消 </button>
+             </div>
         </div>
         <!-- /.modal-content -->
     </div>
