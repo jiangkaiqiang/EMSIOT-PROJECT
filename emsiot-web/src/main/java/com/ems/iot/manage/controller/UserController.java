@@ -416,15 +416,26 @@ public class UserController extends BaseController {
 			@RequestParam(value="fixedLat", required=false) String fixedLat,
 			@RequestParam(value="fixedZoom", required=false) Integer fixedZoom,
 			@RequestParam(value="fixedTimer", required=false) Integer fixedTimer,
-			@RequestParam(value="fixedQueryTime", required=false) Integer fixedQueryTime) throws UnsupportedEncodingException {
-		
-		/*if (fixedTimer == null) {
-			return new ResultDto(-1, "定时器不能为空");
+			@RequestParam(value="fixedQueryTime", required=false) Integer fixedQueryTime, HttpServletRequest request) throws UnsupportedEncodingException {
+		SysUser user = (SysUser)request.getSession().getAttribute("user");
+		if (fixedLon != null) {
+			user.setFixed_lon(fixedLon);
 		}
-		if (fixedQueryTime == null) {
-			return new ResultDto(-1, "搜索时间范围不能为空");
-		}*/
-		userDao.updateUserSetting(userId, fixedLon, fixedLat, fixedZoom, fixedTimer, fixedQueryTime);;
+		if (fixedLat != null) {
+			user.setFixed_lat(fixedLat);
+		}
+		if (fixedZoom != null) {
+			user.setFixed_zoom(fixedZoom);
+		}
+		if (fixedTimer != null) {
+			user.setFixed_timer(fixedTimer);
+		}
+		if (fixedQueryTime != null) {
+			user.setFixed_query_time(fixedQueryTime);
+		}
+		
+		userDao.updateUserSetting(userId, fixedLon, fixedLat, fixedZoom, fixedTimer, fixedQueryTime);
+		request.getSession().setAttribute("user", user);
 		return new ResultDto(0,"设置成功");
 	}
 	

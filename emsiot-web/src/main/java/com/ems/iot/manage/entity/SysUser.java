@@ -28,6 +28,17 @@ public class SysUser {
     private String user_tel;
     
     private String company;
+    
+    private String fixed_lon;
+    
+    private String fixed_lat;
+    
+    private Integer fixed_zoom;
+    
+    
+    private Integer fixed_timer;
+    
+    private Integer fixed_query_time;
 
     public Integer getUser_id() {
         return user_id;
@@ -132,6 +143,47 @@ public class SysUser {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-    
+
+	public String getFixed_lon() {
+		return fixed_lon;
+	}
+
+	public void setFixed_lon(String fixed_lon) {
+		this.fixed_lon = fixed_lon;
+	}
+
+	public String getFixed_lat() {
+		return fixed_lat;
+	}
+
+	public void setFixed_lat(String fixed_lat) {
+		this.fixed_lat = fixed_lat;
+	}
+
+	public Integer getFixed_zoom() {
+		return fixed_zoom;
+	}
+
+	public void setFixed_zoom(Integer fixed_zoom) {
+		this.fixed_zoom = fixed_zoom;
+	}
+
+	public Integer getFixed_timer() {
+		return fixed_timer;
+	}
+
+	public void setFixed_timer(Integer fixed_timer) {
+		this.fixed_timer = fixed_timer;
+	}
+
+	public Integer getFixed_query_time() {
+		return fixed_query_time;
+	}
+
+	public void setFixed_query_time(Integer fixed_query_time) {
+		this.fixed_query_time = fixed_query_time;
+	}
+
+
     
 }

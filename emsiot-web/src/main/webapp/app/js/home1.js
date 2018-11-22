@@ -3,91 +3,125 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         minZoom: 5,
         maxZoom: 30
     });    // 创建Map实例
-    $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
-        $scope.user = data;
-        //console.log(data);
-        if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
-            url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
-            window.location.href = url;
-        }
-        // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
-        $http.get('/i/city/findCityNameByUserPower', {
-            params: {
-                "areaID": $scope.user.area_power,
-                "cityID": $scope.user.city_power,
-                "proID": $scope.user.pro_power
+    $scope.load = function(){
+        $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
+            $scope.user = data;
+            console.log(data);
+            if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
+                url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
+                window.location.href = url;
             }
-        }).success(function (data) {
-            $scope.cityName = data.name;
-            var myGeo = new BMap.Geocoder();
-            myGeo.getPoint($scope.cityName, function (point) {
-                $scope.point = point;
-                map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
-                map.centerAndZoom($scope.cityName, 16); // 初始化地图,设置中心点坐标和地图级别
-                map.setCurrentCity($scope.cityName);
-                map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-                map.disableDoubleClickZoom();//禁止地图双击放大功能
-                // 添加比例尺
-                var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
-                var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
-                map.addControl(top_left_control);
-                map.addControl(top_left_navigation);
-                showCssFlag('#xsjizhan');
-                // 获取基站
-                $http.get('/i/station/findAllStationsForMap', {
-                    params: {
-                        "proPower": $scope.user.pro_power,
-                        "cityPower": $scope.user.city_power,
-                        "areaPower": $scope.user.area_power
+            // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
+            $http.get('/i/city/findCityNameByUserPower', {
+                params: {
+                    "areaID": $scope.user.area_power,
+                    "cityID": $scope.user.city_power,
+                    "proID": $scope.user.pro_power
+                }
+            }).success(function (data) {
+                $scope.cityName = data.name;
+                var myGeo = new BMap.Geocoder();
+                myGeo.getPoint($scope.cityName, function (point) {
+                    $scope.point = point;
+                    //console.log($scope.user.fixed_lon);
+                    if($scope.user.fixed_lat == null || $scope.user.fixed_lat == undefined || $scope.user.fixed_lon == null || $scope.user.fixed_lon == undefined){
+                        map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
+                        map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
+                    }else{
+                        map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
+                        //map.centerAndZoom($scope.cityName, $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
                     }
-                }).success(function (data) {
-                    $scope.stations = data;
-                    showStation();
+
+                    map.setCurrentCity($scope.cityName);
+                    map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+                    map.disableDoubleClickZoom();//禁止地图双击放大功能
+                    // 添加比例尺
+                    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+                    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+                    map.addControl(top_left_control);
+                    map.addControl(top_left_navigation);
+                    showCssFlag('#xsjizhan');
+                    // 获取基站
+                    $http.get('/i/station/findAllStationsForMap', {
+                        params: {
+                            "proPower": $scope.user.pro_power,
+                            "cityPower": $scope.user.city_power,
+                            "areaPower": $scope.user.area_power
+                        }
+                    }).success(function (data) {
+                        $scope.stations = data;
+                        showStation();
+                    });
+                    // 获取登记车辆数量
+                    $http.get('/i/elect/findElectsList', {
+                        params: {
+                            "areaPower": $scope.user.area_power,
+                            "cityPower": $scope.user.city_power,
+                            "proPower": $scope.user.pro_power
+                        }
+                    }).success(function (data) {
+                        $scope.elects = data;
+                    });
                 });
-                // 获取登记车辆数量
-                $http.get('/i/elect/findElectsList', {
+                //});
+                // 获取黑名单车辆数量
+                $http.get('/i/blackelect/findBlackelectsList', {
                     params: {
                         "areaPower": $scope.user.area_power,
                         "cityPower": $scope.user.city_power,
                         "proPower": $scope.user.pro_power
                     }
                 }).success(function (data) {
-                    $scope.elects = data;
+                    $scope.blackElects = data;
                 });
-            });
-            //});
-            // 获取黑名单车辆数量
-            $http.get('/i/blackelect/findBlackelectsList', {
-                params: {
-                    "areaPower": $scope.user.area_power,
-                    "cityPower": $scope.user.city_power,
-                    "proPower": $scope.user.pro_power
-                }
-            }).success(function (data) {
-                $scope.blackElects = data;
-            });
-            // 获取在线车辆数量
-            $http.get('/i/elect/findInlineElectsNum', {
-                params: {
-                    "areaPower": $scope.user.area_power,
-                    "cityPower": $scope.user.city_power,
-                    "proPower": $scope.user.pro_power
-                }
-            }).success(function (data) {
-                $scope.inlineElects = data;
-            });
-            // 获取报警数量
-            $http.get('/i/electalarm/findElectAlarmsList', {
-                params: {
-                    "areaPower": $scope.user.area_power,
-                    "cityPower": $scope.user.city_power,
-                    "proPower": $scope.user.pro_power
-                }
-            }).success(function (data) {
-                $scope.electAlarms = data;
+                // 获取在线车辆数量
+                $http.get('/i/elect/findInlineElectsNum', {
+                    params: {
+                        "areaPower": $scope.user.area_power,
+                        "cityPower": $scope.user.city_power,
+                        "proPower": $scope.user.pro_power
+                    }
+                }).success(function (data) {
+                    $scope.inlineElects = data;
+                });
+                // 获取报警数量
+                $http.get('/i/electalarm/findElectAlarmsList', {
+                    params: {
+                        "areaPower": $scope.user.area_power,
+                        "cityPower": $scope.user.city_power,
+                        "proPower": $scope.user.pro_power
+                    }
+                }).success(function (data) {
+                    $scope.electAlarms = data;
+                });
+                
+               
             });
         });
-    });
+    };
+    $scope.load();
+    //setInterval(console.log(1),3000);
+    /*setInterval(function(){
+        var time = new Date().getTime();//当前时间
+        var start;
+        if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+            start = new Date(time - 60 * 1000 * 60);//一小时
+        }else{
+            start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
+        }
+        var end = new Date(time);
+        for (var i = 0; i < $scope.stations.length; i++) {
+            tmpStation = $scope.stations[i];
+            showElectsInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
+            var carNum = $scope.electsInStation.length;
+            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
+        }
+        if(markerClusterer!=null){
+            markerClusterer._redraw();
+        }
+
+
+   },10000);*/
     var lushu = null;
 
     function G(id) {
@@ -159,7 +193,17 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         });
         value2.setLabel(label);
     };
-
+    function FormatDate(strTime) {
+        var date = new Date(strTime);
+        //2018-10-15 修改
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+        return year + "-" + month + "-" + day + " " + hours + ":" + min + ":" + seconds;
+    }
 
     //显示基站和聚合
     var markerClusterer = null;
@@ -167,6 +211,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     var markers = [];
 
     function showStation() {
+        console.log("1");
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
         var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
@@ -190,22 +235,18 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             }
 
             //统计时间内经过改基站的车辆的数
+
             var time = new Date().getTime();//当前时间
-            var start = new Date(time - 60 * 1000 * 60);//一小时
+            var start;
+            if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+                start = new Date(time - 60 * 1000 * 60);//一小时
+            }else{
+                start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
+            }
             var end = new Date(time);
             var num = tmpStation.station_phy_num;
 
-            function FormatDate(strTime) {
-                var date = new Date(strTime);
-                //2018-10-15 修改
-                var year = date.getFullYear();
-                var month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
-                var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                var min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-                return year + "-" + month + "-" + day + " " + hours + ":" + min + ":" + seconds;
-            }
+
 
             //console.log(FormatDate(start) ,FormatDate(end) );
             showElectsInStation(FormatDate(start), FormatDate(end), num);
@@ -233,7 +274,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             markers.push(marker2);
         }
         //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-        var markerClusterer = new BMapLib.MarkerClusterer(map,
+        markerClusterer = new BMapLib.MarkerClusterer(map,
             {
                 markers: markers,
                 girdSize: 100,
@@ -262,12 +303,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.tiao.setAnimation(null);
         }
         var tablePoint = $(this).context.cells[1].innerHTML;//获取单击表格时的地址
-        console.log(tablePoint);
+        //console.log(tablePoint);
         for (var g = 0; g < $scope.stations.length; g++) {
             if (tablePoint == $scope.stations[g].station_address) {//表格获取到的地址等于循环基站时的基站地址
-                console.log(tablePoint == $scope.stations[g].station_address)
+               // console.log(tablePoint == $scope.stations[g].station_address)
                 var allOverlay = $scope.jizhanBounce;
-                console.log($scope.jizhanBounce)
+               // console.log($scope.jizhanBounce)
                 var Oe = null;
                 for (var i = 0; i < allOverlay.length; i++) {
                     Oe = allOverlay[i].point;
@@ -335,7 +376,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 "guaCardNum": $scope.guaCardNum
             }
         }).success(function (data) {
-            console.log(data);
+            //console.log(data);
             $scope.longitude = data.longitude;
             $scope.latitude = data.latitude;
             if ($scope.longitude == undefined || $scope.longitude == null) {
@@ -606,6 +647,42 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     map.addEventListener("dblclick",function(e){
         alert("您的经度和纬度分别为："+ e.point.lng + " , " + e.point.lat+'\n'+"当前地图级别为：" + map.getZoom());
     });
+
+
+    //设置参数
+    $scope.setConfig = function () {
+        if($scope.configTime!==null || $scope.configTime!==null){
+            $http.get('/i/user/updateUserSetting', {
+                params: {
+                    "userId" : $scope.user.user_id,
+                    "fixedZoom": $scope.zoomNow,
+                    "fixedLon": $scope.centerLng,
+                    "fixedLat": $scope.centerLat,
+                    "fixedQueryTime": $scope.configTime
+                }
+            }).success(function (data) {
+                console.log(data);
+                $scope.user.fixed_lat = $scope.centerLat;
+                $scope.user.fixed_lon = $scope.centerLng;
+                $scope.user.fixed_zoom = $scope.zoomNow;
+                $scope.user.fixed_query_time = $scope.configTim;
+                $scope.load();
+                /*if($scope.user.fixed_lat != null && $scope.user.fixed_lat != undefined && $scope.user.fixed_lon != null && $scope.user.fixed_lon != undefined){
+                    map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
+
+                }*/
+                $("#cog").modal("hide");
+            }).error(function () {
+                alert("请输入完整的信息！")
+            });
+        }else{
+            alert("时间设置不能为空！");
+        }
+
+    };
+
+    //定是函数
+    
 
 
     //显示基站开关选项控制
