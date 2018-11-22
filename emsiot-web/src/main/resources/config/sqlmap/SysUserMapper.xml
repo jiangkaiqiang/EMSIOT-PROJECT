@@ -17,7 +17,8 @@
 		#{menu_power,jdbcType=VARCHAR},#{pro_power,jdbcType=INTEGER},#{city_power,jdbcType=INTEGER},
 		#{area_power,jdbcType=INTEGER}, now(),
 		now(),
-		#{user_tel,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR})
+		#{user_tel,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{fixed_lon,jdbcType=VARCHAR},#{fixed_lat,jdbcType=VARCHAR},
+		#{fixed_zoom,jdbcType=INTEGER},#{fixed_timer,jdbcType=INTEGER},#{fixed_query_time,jdbcType=INTEGER})
 	</insert>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
@@ -108,4 +109,27 @@
 		</where>
 		order by `create_time` desc
 	</select>
+	
+	<update id="updateUserSetting" parameterType="map">
+		update sys_user
+		<set>
+			<if test="fixedLon != null">
+				fixed_lon = #{fixedLon},
+			</if>
+			<if test="fixedLat != null">
+				fixed_lat = #{fixedLat},
+			</if>
+			<if test="fixedZoom != null">
+				fixed_zoom = #{fixedZoom},
+			</if>
+			<if test="fixedTimer != null">
+				fixed_timer = #{fixedTimer},
+			</if>
+			<if test="fixedQueryTime != null">
+				fixed_query_time = #{fixedQueryTime},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
 </mapper>

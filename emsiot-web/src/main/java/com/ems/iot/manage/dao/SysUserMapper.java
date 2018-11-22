@@ -22,6 +22,9 @@ public interface SysUserMapper {
 	int insert(SysUser record);
 	
 	void updateUser(SysUser userEntity);
+	
+	void updateUserSetting(@Param("userId")String userId, @Param("fixedLon")String fixedLon, @Param("fixedLat")String fixedLat,
+			@Param("fixedZoom")Integer fixedZoom, @Param("fixedTimer")Integer fixedTimer, @Param("fixedQueryTime")Integer fixedQueryTime);
 		
 	Page<SysUser> findAllUser(@Param("keyword")String keyword,@Param("startTime")String startTime, @Param("endTime")String endTime,
 			@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower,@Param("adminId")Integer adminId);

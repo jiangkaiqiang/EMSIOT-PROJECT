@@ -396,6 +396,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             	}
             	$scope.elecMarker = null;
             	map.clearOverlays();
+            	var showLable="";
                 for (var i = 0; i < data.length - 1; i++) {
                     var marker;
                    // var lushu;
@@ -405,14 +406,15 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 	                    marker=new BMap.Marker(arrPois[0],{
 	                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
-	                    var label = new BMap.Label($scope.keywordForTrace,{offset:new BMap.Size(0,-30)});
+	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].statioName,{offset:new BMap.Size(0,-30)});
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
 	                    marker.setLabel(label);
 	                    map.addOverlay(marker);lushu=1
                     }
                     BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
                         var pointsArr=[initPos,targetPos];  //点数组
-                        var me = this,                        
+                        var me = this,   
+                       
                         //当前的帧数
                             currentCount = 0,
                         //步长，米/秒
@@ -473,6 +475,10 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                                 me._setInfoWin(pos);
                             }
                         },timer);
+                        if(showLable == ""){
+                        	showLable = me._opts.defaultContent
+                        }
+                        me._opts.defaultContent=showLable+":"+data[me.i].statioName
                     };
 
                     

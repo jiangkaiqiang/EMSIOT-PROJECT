@@ -408,4 +408,24 @@ public class UserController extends BaseController {
 		}
 		return new BaseDto(0);
 	}
+	
+	@RequestMapping(value = "/updateUserSetting", method = RequestMethod.GET)
+	@ResponseBody
+	public Object updateUserSetting(@RequestParam(value="userId", required=true) String userId,
+			@RequestParam(value="fixedLon", required=false) String fixedLon,
+			@RequestParam(value="fixedLat", required=false) String fixedLat,
+			@RequestParam(value="fixedZoom", required=false) Integer fixedZoom,
+			@RequestParam(value="fixedTimer", required=false) Integer fixedTimer,
+			@RequestParam(value="fixedQueryTime", required=false) Integer fixedQueryTime) throws UnsupportedEncodingException {
+		
+		/*if (fixedTimer == null) {
+			return new ResultDto(-1, "定时器不能为空");
+		}
+		if (fixedQueryTime == null) {
+			return new ResultDto(-1, "搜索时间范围不能为空");
+		}*/
+		userDao.updateUserSetting(userId, fixedLon, fixedLat, fixedZoom, fixedTimer, fixedQueryTime);;
+		return new ResultDto(0,"设置成功");
+	}
+	
 }
