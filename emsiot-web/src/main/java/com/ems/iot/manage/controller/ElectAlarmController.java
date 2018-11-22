@@ -282,10 +282,22 @@ public class ElectAlarmController extends BaseController {
 	@RequestMapping(value = "/selectElectAlarmVehicleLocationByTime")
 	@ResponseBody
 	public Object selectElectAlarmVehicleLocationByTime(@RequestParam(value = "startTime", required = false) String startTime,
-			@RequestParam(value = "endTime", required = false) String endTime)
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value="proPower", required=false) Integer proPower,
+			@RequestParam(value="cityPower", required=false) Integer cityPower,
+			@RequestParam(value="areaPower", required=false) Integer areaPower)
 					throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		List<ElectAlarm> electAlarms = electAlarmMapper
-				.selectElectAlarmVehicleByTime(startTime, endTime);
+				.selectElectAlarmVehicleByTime(startTime, endTime, proPower, cityPower, areaPower);
 		List<ElectAlarmDto> electAlarmDtos = new ArrayList<ElectAlarmDto>();
 		for (ElectAlarm electAlarm : electAlarms) {
 			ElectAlarmDto electAlarmDto = new ElectAlarmDto();

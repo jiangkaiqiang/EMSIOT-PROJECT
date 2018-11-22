@@ -762,6 +762,10 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             data : {
                 "startTime": $scope.alarmStartTime,
                 "endTime": $scope.alarmEndTime + " 23:59:59",
+                "proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power
+                
             }
         }).success(function(data){
             $scope.alarmVehicle = data;

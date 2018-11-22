@@ -189,8 +189,10 @@
    <select id="selectElectAlarmVehicleByTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
 		
 		SELECT * FROM elect_alarm alarm 
+			left join electrombile on electrombile.gua_card_num = alarm.alarm_gua_card_num
 		<where>
 			alarm.alarm_time = (SELECT max(alarm_time) FROM elect_alarm 
+									left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
 									<where>
 										alarm.alarm_gua_card_num = alarm_gua_card_num 
 										<if test="startTime!=null and startTime!=''">
@@ -199,6 +201,15 @@
 										<if test="endTime!=null and endTime!=''">
 											AND alarm_time &lt;= #{endTime}
 										</if>
+										<if test="proPower != null">
+										    AND electrombile.pro_id = #{proPower}
+										</if>
+										<if test="cityPower != null">
+											AND electrombile.city_id = #{cityPower}
+										</if>
+										<if test="areaPower != null">
+											AND electrombile.area_id = #{areaPower}
+										</if>
 									</where>
 								)
 			<if test="startTime!=null and startTime!=''">
@@ -206,6 +217,15 @@
 			</if>
 			<if test="endTime!=null and endTime!=''">
 				AND alarm_time &lt;= #{endTime}
+			</if>
+			<if test="proPower != null">
+			    AND electrombile.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.area_id = #{areaPower}
 			</if>
 		</where>
 	</select>

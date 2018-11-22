@@ -73,6 +73,6 @@ public interface ElectAlarmMapper {
      * @param endTime
      * @return
      */
-    List<ElectAlarm> selectElectAlarmVehicleByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<ElectAlarm> selectElectAlarmVehicleByTime(@Param("startTime") String startTime, @Param("endTime") String endTime, @Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
 }
