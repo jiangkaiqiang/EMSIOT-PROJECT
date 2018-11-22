@@ -26,6 +26,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 map.centerAndZoom($scope.cityName, 16); // 初始化地图,设置中心点坐标和地图级别
                 map.setCurrentCity($scope.cityName);
                 map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+                map.disableDoubleClickZoom();//禁止地图双击放大功能
+                // 添加比例尺
+                var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+                var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+                map.addControl(top_left_control);
+                map.addControl(top_left_navigation);
                 showCssFlag('#xsjizhan');
                 // 获取基站
                 $http.get('/i/station/findAllStationsForMap', {
@@ -586,14 +592,21 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         pickerPosition: "bottom-left"
     });
 
-    $scope.getZoom = function () {
+    $scope.setCog = function(){
         $scope.center = map.getCenter();
         $scope.centerLat = $scope.center.lat;
         $scope.centerLng = $scope.center.lng;
         $scope.zoomNow = map.getZoom();
         console.log($scope.zoomNow);
-        alert("当前地图中心点坐标为：" + $scope.centerLng + ", " + $scope.centerLat + "当前地图缩放级别为：" + $scope.zoomNow)
+        console.log($scope.centerLat);
+        console.log($scope.centerLng)
     };
+
+    //单击获取点击的经纬度
+    map.addEventListener("dblclick",function(e){
+        alert("您的经度和纬度分别为："+ e.point.lng + " , " + e.point.lat+'\n'+"当前地图级别为：" + map.getZoom());
+    });
+
 
     //显示基站开关选项控制
     $scope.jizhanFlag = 1;
