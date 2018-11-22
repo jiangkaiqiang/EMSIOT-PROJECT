@@ -449,4 +449,19 @@ public class StationController extends BaseController {
 		return new BaseDto(0);
 	}
 	
+	
+	/**
+	 * 搜索单个基站
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findStation")
+	@ResponseBody
+	public Object findAllStationStatusRecord(@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum
+			) throws UnsupportedEncodingException {
+		Station staions= stationMapper.selectByStationPhyNum(stationPhyNum);
+		return staions;
+	}
+	
 }

@@ -133,5 +133,82 @@
 		</where>
 		order by `alarm_time` ASC
 	</select>
+	
+   
+   <select id="selectElectsByEleGuaCardNumNow" parameterType="map" resultType="java.lang.Integer">
+	SELECT COUNT(*) as count FROM `elect_alarm` 
+	left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
+	<where>
+			<if test="proPower != null">
+			    electrombile.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.area_id = #{areaPower}
+			</if>
+		</where>
+	
+     AND elect_alarm.alarm_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by elect_alarm.alarm_gua_card_num
+	</select>
+   
+   <select id="selectElectsByStationPhyNumAndTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+		SELECT * FROM `elect_alarm`
+		<where>
+			<if test="stationPhyNum != null">
+				alarm_station_phy_num = #{stationPhyNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND alarm_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND alarm_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `alarm_time` ASC
+	</select>
+	
+   <select id="selectElectsByGuaCardNumNumAndTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+		SELECT * FROM `elect_alarm`
+		<where>
+			<if test="guaCardNum != null">
+				alarm_gua_card_num = #{guaCardNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND alarm_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND alarm_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `alarm_time` desc
+	</select>
+   
+   
+   <select id="selectElectAlarmVehicleByTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+		
+		SELECT * FROM elect_alarm alarm 
+		<where>
+			alarm.alarm_time = (SELECT max(alarm_time) FROM elect_alarm 
+									<where>
+										alarm.alarm_gua_card_num = alarm_gua_card_num 
+										<if test="startTime!=null and startTime!=''">
+											AND alarm_time &gt;= #{startTime}
+										</if>
+										<if test="endTime!=null and endTime!=''">
+											AND alarm_time &lt;= #{endTime}
+										</if>
+									</where>
+								)
+			<if test="startTime!=null and startTime!=''">
+				AND alarm_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND alarm_time &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+   
    
 </mapper>

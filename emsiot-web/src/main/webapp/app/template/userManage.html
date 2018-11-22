@@ -57,7 +57,7 @@
             <th>手机号</th>
             <th>所属区域</th>
             <th>创建时间</th>
-            <th>操作</th>
+            <th ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -73,7 +73,7 @@
             <td data-toggle="tooltip" data-placement="right" title="{user.sysUser.user_tel}}">{{user.sysUser.user_tel}}</td>
             <td data-toggle="tooltip" data-placement="right" title="{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}">{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}</td>
             <td data-toggle="tooltip" data-placement="right" title="{{user.sysUser.create_time}}">{{user.sysUser.create_time}}</td>
-            <td>
+            <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
                 <i ng-show="rootUserPowerDto.userDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteUser(user.sysUser.user_id)"></i>
                 <i   ng-show="rootUserPowerDto.userEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateUser(user.sysUser.user_id)" data-toggle="modal" data-target="#updateUser"></i>
             </td>
@@ -279,7 +279,7 @@
                                     <!-- //附加基站异常记录管理 -->
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">异常记录管理</span>
-                                        <input type="checkbox" class="form-control" id="stationDeviceManage">
+                                        <input type="checkbox" class="form-control" id="stationExceptionRecprdManage">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">异常记录管理-删除记录</span>
@@ -669,7 +669,7 @@
                             <ul class="search-container">
                                 <li class="tab1-car flex-wrap">
                                     <button class="btn btn-white flex-items" type="button">
-                                        <span class="margin-right-block">车辆备案</span>
+                                        <span class="margin-right-block">车辆备案</span>
                                         <input type="checkbox" class="form-control" id="electRecordChange">
                                     </button>
                                     <button class="btn btn-white flex-items" type="button">
@@ -786,10 +786,10 @@
 
                             <ul class="search-container">
                                 <li class="tab1-car flex-wrap">
-                                    <button class="btn btn-white flex-items" type="button">
+                                    <!-- <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">限制区域管理</span>
                                         <input type="checkbox" class="form-control" id="limitAreaManageChange">
-                                    </button>
+                                    </button> -->
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">敏感区域管理</span>
                                         <input type="checkbox" class="form-control" id="sensitiveAreaManageChange">
@@ -827,10 +827,10 @@
 
                             <ul class="search-container">
                                 <li class="tab1-car flex-wrap">
-                                    <button class="btn btn-white flex-items" type="button">
+                                    <!-- <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">限制区域报警管理</span>
                                         <input type="checkbox" class="form-control" id="limitAlarmManageChange">
-                                    </button>
+                                    </button> -->
                                     <button class="btn btn-white flex-items" type="button">
                                         <span class="margin-right-block">敏感区域报警管理</span>
                                         <input type="checkbox" class="form-control" id="sensitiveAlarmManageChange">

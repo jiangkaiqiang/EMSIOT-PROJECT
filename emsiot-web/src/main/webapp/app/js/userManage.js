@@ -388,7 +388,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         		  menuPower = menuPower+"userDelete;";
         	  }
         	  if($("#userEdit").is(":checked")){
-        		  menuPower = menuPower+"userEdit";
+        		  menuPower = menuPower+"userEdit;";
         	  }
         	  if($("#privatePower").is(":checked")){
         		  menuPower = menuPower+"privatePower";
@@ -859,7 +859,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        		  menuPower = menuPower+"userDelete;";
 	        	  }
 	        	  if($("#userEditChange").is(":checked")){
-	        		  menuPower = menuPower+"userEdit";
+	        		  menuPower = menuPower+"userEdit;";
 	        	  }
 	        	  if($("#privatePowerChange").is(":checked")){
 	        		  menuPower = menuPower+"privatePower";
