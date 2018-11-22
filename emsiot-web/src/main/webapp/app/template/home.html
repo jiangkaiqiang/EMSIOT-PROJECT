@@ -43,7 +43,7 @@
             <div>显示基站</div>
         </li>
         <li ng-show="rootUserPowerDto.traceSearch==1">
-            <a class="flex flex-items" data-toggle="modal" data-target="#cog">
+            <a class="flex flex-items" data-toggle="modal" data-target="#cog" ng-click="setCog()">
                 <i class="glyphicon glyphicon-cog" style="font-size:21px;margin-right:5px;margin-bottom:3px;"></i>
                 <span>地图级别/中心点</span>
             </a>
@@ -210,35 +210,41 @@
                 <form class="form-horizontal" name="">
                     <div class="form-group">
                         <label class="control-label col-md-3"> 地图级别： </label>
+
                         <div class="col-sm-7">
-                            <input ng-attr-type type="number" ng-attr-placeholder  placeholder="请输入地图级别" class="form-control"/>
+                            <input ng-attr-type type="number" ng-attr-placeholder placeholder="请输入地图级别"
+                                   class="form-control" ng-model="zoomNow"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3">经纬度： </label>
+
                         <div class="col-sm-7 flex-items flex-between">
-                            <input ng-attr-type type="text" ng-attr-placeholder  placeholder="请输入经度" class="form-control" ng-style style="margin-right:5px;"/>
-                            <input ng-attr-type type="text" ng-attr-placeholder  placeholder="请输入维度" class="form-control"/>
+                            <input ng-attr-type type="text" ng-attr-placeholder placeholder="请输入经度" class="form-control"
+                                   ng-style style="margin-right:5px;" ng-model="centerLng"/>
+                            <input ng-attr-type type="text" ng-attr-placeholder placeholder="请输入维度" class="form-control"
+                                   ng-model="centerLat"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3">数据查询时间： </label>
+
                         <div class="col-sm-7 flex-items">
-                            <input ng-attr-type type="text" ng-attr-placeholder  placeholder="时间以分钟为单位" class="form-control"/>
+                            <input ng-attr-type type="text" ng-attr-placeholder placeholder="时间以分钟为单位,例如：5"
+                                   class="form-control"/>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button ng-attr-type type="button" class="btn btn-primary">确定 </button>
-                <button ng-attr-type type="button" class="btn btn-guiji" data-dismiss="modal">取消 </button>
-             </div>
+                <button ng-attr-type type="button" class="btn btn-primary">确定</button>
+                <button ng-attr-type type="button" class="btn btn-guiji" data-dismiss="modal">取消</button>
+            </div>
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal -->
 </div>
-
 
 <!--以下市可视化地图的内容-->
 <div id="allmap" ng-style style="width: 100%; height: 800px;"></div>
