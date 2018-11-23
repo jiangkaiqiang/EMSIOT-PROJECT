@@ -206,7 +206,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
   	if(delcfm()){
   	var BlackIDs = [];
   	var plate_nums = [];
-  	for(i in $scope.selected){
+  	for(var i=0 ;i< $scope.selected.length;i++){
   		BlackIDs.push($scope.selected[i].blackelect.black_id);
   		plate_nums.push($scope.selected[i].blackelect.plate_num);
   	}
@@ -298,6 +298,12 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
       }
       if ($scope.addProvinceID == undefined || $scope.addProvinceID == '') {
           flag = false;
+      }
+      if ($scope.addCityID == undefined || $scope.addCityID == '' || $scope.addCityID == '-1') {
+    	  flag = false;
+      }
+      if ($scope.addAreaID == undefined || $scope.addAreaID == '' || $scope.addAreaID == '-1') {
+    	  flag = false;
       }
       if ($scope.addAddressType == undefined || $scope.addAddressType == '') {
           flag = false;

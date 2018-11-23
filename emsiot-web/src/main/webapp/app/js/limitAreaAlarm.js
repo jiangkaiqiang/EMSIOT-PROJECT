@@ -117,7 +117,7 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 	$scope.goDeleteAlarms = function(){
 		if(delAlarm){
 			var alarmIds = [];
-			for(var i in $scope.selected){
+			for(var i=0 ;i< $scope.selected.length;i++){
 				alarmIds.push($scope.selected[i].alarm_id);
 			}
 			if(alarmIds.length >0 ){

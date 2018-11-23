@@ -84,7 +84,7 @@ $scope.goDeleteStation = function (stationID) {
 $scope.goDeleteStations = function(){
 	if(delcfm()){
 	var stationIDs = [];
-	for(i in $scope.selected){
+	for(var i=0 ;i< $scope.selected.length;i++){
 		stationIDs.push($scope.selected[i].station_status_id);
 	}
 	if(stationIDs.length >0 ){
@@ -128,7 +128,7 @@ $scope.toggleAll = function() {
 
 $scope.getStationIDsFromSelected = function(audit){
 	var stationIDs = [];
-	for(i in $scope.selected){
+	for(var i=0 ;i< $scope.selected.length;i++){
 		if(audit != undefined)
 			$scope.selected[i].audit = audit;
 		stationIDs.push($scope.selected[i].id);

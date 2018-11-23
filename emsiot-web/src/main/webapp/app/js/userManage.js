@@ -124,7 +124,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
     $scope.deleteUsers = function(){
     	if(delcfm()){
     	var userIDs = [];
-    	for(i in $scope.selected){
+    	for(var i=0 ;i< $scope.selected.length;i++){
     		userIDs.push($scope.selected[i].sysUser.user_id);
     	}
     	if(userIDs.length >0 ){
@@ -169,7 +169,7 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
     
     $scope.getUserIDsFromSelected = function(audit){
     	var userIDs = [];
-    	for(i in $scope.selected){
+    	for(var i=0 ;i< $scope.selected.length;i++){
     		if(audit != undefined)
     			$scope.selected[i].audit = audit;
     		userIDs.push($scope.selected[i].id);

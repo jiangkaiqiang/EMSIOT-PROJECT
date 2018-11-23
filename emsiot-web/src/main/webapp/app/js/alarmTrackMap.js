@@ -20,8 +20,19 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         }).success(function (data) {
             $scope.cityName = data.name;
             //$scope.cityName = "芒市";
-            
-            map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
+            var myGeo = new BMap.Geocoder();
+            myGeo.getPoint($scope.cityName, function (point) {
+                $scope.point = point;
+                //console.log($scope.user.fixed_lon);
+                if($scope.user.fixed_lat == null || $scope.user.fixed_lat == undefined || $scope.user.fixed_lon == null || $scope.user.fixed_lon == undefined){
+                    map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
+                    map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
+                }else{
+                    map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
+                    //map.centerAndZoom($scope.cityName, $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
+                }
+            })
+           // map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
             //map.setMapStyle({style:'light'})
             //map.disableDoubleClickZoom();
@@ -715,7 +726,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 	$scope.goDeleteElectAlarms = function(){
 	  	if(delcfm()){
 	  	var ElectAlarmIDs = [];
-	  	for(i in $scope.selected){
+	  	for(var i=0 ;i< $scope.selected.length;i++){
 	  		ElectAlarmIDs.push($scope.selected[i].electAlarm.elect_alarm_id);
 	  	}
 	  	if(ElectAlarmIDs.length >0 ){

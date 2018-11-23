@@ -121,7 +121,7 @@ coldWeb.controller('alarmTrack', function($rootScope, $scope, $state, $cookies, 
 	$scope.goDeleteElectAlarms = function(){
 	  	if(delcfm()){
 	  	var ElectAlarmIDs = [];
-	  	for(i in $scope.selected){
+	  	for(var i=0 ;i< $scope.selected.length;i++){
 	  		ElectAlarmIDs.push($scope.selected[i].electAlarm.elect_alarm_id);
 	  	}
 	  	if(ElectAlarmIDs.length >0 ){

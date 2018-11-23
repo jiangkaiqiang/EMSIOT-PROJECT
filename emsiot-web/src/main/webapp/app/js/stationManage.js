@@ -262,7 +262,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
     $scope.goDeleteStations = function () {
         if (delcfm()) {
             var stationIDs = [];
-            for (i in $scope.selected) {
+            for (var i=0 ;i< $scope.selected.length;i++) {
                 stationIDs.push($scope.selected[i].station_id);
             }
             if (stationIDs.length > 0) {
@@ -305,7 +305,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
 
     $scope.getStationIDsFromSelected = function (audit) {
         var stationIDs = [];
-        for (i in $scope.selected) {
+        for (var i=0 ;i< $scope.selected.length;i++) {
             if (audit != undefined)
                 $scope.selected[i].audit = audit;
             stationIDs.push($scope.selected[i].id);

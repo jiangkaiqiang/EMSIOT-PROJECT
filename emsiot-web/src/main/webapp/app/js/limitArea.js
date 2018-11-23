@@ -300,7 +300,7 @@ coldWeb.controller('limitArea', function ($rootScope, $scope, $state, $cookies, 
     $scope.goDeleteLimitAreas = function () {
         if (delcfm()) {
             var limitAreaIDs = [];
-            for (i in $scope.selected) {
+            for (var i=0 ;i< $scope.selected.length;i++) {
                 limitAreaIDs.push($scope.selected[i].limit_area_id);
             }
             if (limitAreaIDs.length > 0) {

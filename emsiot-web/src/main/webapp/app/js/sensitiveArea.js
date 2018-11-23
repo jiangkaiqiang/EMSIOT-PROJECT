@@ -135,7 +135,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
     $scope.goDeleteLimitAreas = function () {
         if (delcfm()) {
             var limitAreaIDs = [];
-            for (i in $scope.selected) {
+            for (var i=0 ;i< $scope.selected.length;i++) {
                 limitAreaIDs.push($scope.selected[i].sensitive_area_id);
             }
             if (limitAreaIDs.length > 0) {

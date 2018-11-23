@@ -96,7 +96,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     	$scope.indentityCardPic = null;
     };
     $scope.dropIndentityCardPicForUpdate = function(recordPic){
-    	$scope.updateElect.electrombile.indentity_card_pi = null;
+    	$scope.updateElect.electrombile.indentity_card_pic = null;
     };
     
     $scope.addRecordPic = function () {
@@ -385,7 +385,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $scope.goDeleteElects = function(){
     	if(delcfm()){
     	var electIDs = [];
-    	for(i in $scope.selected){
+    	for(var i=0 ;i< $scope.selected.length;i++){
     		electIDs.push($scope.selected[i].electrombile.elect_id);
     	}
     	if(electIDs.length >0 ){
@@ -441,7 +441,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     
     $scope.getElectIDsFromSelected = function(audit){
     	var electIDs = [];
-    	for(i in $scope.selected){
+    	for(var i=0 ;i< $scope.selected.length;i++){
     		if(audit != undefined)
     			$scope.selected[i].audit = audit;
     		electIDs.push($scope.selected[i].id);

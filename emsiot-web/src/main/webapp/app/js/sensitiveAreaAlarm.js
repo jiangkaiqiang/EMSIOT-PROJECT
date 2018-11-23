@@ -118,7 +118,7 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 	$scope.goDeleteAlarms = function(){
 		if(delAlarm()){
 			var alarmIds = [];
-			for(var i in $scope.selected){
+			for(var i=0 ;i< $scope.selected.length;i++){
 				alarmIds.push($scope.selected[i].alarm_id);
 			}
 			if(alarmIds.length >0 ){
