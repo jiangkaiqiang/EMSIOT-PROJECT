@@ -213,7 +213,7 @@
 
                         <div class="col-sm-7">
                             <input ng-attr-type type="number" readonly
-                                   class="form-control" ng-model="zoomNow"/>
+                                   class="form-control" ng-model="zoomNow" ng-style style="color:#999;"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -221,9 +221,9 @@
 
                         <div class="col-sm-7 flex-items flex-between">
                             <input ng-attr-type type="text"  class="form-control"
-                                   ng-style style="margin-right:5px;" ng-model="centerLng" readonly/>
+                                   ng-style style="margin-right:5px;color:#999;" ng-model="centerLng" readonly/>
                             <input ng-attr-type type="text" class="form-control"
-                                   ng-model="centerLat" readonly/>
+                                   ng-model="centerLat" readonly ng-style style="color:#999;"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -281,7 +281,7 @@
 </div>
 
 <div id="positionTable" class="shadow" ng-style ng-show="showTable"
-     style="position: absolute; top: 205px; right: 10px;">
+     style="position: absolute; top: 180px; right: 10px;">
     <ul class="flex-between">
         <li class="flex-items">
             <i class="iconfont icon-cheliangguanli" style="color: #2C7DFA; font-size: 25px;"></i>

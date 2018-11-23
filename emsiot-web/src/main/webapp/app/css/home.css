@@ -84,7 +84,7 @@ font-weight:bold;
 #dingweiModal .modal-body form>div:first-child select,#dingweiModal .modal-body form>div:first-child input{margin:0 2px;}
 
 #positionTable{
-    width:850px;
+    width:800px;
     padding:10px;
     background:rgba(255,255,255,0.85);
     -webkit-transition: all 0.5s;
@@ -169,13 +169,13 @@ font-weight:bold;
     right:10px!important;
 }
 .home-title>.home-nav>li>a>ul>li{height:100%;}
-.home-title>.home-nav>li>a>ul>li:first-child{margin-right:8px;}
+.home-title>.home-nav>li>a>ul>li:first-child{margin-right:5px;}
 .home-title>.home-nav>li>a>ul>li>p{
     font-size: 1.2em;
     font-weight: bold;
 }
 #positionTable .tableArea{
-    max-height:450px;
+    max-height:400px;
     overflow-y:scroll;
 }
 
@@ -192,7 +192,7 @@ font-weight:bold;
         font-size:1em;
         font-weight:bold;
     }
-    .countWarp .home-title .home-nav-right>li:nth-child(odd){line-height:60px;width:8px;}
+    .countWarp .home-title .home-nav-right>li:nth-child(odd){line-height:60px;}
     .countWarp .home-title .home-nav-right>li:last-child a{padding-right:10px;}
     .countWarp .home-title .home-nav-right .border-dashed {
         border-right: 1px dashed #91A2BE;
@@ -245,7 +245,7 @@ font-weight:bold;
 
 #trackOperation{
     position: absolute;
-    top: 130px;
+    top: 116px;
     right: 10px;
     background:#fff;
     padding:10px 5px;

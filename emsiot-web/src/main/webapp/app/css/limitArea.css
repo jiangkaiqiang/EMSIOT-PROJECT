@@ -1,5 +1,5 @@
 .limitArea-content{
-    width: 50%;
+    width: 72%;
     height: auto;
     background: rgba(255,255,255,0.7);
     position: absolute;
@@ -10,7 +10,7 @@
     transition: all 0.5s;
 }
 .limitArea-content.leftToggle{
-    left:-48.5%!important;
+    left:-71%!important;
 }
 .limitArea-content  .title-nav>li:last-child>a{
     background:none;
