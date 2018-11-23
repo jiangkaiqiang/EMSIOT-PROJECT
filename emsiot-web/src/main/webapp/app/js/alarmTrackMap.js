@@ -110,7 +110,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
         setPlace();
     });
-
+ 
     function setPlace() {
         map.clearOverlays();    //清除地图上
         function myFun() {
