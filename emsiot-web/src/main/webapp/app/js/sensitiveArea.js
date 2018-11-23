@@ -286,7 +286,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
         strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
         fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
         strokeStyle: 'solid', //边线的样式，solid或dashed。
-        enableEditing: true
+        //enableEditing: true
     }
     //实例化鼠标绘制工具
     var drawingManager = new BMapLib.DrawingManager(sensitiveAreaMap, {
