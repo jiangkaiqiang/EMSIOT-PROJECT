@@ -107,10 +107,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     var timeelect = function(){
         var time = new Date().getTime();//当前时间
         var start;
-        if($scope.configTim == null || $scope.configTim == undefined ){
+        if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
             start = new Date(time - 60 * 1000 * 60);//一小时
         }else{
-            start = new Date(time - 60 * 1000 * $scope.configTim );//一小时
+            start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
         }
         var end = new Date(time);
         for (var i = 0; i < $scope.stations.length; i++) {
@@ -246,7 +246,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
             var time = new Date().getTime();//当前时间
             var start;
-            if($scope.configTim == null || $scope.configTim == undefined ){
+            if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
                 start = new Date(time - 60 * 1000 * 60);//一小时
             }else{
                 start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
@@ -665,8 +665,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     //设置参数
     $scope.setConfig = function () {
-        console.log($scope.user.fixed_query_time);
-        console.log($scope.user.fixed_query_time>0);
         if($scope.configTim!= null && $scope.configTim > 0){
             $http.get('/i/user/updateUserSetting', {
                 params: {
