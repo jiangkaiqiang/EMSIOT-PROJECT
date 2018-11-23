@@ -658,14 +658,14 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     "fixedZoom": $scope.zoomNow,
                     "fixedLon": $scope.centerLng,
                     "fixedLat": $scope.centerLat,
-                    "fixedQueryTime": $scope.configTime
+                    "fixedQueryTime": $scope.user.fixed_query_time
                 }
             }).success(function (data) {
                 console.log(data);
                 $scope.user.fixed_lat = $scope.centerLat;
                 $scope.user.fixed_lon = $scope.centerLng;
                 $scope.user.fixed_zoom = $scope.zoomNow;
-                $scope.user.fixed_query_time = $scope.configTim;
+                //$scope.user.fixed_query_time = $scope.configTim;
                 $scope.load();
                 /*if($scope.user.fixed_lat != null && $scope.user.fixed_lat != undefined && $scope.user.fixed_lon != null && $scope.user.fixed_lon != undefined){
                     map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
