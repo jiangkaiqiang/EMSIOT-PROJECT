@@ -137,10 +137,11 @@
    
    <select id="selectElectsByEleGuaCardNumNow" parameterType="map" resultType="java.lang.Integer">
 	SELECT COUNT(*) as count FROM `elect_alarm` 
-	left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
+	RIGHT join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
 	<where>
+	    	elect_alarm.alarm_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE)
 			<if test="proPower != null">
-			    electrombile.pro_id = #{proPower}
+			    AND electrombile.pro_id = #{proPower}
 			</if>
 			<if test="cityPower != null">
 				AND electrombile.city_id = #{cityPower}
@@ -148,9 +149,10 @@
 			<if test="areaPower != null">
 				AND electrombile.area_id = #{areaPower}
 			</if>
+			
 		</where>
 	
-     AND elect_alarm.alarm_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by elect_alarm.alarm_gua_card_num
+      group by elect_alarm.alarm_gua_card_num
 	</select>
    
    <select id="selectElectsByStationPhyNumAndTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
