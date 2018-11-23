@@ -1,194 +1,201 @@
 <div class="home-title flex flex-between shadow">
-	<ul class="flex home-nav">
-		<li><a ><!-- href="#/electManage" -->
-				<ul class="flex flex-items">
-					<li><i class="iconfont icon-zaixiancheliang"></i></li>
-					<li>
-						<p>{{inlineElects}}</p> <span> 报警车辆</span>
-					</li>
-				</ul>
-		</a></li>
-		<li><a><!--  href="#/alarmTrack" -->
-				<ul class="flex flex-items">
-					<li><i class="iconfont icon-baojingcheliang1"></i></li>
-					<li>
-						<p style="color:red;" ng-style">{{electAlarms.length}}</p> <span> 报警数量</span>
-					</li>
-				</ul>
-		</a></li>
-	</ul>
+    <ul class="flex home-nav">
+        <li><a><!-- href="#/electManage" -->
+            <ul class="flex flex-items">
+                <li><i class="iconfont icon-zaixiancheliang"></i></li>
+                <li>
+                    <p>{{inlineElects}}</p> <span> 报警车辆</span>
+                </li>
+            </ul>
+        </a></li>
+        <li><a><!--  href="#/alarmTrack" -->
+            <ul class="flex flex-items">
+                <li><i class="iconfont icon-baojingcheliang1"></i></li>
+                <li>
+                    <p ng-style style="color:red;">{{electAlarms.length}}</p> <span> 报警数量</span>
+                </li>
+            </ul>
+        </a></li>
+    </ul>
 
-	<ul class="flex home-nav-right flex-items">
-		<li  class="flex-items" style="width:500px">
-			<div class="col-sm-7 flex-items">
-							<div class='input-group date' style="width: 65%;" id='alarmStartTime'>
-								<input ng-attr-type type='text' class="form-control"
-									ng-model="alarmStartTime" ng-attr-placeholder
-									placeholder="选择开始时间"  readonly /> <span
-									class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
+    <ul class="flex home-nav-right flex-items flex-end">
+        <li class="flex-items" style="">
+            <div class="flex-items">
+                <div class='input-group date' style="width: 65%;" id='alarmStartTime'>
+                    <input ng-attr-type type='text' class="form-control"
+                           ng-model="alarmStartTime" ng-attr-placeholder
+                           placeholder="选择开始时间" readonly/> <span
+                        class="input-group-addon"> <span
+                        class="glyphicon glyphicon-calendar"></span>
 								</span>
-							</div>
-							&nbsp;
-							<div class="dandu">至</div>
-							&nbsp;
-							<div class='input-group date' style="width: 65%;" id='alarmEndTime'>
-								<input ng-attr-type type='text' class="form-control"
-									ng-model="alarmEndTime" ng-attr-placeholder
-									placeholder="选择结束时间" readonly /> <span
-									class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
+                </div>
+                &nbsp;
+                <div class="dandu">至</div>
+                &nbsp;
+                <div class='input-group date' style="width: 65%;" id='alarmEndTime'>
+                    <input ng-attr-type type='text' class="form-control"
+                           ng-model="alarmEndTime" ng-attr-placeholder
+                           placeholder="选择结束时间" readonly/> <span
+                        class="input-group-addon"> <span
+                        class="glyphicon glyphicon-calendar"></span>
 								</span>
-								
-							</div>
-							
-			<button ng-attr-type="" style="margin-left: 10px;" type="button" ng-click="alarmVehicleLocation()" class="btn btn-primary">查询</button>
-						</div>
-						
-		</li>
-	
-		<li ng-show="rootUserPowerDto.traceSearch==1" class="flex-items">
-			<a href="" data-toggle="modal" data-target="#guijiModal"
-			class="flex flex-items"> <i class="iconfont icon-guijichaxun"></i>
-				<span>轨迹查询</span>
-		</a>
-		</li>
-		<li ng-show="rootUserPowerDto.location==1" style="height: 60px;">
-			<a href="" data-toggle="modal" data-target="#dingweiModal"
-			class="flex flex-items" style="height: 100%;"> <i
-				class="iconfont icon-dingwei1"
-				style="font-size: 25px; display: block;"></i> <span
-				style="display: block;">定位</span>
-		</a>
-		</li>
-	</ul>
+
+                </div>
+
+                <button ng-attr-type="" ng-style style="margin-left: 10px;" type="button"
+                        ng-click="alarmVehicleLocation()"
+                        class="btn btn-primary">查询
+                </button>
+            </div>
+
+        </li>
+
+        <li ng-show="rootUserPowerDto.traceSearch==1" class="flex-items">
+            <a href="" data-toggle="modal" data-target="#guijiModal"
+               class="flex flex-items"> <i class="iconfont icon-guijichaxun"></i>
+                <span>轨迹查询</span>
+            </a>
+        </li>
+        <li ng-show="rootUserPowerDto.location==1" style="height: 60px;">
+            <a href="" data-toggle="modal" data-target="#dingweiModal"
+               class="flex flex-items" style="height: 100%;"> <i
+                    class="iconfont icon-dingwei1"
+                    style="font-size: 25px; display: block;"></i> <span
+                    style="display: block;">定位</span>
+            </a>
+        </li>
+    </ul>
 
 </div>
 
 
 <!--轨迹查询模态框-->
 <div class="modal fade" id="guijiModal" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button ng-attr-type type="button" class="close"
-					data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">轨迹查询</h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-horizontal" name="">
-					<div class="form-group">
-						<label for="" class="control-label col-md-3"> 查询条件： </label>
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-attr-type type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">轨迹查询</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="">
+                    <div class="form-group">
+                        <label for="" class="control-label col-md-3"> 查询条件： </label>
 
-						<div class="col-sm-7">
-							<div class="col-sm-3">
-								<select name="" class="form-control">
-									<option value="">电动车</option>
-									<option value="">摩托车</option>
-								</select>
-							</div>
-							<div class="col-sm-4" ng-style style="margin: 0 5px;">
-								<select class="form-control"
-									ng-model="keywordTypeForTrace" ng-disabled="editable"
-									ng-options="x.id as x.name for x in AllKeywordType"></select>
-							</div>
-							<div class="col-sm-4">
-								<input ng-attr-type type="text" ng-attr-placeholder
-									placeholder="请输入关键词" class="form-control"
-									ng-model="keywordForTrace" />
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="" class="control-label col-md-3"> 日期从： </label>
+                        <div class="col-sm-7">
+                            <div class="col-sm-3">
+                                <select name="" class="form-control">
+                                    <option value="">电动车</option>
+                                    <option value="">摩托车</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4" ng-style style="margin: 0 5px;">
+                                <select class="form-control"
+                                        ng-model="keywordTypeForTrace" ng-disabled="editable"
+                                        ng-options="x.id as x.name for x in AllKeywordType"></select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input ng-attr-type type="text" ng-attr-placeholder
+                                       placeholder="请输入关键词" class="form-control"
+                                       ng-model="keywordForTrace"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label col-md-3"> 日期从： </label>
 
-						<div class="col-sm-7 flex-items">
-							<div class='input-group date' id='homeDateStart'>
-								<input ng-attr-type type='text' class="form-control"
-									ng-model="startTimeForTrace" ng-attr-placeholder
-									placeholder="选择开始时间" readonly /> <span
-									class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
+                        <div class="col-sm-7 flex-items">
+                            <div class='input-group date' id='homeDateStart'>
+                                <input ng-attr-type type='text' class="form-control"
+                                       ng-model="startTimeForTrace" ng-attr-placeholder
+                                       placeholder="选择开始时间" readonly/> <span
+                                    class="input-group-addon"> <span
+                                    class="glyphicon glyphicon-calendar"></span>
 								</span>
-							</div>
-							&nbsp;
-							<div class="dandu">至</div>
-							&nbsp;
-							<div class='input-group date' id='homeDateEnd'>
-								<input ng-attr-type type='text' class="form-control"
-									ng-model="endTimeForTrace" ng-attr-placeholder
-									placeholder="选择结束时间" readonly /> <span
-									class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
+                            </div>
+                            &nbsp;
+                            <div class="dandu">至</div>
+                            &nbsp;
+                            <div class='input-group date' id='homeDateEnd'>
+                                <input ng-attr-type type='text' class="form-control"
+                                       ng-model="endTimeForTrace" ng-attr-placeholder
+                                       placeholder="选择结束时间" readonly/> <span
+                                    class="input-group-addon"> <span
+                                    class="glyphicon glyphicon-calendar"></span>
 								</span>
-							</div>
+                            </div>
 
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button ng-attr-type type="button" ng-click="findElectTrace()"
-					class="btn btn-primary">查询轨迹</button>
-				<button ng-attr-type type="button" ng-click="clearElectTrace()"
-					class="btn btn-guiji">清除轨迹</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button ng-attr-type type="button" ng-click="findElectTrace()"
+                        class="btn btn-primary">查询轨迹
+                </button>
+                <button ng-attr-type type="button" ng-click="clearElectTrace()"
+                        class="btn btn-guiji">清除轨迹
+                </button>
 
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal -->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
 </div>
 
 
 <!--定位模态框-->
 <div class="modal fade" id="dingweiModal" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button ng-attr-type type="button" class="close"
-					data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="">车辆定位</h4>
-			</div>
-			<div class="modal-body">
-				<form class="form-horizontal" name="">
-					<div class="form-group">
-						<label for="" class="control-label col-md-3"> 定位条件： </label>
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-attr-type type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">车辆定位</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="">
+                    <div class="form-group">
+                        <label for="" class="control-label col-md-3"> 定位条件： </label>
 
-						<div class="col-sm-7">
-							<div class="col-sm-3">
-								<select name="" id="" class="form-control">
-									<option value="">电动车</option>
-									<option value="">摩托车</option>
-								</select>
-							</div>
-							<div class="col-sm-4" ng-style style="margin: 0 5px;">
-								<select id="" class="form-control"
-									ng-model="keywordTypeForLocation" ng-disabled="editable"
-									ng-options="x.id as x.name for x in AllKeywordType"></select>
-							</div>
-							<div class="col-sm-4">
-								<input ng-attr-type type="text" ng-attr-placeholder
-									placeholder="请输入关键词" class="form-control"
-									ng-model="keywordForLocation" />
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button ng-attr-type type="button" ng-click="findElectLocation()"
-					class="btn btn-primary">确定</button>
-				<button ng-attr-type type="button" ng-click="clearElectLocation()"
-					class="btn btn-guiji" ui-sref="alarmTrackMap">清除定位</button>
+                        <div class="col-sm-7">
+                            <div class="col-sm-3">
+                                <select name="" id="" class="form-control">
+                                    <option value="">电动车</option>
+                                    <option value="">摩托车</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4" ng-style style="margin: 0 5px;">
+                                <select id="" class="form-control"
+                                        ng-model="keywordTypeForLocation" ng-disabled="editable"
+                                        ng-options="x.id as x.name for x in AllKeywordType"></select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input ng-attr-type type="text" ng-attr-placeholder
+                                       placeholder="请输入关键词" class="form-control"
+                                       ng-model="keywordForLocation"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button ng-attr-type type="button" ng-click="findElectLocation()"
+                        class="btn btn-primary">确定
+                </button>
+                <button ng-attr-type type="button" ng-click="clearElectLocation()"
+                        class="btn btn-guiji" ui-sref="alarmTrackMap">清除定位
+                </button>
 
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal -->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
 </div>
 
 
@@ -197,90 +204,95 @@
 <div id="result" ng-style style="width: 100%;"></div>
 
 <div id="mapSearch">
-	<div id="r-result" class="form-group has-feedback">
-		<input ng-attr-type type="text" id="suggestId" size="20" ng-attr-value
-			value="百度" class="form-control" ng-attr-placeholder
-			placeholder="搜索地址、区域" /> <span
-			class="glyphicon glyphicon-search form-control-feedback"
-			aria-hidden="true"></span>
-	</div>
-	<div id="searchResultPanel" ng-style
-		style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
+    <div id="r-result" class="form-group has-feedback">
+        <input ng-attr-type type="text" id="suggestId" size="20" ng-attr-value
+               value="百度" class="form-control" ng-attr-placeholder
+               placeholder="搜索地址、区域"/> <span
+            class="glyphicon glyphicon-search form-control-feedback"
+            aria-hidden="true"></span>
+    </div>
+    <div id="searchResultPanel" ng-style
+         style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 </div>
 
 <!--车辆经过的基站-->
 <div id="trackOperation" class="shadow" ng-show="showOperation"
-	style="position: absolute; top: 130px; right: 10px;">
-	<div class="btn-group" ng-style style="margin:5px 10px;">
-		<button id="run" class="btn btn-guiji">开始</button>
-		<!--<button id="stop">停止</button>-->
-		<button id="pause" class="btn btn-guiji">暂停</button>
-		<button id="hide" class="btn btn-guiji">隐藏信息窗口</button>
-		<button id="show" class="btn btn-guiji">展示信息窗口</button>
-		<button class="btn btn-guiji" ng-click="clearElectTrace()">
-		    <i class="glyphicon glyphicon-trash"></i>
-		    清除轨迹
-		</button>
-		<button id="detail" ng-click="showDetail()" class="btn btn-guiji">详细</button>
-	</div>
-	<!-- clearElectTrace()清除轨迹的方法 -->
-	<!-- <div class="dismis dismisPosition fa fa-fw" ng-click="clearElectTrace()">×</div> -->
+     style="position: absolute; top: 130px; right: 10px;">
+    <div class="btn-group" ng-style style="margin:5px 10px;">
+        <button id="run" class="btn btn-guiji">开始</button>
+        <!--<button id="stop">停止</button>-->
+        <button id="pause" class="btn btn-guiji">暂停</button>
+        <button id="hide" class="btn btn-guiji">隐藏信息窗口</button>
+        <button id="show" class="btn btn-guiji">展示信息窗口</button>
+        <button class="btn btn-guiji" ng-click="clearElectTrace()">
+            <i class="glyphicon glyphicon-trash"></i>
+            清除轨迹
+        </button>
+        <button id="detail" ng-click="showDetail()" class="btn btn-guiji" style="color:rgb(102, 179, 255);">
+            详细
+            <i class="fa fa-angle-double-down down-up"></i>
+        </button>
+    </div>
+    <div class="dismis dismisPosition fa fa-fw" ng-click="clearElectTrace()">×</div>
+
 </div>
-<div id="positionTable" class="shadow" ng-style
-	style="position: absolute; top: 175px; right: -860px; width: 870px" > 
-<!-- <div id="positionTable" class="shadow" ng-style ng-show="showTable"
-	style="position: absolute; top: 170px; right: 10px;"> -->
-	<ul class="flex-between">
-		<li class="flex-items"><i class="iconfont icon-cheliangguanli"
-			style="color: #2C7DFA; font-size: 25px;"></i>
-			<h4>报警车辆&nbsp;{{electNumForTraceTable}}</h4></li>
-		<li ng-show="traceStationsLength!=null">经过{{traceStationsLength}}个&nbsp;基站</li>
-	</ul>
-	<div class="tableArea" ng-style style="margin-top: 5%;">
-		<table class="table table-striped table-hover" id="tableArea"
-			ng-model="traceStations">
-			<thead>
-				<tr>
-					<th>
-		                <div>
-		                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
-		                    <label for="allSecSon"></label>
-		                </div>
-		            </th>
-					<th style="width: 15% !important;">报警车牌号</th>
-		            <th>报警基站位置</th>
-		            <th style="width: 15%;">车主姓名</th>
-		            <th style="width: 15%;">车主手机号</th>
-		            <th>报警时间</th>
-		            <th style="width: 5%" ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="electAlarmDto in AllElectalarms" style="cursor: pointer;">
-					<td><input ng-attr-type type="checkbox"
-                       ng-checked="exists(electAlarmDto, selected)"
-                       ng-click="toggle(electAlarmDto, selected)"/>
-                    </td>
-					<td title="{{electAlarmDto.ownerPlateNum}}">{{electAlarmDto.ownerPlateNum}}</td>
-		            <td style="display: none;">{{electAlarmDto.statioAddress}}</td>
-					<td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.statioAddress}}">{{electAlarmDto.statioName}}</td>
-		            <td title="{{electAlarmDto.ownerName}}">{{electAlarmDto.ownerName}}</td>
-		            <td title="{{electAlarmDto.ownerTele}}">{{electAlarmDto.ownerTele}}</td>
-		            <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.electAlarm.alarm_time}}">{{electAlarmDto.electAlarm.alarm_time}}</td>
-		            <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
-		                <i ng-show="rootUserPowerDto.alarmDelete==1" class="glyphicon glyphicon-trash"  ng-click="goDeleteElectAlarm(electAlarmDto.electAlarm.elect_alarm_id)"></i>
-		            </td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="page">
-        <!-- 翻页功能 -->
-        <div class="row" ng-style style="text-align:center">
-            <pagination ng-change="pageChanged()" total-items="bigTotalItems"
-                        ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
-                        boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+<div id="positionTable" class="shadow" ng-style style="position: absolute; top: 205px; right: 10px;" ng-show="showTable">
+    <ul class="flex-between">
+        <li class="flex-items"><i class="iconfont icon-cheliangguanli"
+                                  style="color: #2C7DFA; font-size: 25px;"></i>
+            <h4>报警车辆&nbsp;{{electNumForTraceTable}}</h4></li>
+        <li ng-show="traceStationsLength!=null">经过{{traceStationsLength}}个&nbsp;基站</li>
+    </ul>
+    <div class="tableArea" ng-style style="margin-top: 5%;">
+        <table class="table table-striped table-hover" id="tableArea"
+               ng-model="traceStations">
+            <thead>
+            <tr>
+                <th>
+                    <div>
+                        <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()"
+                               class="checkBox">
+                        <label for="allSecSon"></label>
+                    </div>
+                </th>
+                <th style="width: 15% !important;">报警车牌号</th>
+                <th>报警基站位置</th>
+                <th style="width: 15%;">车主姓名</th>
+                <th style="width: 15%;">车主手机号</th>
+                <th>报警时间</th>
+                <th style="width: 5%" ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="electAlarmDto in AllElectalarms" style="cursor: pointer;">
+                <td><input ng-attr-type type="checkbox"
+                           ng-checked="exists(electAlarmDto, selected)"
+                           ng-click="toggle(electAlarmDto, selected)"/>
+                </td>
+                <td title="{{electAlarmDto.ownerPlateNum}}">{{electAlarmDto.ownerPlateNum}}</td>
+                <td style="display: none;">{{electAlarmDto.statioAddress}}</td>
+                <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.statioAddress}}">
+                    {{electAlarmDto.statioName}}
+                </td>
+                <td title="{{electAlarmDto.ownerName}}">{{electAlarmDto.ownerName}}</td>
+                <td title="{{electAlarmDto.ownerTele}}">{{electAlarmDto.ownerTele}}</td>
+                <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.electAlarm.alarm_time}}">
+                    {{electAlarmDto.electAlarm.alarm_time}}
+                </td>
+                <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
+                    <i ng-show="rootUserPowerDto.alarmDelete==1" class="glyphicon glyphicon-trash"
+                       ng-click="goDeleteElectAlarm(electAlarmDto.electAlarm.elect_alarm_id)"></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="page">
+            <!-- 翻页功能 -->
+            <div class="row" ng-style style="text-align:center">
+                <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                            ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                            boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+            </div>
         </div>
     </div>
-	</div>
-	<div class="dismis dismisPosition fa fa-fw fa-angle-left"></div>
 </div>

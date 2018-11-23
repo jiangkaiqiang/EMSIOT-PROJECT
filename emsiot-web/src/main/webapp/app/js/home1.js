@@ -6,11 +6,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     $scope.load = function(){
         $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
             $scope.user = data;
+            
             console.log(data);
             if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
                 url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
                 window.location.href = url;
             }
+            $scope.configTim=$scope.user.fixed_query_time ;
             // 根据用户的区域权限定位城市，如果为超级管理员暂时定位喀什
             $http.get('/i/city/findCityNameByUserPower', {
                 params: {
@@ -100,14 +102,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         });
     };
     $scope.load();
-    //setInterval(console.log(1),3000);
-    /*setInterval(function(){
+
+    //定时刷新页面基站经过的车辆
+    var timeelect = function(){
         var time = new Date().getTime();//当前时间
         var start;
-        if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+        if($scope.configTim == null || $scope.configTim == undefined ){
             start = new Date(time - 60 * 1000 * 60);//一小时
         }else{
-            start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
+            start = new Date(time - 60 * 1000 * $scope.configTim );//一小时
         }
         var end = new Date(time);
         for (var i = 0; i < $scope.stations.length; i++) {
@@ -119,9 +122,14 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         if(markerClusterer!=null){
             markerClusterer._redraw();
         }
+    };
+  /*  setInterval(console.log(1),3000);
+    setInterval(function(){
+        timeelect();
 
 
-   },10000);*/
+   ,10000);*/
+
     var lushu = null;
 
     function G(id) {
@@ -238,10 +246,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
             var time = new Date().getTime();//当前时间
             var start;
-            if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+            if($scope.configTim == null || $scope.configTim == undefined ){
                 start = new Date(time - 60 * 1000 * 60);//一小时
             }else{
-                start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
+                start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
             }
             var end = new Date(time);
             var num = tmpStation.station_phy_num;
@@ -353,6 +361,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     var stationIDforDelete;
     $scope.clearElectLocation = function () {
         $scope.elecMarker.hide();
+        if(markerClusterer!=null){
+            markerClusterer._redraw();
+        }
         $("#dingweiModal").modal("hide");
     };
     //根据条件定位车辆
@@ -594,21 +605,24 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         $scope.showOperation = false;
         $scope.showTable = false;
         map.clearOverlays();
-        if ($scope.jizhanFlag == 0) {
+        if(markerClusterer!=null){
+            markerClusterer._redraw();
+        }
+        /*if ($scope.jizhanFlag == 0) {
             if (markerClusterer != null) {
                 markerClusterer.clearMarkers();
             }
         }
         else if ($scope.jizhanFlag == 1) {
-        }
+        }*/
         if ($scope.elecMarker != null) {
             map.addOverlay($scope.elecMarker);
         }
     };
 
-    $scope.goHome = function () {
+   /* $scope.goHome = function () {
         $state.reload('home');
-    };
+    };*/
 
     var navBtn = $(".home-title a");
     navBtn.click(function () {
@@ -638,35 +652,38 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         $scope.centerLat = $scope.center.lat;
         $scope.centerLng = $scope.center.lng;
         $scope.zoomNow = map.getZoom();
-        console.log($scope.zoomNow);
-        console.log($scope.centerLat);
-        console.log($scope.centerLng)
+       // console.log($scope.zoomNow);
+        //console.log($scope.centerLat);
+       // console.log($scope.centerLng)
     };
 
     //单击获取点击的经纬度
-    map.addEventListener("dblclick",function(e){
+   /* map.addEventListener("dblclick",function(e){
         alert("您的经度和纬度分别为："+ e.point.lng + " , " + e.point.lat+'\n'+"当前地图级别为：" + map.getZoom());
-    });
+    });*/
 
 
     //设置参数
     $scope.setConfig = function () {
-        if($scope.configTime!==null || $scope.configTime!==null){
+        console.log($scope.user.fixed_query_time);
+        console.log($scope.user.fixed_query_time>0);
+        if($scope.configTim!= null && $scope.configTim > 0){
             $http.get('/i/user/updateUserSetting', {
                 params: {
                     "userId" : $scope.user.user_id,
                     "fixedZoom": $scope.zoomNow,
                     "fixedLon": $scope.centerLng,
                     "fixedLat": $scope.centerLat,
-                    "fixedQueryTime": $scope.user.fixed_query_time
+                    "fixedQueryTime": $scope.configTim
                 }
             }).success(function (data) {
                 console.log(data);
                 $scope.user.fixed_lat = $scope.centerLat;
                 $scope.user.fixed_lon = $scope.centerLng;
                 $scope.user.fixed_zoom = $scope.zoomNow;
-                //$scope.user.fixed_query_time = $scope.configTim;
-                $scope.load();
+                $scope.user.fixed_query_time = $scope.configTim;
+                //$scope.load();
+                timeelect();
                 /*if($scope.user.fixed_lat != null && $scope.user.fixed_lat != undefined && $scope.user.fixed_lon != null && $scope.user.fixed_lon != undefined){
                     map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
 
@@ -676,7 +693,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 alert("请输入完整的信息！")
             });
         }else{
-            alert("时间设置不能为空！");
+            alert("时间必须大于0！");
         }
 
     };
@@ -686,7 +703,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
 
     //显示基站开关选项控制
-    $scope.jizhanFlag = 1;
+    /*$scope.jizhanFlag = 1;
     $('#xsjizhan').parent(".swichWrap").click(function () {
         if ($scope.jizhanFlag == 0) {
             alert("显示基站");
@@ -702,7 +719,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             map.clearOverlays();
         }
         showCssFlag('#xsjizhan');
-    });
+    });*/
 
     function showCssFlag(param) {
         $(param).toggleClass("active");

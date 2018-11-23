@@ -117,29 +117,20 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 
     $scope.labelSet=function(value1,value2){
         var label = new BMap.Label(value1,{offset:new BMap.Size(0,-30)});
-        /*if($scope.keywordForTrace!=null || $scope.keywordForLocation!=null){
             label.setStyle({
-                color : "transparent",
-                fontSize : "16px",
-                backgroundColor :"#fff",
-                border :"0",
-                fontWeight :"bold",
-                display:"none"
-            });
-        }else{*/
-            label.setStyle({
-                color : "rgb(102, 179, 255)",
-                fontSize : "16px",
-                backgroundColor :"#fff",
-                border :"1px solid rgb(102, 179, 255)",
-                fontWeight :"bold",
-                display:"block",
-                borderShadow:"0 5px 15px rgba(0, 0, 0, .5)",
-                minHeight:"20px",
-                minWidth:"25px",
-                lineHeight:"20px",
-                borderRadius:"5px",
-                textAlign:"center"
+                color: "#fff",
+                fontSize: "14px",
+                backgroundColor: "#66B3FF",
+                border: "1px solid rgb(102, 179, 255)",
+                fontWeight: "normal",
+                display: "block",
+                borderShadow: "0 5px 15px rgba(0, 0, 0, 0.6)",
+                minHeight: "20px",
+                minWidth: "40px",
+                lineHeight: "20px",
+                borderRadius: "5px",
+                textAlign: "center",
+                padding:"1px 8px"
             });
         //}
         value2.setLabel(label);
@@ -227,7 +218,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                 
                 var Oe=null
                 for (var i = 0; i < allOverlay.length; i++) {
-					Oe = allOverlay[i].point
+					Oe = allOverlay[i].point;
 					if(Oe==null)continue;
 	                if(Oe.lng==$scope.alarmVehicle[g].station.longitude && Oe.lat==$scope.alarmVehicle[g].station.latitude){
 	                	$scope.tiao = allOverlay[i];//保存上一次跳动的基站
@@ -281,11 +272,11 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     };
     //根据条件定位车辆
     $scope.findElectLocation = function () {
-        
-        
-        if ($scope.keywordTypeForLocation == "1") {
+        $scope.showOperation = false;
+        $scope.showTable = false;
+       if ($scope.keywordTypeForLocation == "1") {
         	if($scope.keywordForLocation==null || $scope.keywordForLocation==""){
-        		alert("请输入车牌号！")
+        		alert("请输入车牌号！");
         		return;
             }
             $scope.plateNum = $scope.keywordForLocation;
@@ -293,7 +284,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         }
         else if ($scope.keywordTypeForLocation == "0") {
         	if($scope.keywordForLocation==null || $scope.keywordForLocation==""){
-        		alert("请输入防盗芯片号！")
+        		alert("请输入防盗芯片号！");
         		return;
             }
             $scope.guaCardNum = $scope.keywordForLocation;
@@ -328,6 +319,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             $scope.elecMarker = new BMap.Marker($scope.elecPt, {icon: $scope.elecIcon});
             $scope.labelSet($scope.keywordForLocation,$scope.elecMarker);
             map.addOverlay($scope.elecMarker);
+            $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             map.centerAndZoom($scope.elecPt, 17);
             
             
@@ -533,7 +525,9 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             $scope.showTable = true;
             $scope.electNumForTraceTable = $scope.keywordForTrace;
         }).error(function(){
-        	
+            $("#positionTable").removeClass("rightToggle");
+            $scope.showOperation = false;
+            $scope.showTable = false;
         	alert("搜索条件有误！");
         	return ;
         });
@@ -544,10 +538,11 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         $scope.jizhanBounce=map.getOverlays();
     };
     $scope.showOperation = false;
-    $scope.showTable = true;
-    
+    $scope.showTable = false;
+
     $scope.showDetail = function () {
     	$scope.showTable = !($scope.showTable);
+        $("#detail i").toggleClass("down-up");
     }
     $scope.clearElectTrace = function () {
     	
