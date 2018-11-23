@@ -397,6 +397,10 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
     $scope.enterNum = 1;
     $scope.addSensitiveArea = function () {
         $scope.addBlackelectPlatenum = $scope.selectLimitVehicle("addBlackelectPlatenum");
+        if($scope.addBlackelectPlatenum==null || $scope.addBlackelectPlatenum==""){
+            alert("请选择限制车辆");
+            return;
+        }
         if (checkInputInfo()) {
             $http({
                 method: 'POST',
@@ -459,6 +463,10 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
     };
     $scope.update = function () {
         $scope.updateBlackelectPlatenum = $scope.selectLimitVehicle("updateBlackelectPlatenum");
+        if($scope.updateBlackelectPlatenum==null || $scope.updateBlackelectPlatenum==""){
+            alert("请选择限制车辆");
+            return;
+        }
         if (checkInputForUpdate()) {
             Upload.upload({
                 method: 'POST',

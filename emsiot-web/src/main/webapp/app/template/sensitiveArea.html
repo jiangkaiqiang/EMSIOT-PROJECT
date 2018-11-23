@@ -103,7 +103,7 @@
             <div class="modal-header">
                 <button ng-attr-type type="button" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
-                <div class="modal-title" id="">新增敏感区域</div>
+                <div class="modal-title">新增敏感区域</div>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="electForm">
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     关联车牌号：
@@ -140,16 +140,27 @@
                                     <input ng-attr-type type="text" class="form-control" ng-model="addElectPlatenum">
                                 </div>
                             </div>
+                        </div>-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label"><i>*</i>
+                                    出现次数：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input ng-attr-type type="number" class="form-control" min="1" value="1" ng-model="enterNum">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
-                                    关联黑名单车辆：
+                                    <i>*</i>
+                                    关联车辆：
                                 </label>
 
                                 <div class="col-sm-8">
                                     <!-- <input ng-attr-type type="text" class="form-control" ng-model="addBlackelectPlatenum"> -->
-                                	<select class="addBlackelectPlatenum" id="addBlackelectPlatenum" multiple="multiple">
+                                	<select class="addBlackelectPlatenum" id="addBlackelectPlatenum" multiple="multiple" >
                                             <optgroup id="normal" label="正常车辆">
                                                 <!-- <option ng-repeat="normal in alarmVehicle" value="normal.elect_id">{{normal.plate_num}}</option> -->
                                             </optgroup>
@@ -205,16 +216,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label"><i>*</i>
-                                    出现次数：
-                                </label>
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" min="1" value="1" ng-model="enterNum">
-                                </div>
-                            </div>
-                        </div>
+
                         
                         <!-- 
                         <div class="col-md-6">
@@ -295,19 +297,19 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    关联车牌号：
+                                <label for="" class="col-sm-4 control-label"><i>*</i>
+                                    出现次数：
                                 </label>
-
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateSensitiveArea.list_elects">
+                                    <input ng-attr-type type="number" class="form-control" min="1" value="1" ng-model="updateSensitiveArea.enter_num">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
-                                    关联黑名单车辆：
+                                    <i>*</i>
+                                    关联车辆：
                                 </label>
 
                                 <div class="col-sm-8">
@@ -367,16 +369,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label"><i>*</i>
-                                    出现次数：
-                                </label>
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" min="1" value="1" ng-model="updateSensitiveArea.enter_num">
-                                </div>
-                            </div>
-                        </div>
+
                        
                     </div>
 
