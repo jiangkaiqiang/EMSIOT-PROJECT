@@ -570,9 +570,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	    	{
 	    		if($scope.AllElectDtos[i].electrombile.elect_id == electID){
 	    		   $scope.updateElect = $scope.AllElectDtos[i];
-	    		   $scope.updateElect.electrombile.pro_id = $scope.updateElect.electrombile.pro_id+"";
-	    		   $scope.updateElect.electrombile.city_id = $scope.updateElect.electrombile.city_id+"";
-	    		   $scope.updateElect.electrombile.area_id = $scope.updateElect.electrombile.area_id+"";
+	    		   $scope.updateElect.electrombile.pro_id = $scope.updateElect.electrombile.pro_id==null?"-1":$scope.updateElect.electrombile.pro_id+"";
+	    		   $scope.updateElect.electrombile.city_id = $scope.updateElect.electrombile.city_id==null?"-1":$scope.updateElect.electrombile.city_id+"";
+	    		   $scope.updateElect.electrombile.area_id = $scope.updateElect.electrombile.area_id==null?"-1":$scope.updateElect.electrombile.area_id+"";
 	    		   $scope.updateElect.electrombile.insur_detail = $scope.updateElect.electrombile.insur_detail+"";
 	    		   $http.get('/i/city/findCitysByProvinceId', {
 	    	            params: {
