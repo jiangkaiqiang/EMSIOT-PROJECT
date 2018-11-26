@@ -103,7 +103,11 @@ public class CityController {
 			}
 			else {
 				if (areaID==-1||areaID==null) {
-					return cityMapper.findCityById(cityID);
+					
+					Province pro = cityMapper.findProvinceById(proID);
+					City city = cityMapper.findCityById(cityID);
+					pro.setName(pro.getName()+""+city.getName());
+					return pro;
 				}
 				else {
 					return cityMapper.findAreaNameByAreaID(areaID);

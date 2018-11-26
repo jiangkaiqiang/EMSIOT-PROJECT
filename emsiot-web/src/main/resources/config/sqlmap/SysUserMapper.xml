@@ -17,8 +17,7 @@
 		#{menu_power,jdbcType=VARCHAR},#{pro_power,jdbcType=INTEGER},#{city_power,jdbcType=INTEGER},
 		#{area_power,jdbcType=INTEGER}, now(),
 		now(),
-		#{user_tel,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{fixed_lon,jdbcType=VARCHAR},#{fixed_lat,jdbcType=VARCHAR},
-		#{fixed_zoom,jdbcType=INTEGER},#{fixed_timer,jdbcType=INTEGER},#{fixed_query_time,jdbcType=INTEGER})
+		#{user_tel,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR})
 	</insert>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
