@@ -5,7 +5,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     });    // 创建Map实例
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
-        //console.log(data)
+        
         if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
             url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
             window.location.href = url;
@@ -22,7 +22,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             var myGeo = new BMap.Geocoder();
             myGeo.getPoint($scope.cityName, function (point) {
                 $scope.point = point;
-                console.log($scope.point)
+                
                 map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
                 map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
                 map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放

@@ -5,7 +5,6 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
-			 console.log(data);
 				if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
@@ -18,7 +17,6 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 					 "cityPower" : $rootScope.admin.city_power
 				 }
 			 }).success(function(data){
-				 //console.log(data);
 				 $scope.sysUsers = data;
 				 $scope.sysUserID = data[0].user_id;
 			 });
@@ -49,10 +47,8 @@ coldWeb.controller('limitAreaAlarm', function($rootScope, $scope, $state, $cooki
 			areaPower : $scope.admin.area_power
 		}
 	}).success(function(data){
-		console.log(data);
 		$scope.bigTotalItems = data.data.total;
 		$scope.AllLimitAlarmElects = data.data.list;
-		console.log($scope.AllLimitAlarmElects);
 	});
 	};
 	$scope.load();

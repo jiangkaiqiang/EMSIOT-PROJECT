@@ -64,7 +64,7 @@ coldWeb.controller('blackListManage', function ($rootScope, $scope, $state, Uplo
 				areaPower : $scope.admin.area_power
 			}
 		}).success(function(data) {
-			console.log(data);
+			//console.log(data);
 			$scope.bigTotalItems = data.total;
 			$scope.AllBlackelects = data.list;
 		});

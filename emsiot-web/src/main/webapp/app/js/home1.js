@@ -6,8 +6,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     $scope.load = function(){
         $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
             $scope.user = data;
-            
-            console.log(data);
             if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
                 url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
                 window.location.href = url;
@@ -219,7 +217,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     var markers = [];
 
     function showStation() {
-        console.log("1");
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
         var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
@@ -675,7 +672,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     "fixedQueryTime": $scope.configTim
                 }
             }).success(function (data) {
-                console.log(data);
+                
                 $scope.user.fixed_lat = $scope.centerLat;
                 $scope.user.fixed_lon = $scope.centerLng;
                 $scope.user.fixed_zoom = $scope.zoomNow;

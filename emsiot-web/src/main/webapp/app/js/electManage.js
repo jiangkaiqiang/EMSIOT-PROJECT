@@ -2,7 +2,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
-			   console.log(data)
+			   
 				if($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id==undefined){
 					url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
 					window.location.href = url;
@@ -143,7 +143,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	//显示下拉搜索条件
 	$("#searchBlock").click(function () {
 		$("#unblock").toggleClass("unblock-active");
-		console.log($(this).children("i"));
+		//console.log($(this).children("i"));
 		if($(this).children("i").hasClass("fa-angle-down")){
 			$(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
 		}else{

@@ -13,7 +13,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         }).success(
             function (data) {
                 $rootScope.admin = data;
-                console.log($rootScope.admin);
                 if ($rootScope.admin == null
                     || $rootScope.admin.user_id == 0
                     || admin.user_id == undefined) {

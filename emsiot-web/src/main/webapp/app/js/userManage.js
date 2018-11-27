@@ -81,7 +81,6 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
 			$scope.Allusers = data.list;
-			console.log($scope.Allusers)
 		});
 	}
 
@@ -931,7 +930,6 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 		$(allAhecked[j]).click(function(){
 			var inputs = $(this).parents(".title-brand").next(".search-container").children().children(".btn-white");
 			if($(this).prop("checked")){
-				console.log($(this));
 				for(var k=0;k<inputs.length;k++){
 					$(inputs[k]).addClass("active");
 					$(inputs[k]).children("input").prop("checked",true);
