@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.PeopleStationMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.PeopleStation">
+    <id column="peo_sta_id" jdbcType="INTEGER" property="peo_sta_id" />
+    <result column="people_gua_card_num" jdbcType="INTEGER" property="people_gua_card_num" />
+    <result column="station_phy_num" jdbcType="INTEGER" property="station_phy_num" />
+    <result column="hard_read_time" jdbcType="TIMESTAMP" property="hard_read_time" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    peo_sta_id, people_gua_card_num, station_phy_num, hard_read_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from people_station
+    where peo_sta_id = #{peo_sta_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from people_station
+    where peo_sta_id = #{peo_sta_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.PeopleStation">
+    insert into people_station (peo_sta_id, people_gua_card_num, station_phy_num, 
+      hard_read_time, update_time)
+    values (#{peo_sta_id,jdbcType=INTEGER}, #{people_gua_card_num,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER}, 
+      #{hard_read_time,jdbcType=TIMESTAMP}, now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.PeopleStation">
+    insert into people_station
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="peo_sta_id != null">
+        peo_sta_id,
+      </if>
+      <if test="people_gua_card_num != null">
+        people_gua_card_num,
+      </if>
+      <if test="station_phy_num != null">
+        station_phy_num,
+      </if>
+      <if test="hard_read_time != null">
+        hard_read_time,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="peo_sta_id != null">
+        #{peo_sta_id,jdbcType=INTEGER},
+      </if>
+      <if test="people_gua_card_num != null">
+        #{people_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="station_phy_num != null">
+        #{station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="hard_read_time != null">
+        #{hard_read_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.PeopleStation">
+    update people_station
+    <set>
+      <if test="people_gua_card_num != null">
+        people_gua_card_num = #{people_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="station_phy_num != null">
+        station_phy_num = #{station_phy_num,jdbcType=INTEGER},
+      </if>
+      <if test="hard_read_time != null">
+        hard_read_time = #{hard_read_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where peo_sta_id = #{peo_sta_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.PeopleStation">
+    update people_station
+    set people_gua_card_num = #{people_gua_card_num,jdbcType=INTEGER},
+      station_phy_num = #{station_phy_num,jdbcType=INTEGER},
+      hard_read_time = #{hard_read_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP}
+    where peo_sta_id = #{peo_sta_id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByGuaCardNumForLocation" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+		SELECT *, ABS(NOW() - update_time)  AS diffTime FROM `people_station`
+		<where>
+			<if test="guaCardNum != null">
+				people_gua_card_num = #{guaCardNum}
+			</if>
+		</where>
+		ORDER BY diffTime ASC LIMIT 0, 1
+	</select>
+	<select id="selectByGuaCardNumForTrace" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+		SELECT * FROM `people_station`
+		<where>
+			<if test="guaCardNum != null">
+				people_gua_card_num = #{guaCardNum}
+			</if>
+			<if test="startTimeForTrace!=null and startTimeForTrace!=''">
+				AND update_time &gt;= #{startTimeForTrace}
+			</if>
+			<if test="endTimeForTrace!=null and endTimeForTrace!=''">
+				AND update_time &lt;= #{endTimeForTrace}
+			</if>
+		</where>
+		order by `update_time` ASC
+	</select>
+	
+	<select id="selectElectsByGuaCardNumNumAndTimeDesc" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+		SELECT * FROM `people_station`
+		<where>
+			<if test="guaCardNum != null">
+				people_gua_card_num = #{guaCardNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND update_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND update_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `update_time` desc
+	</select>
+	
+	<select id="selectPeoplesByStationPhyNumAndTime" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+		SELECT * FROM `people_station`
+		<where>
+			<if test="stationPhyNum != null">
+				station_phy_num = #{stationPhyNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND update_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND update_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `update_time` ASC
+	</select>
+	
+	<select id="selectPeoplesByEleGuaCardNumNow" parameterType="map" resultType="java.lang.Integer">
+	SELECT COUNT(*) as count FROM `people_station` 
+	RIGHT join people on people.people_gua_card_num = people_station.people_gua_card_num
+	<where>
+	    	<!-- people_station.update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) -->
+			<if test="proPower != null">
+			    AND people.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND people.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND people.area_id = #{areaPower}
+			</if>
+			
+		</where>
+	
+      group by people_station.people_gua_card_num
+	</select>
+	
+	
+	<select id="selectPeopleStationPeopleLocationByTime" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+		
+		SELECT peopleStation.* FROM people_station peopleStation 
+			left join people on people.people_gua_card_num = peopleStation.people_gua_card_num
+		<where>
+			peopleStation.update_time = (SELECT max(people_station.update_time) FROM people_station 
+									left join people on people.people_gua_card_num = people_station.people_gua_card_num
+									<where>
+										peopleStation.people_gua_card_num = people_station.people_gua_card_num 
+										<if test="startTime!=null and startTime!=''">
+											AND people_station.update_time &gt;= #{startTime}
+										</if>
+										<if test="endTime!=null and endTime!=''">
+											AND people_station.update_time &lt;= #{endTime}
+										</if>
+										<if test="proPower != null">
+										    AND people.pro_id = #{proPower}
+										</if>
+										<if test="cityPower != null">
+											AND people.city_id = #{cityPower}
+										</if>
+										<if test="areaPower != null">
+											AND people.area_id = #{areaPower}
+										</if>
+									</where>
+								)
+			<if test="startTime!=null and startTime!=''">
+				AND peopleStation.update_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND peopleStation.update_time &lt;= #{endTime}
+			</if>
+			<if test="proPower != null">
+			    AND people.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND people.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND people.area_id = #{areaPower}
+			</if>
+		</where>
+		GROUP BY peopleStation.people_gua_card_num 
+	</select>
+	
+</mapper>

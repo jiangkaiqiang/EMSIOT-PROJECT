@@ -183,6 +183,50 @@
                             </ul>
                         </li>
                         
+                        <li ng-show="true">
+                            <a href class="auto">
+                                <span class="pull-right text-muted">
+                                    <i class="fa fa-fw fa-angle-right text"></i>
+                                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                                 </span>
+                                <i class="iconfont icon-cheliangguanli"></i>
+                                <span class="font-bold" translate="aside.nav.DASHBOARD">人员管理</span>
+                            </a>
+                            <ul class="nav nav-sub dk">
+                                <li ui-sref-active="active" ng-show="true">
+                                    <a href="#/peopleManageMap">
+                                        <span>人员监控</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active" ng-show="true">
+                                    <a href="#/peopleManage?z=1">
+                                        <span>小孩管理</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active" ng-show="true">
+                                    <a href="#/peopleManage?z=2">
+                                        <span>老人管理</span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active" ng-show="true">
+                                    <a href="#/peopleManage?z=3">
+                                        <span>吸毒者管理</span>
+                                    </a>
+                                </li>
+                                <!-- <li ui-sref-active="active" ng-show="">
+                                    <a href="#/electManage">
+                                        <span>犯罪者管理</span>
+                                    </a>
+                                </li> -->
+                                
+                                <li ui-sref-active="active" ng-show="">
+                                    <a href="#/alarmTrackMap">
+                                        <span>报警追踪(地图版)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
                          <li ng-show="rootUserPowerDto.stationManageWhole==1">
                             <a class="auto">
                                 <span class="pull-right text-muted">
@@ -388,6 +432,8 @@
 <script src="app/js/operationLog.js"></script>
 <script src="app/js/personalSpace.js"></script>
 <script src="app/js/userManage.js"></script>
+<script src="app/js/peopleManage.js"></script>
+<script src="app/js/peopleManageMap.js"></script>
 <script src="app/js/electManage.js"></script>
 <script src="app/js/stationManage.js"></script>
 <script src="app/js/userRoleManage.js"></script>

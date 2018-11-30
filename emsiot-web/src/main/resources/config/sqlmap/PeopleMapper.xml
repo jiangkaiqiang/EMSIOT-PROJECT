@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.PeopleMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.People">
+    <id column="people_id" jdbcType="INTEGER" property="people_id" />
+    <result column="people_gua_card_num" jdbcType="INTEGER" property="people_gua_card_num" />
+    <result column="people_tele" jdbcType="VARCHAR" property="people_tele" />
+    <result column="people_name" jdbcType="VARCHAR" property="people_name" />
+    <result column="people_sex" jdbcType="INTEGER" property="people_sex" />
+    <result column="people_id_cards" jdbcType="VARCHAR" property="people_id_cards" />
+    <result column="people_age" jdbcType="INTEGER" property="people_age" />
+    <result column="people_type" jdbcType="INTEGER" property="people_type" />
+    <result column="people_status" jdbcType="INTEGER" property="people_status" />
+    <result column="guardian_name" jdbcType="VARCHAR" property="guardian_name" />
+    <result column="guardian_tele" jdbcType="VARCHAR" property="guardian_tele" />
+    <result column="guardian_relation" jdbcType="VARCHAR" property="guardian_relation" />
+    <result column="people_pic" jdbcType="VARCHAR" property="people_pic" />
+    <result column="contact_address" jdbcType="VARCHAR" property="contact_address" />
+    <result column="recorder_id" jdbcType="INTEGER" property="recorder_id" />
+    <result column="recorder_time" jdbcType="TIMESTAMP" property="recorder_time" />
+    <result column="update_id" jdbcType="INTEGER" property="update_id" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+    <result column="pro_id" jdbcType="INTEGER" property="pro_id" />
+    <result column="city_id" jdbcType="INTEGER" property="city_id" />
+    <result column="area_id" jdbcType="INTEGER" property="area_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    people_id, people_gua_card_num, people_tele, people_name, people_sex, people_id_cards, people_age, 
+    people_type, people_status, guardian_name, guardian_tele, guardian_relation, people_pic,contact_address, 
+    recorder_id, recorder_time, update_id, update_time pro_id, city_id, area_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from people
+    where people_id = #{people_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from people
+    where people_id = #{people_id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.People">
+    insert into people (people_id, people_gua_card_num, people_tele, 
+      people_name, people_sex, people_id_cards, 
+      people_age, people_type, people_status, 
+      guardian_name, guardian_tele, guardian_relation, 
+      people_pic, contact_address, recorder_id,
+      recorder_time, 
+      pro_id, city_id, area_id
+
+      )
+    values (#{people_id,jdbcType=INTEGER}, #{people_gua_card_num,jdbcType=INTEGER}, #{people_tele,jdbcType=VARCHAR}, 
+      #{people_name,jdbcType=VARCHAR}, #{people_sex,jdbcType=VARCHAR}, #{people_id_cards,jdbcType=DATE}, 
+      #{people_age,jdbcType=VARCHAR}, #{people_type,jdbcType=VARCHAR}, #{people_status,jdbcType=VARCHAR}, 
+      #{guardian_name,jdbcType=INTEGER}, #{guardian_tele,jdbcType=INTEGER}, #{guardian_relation,jdbcType=VARCHAR}, 
+      #{people_pic,jdbcType=VARCHAR}, #{contact_address,jdbcType=VARCHAR}, #{recorder_id,jdbcType=INTEGER},
+       now(), 
+      #{pro_id,jdbcType=INTEGER}, #{city_id,jdbcType=INTEGER}, #{area_id,jdbcType=INTEGER}
+
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.People">
+    insert into people
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="people_id != null">
+        people_id,
+      </if>
+      <if test="people_gua_card_num != null">
+        people_gua_card_num,
+      </if>
+      <if test="people_tele != null">
+        people_tele,
+      </if>
+      <if test="people_name != null">
+        people_name,
+      </if>
+      <if test="people_sex != null">
+        people_sex,
+      </if>
+      <if test="people_id_cards != null">
+        people_id_cards,
+      </if>
+      <if test="people_age != null">
+        people_age,
+      </if>
+      <if test="people_type != null">
+        people_type,
+      </if>
+      <if test="people_status != null">
+        people_status,
+      </if>
+      
+      <if test="guardian_name != null">
+        guardian_name,
+      </if>
+      <if test="guardian_tele != null">
+        guardian_tele,
+      </if>
+      <if test="guardian_relation != null">
+        guardian_relation,
+      </if>
+      <if test="people_pic != null">
+        people_pic,
+      </if>
+      <if test="contact_address != null">
+        contact_address,
+      </if>
+      <if test="recorder_id != null">
+        recorder_id,
+      </if>
+      <if test="recorder_time != null">
+        recorder_time,
+      </if>
+      <if test="update_id != null">
+        update_id,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+      <if test="pro_id != null">
+        pro_id,
+      </if>
+      <if test="city_id != null">
+        city_id,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="people_id != null">
+        #{people_id,jdbcType=INTEGER},
+      </if>
+      <if test="people_gua_card_num != null">
+        #{people_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="people_tele != null">
+        #{people_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="people_name != null">
+        #{people_name,jdbcType=VARCHAR},
+      </if>
+      <if test="people_sex != null">
+        #{people_sex,jdbcType=INTEGER},
+      </if>
+      <if test="people_id_cards != null">
+        #{people_id_cards,jdbcType=VARCHAR},
+      </if>
+      <if test="people_age != null">
+        #{people_age,jdbcType=INTEGER},
+      </if>
+      <if test="people_type != null">
+        #{people_type,jdbcType=INTEGER},
+      </if>
+      <if test="people_status != null">
+        #{people_status,jdbcType=INTEGER},
+      </if>
+      <if test="guardian_name != null">
+        #{guardian_name,jdbcType=VARCHAR},
+      </if>
+      <if test="guardian_tele != null">
+        #{guardian_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="guardian_relation != null">
+        #{guardian_relation,jdbcType=VARCHAR},
+      </if>
+      <if test="people_pic != null">
+        #{people_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_address != null">
+        #{contact_address,jdbcType=VARCHAR},
+      </if>
+      <if test="recorder_id != null">
+        #{recorder_id,jdbcType=INTEGER},
+      </if>
+      <if test="recorder_time != null">
+        #{recorder_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_id != null">
+        #{update_id,jdbcType=INTEGER},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro_id != null">
+        #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.People">
+    update people
+    <set>
+      <if test="people_gua_card_num != null">
+        people_gua_card_num = #{people_gua_card_num,jdbcType=INTEGER},
+      </if>
+      <if test="people_tele != null">
+        people_tele = #{people_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="people_name != null">
+        people_name = #{people_name,jdbcType=VARCHAR},
+      </if>
+      <if test="people_sex != null">
+        people_sex = #{people_sex,jdbcType=INTEGER},
+      </if>
+      <if test="people_id_cards != null">
+        people_id_cards = #{people_id_cards,jdbcType=VARCHAR},
+      </if>
+      <if test="people_age != null">
+        people_age = #{people_age,jdbcType=INTEGER},
+      </if>
+      <if test="people_type != null">
+        people_type = #{people_type,jdbcType=INTEGER},
+      </if>
+      
+      <if test="people_status != null">
+        people_status = #{people_status,jdbcType=INTEGER},
+      </if>
+      <if test="guardian_name != null">
+        guardian_name = #{guardian_name,jdbcType=VARCHAR},
+      </if>
+      <if test="guardian_tele != null">
+        guardian_tele = #{guardian_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="guardian_relation != null">
+        guardian_relation = #{guardian_relation,jdbcType=VARCHAR},
+      </if>
+      <if test="people_pic != null">
+        people_pic = #{people_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_address != null">
+        contact_address = #{contact_address,jdbcType=VARCHAR},
+      </if>
+      <if test="recorder_id != null">
+        recorder_id = #{recorder_id,jdbcType=INTEGER},
+      </if>
+      <if test="recorder_time != null">
+        recorder_time = #{recorder_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_id != null">
+        update_id = #{update_id,jdbcType=INTEGER},
+        update_time = now(),
+      </if>
+
+      <if test="pro_id != null">
+        pro_id = #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where people_id = #{people_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.People">
+    update people
+    set people_gua_card_num = #{people_gua_card_num,jdbcType=INTEGER},
+      people_tele = #{people_tele,jdbcType=VARCHAR},
+      people_name = #{people_name,jdbcType=VARCHAR},
+      people_sex = #{people_sex,jdbcType=INTEGER},
+      people_id_cards = #{people_id_cards,jdbcType=VARCHAR},
+      people_age = #{people_age,jdbcType=INTEGER},
+      people_type = #{people_type,jdbcType=INTEGER},
+      people_status = #{people_status,jdbcType=INTEGER},
+      guardian_name = #{guardian_name,jdbcType=VARCHAR},
+      guardian_tele = #{guardian_tele,jdbcType=VARCHAR},
+      guardian_relation = #{guardian_relation,jdbcType=VARCHAR},
+      people_pic = #{people_pic,jdbcType=VARCHAR},
+      contact_address = #{contact_address,jdbcType=VARCHAR},
+      recorder_id = #{recorder_id,jdbcType=INTEGER},
+      recorder_time = #{recorder_time,jdbcType=TIMESTAMP},
+      update_id = #{update_id,jdbcType=INTEGER},
+      update_time = #{update_time,jdbcType=TIMESTAMP},
+
+      pro_id = #{pro_id,jdbcType=INTEGER},
+      city_id = #{city_id,jdbcType=INTEGER},
+      area_id = #{area_id,jdbcType=INTEGER}
+    where people_id = #{people_id,jdbcType=INTEGER}
+  </update>
+  <select id="findAllPeoples" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="recorderID != null">
+				recorder_id = #{recorderID}
+			</if>
+			<if test="peopleType != null">
+				AND people_type = #{peopleType}
+			</if>
+			
+			<if test="proID != null">
+				AND pro_id = #{proID}
+			</if>
+			<if test="cityID != null">
+				AND city_id = #{cityID}
+			</if>
+			<if test="areaID != null">
+				AND area_id = #{areaID}
+			</if>
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+			<if test="peopleTele != null">
+				AND people_tele like "%"#{peopleTele}"%"
+			</if>
+			<if test="peopleIdCards != null">
+				AND people_id_cards like "%"#{peopleIdCards}"%"
+			</if>
+			<if test="peopleGuaCardNum != null">
+				AND people_gua_card_num like "%"#{peopleGuaCardNum}"%"
+			</if>
+			<if test="peopleName != null">
+				AND people_name like "%"#{peopleName}"%"
+			</if>
+			<if test="guardianName != null">
+				AND guardian_name like "%"#{guardianName}"%"
+			</if>
+			<if test="guardianTele != null">
+				AND guardian_tele like "%"#{guardianTele}"%"
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND recorder_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND recorder_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	  <select id="findPlateNumByPeopleGuaCardNum" parameterType="map" resultType="com.ems.iot.manage.entity.People">
+        SELECT *
+        FROM `people` WHERE `people_gua_card_num` = #{peopleGuaCardNum}
+    </select>
+    <select id="findPeopleNumByTeleNum" parameterType="map" resultType="com.ems.iot.manage.entity.People">
+        SELECT *
+        FROM `people` WHERE `people_tele` = #{peopleTele}
+    </select>
+    <select id="findpeopleForLocation" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="guaCardNum != null">
+				people_gua_card_num = #{peopleGuaCardNum}
+			</if>
+			<if test="peopleTele != null">
+				AND people_tele = #{peopleTele}
+			</if>
+		</where>
+	</select>
+	<select id="findPeoplesList" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="proPower != null">
+			    pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
+ <update id="updateByGuaCardNumSelective" parameterType="com.ems.iot.manage.entity.People">
+    update people
+    <set>
+      <if test="people_tele != null">
+        people_tele = #{people_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="ve_id_num != null">
+        ve_id_num = #{ve_id_num,jdbcType=VARCHAR},
+      </if>
+      <if test="elect_brand != null">
+        elect_brand = #{elect_brand,jdbcType=VARCHAR},
+      </if>
+      <if test="buy_date != null">
+        buy_date = #{buy_date,jdbcType=DATE},
+      </if>
+      <if test="elect_color != null">
+        elect_color = #{elect_color,jdbcType=VARCHAR},
+      </if>
+      <if test="motor_num != null">
+        motor_num = #{motor_num,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        pro_id = #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        area_id = #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="elect_type != null">
+        elect_type = #{elect_type,jdbcType=INTEGER},
+      </if>
+      <if test="insur_detail != null">
+        insur_detail = #{insur_detail,jdbcType=INTEGER},
+      </if>
+      <if test="elect_pic != null">
+        elect_pic = #{elect_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="indentity_card_pic != null">
+        indentity_card_pic = #{indentity_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record_pic != null">
+        record_pic = #{record_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="install_card_pic != null">
+        install_card_pic = #{install_card_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="insur_pic != null">
+        insur_pic = #{insur_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="tele_fee_pic != null">
+        tele_fee_pic = #{tele_fee_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_tele != null">
+        owner_tele = #{owner_tele,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_name != null">
+        owner_name = #{owner_name,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_address != null">
+        owner_address = #{owner_address,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id != null">
+        owner_id = #{owner_id,jdbcType=VARCHAR},
+      </if>
+      <if test="recorder_id != null">
+        recorder_id = #{recorder_id,jdbcType=INTEGER},
+      </if>
+      <if test="recorder_time != null">
+        recorder_time = #{recorder_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="elect_state != null">
+        elect_state = #{elect_state,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_recorder != null">
+        black_list_recorder = #{black_list_recorder,jdbcType=INTEGER},
+      </if>
+      <if test="black_list_time != null">
+        black_list_time = #{black_list_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where people_gua_card_num = #{people_gua_card_num,jdbcType=INTEGER}
+  </update>
+
+  <select id="findPeoplesByTele" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="tele != null">
+			    people_tele = #{tele}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
+	<select id="findPeoplesByRecorderId" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="recorderId != null">
+			    recorder_id = #{recorderId}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
+	
+	<select id="findPeopleForFilter" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="guaCardNum != null">
+			    people_gua_card_num = #{guaCardNum}
+			</if>
+			<if test="peopleTele != null">
+			    AND people_tele = #{peopleTele}
+			</if>
+		</where>
+		order by `recorder_time` desc
+	</select>
+	
+	<select id="findPeopleListByPeopleState" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="proPower != null">
+			    pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+			<if test="electState != null">
+				AND elect_state = #{electState}
+			</if>
+		</where>
+	</select>
+	<select id="findPeopleForLocation" parameterType="map" resultType="People">
+		SELECT * FROM `people`
+		<where>
+			<if test="peopleGuaCardNum != null">
+				people_gua_card_num = #{peopleGuaCardNum}
+			</if>
+			<if test="peopleIdCards != null">
+				AND people_id_cards = #{peopleIdCards}
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,4 +1,4 @@
-coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cookies, $http, $location) {
+coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $cookies, $http, $location) {
     var map = new BMap.Map("allmap", {
         minZoom: 5,
         maxZoom: 30
@@ -25,7 +25,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                 $scope.point = point;
                 //console.log($scope.user.fixed_lon);
                 if($scope.user.fixed_lat == null || $scope.user.fixed_lat == undefined || $scope.user.fixed_lon == null || $scope.user.fixed_lon == undefined){
-                    map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
+                    //map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
                     map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
                 }else{
                     map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
@@ -34,26 +34,13 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             })
            // map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-            //map.setMapStyle({style:'light'})
-            //map.disableDoubleClickZoom();
-            showCssFlag('#xsjizhan');
-            //报警的车辆
-            $scope.alarmVehicleLocation();
-            /*// 获取基站
-            $http.get('/i/station/findAllStationsForMap', {
-                params: {
-                    "proPower": $scope.user.pro_power,
-                    "cityPower": $scope.user.city_power,
-                    "areaPower": $scope.user.area_power
-                }
-            }).success(function (data) {
-                $scope.stations = data;
-                
-                showStation();
-            });*/
             
-            // 获取在线车辆数量
-            $http.get('/i/electalarm/findInlineElectsNum', {
+            showCssFlag('#xsjizhan');
+            
+            $scope.peopleLocation();
+
+            // 获取在线人数
+            $http.get('/i/people/findInlinePeoplesNum', {
                 params: {
                     "areaPower": $scope.user.area_power,
                     "cityPower": $scope.user.city_power,
@@ -62,16 +49,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             }).success(function (data) {
                 $scope.inlineElects = data;
             });
-            // 获取报警数量
-            $http.get('/i/electalarm/findElectAlarmsList', {
-                params: {
-                    "areaPower": $scope.user.area_power,
-                    "cityPower": $scope.user.city_power,
-                    "proPower": $scope.user.pro_power
-                }
-            }).success(function (data) {
-                $scope.electAlarms = data;
-            });
+            
         });
     });
     var lushu=null;
@@ -149,30 +127,33 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 
     function markerClickListener(marker2){
     	
-    	 var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><i class='iconfont icon-cheliangguanli' style='color: #2C7DFA; font-size: 25px;'></i><h4>";
+    	 var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><i class='iconfont icon-yonghuguanli' style='color: #707070; font-size: 20px;' onclick='alert(1)'></i><h4>";
          var sHtml2 = "</h4></li><li>";
          var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
          var sHtml4 = "</p><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>基站名称</th><th>经过时间</th></tr></thead><tbody>";
          //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
          var endHtml = "</tbody></table></div></div>";
     	
+         console.log(map.getOverlays())
     	
     	marker2.addEventListener("click", function (e) {
             var title_add = new Array();
             title_add = this.getTitle().split('\t');
-            showElectsInStation($scope.alarmStartTime, $scope.alarmEndTime+" 23:59:59",title_add[0]);  //根据物理编号查找
+            showPeopleInStation($scope.peopleStartTime, $scope.peopleEndTime+" 23:59:59",title_add[0]);  //根据物理编号查找
             var electInfo='';
-            for (var k = 0; k < $scope.electsInStation.length; k++) {
-                //electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (k + 1) + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].plate_num + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
+            for (var k = 0; k < $scope.peopleInStation.length; k++) {
+                //electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (k + 1) + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].plate_num + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
                 //2018-10-15 修改
-            	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.electsInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].station_name + "</td>" + "<td title='" + $scope.electsInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
+            	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].station_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
             }
-            var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 +"经过"+ $scope.electsInStation.length+"个 基站" + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
+            var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 +"经过"+ $scope.peopleInStation.length+"个 基站" + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
             var p = e.target;
             var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
             map.openInfoWindow(infoWindow, point);
 
         });
+    	
+    	
     }
 
     //显示基站和聚合
@@ -191,23 +172,22 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         var tmpStation;
         
         //给每一个基站添加监听事件 和窗口信息
-        for (var i = 0; i < $scope.alarmVehicle.length; i++) {
-            tmpStation = $scope.alarmVehicle[i].station;
-            tmpElectAlarm = $scope.alarmVehicle[i].electAlarm;
-            if(tmpStation==null || tmpElectAlarm==null || $scope.alarmVehicle[i].ownerPlateNum==null)continue;
+        for (var i = 0; i < $scope.peopleData.length; i++) {
+            tmpStation = $scope.peopleData[i].station;
+            tmpPeople = $scope.peopleData[i].people;
             
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
             //报警车辆图标
             var myIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
             marker2 = new BMap.Marker(pt,{icon:myIcon});
-            $scope.labelSet($scope.alarmVehicle[i].ownerPlateNum,marker2);
-            marker2.setTitle(tmpElectAlarm.alarm_gua_card_num + '\t' + tmpStation.station_name);
+            $scope.labelSet(tmpPeople.people_name,marker2);
+            marker2.setTitle(tmpPeople.people_gua_card_num + '\t' + tmpStation.station_name);
 
             markerClickListener(marker2);
             
             map.addOverlay(marker2);
         }
-        console.log(map)
+        
       //用于基站跳动
         $scope.jizhanBounce=map.getOverlays();
     }
@@ -221,9 +201,9 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     		$scope.tiao.setAnimation(null);
     	}
         var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
-        for(var g =0;g < $scope.alarmVehicle.length; g++){
-        	if($scope.alarmVehicle[g].station==null)continue;
-            if(tablePoint==$scope.alarmVehicle[g].ownerPlateNum){//表格获取到的地址等于循环基站时的基站地址
+        for(var g =0;g < $scope.peopleData.length; g++){
+        	if($scope.peopleData[g].station==null)continue;
+            if(tablePoint==$scope.peopleData[g].ownerPlateNum){//表格获取到的地址等于循环基站时的基站地址
                
                 var allOverlay = $scope.jizhanBounce;
                 
@@ -231,7 +211,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                 for (var i = 0; i < allOverlay.length; i++) {
 					Oe = allOverlay[i].point;
 					if(Oe==null)continue;
-	                if(Oe.lng==$scope.alarmVehicle[g].station.longitude && Oe.lat==$scope.alarmVehicle[g].station.latitude){
+	                if(Oe.lng==$scope.peopleData[g].station.longitude && Oe.lat==$scope.peopleData[g].station.latitude){
 	                	$scope.tiao = allOverlay[i];//保存上一次跳动的基站
 	                	//allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 	                    return;
@@ -243,18 +223,18 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     });
 
     //根据时间和基站id获取基站下面的当前所有车辆
-    function showElectsInStation(startTime, endTime, guaCardNum) {
+    function showPeopleInStation(startTime, endTime, peopleGuaCardNum) {
         $.ajax({
             method: 'GET',
-            url :'/i/electalarm/findElectsByStationIdAndTime',
+            url :'/i/people/findPeoplesByStationIdAndTime',
             async:false,
             data : {
                 "startTime": startTime,
                 "endTime": endTime,
-                "guaCardNum": guaCardNum
+                "peopleGuaCardNum": peopleGuaCardNum
             }
         }).success(function(data){
-            $scope.electsInStation = data;
+            $scope.peopleInStation = data;
         })
     }
 
@@ -263,7 +243,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     //定义轨迹及定位查询条件的类型
     $scope.AllKeywordType = [
         {id: "0", name: "防盗芯片ID"},
-        {id: "1", name: "车牌号"}
+        {id: "1", name: "身份证"}
     ];
     $scope.keywordTypeForLocation = "0";
     $scope.keywordTypeForTrace = "0";
@@ -276,7 +256,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     		
     		//map.clearOverlays();
     		//showStation();
-    		$scope.alarmVehicleLocation()
+    		$scope.peopleLocation()
     	}
 
         $("#dingweiModal").modal("hide");
@@ -287,28 +267,28 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         $scope.showTable = false;
        if ($scope.keywordTypeForLocation == "1") {
         	if($scope.keywordForLocation==null || $scope.keywordForLocation==""){
-        		alert("请输入车牌号！");
+        		alert("请输入身份证！");
         		return;
             }
-            $scope.plateNum = $scope.keywordForLocation;
-            $scope.guaCardNum = null;
+            $scope.peopleIdCards = $scope.keywordForLocation;
+            $scope.peopleGuaCardNum = null;
         }
         else if ($scope.keywordTypeForLocation == "0") {
         	if($scope.keywordForLocation==null || $scope.keywordForLocation==""){
         		alert("请输入防盗芯片号！");
         		return;
             }
-            $scope.guaCardNum = $scope.keywordForLocation;
-            $scope.plateNum = null;
+            $scope.peopleGuaCardNum = $scope.keywordForLocation;
+            $scope.peopleIdCards = null;
         }
         else {
         	
         }
 
-        $http.get('/i/elect/findElectLocation', {
+        $http.get('/i/people/findPeopleLocation', {
             params: {
-                "plateNum": $scope.plateNum,
-                "guaCardNum": $scope.guaCardNum
+                "peopleIdCards": $scope.peopleIdCards,
+                "peopleGuaCardNum": $scope.peopleGuaCardNum
             }
         }).success(function (data) {
         	
@@ -350,11 +330,11 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         //showStation();
         if ($scope.keywordTypeForTrace == "1") {
         	if($scope.keywordForTrace == null || $scope.keywordForTrace == ""){
-        		alert("请输入车牌号！")
+        		alert("请输入身份证！")
         		return;
         	}
-            $scope.plateNum = $scope.keywordForTrace;
-            $scope.guaCardNum = null
+            $scope.peopleIdCards = $scope.keywordForTrace;
+            $scope.peopleGuaCardNum = null
             
         }
         else if ($scope.keywordTypeForTrace == "0") {
@@ -362,24 +342,24 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         		alert("请输入防盗芯片号！")
         		return;
         	}
-            $scope.guaCardNum = $scope.keywordForTrace;
-            $scope.plateNum = null;
+            $scope.peopleGuaCardNum = $scope.keywordForTrace;
+            $scope.peopleIdCards = null;
             
         }
         else {
 
         }
-        $http.get('/i/electalarm/findElectAlarmTrace', {
+        $http.get('/i/people/findPeopleTrace', {
             params: {
-                "plateNum": $scope.plateNum,
-                "guaCardNum": $scope.guaCardNum,
+                "peopleIdCards": $scope.peopleIdCards,
+                "peopleGuaCardNum": $scope.peopleGuaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
                 "endTimeForTrace": $scope.endTimeForTrace
             }
         }).success(function (data) {
         	
         	$scope.bigTotalItems = data.total;
-            $scope.AllElectalarms = data;
+            $scope.AllPeoplelarms = data;
             $scope.traceStationsLength = data.length;
             $scope.pointsArr = [];
             for(var j=0;j<data.length;j++){
@@ -409,7 +389,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 	                    marker=new BMap.Marker(arrPois[0],{
 	                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
-	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].statioName,{offset:new BMap.Size(0,-30)});
+	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].station.station_name,{offset:new BMap.Size(0,-30)});
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
 	                    marker.setLabel(label);
 	                    map.addOverlay(marker);lushu=1
@@ -481,7 +461,9 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                         if(showLable == ""){
                         	showLable = me._opts.defaultContent
                         }
-                        me._opts.defaultContent=showLable+":"+data[me.i+1].statioName
+                        
+                        me._opts.defaultContent=showLable+":"+data[me.i+1].station.station_name
+                        
                     };
 
                     
@@ -563,7 +545,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         $scope.showTable = false;
         $scope.traceStationsLength=null
         //map.clearOverlays();
-        $scope.alarmVehicleLocation()
+        $scope.peopleLocation()
         //showStation();
         if($scope.elecMarker!=null){
             //map.addOverlay($scope.elecMarker);
@@ -598,7 +580,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         pickerPosition: "bottom-left"
     });
     //报警车辆日期
-    $('#alarmStartTime').datetimepicker({
+    $('#peopleStartTime').datetimepicker({
     	format: 'yyyy-mm-dd',
     	minView: "month",
     	autoclose: true,
@@ -607,7 +589,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     	pickerPosition: "bottom-left"
     });
     
-    $('#alarmEndTime').datetimepicker({
+    $('#peopleEndTime').datetimepicker({
     	format: 'yyyy-mm-dd',
     	minView: "month",
     	autoclose: true,
@@ -617,8 +599,8 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     $(function(){
     	var sysTime = new Date().getTime();//当天
     	var month = new Date(sysTime - 60*1000*60*24*30)
-    	$scope.alarmStartTime=FormatDate(month,1);
-    	$scope.alarmEndTime=FormatDate(sysTime,1);
+    	$scope.peopleStartTime=FormatDate(month,1);
+    	$scope.peopleEndTime=FormatDate(sysTime,1);
         
     })
 
@@ -647,101 +629,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     });
     
     
-    ////////////////////////////////////////////////////////////////////////////
-	// 显示最大页数
-	$scope.maxSize = 10;
-	// 总条目数(默认每页十条)
-	$scope.bigTotalItems = 10;
-	// 当前页
-	$scope.bigCurrentPage = 1;
-	$scope.AllElectalarms = [];
-	//根据条件加载用户所有的黑名单
-	$scope.getElectalarmsByOptions = function() {
-		$http({
-			method : 'POST',
-			url : '/i/electalarm/findAllElectAlarmByOptions',
-			params : {
-				pageNum : $scope.bigCurrentPage,
-				pageSize : $scope.maxSize,
-				plateNum : $scope.plateNum,
-				alarmDateStart : $scope.alarmDateStart,
-				alarmDateEnd : $scope.alarmDateEnd,
-				proPower : $scope.admin.pro_power,
-				cityPower : $scope.admin.city_power,
-				areaPower : $scope.admin.area_power
-			}
-		}).success(function(data) {
-			$scope.bigTotalItems = data.total;
-			$scope.AllElectalarms = data.list;
-		});
-	}
-	$scope.getElectalarmsByOptions();
-	$scope.selected = [];
-	$scope.exists = function(electAlarmDto, list) {
-		return list.indexOf(electAlarmDto) > -1;
-	};
-	$scope.toggle = function(electAlarmDto, list) {
-		var idx = list.indexOf(electAlarmDto);
-		if (idx > -1) {
-			list.splice(idx, 1);
-		} else {
-			list.push(electAlarmDto);
-		}
-	};
-	$scope.isChecked = function() {
-	      return $scope.selected.length === $scope.AllElectalarms.length;
-	  };
-	  $scope.toggleAll = function() {
-	      if ($scope.selected.length === $scope.AllElectalarms.length) {
-	      	$scope.selected = [];
-	      } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-	      	$scope.selected = $scope.AllElectalarms.slice(0);
-	      }
-	  };
-	$scope.pageChanged = function() {
-		$scope.getElectalarmsByOptions();
-	}
-	$scope.goSearch = function() {
-		$scope.getElectalarmsByOptions();
-	}
-
-	function delcfm() {
-		if (!confirm("确认要删除？")) {
-			return false;
-		}
-		return true;
-	}
-	$scope.goDeleteElectAlarm = function(elect_alarm_id) {
-		if (delcfm()) {
-			$http.get('/i/electalarm/deleteElectAlarmByID', {
-				params : {
-					"elect_alarm_id" : elect_alarm_id
-				}
-			}).success(function(data) {
-				$scope.getElectalarmsByOptions();
-			});
-		}
-	}
-	//批量删除
-	$scope.goDeleteElectAlarms = function(){
-	  	if(delcfm()){
-	  	var ElectAlarmIDs = [];
-	  	for(var i=0 ;i< $scope.selected.length;i++){
-	  		ElectAlarmIDs.push($scope.selected[i].electAlarm.elect_alarm_id);
-	  	}
-	  	if(ElectAlarmIDs.length >0 ){
-	  		$http({
-	  			method:'DELETE',
-	  			url:'/i/electalarm/deleteElectAlarmByIDs',
-	  			params:{
-	  				"ElectAlarmIDs": ElectAlarmIDs
-	  			}
-	  		}).success(function (data) {
-	  			 $scope.getElectalarmsByOptions();
-	          });
-	  	}
-	  	}
-	  }
+  
 	
 	
 	/*JS.Engine.on(
@@ -766,27 +654,27 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 			}
 	);*/
 	
-	$scope.alarmVehicleLocation = function() {
+	$scope.peopleLocation = function() {
 		$scope.showOperation = false;
         $.ajax({
             method: 'GET',
-            url :'/i/electalarm/selectElectAlarmVehicleLocationByTime',
+            url :'/i/people/selectPeopleStationPeopleLocationByTime',
             data : {
-                "startTime": $scope.alarmStartTime,
-                "endTime": $scope.alarmEndTime + " 23:59:59",
+                "startTime": $scope.peopleStartTime,
+                "endTime": $scope.peopleEndTime + " 23:59:59",
                 "proPower": $scope.user.pro_power,
                 "cityPower": $scope.user.city_power,
                 "areaPower": $scope.user.area_power
                 
             }
         }).success(function(data){
-            $scope.alarmVehicle = data;
+            $scope.peopleData = data;
             map.clearOverlays();
             //$scope.clearElectTrace();
             showStation();
-           /* for (var i = 0; i < $scope.alarmVehicle.length; i++) {
-				if($scope.alarmVehicle[i].station!=null){
-		            var pt = new BMap.Point($scope.alarmVehicle[i].station.latitude, $scope.alarmVehicle[i].station.longitude);
+           /* for (var i = 0; i < $scope.peopleData.length; i++) {
+				if($scope.peopleData[i].station!=null){
+		            var pt = new BMap.Point($scope.peopleData[i].station.latitude, $scope.peopleData[i].station.longitude);
 					var myIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
 					var marker2 = new BMap.Marker(pt,{icon:myIcon});
 		            map.addOverlay(marker2);

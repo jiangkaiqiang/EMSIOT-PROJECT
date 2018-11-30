@@ -271,7 +271,7 @@ public class ElectAlarmController extends BaseController {
 	
 	
 	/**
-	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 根据查询时间，查询时间范围内的车辆
 	 * 
 	 * @param startTime
 	 * @param endTime

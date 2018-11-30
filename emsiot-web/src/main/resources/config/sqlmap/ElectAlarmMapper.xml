@@ -230,6 +230,7 @@
 				AND electrombile.area_id = #{areaPower}
 			</if>
 		</where>
+		GROUP BY alarm.alarm_gua_card_num 
 	</select>
    
    

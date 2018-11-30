@@ -181,5 +181,13 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/alarmTrackMap',
         controller: 'alarmTrackMap',
         templateUrl: 'app/template/alarmTrackMap.html'
+    }).state('peopleManage', {
+        url: '/peopleManage',
+        controller: 'peopleManage',
+        templateUrl: 'app/template/peopleManage.html'
+    }).state('peopleManageMap', {
+        url: '/peopleManageMap',
+        controller: 'peopleManageMap',
+        templateUrl: 'app/template/peopleManageMap.html'
     });
 });
