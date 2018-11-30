@@ -131,7 +131,6 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
          var sHtml2 = "</h4></li><li>";
          var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
          var sHtml4 = "</p><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>基站名称</th><th>经过时间</th></tr></thead><tbody>";
-         //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
          var endHtml = "</tbody></table></div></div>";
     	
          console.log(map.getOverlays())
@@ -142,8 +141,6 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             showPeopleInStation($scope.peopleStartTime, $scope.peopleEndTime+" 23:59:59",title_add[0]);  //根据物理编号查找
             var electInfo='';
             for (var k = 0; k < $scope.peopleInStation.length; k++) {
-                //electInfo += "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (k + 1) + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].plate_num + "</td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
-                //2018-10-15 修改
             	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].station_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
             }
             var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 +"经过"+ $scope.peopleInStation.length+"个 基站" + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
@@ -178,10 +175,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
             //报警车辆图标
-            var myIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
+            var myIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
             marker2 = new BMap.Marker(pt,{icon:myIcon});
             $scope.labelSet(tmpPeople.people_name,marker2);
             marker2.setTitle(tmpPeople.people_gua_card_num + '\t' + tmpStation.station_name);
+            //console.log(tmpPeople.people_gua_card_num)
+            //console.log(tmpStation.station_name)
+            console.log(tmpStation)
 
             markerClickListener(marker2);
             
@@ -306,7 +306,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             $scope.showOperation = false;
             stationIDforDelete = data.station_phy_num;
             $scope.elecPt = new BMap.Point($scope.longitude, $scope.latitude);
-            $scope.elecIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
+            $scope.elecIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
             $scope.elecMarker = new BMap.Marker($scope.elecPt, {icon: $scope.elecIcon});
             $scope.labelSet($scope.keywordForLocation,$scope.elecMarker);
             map.addOverlay($scope.elecMarker);
@@ -387,7 +387,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     map.setViewport(arrPois);
                     if(lushu==null){
 	                    marker=new BMap.Marker(arrPois[0],{
-	                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
+	                        icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
 	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].station.station_name,{offset:new BMap.Size(0,-30)});
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
@@ -470,7 +470,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     lushu = new BMapLib.LuShu(map,arrPois,{
                         defaultContent:$scope.keywordForTrace,//"从天安门到百度大厦"
                         autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
+                        icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
                         speed: 350,
                         enableRotation:true,//是否设置marker随着道路的走向进行旋转
                         landmarkPois:[

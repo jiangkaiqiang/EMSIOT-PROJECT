@@ -1,4 +1,4 @@
-coldWeb.controller('peopleManage', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
+coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
 	$scope.load = function(){
 		 $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
 			   $rootScope.admin = data;
@@ -14,6 +14,7 @@ coldWeb.controller('peopleManage', function ($rootScope, $scope, $state, $cookie
 		            }
 		        }).success(function(data){
 				    	$scope.userPowerDto = data;
+					console.log(data)
 				    	//获取全部省For add；要首先确定该用户是不是具有分配省权限用户的能力
 				    	if($scope.userPowerDto.sysUser.pro_power == "-1") {
 				    		$http.get('/i/city/findProvinceList').success(function(data) {
@@ -26,6 +27,7 @@ coldWeb.controller('peopleManage', function ($rootScope, $scope, $state, $cookie
 				    			$scope.proID = "-1";
 				    		});
 				    	}
+
 				    	if($scope.userPowerDto.sysUser.pro_power != "-1"){
 				    		$http.get('/i/city/findCitysByProvinceId', {
 				                params: {
@@ -231,6 +233,7 @@ coldWeb.controller('peopleManage', function ($rootScope, $scope, $state, $cookie
 		
 	    $http.get('/i/city/findProvinceList').success(function (data) {
 	        $scope.provinces = data;
+			console.log(data);
 	        $scope.addProvinceID = data[0].province_id;
 	        $scope.getCitis();
 	    });
@@ -243,6 +246,7 @@ coldWeb.controller('peopleManage', function ($rootScope, $scope, $state, $cookie
             }
         }).success(function (data) {
         	$scope.citis = data;
+			console.log(data)
         	var addCity = {"city_id":"-1","name":"不限"};
         	$scope.citis.push(addCity);
             $scope.addCityID ="-1";

@@ -258,6 +258,10 @@ font-weight:bold;
     height: auto;
     display: none;
 }
+.countWarp .alarmMap .home-nav .active,.countWarp .peopleManageMap .home-nav .active{
+    background:#fff;
+    color:#666!important;
+}
 
 
 
