@@ -552,7 +552,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         	$scope.elecMarker.hide();
     		$scope.elecMarker = null;
         }
-        $scope.getElectalarmsByOptions();
+        //$scope.getElectalarmsByOptions();
         
     };
 
@@ -656,6 +656,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	
 	$scope.peopleLocation = function() {
 		$scope.showOperation = false;
+        $scope.showTable = false;
         $.ajax({
             method: 'GET',
             url :'/i/people/selectPeopleStationPeopleLocationByTime',
@@ -672,6 +673,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             map.clearOverlays();
             //$scope.clearElectTrace();
             showStation();
+
            /* for (var i = 0; i < $scope.peopleData.length; i++) {
 				if($scope.peopleData[i].station!=null){
 		            var pt = new BMap.Point($scope.peopleData[i].station.latitude, $scope.peopleData[i].station.longitude);
