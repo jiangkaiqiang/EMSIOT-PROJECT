@@ -21,12 +21,12 @@
             <div class="block-content">
                 <div class="form-group">
                     <label for="importUser">录入人&nbsp;&nbsp;&nbsp;</label>
-                    <select id="" class="form-control" id="importUser"
+                    <select class="form-control" id="importUser"
                             ng-model="sysUserID" ng-disabled="editable"
                             ng-options="x.user_id as x.user_name for x in sysUsers"></select>
                 </div>
                 <div class="form-group">
-                    <select id="" class="form-control"
+                    <select class="form-control"
                             ng-model="searchKeyType"
                             ng-options="x.id as x.name for x in AllSearchKeyType"></select>
                     <input ng-attr-type type="text" class="form-control" ng-model="searchKey" ng-attr-placeholder placeholder="请输入关键词"/>
@@ -38,18 +38,18 @@
                 </div>
 
             </div>
-            <div class="unblock-content" style="height: auto!important;" id="">
+            <div class="unblock-content" style="height: auto!important;">
                 <div class="form-group">
-                    <label for="area">所属区域</label>
-                    <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID"
+                    <label>所属区域</label>
+                    <select ng-show="userPowerDto.sysUser.pro_power==-1" class="form-control" ng-model="proID"
                             ng-change="getCitisForSearch()"
                             ng-options="x.province_id as x.name for x in provincesForSearch"></select>
                     <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
-                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  id="" class="form-control" ng-model="cityID"
+                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  class="form-control" ng-model="cityID"
                              ng-change="getAreasForSearch()"
                              ng-options="x.city_id as x.name for x in citisForSearch"></select>
                     <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
-                    <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="areaID"
+                    <select ng-show="userPowerDto.sysUser.area_power==-1" class="form-control" ng-model="areaID"
                             ng-options="x.area_id as x.name for x in areasForSearch"></select>
                     <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
                 </div>
@@ -88,7 +88,7 @@
             <th>
                 <div>
                     <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
-                    <label for="allSecSon"></label>
+                    <label></label>
                 </div>
             </th>
             <!-- <th>序号</th> -->
@@ -183,7 +183,7 @@
 <!-- 表格操作区域结束 -->
 
 
-<!--  添加车辆模态框 -->
+<!--  添加模态框 -->
 <div class="modal fade" id="addCar" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -192,7 +192,7 @@
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <div class="modal-title" id="">
+                <div class="modal-title">
                     人员登记
                 </div>
             </div>
@@ -207,7 +207,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label for="phoneNum" class="control-label col-md-4">
+                                <label class="control-label col-md-4">
                                     <i>*</i>
                                     手机号：
                                 </label>
@@ -313,9 +313,10 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="addPeopleType" ng-disabled="editable">
-                                        <option value="{{AllPeopleType[1].id}}">{{AllPeopleType[1].name}}</option>
+                                        <option disabled="disabled"  style='display: none' value=''></option>
+                                        <option value="{{AllPeopleType[1].id}}" selected="selected">{{AllPeopleType[1].name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -580,9 +581,10 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="updatePeople.people.people_type" ng-disabled="editable">
-                                        <option value="{{AllPeopleType[0].id}}">{{AllPeopleType[0].name}}</option>
+                                        <option disabled="disabled"  style='display: none' value=''></option>
+                                        <option value="{{AllPeopleType[1].id}}">{{AllPeopleType[1].name}}</option>
                                     </select>
                                 </div>
                             </div>

@@ -14,7 +14,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
 		            }
 		        }).success(function(data){
 				    	$scope.userPowerDto = data;
-					console.log(data)
+					//console.log(data)
 				    	//获取全部省For add；要首先确定该用户是不是具有分配省权限用户的能力
 				    	if($scope.userPowerDto.sysUser.pro_power == "-1") {
 				    		$http.get('/i/city/findProvinceList').success(function(data) {
@@ -145,6 +145,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
         {id:"4",name:"防盗芯片编号"},
         {id:"5",name:"监护人手机号"}
     ];
+	$scope.peopleType = '1';
 	
 	 // 获取当前车辆的列表
     $scope.getPeoples = function() {
@@ -181,6 +182,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
 		}).success(function(data) {
 			$scope.bigTotalItems = data.total;
 			$scope.AllPeopleDtos = data.list;
+			console.log(data.list)
 		});
 	}
 
@@ -233,7 +235,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
 		
 	    $http.get('/i/city/findProvinceList').success(function (data) {
 	        $scope.provinces = data;
-			console.log(data);
+			//console.log(data);
 	        $scope.addProvinceID = data[0].province_id;
 	        $scope.getCitis();
 	    });
@@ -246,7 +248,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
             }
         }).success(function (data) {
         	$scope.citis = data;
-			console.log(data)
+			//console.log(data)
         	var addCity = {"city_id":"-1","name":"不限"};
         	$scope.citis.push(addCity);
             $scope.addCityID ="-1";

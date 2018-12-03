@@ -2,7 +2,8 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
     $scope.load = function () {
         $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
             $rootScope.admin = data;
-            console.log(data);
+            //console.log(data);
+            //验证是否登录成功
             if ($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id == undefined) {
                 url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
                 window.location.href = url;
@@ -17,6 +18,7 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
                 //console.log(data)
                 //获取全部省For add；要首先确定该用户是不是具有分配省权限用户的能力
                 if ($scope.userPowerDto.sysUser.pro_power == "-1") {
+                    //获取省列表
                     $http.get('/i/city/findProvinceList').success(function (data) {
                         $scope.provincesForSearch = data;
                         var province = {
@@ -147,6 +149,7 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
         {id: "4", name: "防盗芯片编号"},
         {id: "5", name: "监护人手机号"}
     ];
+    $scope.peopleType = '2';
 
     // 获取当前车辆的列表
     $scope.getPeoples = function () {
@@ -183,6 +186,7 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
         }).success(function (data) {
             $scope.bigTotalItems = data.total;
             $scope.AllPeopleDtos = data.list;
+            console.log(data.list)
         });
     }
 
@@ -235,7 +239,7 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
 
         $http.get('/i/city/findProvinceList').success(function (data) {
             $scope.provinces = data;
-            console.log(data);
+            //console.log(data);
             $scope.addProvinceID = data[0].province_id;
             $scope.getCitis();
         });
@@ -248,7 +252,7 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
             }
         }).success(function (data) {
             $scope.citis = data;
-            console.log(data)
+            //console.log(data)
             var addCity = {"city_id": "-1", "name": "不限"};
             $scope.citis.push(addCity);
             $scope.addCityID = "-1";
@@ -439,7 +443,7 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
     ];
     $scope.addPeopleAge = "25"
     $scope.addPeopleSex = "0"
-    $scope.addPeopleType = "1";
+    $scope.addPeopleType = "2";
     $scope.submit = function () {
         if (checkInput()) {
             data = {
@@ -479,8 +483,6 @@ coldWeb.controller('oldPeopleManage', function ($rootScope, $scope, $state, $coo
             alert("防盗芯片编号不能为空");
         }
     }
-
-
     $scope.goUpdatePeople = function (peopleID) {
         for (var i = 0; i < $scope.AllPeopleDtos.length; i++) {
             if ($scope.AllPeopleDtos[i].people.people_id == peopleID) {
