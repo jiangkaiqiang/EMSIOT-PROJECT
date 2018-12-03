@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.ems.iot.manage.dao.AppUserMapper;
+import com.ems.iot.manage.dao.BlackelectMapper;
+import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.AppUser;
@@ -31,6 +33,10 @@ public class UserAppController extends AppBaseController {
 	private AppUserMapper appUserMapper;
 	@Autowired
 	private CookieService cookieService;
+	@Autowired
+	private ElectrombileMapper electrombileMapper;
+	@Autowired
+	private BlackelectMapper blackelectMapper;
 	
 	/**
 	 * app 个人用户登录
@@ -85,6 +91,8 @@ public class UserAppController extends AppBaseController {
 			if (effectiveCookie != null) {
 				appUser = appUserMapper.findUserByName(effectiveCookie.getUsername());
 				if(appUser!=null){
+					appUser.setElectCount(electrombileMapper.findElectsCountByTele(appUser.getUser_tele()));
+					appUser.setAlarnCount(blackelectMapper.findBlackelectsCountByOwnerTele(appUser.getUser_tele()));
 					appUser.setPassword("********");
 					return new AppResultDto(true, 1001, "用户已登录", appUser);
 				}

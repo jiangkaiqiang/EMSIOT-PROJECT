@@ -16,6 +16,10 @@ public class AppUser {
     private Date login_time;
 
     private String nickname;
+    
+    private Integer electCount;
+    
+    private Integer alarnCount;
 
     public Long getUser_id() {
         return user_id;
@@ -72,4 +76,21 @@ public class AppUser {
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? null : nickname.trim();
     }
+
+	public Integer getElectCount() {
+		return electCount;
+	}
+
+	public void setElectCount(Integer electCount) {
+		this.electCount = electCount;
+	}
+
+	public Integer getAlarnCount() {
+		return alarnCount;
+	}
+
+	public void setAlarnCount(Integer alarnCount) {
+		this.alarnCount = alarnCount;
+	}
+    
 }

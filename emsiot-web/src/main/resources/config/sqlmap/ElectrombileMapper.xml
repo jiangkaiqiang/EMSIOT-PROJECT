@@ -637,6 +637,15 @@
 		order by `recorder_time` desc
 	</select>
 	
+  <select id="findElectsCountByTele" parameterType="map" resultType="Integer">
+		SELECT count(*) FROM `electrombile`
+		<where>
+			<if test="tele != null">
+			    owner_tele = #{tele}
+			</if>
+		</where>
+	</select>
+	
 	<select id="findElectsByRecorderId" parameterType="map" resultType="Electrombile">
 		SELECT * FROM `electrombile`
 		<where>

@@ -28,4 +28,6 @@ public interface BlackelectMapper {
     List<Blackelect> findBlackelectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     List<Blackelect> findBlackelectsByOwnerTele(@Param("ownerTele") String ownerTele);
+    
+    Integer findBlackelectsCountByOwnerTele(@Param("ownerTele") String ownerTele);
 }

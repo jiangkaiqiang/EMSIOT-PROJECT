@@ -241,5 +241,14 @@
 			</if>
 		</where>
    </select>
+   
+   <select id="findBlackelectsCountByOwnerTele" parameterType="map" resultType="Integer">
+        SELECT  count(black_id) FROM `blackelect`
+        <where>
+			<if test="ownerTele != null and ownerTele != ''">
+				owner_tele = #{ownerTele}
+			</if>
+		</where>
+   </select>
     
 </mapper>

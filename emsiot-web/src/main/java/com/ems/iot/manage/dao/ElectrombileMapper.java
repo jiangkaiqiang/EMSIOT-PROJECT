@@ -80,6 +80,12 @@ public interface ElectrombileMapper {
       * @return
       */
     List<Electrombile> findElectsByTele(@Param("tele") String tele);
+    /**
+     * 根据车主的手机号获取车主所拥有的电动车数目，为个人车主app提供服务
+     * @param tele
+     * @return
+     */
+    Integer findElectsCountByTele(@Param("tele") String tele);
    
     /**
      * 根据管理员的ID查询该管理员已经备案登记的车辆数量，此处是为App端的管理员提供服务
