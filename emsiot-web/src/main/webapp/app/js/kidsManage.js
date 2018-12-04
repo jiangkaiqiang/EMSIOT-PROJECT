@@ -421,22 +421,6 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
 
     function checkInput() {
         var flag = true;
-        // 检查必须填写项
-        if ($scope.addPeopleGuaCardNum == undefined || $scope.addPeopleGuaCardNum == '') {
-            flag = false;
-            alert('防盗芯片不能为空');
-            return;
-        }else{
-            if(!$scope.guaCardNumReg.test($scope.addPeopleGuaCardNum)){
-                flag = false;
-                alert('防盗芯片必须为6位数字');
-                return;
-            }
-        }
-        if ($scope.addContactAddress == undefined || $scope.addContactAddress == '') {
-            alert('联系地址不能为空');
-            return;
-        }
         if ($scope.addPeopleTele != undefined && $scope.addPeopleTele != '') {
             if (!$scope.phoneReg.test($scope.addPeopleTele)) {
                 alert('手机格式不正确');
@@ -449,11 +433,33 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
             flag = false;
             return;
         }
+        // 检查必须填写项
+        if ($scope.addPeopleGuaCardNum == undefined || $scope.addPeopleGuaCardNum == '') {
+        	flag = false;
+        	alert('防盗芯片不能为空');
+        	return;
+        }else{
+        	if(!$scope.guaCardNumReg.test($scope.addPeopleGuaCardNum)){
+        		flag = false;
+        		alert('防盗芯片必须为6位数字');
+        		return;
+        	}
+        }
+        if ($scope.addGuardianName == undefined || $scope.addGuardianName == '') {
+        	alert('监护人姓名不能为空');
+        	flag = false;
+        	return;
+        }
         if (!$scope.phoneReg.test($scope.addGuardianTele)) {
             alert('监护人手机格式不正确');
             flag = false;
             return;
         }
+        if ($scope.addContactAddress == undefined || $scope.addContactAddress == '') {
+            alert('联系地址不能为空');
+            return;
+        }
+        
 
         return flag;
     }
@@ -543,23 +549,6 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
     };
     function checkInputForUpdate() {
         var flag = true;
-        // 检查必须填写项
-        if ($scope.updatePeople.people.people_gua_card_num== undefined || $scope.updatePeople.people.people_gua_card_num == '') {
-            flag = false;
-            alert('防盗芯片不能为空');
-            return;
-        }else{
-            if(!$scope.guaCardNumReg.test($scope.updatePeopleGuaCardNum)){
-                flag = false;
-                alert('防盗芯片必须为6位数字');
-                return;
-            }
-        }
-
-        if ($scope.updatePeople.people.contact_address == undefined || $scope.updatePeople.people.contact_address == '') {
-            alert('联系地址不能为空');
-            return;
-        }
         if ($scope.updatePeople.people.people_tele != undefined && $scope.updatePeople.people.people_tele != '') {
             if (!$scope.phoneReg.test($scope.updatePeople.people.people_tele)) {
                 alert('手机格式不正确');
@@ -572,10 +561,32 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
             flag = false;
             return;
         }
+        // 检查必须填写项
+        if ($scope.updatePeople.people.people_gua_card_num== undefined || $scope.updatePeople.people.people_gua_card_num == '') {
+            flag = false;
+            alert('防盗芯片不能为空');
+            return;
+        }else{
+            if(!$scope.guaCardNumReg.test($scope.updatePeople.people.people_gua_card_num)){
+                flag = false;
+                alert('防盗芯片必须为6位数字');
+                return;
+            }
+        }
+        if ($scope.updatePeople.people.guardian_name == undefined || $scope.updatePeople.people.guardian_name == '') {
+        	alert('监护人姓名不能为空');
+        	flag = false;
+        	return;
+        }
+        
         if (!$scope.phoneReg.test($scope.updatePeople.people.guardian_tele)) {
             alert('监护人手机格式不正确');
             flag = false;
             return;
+        }
+        if ($scope.updatePeople.people.contact_address == undefined || $scope.updatePeople.people.contact_address == '') {
+        	alert('联系地址不能为空');
+        	return;
         }
 
         return flag;
@@ -617,9 +628,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
                     alert(data.message);
                 }
             });
-        } else {
-            alert("防盗芯片编号不能为空");
-        }
+        } 
     }
 
     $scope.goSearchForTrace = function (gua_card_num) {

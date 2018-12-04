@@ -137,9 +137,9 @@
    
    <select id="selectElectsByEleGuaCardNumNow" parameterType="map" resultType="java.lang.Integer">
 	SELECT COUNT(*) as count FROM `elect_alarm` 
-	RIGHT join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
+	LEFT join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
 	<where>
-	    	elect_alarm.alarm_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE)
+	    	<!-- elect_alarm.alarm_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) -->
 			<if test="proPower != null">
 			    AND electrombile.pro_id = #{proPower}
 			</if>

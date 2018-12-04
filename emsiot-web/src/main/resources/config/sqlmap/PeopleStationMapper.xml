@@ -149,7 +149,7 @@
 	
 	<select id="selectPeoplesByEleGuaCardNumNow" parameterType="map" resultType="java.lang.Integer">
 	SELECT COUNT(*) as count FROM `people_station` 
-	RIGHT join people on people.people_gua_card_num = people_station.people_gua_card_num
+	LEFT JOIN people on people.people_gua_card_num = people_station.people_gua_card_num
 	<where>
 	    	<!-- people_station.update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) -->
 			<if test="proPower != null">

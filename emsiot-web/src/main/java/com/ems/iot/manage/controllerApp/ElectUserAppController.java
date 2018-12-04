@@ -282,6 +282,14 @@ public class ElectUserAppController extends AppBaseController {
 		if (blackID==null) {
 			 return new AppResultDto(4001, "要删除的id不能为空", false);
 		}
+		Blackelect blackelect = blackelectMapper.selectByPrimaryKey(blackID);
+		if(blackelect!=null) {
+			//应该在判断下该报警车的状态是否有改动。
+			Electrombile electrombile = new Electrombile();
+			electrombile.setPlate_num(blackelect.getPlate_num());
+			electrombile.setElect_state(1);
+			electrombileMapper.updateByPlateNumSelective(electrombile);
+		}
 		blackelectMapper.deleteByPrimaryKey(blackID);
 		return new AppResultDto(1001, "删除成功");
 	}
