@@ -99,6 +99,10 @@
     height:60px!important;
     opacity:1!important;
 }
+.unblock_active{
+    height:60px!important;
+    opacity:1!important;
+}
 
 #addCar .modal-body .myModalTitle i,
 #viewModalElec .modal-body .myModalTitle i,
@@ -169,6 +173,10 @@
         height:90px!important;
         opacity:1!important;
     }
+    .unblock_active{
+        height:90px!important;
+        opacity:1!important;
+    }
 }
 
 @media screen and (max-width: 1359px) and (min-width: 1280px){
@@ -176,9 +184,17 @@
         height:90px!important;
         opacity:1!important;
     }
+    .unblock_active{
+        height:60px!important;
+        opacity:1!important;
+    }
 }
 @media screen and (max-width: 1399px) and (min-width: 1360px){
     .unblock-active{
+        height:50px!important;
+        opacity:1!important;
+    }
+    .unblock_active{
         height:50px!important;
         opacity:1!important;
     }
@@ -188,6 +204,10 @@
         height:95px!important;
         opacity:1!important;
     }
+    .unblock_active{
+        height:60px!important;
+        opacity:1!important;
+    }
 }
 
 @media screen and (max-width: 1919px) and (min-width: 1600px){
@@ -195,10 +215,18 @@
         height:55px!important;
         opacity:1!important;
     }
+    .unblock_active{
+        height:55px!important;
+        opacity:1!important;
+    }
 }
 
 @media screen and(min-width:1920px){
     .unblock-active{
+        height:50px!important;
+        opacity:1!important;
+    }
+    .unblock_active{
         height:50px!important;
         opacity:1!important;
     }

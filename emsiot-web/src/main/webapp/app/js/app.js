@@ -1,122 +1,135 @@
 var coldWeb = angular.module('ColdWeb', ['ui.bootstrap', 'ui.router', 'ui.checkbox',
-    'ngCookies', 'xeditable', 'isteven-multi-select', 'angucomplete', 'angular-table','ngFileUpload','remoteValidation']);
+    'ngCookies', 'xeditable', 'isteven-multi-select', 'angucomplete', 'angular-table', 'ngFileUpload', 'remoteValidation']);
 angular.element(document).ready(function ($ngCookies, $http, $rootScope) {
-	angular.bootstrap(document, ['ColdWeb']);
+    angular.bootstrap(document, ['ColdWeb']);
+});
+coldWeb.controller('appCtrl', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
+    //小孩手机验证
+    $scope.phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+
+    //身份证验证
+    $scope.idCardReg = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i;
+
+    //防盗芯片验证
+    $scope.guaCardNumReg = /^\d{6}$/;
+
+
 });
 coldWeb.run(function (editableOptions, adminService, $location) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
-    $.ajax({type: "GET",cache: false,dataType: 'json',url: '/i/user/findUser'}).success(function(data){
-      	admin = data;
-      	if(admin == null || admin.user_id == 0 || admin.user_id==undefined){
-  			url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
-  			window.location.href = url;
-  		}
-  		adminService.setAdmin(admin);
-      });
+    $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
+        admin = data;
+        if (admin == null || admin.user_id == 0 || admin.user_id == undefined) {
+            url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
+            window.location.href = url;
+        }
+        adminService.setAdmin(admin);
+    });
 });
 
-coldWeb.factory('adminService',['$rootScope','$http', function($rootScope,$http){
-	return {
-		setAdmin: function(admin){
-	    	$rootScope.admin = admin;
+coldWeb.factory('adminService', ['$rootScope', '$http', function ($rootScope, $http) {
+    return {
+        setAdmin: function (admin) {
+            $rootScope.admin = admin;
 
-			//权限
-			if ($rootScope.admin != null && $rootScope.admin.user_id != 0 && $rootScope.admin.user_id != undefined) {
-				$http.get('/i/user/findUserByID', {
-					params : {
-						"spaceUserID" : $rootScope.admin.user_id
-					}
-				}).success(function(data) {
-					$rootScope.rootUserPowerDto = data;
-				});
-			}
+            //权限
+            if ($rootScope.admin != null && $rootScope.admin.user_id != 0 && $rootScope.admin.user_id != undefined) {
+                $http.get('/i/user/findUserByID', {
+                    params: {
+                        "spaceUserID": $rootScope.admin.user_id
+                    }
+                }).success(function (data) {
+                    $rootScope.rootUserPowerDto = data;
+                });
+            }
 
 
-			$rootScope.logout = function () {
-	        	$http.get('/i/user/logout').success(function(data){
-	        		$rootScope.admin = null;
-	            });
-	        	window.location.reload();
-	        };
-	        JS.Engine.start('conn');
-	    	JS.Engine.on(
-	    	        { 
-	    	           msgData : function(msgData){
-	    	        	   var message = msgData.split(";");
-	    	        	   if($rootScope.admin.pro_power==-1){
-	    	        		   $("#message").text(message[3]);  
-	    	        	    }
-	    	        	   else if($rootScope.admin.pro_power==message[0]) {
-	    	        		   if($rootScope.admin.city_power==-1){
-	    	        			   $("#message").text(message[3]); 
-	    	        		   }
-	    	        		   else if($rootScope.admin.city_power==message[1]){
-	    	        			   if($rootScope.admin.area_power==-1||$rootScope.admin.area_power==message[2]){
-	    	        				   $("#message").text(message[3]); 
-	    	        			   }
-	    	        		   }
-	    	        	   }
-	    	           },
-	    	       }
-	    	   );
-	    	JS.Engine.on(
-	    			{ 
-	    				limitData : function(msgData){
-	    					var message = msgData.split(";");
-	    					if($rootScope.admin.pro_power==-1){
-	    						$("#limitMessage").text(message[3]);  
-	    					}
-	    					else if($rootScope.admin.pro_power==message[0]) {
-	    						if($rootScope.admin.city_power==-1){
-	    							$("#limitMessage").text(message[3]); 
-	    						}
-	    						else if($rootScope.admin.city_power==message[1]){
-	    							if($rootScope.admin.area_power==-1||$rootScope.admin.area_power==message[2]){
-	    								$("#limitMessage").text(message[3]); 
-	    							}
-	    						}
-	    					}
-	    				},
-	    			}
-	    	);
-	        function checkInput(){
-		        var flag = true;
-		        // 检查必须填写项
-		        if ($rootScope.newPassword == undefined || $rootScope.newPassword2 == '' ||
-		        		$rootScope.newPassword2 == undefined || $rootScope.newPassword == ''||  
-		        		$rootScope.newPassword2!= $rootScope.newPassword) {
-		            flag = false;
-		        }
-		        return flag;
-		    }
-	        $rootScope.changePassword = function(){
-		        if (checkInput()){
-		            $http({
-		            	method : 'GET',
-		            	url:'/i/user/changePwd',
-		    			params:{
-		    				'password': $rootScope.newPassword,
-		    				'userID': $rootScope.admin.user_id
-		    				}
-		    		}).then(function (resp) {
-		    			 alert("修改成功");
-		                 window.location.reload();
-		            }, function (resp) {
-		                console.log('Error status: ' + resp.status);
-		            }, function (evt) {
-		                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-		                console.log('progress: ' + progressPercentage + '% ' + evt.name);
-		            });
-		          } else {
-		            alert("密码输入有误!");
-		        }
-		    }
-	    }
-	}
+            $rootScope.logout = function () {
+                $http.get('/i/user/logout').success(function (data) {
+                    $rootScope.admin = null;
+                });
+                window.location.reload();
+            };
+            JS.Engine.start('conn');
+            JS.Engine.on(
+                {
+                    msgData: function (msgData) {
+                        var message = msgData.split(";");
+                        if ($rootScope.admin.pro_power == -1) {
+                            $("#message").text(message[3]);
+                        }
+                        else if ($rootScope.admin.pro_power == message[0]) {
+                            if ($rootScope.admin.city_power == -1) {
+                                $("#message").text(message[3]);
+                            }
+                            else if ($rootScope.admin.city_power == message[1]) {
+                                if ($rootScope.admin.area_power == -1 || $rootScope.admin.area_power == message[2]) {
+                                    $("#message").text(message[3]);
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            JS.Engine.on(
+                {
+                    limitData: function (msgData) {
+                        var message = msgData.split(";");
+                        if ($rootScope.admin.pro_power == -1) {
+                            $("#limitMessage").text(message[3]);
+                        }
+                        else if ($rootScope.admin.pro_power == message[0]) {
+                            if ($rootScope.admin.city_power == -1) {
+                                $("#limitMessage").text(message[3]);
+                            }
+                            else if ($rootScope.admin.city_power == message[1]) {
+                                if ($rootScope.admin.area_power == -1 || $rootScope.admin.area_power == message[2]) {
+                                    $("#limitMessage").text(message[3]);
+                                }
+                            }
+                        }
+                    },
+                }
+            );
+            function checkInput() {
+                var flag = true;
+                // 检查必须填写项
+                if ($rootScope.newPassword == undefined || $rootScope.newPassword2 == '' ||
+                    $rootScope.newPassword2 == undefined || $rootScope.newPassword == '' ||
+                    $rootScope.newPassword2 != $rootScope.newPassword) {
+                    flag = false;
+                }
+                return flag;
+            }
+
+            $rootScope.changePassword = function () {
+                if (checkInput()) {
+                    $http({
+                        method: 'GET',
+                        url: '/i/user/changePwd',
+                        params: {
+                            'password': $rootScope.newPassword,
+                            'userID': $rootScope.admin.user_id
+                        }
+                    }).then(function (resp) {
+                        alert("修改成功");
+                        window.location.reload();
+                    }, function (resp) {
+                        console.log('Error status: ' + resp.status);
+                    }, function (evt) {
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        console.log('progress: ' + progressPercentage + '% ' + evt.name);
+                    });
+                } else {
+                    alert("密码输入有误!");
+                }
+            }
+        }
+    }
 }])
 
 coldWeb.config(function ($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/home");
     $stateProvider.state('home', {
         url: '/home',
         controller: 'home',
@@ -190,12 +203,12 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'peopleManageMap',
         templateUrl: 'app/template/peopleManageMap.html'
     }).state('oldPeopleManage', {
-		url: '/oldPeopleManage',
-		controller: 'oldPeopleManage',
-		templateUrl: 'app/template/oldPeopleManage.html'
-	}).state('gowsterPeopleManage', {
-		url: '/gowsterPeopleManage',
-		controller: 'gowsterPeopleManage',
-		templateUrl: 'app/template/gowsterPeopleManage.html'
-	});
+        url: '/oldPeopleManage',
+        controller: 'oldPeopleManage',
+        templateUrl: 'app/template/oldPeopleManage.html'
+    }).state('gowsterPeopleManage', {
+        url: '/gowsterPeopleManage',
+        controller: 'gowsterPeopleManage',
+        templateUrl: 'app/template/gowsterPeopleManage.html'
+    });
 });

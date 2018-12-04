@@ -36,9 +36,13 @@
                     <button ng-attr-type type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
                     <button ng-attr-type type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
                 </div>
+                 <span class="text-blue pull-right margin-top" ng-style style="color:#3C7ADA;cursor:pointer;" id="searchBlock">
+                    更多搜索条件
+                    <i class="fa fa-fw fa-angle-down text"></i>
+                </span>
 
             </div>
-            <div class="unblock-content" style="height: auto!important;">
+            <div class="unblock-content" id="unblock">
                 <div class="form-group">
                     <label>所属区域</label>
                     <select ng-show="userPowerDto.sysUser.pro_power==-1" class="form-control" ng-model="proID"

@@ -5,7 +5,7 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
             $rootScope.admin = data;
             //console.log(data);
             //验证是否登录成功
-            if ($rootScope.admin == null || $rootScope.admin.user_id == 0 || admin.user_id == undefined) {
+            if ($rootScope.admin == null || $rootScope.admin.user_id == 0 || $rootScope.admin.user_id == undefined) {
                 url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
                 window.location.href = url;
                 return;
@@ -96,7 +96,7 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
 
     //显示下拉搜索条件
     $("#searchBlock").click(function () {
-        $("#unblock").toggleClass("unblock-active");
+        $("#unblock").toggleClass("unblock_active");
         //console.log($(this).children("i"));
         if ($(this).children("i").hasClass("fa-angle-down")) {
             $(this).children("i").removeClass("fa-angle-down").addClass("fa-angle-up");
@@ -109,7 +109,7 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
 
     function isDisabled() {
         var selectes = $("#unblock .form-control");
-        if ($("#unblock").hasClass("unblock-active")) {
+        if ($("#unblock").hasClass("unblock_active")) {
             for (var i = 0; i < selectes.length; i++) {
                 $(selectes[i]).prop("disabled", false);
             }
@@ -187,7 +187,7 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
         }).success(function (data) {
             $scope.bigTotalItems = data.total;
             $scope.AllPeopleDtos = data.list;
-            console.log(data.list)
+            //console.log(data.list)
         });
     }
 

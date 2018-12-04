@@ -221,9 +221,9 @@ public class PeopleController extends BaseController {
 		if (area_id==null || area_id==-1) {
 			return new ResultDto(-1, "人员所属区/县不能为空");
 		}
-		if (people_tele==null){
+		/*if (people_tele==null){
 			return new ResultDto(-1, "人员手机号不能为空");
-		}
+		}*/
 		if (people_name==null){
 			return new ResultDto(-1, "人员姓名不能为空");
 		}

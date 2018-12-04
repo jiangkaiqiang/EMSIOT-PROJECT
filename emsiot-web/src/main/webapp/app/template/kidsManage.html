@@ -1,6 +1,6 @@
 <nav class="page-title shadow electManage">
     <div class="title-brand flex-between align-items">
-        <div class="title-text">人员备案</div>
+        <div class="title-text">小孩信息备案</div>
         <ul class="title-nav flex align-items" ng-show="rootUserPowerDto.sysUser.opt_power==1">
             <li ng-show="rootUserPowerDto.electDelete==1">
                 <a href="" class="flex-items">
@@ -21,45 +21,58 @@
             <div class="block-content">
                 <div class="form-group">
                     <label for="importUser">录入人&nbsp;&nbsp;&nbsp;</label>
-                    <select id="" class="form-control" id="importUser"
+                    <select class="form-control" id="importUser"
                             ng-model="sysUserID" ng-disabled="editable"
                             ng-options="x.user_id as x.user_name for x in sysUsers"></select>
                 </div>
                 <div class="form-group">
-                    <select id="" class="form-control"
-                                            ng-model="searchKeyType"
-                                            ng-options="x.id as x.name for x in AllSearchKeyType"></select>
-                    <input ng-attr-type type="text" class="form-control" ng-model="searchKey" ng-attr-placeholder placeholder="请输入关键词"/>
+                    <select class="form-control"
+                            ng-model="searchKeyType"
+                            ng-options="x.id as x.name for x in AllSearchKeyType"></select>
+                    <input ng-attr-type type="text" class="form-control" ng-model="searchKey" ng-attr-placeholder
+                           placeholder="请输入关键词"/>
                 </div>
 
                 <div class="form-group">
                     <button ng-attr-type type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
                     <button ng-attr-type type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
                 </div>
-                
+                 <span class="text-blue pull-right margin-top" ng-style style="color:#3C7ADA;cursor:pointer;"
+                       id="searchBlock">
+                    更多搜索条件
+                    <i class="fa fa-fw fa-angle-down text"></i>
+                </span>
+
             </div>
-            <div class="unblock-content" style="height: auto!important;" id="">
+            <div class="unblock-content" id="unblock">
                 <div class="form-group">
-                    <label for="area">所属区域</label>   
-                    <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID"
-                                            ng-change="getCitisForSearch()"
-                                            ng-options="x.province_id as x.name for x in provincesForSearch"></select>
-                    <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
-                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  id="" class="form-control" ng-model="cityID"
-                                            ng-change="getAreasForSearch()"
-                                            ng-options="x.city_id as x.name for x in citisForSearch"></select>
-                   <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
-                   <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="areaID"
-                                            ng-options="x.area_id as x.name for x in areasForSearch"></select>
-                   <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
+                    <label>所属区域</label>
+                    <select ng-show="userPowerDto.sysUser.pro_power==-1" class="form-control" ng-model="proID"
+                            ng-change="getCitisForSearch()"
+                            ng-options="x.province_id as x.name for x in provincesForSearch"></select>
+                    <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">
+                        {{userPowerDto.pro_name}}
+                    </button>
+                    <select ng-show="userPowerDto.sysUser.city_power==-1" class="form-control" ng-model="cityID"
+                            ng-change="getAreasForSearch()"
+                            ng-options="x.city_id as x.name for x in citisForSearch"></select>
+                    <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">
+                        {{userPowerDto.city_name}}
+                    </button>
+                    <select ng-show="userPowerDto.sysUser.area_power==-1" class="form-control" ng-model="areaID"
+                            ng-options="x.area_id as x.name for x in areasForSearch"></select>
+                    <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">
+                        {{userPowerDto.area_name}}
+                    </button>
                 </div>
-                
+
 
                 <div class="form-group datePicker">
                     <label>选择日期：</label>
                     <!--指定 date标记-->
                     <div class='input-group date' id='electDateStart'>
-                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间" ng-model="startTime"
+                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间"
+                               ng-model="startTime"
                                readonly/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -67,7 +80,8 @@
                     </div>
                     --
                     <div class='input-group date' id='electDateEnd'>
-                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间" ng-model="endTime"
+                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间"
+                               ng-model="endTime"
                                readonly/> <span class="input-group-addon"> <span
                             class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -87,8 +101,9 @@
         <tr>
             <th>
                 <div>
-                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
-                    <label for="allSecSon"></label>
+                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()"
+                           class="checkBox">
+                    <label></label>
                 </div>
             </th>
             <!-- <th>序号</th> -->
@@ -111,44 +126,64 @@
                 <input ng-attr-type type="checkbox" ng-checked="exists(peopleDto, selected)"
                        ng-click="toggle(peopleDto, selected)"/>
             </td>
-           
-            <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.people_gua_card_num}}">{{peopleDto.people.people_gua_card_num}}</td>
-            <td>
-                <button  class="btn btn-guiji-after"  data-toggle="tooltip" data-placement="right" title="{{peopleDto.provinceName}}_{{peopleDto.cityName}}_{{peopleDto.areaName}}">{{peopleDto.provinceName}}</button>
+
+            <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.people_gua_card_num}}">
+                {{peopleDto.people.people_gua_card_num}}
             </td>
-     
-            <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.recordName}}">{{peopleDto.recordName}}</td>
-            
-            
-            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.people_name}}">
-            {{peopleDto.people.people_name}}</td>
+            <td>
+                <button class="btn btn-guiji-after" data-toggle="tooltip" data-placement="right"
+                        title="{{peopleDto.provinceName}}_{{peopleDto.cityName}}_{{peopleDto.areaName}}">
+                    {{peopleDto.provinceName}}
+                </button>
+            </td>
+
+            <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.recordName}}">{{peopleDto.recordName}}
+            </td>
+
+
+            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right"
+                title="{{peopleDto.people.people_name}}">
+                {{peopleDto.people.people_name}}
+            </td>
             <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
-            
-            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.people_id_cards}}">
-            {{peopleDto.people.people_id_cards}}</td>
+
+            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right"
+                title="{{peopleDto.people.people_id_cards}}">
+                {{peopleDto.people.people_id_cards}}
+            </td>
             <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
-            
-            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.people_tele}}">
-            {{peopleDto.people.people_tele}}</td>
+
+            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right"
+                title="{{peopleDto.people.people_tele}}">
+                {{peopleDto.people.people_tele}}
+            </td>
             <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
-            
-            <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.recorder_time}}">{{peopleDto.people.recorder_time}}</td>
-            <td class="flex-items flex-center" ng-style style="overflow:visible;" ng-show="rootUserPowerDto.sysUser.opt_power==1">
-                <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeletePeople(peopleDto.people.people_id)"></i>
-                <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdatePeople(peopleDto.people.people_id)" data-toggle="modal" data-target="#updateCar"></i>
+
+            <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.people.recorder_time}}">
+                {{peopleDto.people.recorder_time}}
+            </td>
+            <td class="flex-items flex-center" ng-style style="overflow:visible;"
+                ng-show="rootUserPowerDto.sysUser.opt_power==1">
+                <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash"
+                   ng-click="goDeletePeople(peopleDto.people.people_id)"></i>
+                <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit"
+                   ng-click="goUpdatePeople(peopleDto.people.people_id)" data-toggle="modal"
+                   data-target="#updateCar"></i>
 
                 <div class="dropdown">
                     <span data-toggle="dropdown" class="glyphicon glyphicon-cog">
                     </span>
                     <ul class="dropdown-menu">
-                        <li >
-                            <a href="#" ng-click="goViewElect(peopleDto.people.people_id)" data-target="#viewModalElec"  data-toggle="modal">
+                        <li>
+                            <a href="#" ng-click="goViewElect(peopleDto.people.people_id)" data-target="#viewModalElec"
+                               data-toggle="modal">
                                 <i class="glyphicon glyphicon-eye-open"></i>
                                 查看详情
                             </a>
                         </li>
                         <li>
-                            <a href="#" ng-click="goSearchForTrace(peopleDto.people.gua_card_num)" data-toggle="modal" data-target="#guijiModalElec">
+                            <a href="#" ng-click="goSearchForTrace(peopleDto.people.gua_card_num)" data-toggle="modal"
+                               data-target="#guijiModalElec">
                                 <img src="app/img/table-guiji.png" alt=""/>
                                 查看轨迹
                             </a>
@@ -160,8 +195,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" data-toggle="modal" ng-click="goViewElect(peopleDto.people.people_id)" data-target="#viewModalElec">
-                                <i class="glyphicon glyphicon-list-alt" ></i>
+                            <a href="#" data-toggle="modal" ng-click="goViewElect(peopleDto.people.people_id)"
+                               data-target="#viewModalElec">
+                                <i class="glyphicon glyphicon-list-alt"></i>
                                 登记证打印
                             </a>
                         </li>
@@ -192,8 +228,8 @@
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <div class="modal-title" id="">
-                    人员登记
+                <div class="modal-title">
+                    小孩信息登记
                 </div>
             </div>
             <div class="modal-body">
@@ -201,19 +237,18 @@
                     <div class="myModalTitle margin-bottom flex-items">
                         <i class="iconfont icon-yonghuguanli modal-img"></i>
 
-                        <div>人员信息</div>
+                        <div>小孩信息</div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label for="phoneNum" class="control-label col-md-4">
-                                    <i>*</i>
+                                <label class="control-label col-md-4">
                                     手机号：
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" id="peopleTele" ng-model="addPeopleTele">
+                                    <input ng-attr-type class="form-control" id="peopleTele" ng-model="addPeopleTele">
                                 </div>
                             </div>
                         </div>
@@ -226,14 +261,15 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addPeopleName" name="peopleName">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addPeopleName"
+                                           name="peopleName">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        
+
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -243,8 +279,9 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addPeopleIdCards" name="id-user"
-                                           id="id-user">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addPeopleIdCards"
+                                           name="id-user"
+                                           id="id-user" >
                                 </div>
                             </div>
                         </div>
@@ -256,7 +293,8 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" ng-model="addPeopleGuaCardNum">
+                                    <input ng-attr-type type="number" class="form-control"
+                                           ng-model="addPeopleGuaCardNum">
                                 </div>
                             </div>
                         </div>
@@ -264,7 +302,7 @@
 
 
                     <div class="row">
-                        
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
@@ -288,74 +326,71 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">
-                        
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     <i>*</i>
-                                  监护人关系：
+                                    监护人关系：
                                 </label>
 
                                 <div class="col-sm-8">
-                                <input ng-attr-type type="text" class="form-control" ng-model="addGuardianRelation">
-                                   
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addGuardianRelation">
+
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     类型：
                                 </label>
 
                                 <div class="col-sm-8">
-                                     <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="addPeopleType" ng-disabled="editable">
-                                         <option value="{{AllPeopleType[0].id}}">{{AllPeopleType[0].name}}</option>
-                                     </select>
+                                        <option value="{{AllPeopleType[0].id}}">{{AllPeopleType[0].name}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                 
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
-                                  年龄：
+                                    年龄：
                                 </label>
 
-                                <div class="col-sm-4" id='electBuyDate'>
-                                    
-                                     <input ng-attr-type type='number' class="form-control"  ng-model="addPeopleAge"/>
-                                        
-                                   
+                                <div class="col-sm-4">
+                                    <input ng-attr-type type='number' class="form-control" ng-model="addPeopleAge"/>
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     性别：
                                 </label>
 
                                 <div class="col-sm-8">
-                                     <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="addPeopleSex" ng-disabled="editable"
                                             ng-options="x.id as x.name for x in AllSexType"></select>
                                 </div>
                             </div>
                         </div>
-                        
+
 
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group" id="adressArea">
+                            <div class="form-group">
                                 <label for="" class="col-sm-2 control-label">
                                     <i>*</i>
                                     所在区域：
@@ -363,25 +398,31 @@
 
                                 <div class="col-sm-10 flex">
                                     <div class="col-sm-4">
-                                        <select id="" class="form-control" ng-show="userPowerDto.sysUser.pro_power==-1" ng-model="addProvinceID" ng-disabled="editable"
+                                        <select class="form-control" ng-show="userPowerDto.sysUser.pro_power==-1"
+                                                ng-model="addProvinceID" ng-disabled="editable"
                                                 ng-change="getCitis()"
                                                 ng-options="x.province_id as x.name for x in provinces"></select>
-                                        <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-guiji-after">
+                                        <button ng-show="userPowerDto.sysUser.pro_power!=-1"
+                                                class="btn btn-guiji-after">
                                             {{userPowerDto.pro_name}}
                                         </button>
                                     </div>
                                     <div class="col-sm-4">
-                                        <select id="" class="form-control" ng-show="userPowerDto.sysUser.city_power==-1"  ng-model="addCityID" ng-disabled="editable"
+                                        <select class="form-control" ng-show="userPowerDto.sysUser.city_power==-1"
+                                                ng-model="addCityID" ng-disabled="editable"
                                                 ng-change="getAreas(addCityID)"
                                                 ng-options="x.city_id as x.name for x in citis"></select>
-                                        <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-guiji-after">
+                                        <button ng-show="userPowerDto.sysUser.city_power!=-1"
+                                                class="btn btn-guiji-after">
                                             {{userPowerDto.city_name}}
                                         </button>
                                     </div>
                                     <div class="col-sm-4">
-                                        <select id="" ng-show="userPowerDto.sysUser.area_power==-1" class="form-control" ng-model="addAreaID" ng-disabled="editable"
+                                        <select ng-show="userPowerDto.sysUser.area_power==-1" class="form-control"
+                                                ng-model="addAreaID" ng-disabled="editable"
                                                 ng-options="x.area_id as x.name for x in areas"></select>
-                                        <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-guiji-after">
+                                        <button ng-show="userPowerDto.sysUser.area_power!=-1"
+                                                class="btn btn-guiji-after">
                                             {{userPowerDto.area_name}}
                                         </button>
                                     </div>
@@ -390,47 +431,49 @@
                         </div>
 
                     </div>
-				<div class="row">
+                    <div class="row">
 
                         <div class="col-sm-6">
                             <div class="form-group fileup">
-                            <label for="" class="col-sm-4 control-label">
-                                上传照片：
-                            </label>
+                                <label for="" class="col-sm-4 control-label">
+                                    上传照片：
+                                </label>
 
-                            <div class="col-sm-6">
-                                <div class="col-md-5 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <input ng-attr-type type="file" id="peoplePic" ngf-select="addPeoplePic()" ng-model="peoplePic"
-                                               name="peoplePic">
-                                        <output id="pic_list" class="pic_list">
+                                <div class="col-sm-6">
+                                    <div class="col-md-5 up-content">
+                                        <a href="javascript:;" class="picfile">
+                                            <input ng-attr-type type="file" id="peoplePic" ngf-select="addPeoplePic()"
+                                                   ng-model="peoplePic"
+                                                   name="peoplePic">
+                                            <output id="pic_list" class="pic_list">
                                             <span>
                                                 <img ngf-src="peoplePic" title="{{peoplePic.name}}">
                                                 <i ng-click="dropPeoplePic(peoplePic)">&times;</i>
                                             </span>
-                                        </output>
-                                    </a>
+                                            </output>
+                                        </a>
 
-                                    <p>人员照片(本人照)</p>
+                                        <p>人员照片(本人照)</p>
+                                    </div>
+
                                 </div>
-                            
-                    		</div>
-                    	</div>
-                    	
-                    </div>
-                    <div class="col-md-6">
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="address" class="col-sm-4 control-label">
+                                <label class="col-sm-4 control-label">
                                     <i>*</i>
                                     联系地址：
                                 </label>
 
                                 <div class="col-sm-8">
-                                	<textarea rows="6" cols="" style="resize: none;" class="form-control" ng-model="addContactAddress"></textarea>
+                                    <textarea rows="6" cols="" style="resize: none;" class="form-control"
+                                              ng-model="addContactAddress"></textarea>
                                 </div>
                             </div>
                         </div>
-                  </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -473,13 +516,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label for="phoneNum" class="control-label col-md-4">
-                                    <i>*</i>
+                                <label class="control-label col-md-4">
                                     手机号：
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" id="peopleTele" ng-model="updatePeople.people.people_tele">
+                                    <input ng-attr-type type="number" class="form-control"
+                                           ng-model="updatePeople.people.people_tele">
                                 </div>
                             </div>
                         </div>
@@ -492,15 +535,14 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updatePeople.people.people_name" name="peopleName">
+                                    <input ng-attr-type type="text" class="form-control"
+                                           ng-model="updatePeople.people.people_name" name="peopleName">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="id-user" class="col-sm-4 control-label">
@@ -509,8 +551,8 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updatePeople.people.people_id_cards" name="id-user"
-                                           id="id-user">
+                                    <input ng-attr-type type="text" class="form-control"
+                                           ng-model="updatePeople.people.people_id_cards" name="id-user">
                                 </div>
                             </div>
                         </div>
@@ -522,8 +564,10 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" ng-model="updatePeople.people.people_gua_card_num">
-                                    <input ng-attr-type type="hidden" class="form-control" ng-model="updatePeopleGuaCardNum">
+                                    <input ng-attr-type type="number" class="form-control"
+                                           ng-model="updatePeople.people.people_gua_card_num">
+                                    <input ng-attr-type type="hidden" class="form-control"
+                                           ng-model="updatePeopleGuaCardNum">
                                 </div>
                             </div>
                         </div>
@@ -531,7 +575,6 @@
 
 
                     <div class="row">
-                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
@@ -540,7 +583,8 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updatePeople.people.guardian_name">
+                                    <input ng-attr-type type="text" class="form-control"
+                                           ng-model="updatePeople.people.guardian_name">
                                 </div>
                             </div>
                         </div>
@@ -551,76 +595,76 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" ng-model="updatePeople.people.guardian_tele">
+                                    <input ng-attr-type type="number" class="form-control"
+                                           ng-model="updatePeople.people.guardian_tele">
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">
-                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     <i>*</i>
-                                  监护人关系：
+                                    监护人关系：
                                 </label>
 
                                 <div class="col-sm-8">
-                                <input ng-attr-type type="text" class="form-control" ng-model="updatePeople.people.guardian_relation">
-                                   
+                                    <input ng-attr-type type="text" class="form-control"
+                                           ng-model="updatePeople.people.guardian_relation">
+
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     类型：
                                 </label>
 
                                 <div class="col-sm-8">
-                                     <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="updatePeople.people.people_type" ng-disabled="editable">
-                                         <option value="{{AllPeopleType[0].id}}">{{AllPeopleType[0].name}}</option>
-                                     </select>
+                                        <option value="{{AllPeopleType[0].id}}">{{AllPeopleType[0].name}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                 
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
-                                  年龄：
+                                    年龄：
                                 </label>
 
                                 <div class="col-sm-4" id='electBuyDate'>
-                                    
-                                     <input ng-attr-type type='number' class="form-control"  ng-model="updatePeople.people.people_age"/>
-                                        
-                                   
+
+                                    <input ng-attr-type type='number' class="form-control"
+                                           ng-model="updatePeople.people.people_age"/>
+
+
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     性别：
                                 </label>
 
                                 <div class="col-sm-8">
-                                     <select id="" class="form-control"
+                                    <select class="form-control"
                                             ng-model="updatePeople.people.people_sex" ng-disabled="editable"
                                             ng-options="x.id as x.name for x in AllSexType"></select>
                                 </div>
                             </div>
                         </div>
-                        
-
                     </div>
-       
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group" id="adressArea">
@@ -629,7 +673,7 @@
                                     所在区域：
                                 </label>
 
-								<div class="col-sm-10">
+                                <div class="col-sm-10">
                                     <div class="col-sm-4">
                                         <select ng-show="userPowerDto.sysUser.pro_power==-1"
                                                 class="form-control"
@@ -672,53 +716,58 @@
                                         </button>
                                     </div>
 
-								</div>
-							</div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
 
                     <div class="row">
-
                         <div class="col-sm-6">
                             <div class="form-group fileup">
-                            <label for="" class="col-sm-4 control-label">
-                                上传照片：
-                            </label>
+                                <label for="" class="col-sm-4 control-label">
+                                    上传照片：
+                                </label>
 
-                            <div class="col-sm-6">
-                                <div class="col-md-5 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <input ng-attr-type type="file" id="peoplePic" ngf-select="addPeoplePic()" ng-model="updatePeople.people.people_pic"
-                                               name="peoplePic">
-                                        <output id="pic_list" class="pic_list">
+                                <div class="col-sm-6">
+                                    <div class="col-md-5 up-content">
+                                        <a href="javascript:;" class="picfile">
+                                            <input ng-attr-type type="file" id="peoplePic" ngf-select="addPeoplePic()"
+                                                   ng-model="updatePeople.people.people_pic"
+                                                   name="peoplePic">
+                                            <output id="pic_list" class="pic_list">
                                             <span>
                                                 <img ngf-src="updatePeople.people.people_pic">
                                                 <i ng-click="dropPeoplePicForUpdate(peoplePic)">&times;</i>
                                             </span>
-                                        </output>
-                                    </a>
+                                            </output>
+                                        </a>
 
-                                    <p>人员照片(本人照)</p>
+                                        <p>人员照片(本人照)</p>
+                                    </div>
+
                                 </div>
-                            
-                    		</div>
-                    	</div>
-                    	
-                    </div>
-                    <div class="col-md-6">
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="address" class="col-sm-4 control-label">
+                                <label class="col-sm-4 control-label">
                                     <i>*</i>
                                     联系地址：
                                 </label>
 
                                 <div class="col-sm-8">
-                                	<textarea rows="6" cols="" ng-style style="resize: none;" class="form-control" ng-model="updatePeople.people.contact_address"></textarea>
+                                    <textarea rows="6" cols="" ng-style style="resize: none;" class="form-control"
+                                              ng-model="updatePeople.people.contact_address"></textarea>
                                 </div>
                             </div>
                         </div>
-                  </div>
+                    </div>
+                </form>
+            </div>
+
+
             <div class="modal-footer">
                 <button ng-attr-type type="button" ng-click="update()" class="btn btn-primary">
                     更新
@@ -754,20 +803,26 @@
                         <label>轨迹时间：</label>
                         <!--指定 date标记-->
                         <div class='input-group date' id='guijiSearchStart'>
-                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间" ng-model="searchTraceStart" readonly ng-style style="width:200px;"/>
+                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder
+                                   placeholder="选择开始时间" ng-model="searchTraceStart" readonly ng-style
+                                   style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                         </div>
                         --
                         <div class='input-group date' id='guijiSearchEnd'>
-                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间" ng-model="searchTraceEnd" readonly ng-style style="width:200px;"/>
+                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder
+                                   placeholder="选择结束时间" ng-model="searchTraceEnd" readonly ng-style
+                                   style="width:200px;"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" ng-click="goSearchForTraceWithTime()" ng-style style="padding:6px 12px;">搜索</button>
+                    <button class="btn btn-primary" ng-click="goSearchForTraceWithTime()" ng-style
+                            style="padding:6px 12px;">搜索
+                    </button>
                 </form>
 
                 <!-- 表格操作区域开始 -->
