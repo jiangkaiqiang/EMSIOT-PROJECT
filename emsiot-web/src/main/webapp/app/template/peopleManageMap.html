@@ -76,15 +76,8 @@
                 <form class="form-horizontal" name="">
                     <div class="form-group">
                         <label for="" class="control-label col-md-3"> 查询条件： </label>
-
                         <div class="col-sm-7">
-                            <div class="col-sm-3">
-                                <select name="" class="form-control">
-                                    <option value="">电动车</option>
-                                    <option value="">摩托车</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-4" ng-style style="margin: 0 5px;">
+                            <div class="col-sm-4" ng-style>
                                 <select class="form-control"
                                         ng-model="keywordTypeForTrace" ng-disabled="editable"
                                         ng-options="x.id as x.name for x in AllKeywordType"></select>
@@ -156,12 +149,6 @@
                         <label for="" class="control-label col-md-3"> 定位条件： </label>
 
                         <div class="col-sm-7">
-                            <div class="col-sm-3">
-                                <select name="" id="" class="form-control">
-                                    <option value="">电动车</option>
-                                    <option value="">摩托车</option>
-                                </select>
-                            </div>
                             <div class="col-sm-4" ng-style style="margin: 0 5px;">
                                 <select id="" class="form-control"
                                         ng-model="keywordTypeForLocation" ng-disabled="editable"

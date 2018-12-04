@@ -124,30 +124,102 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         //}
         value2.setLabel(label);
     }
-
+    
+    var isAddMarker=true
     function markerClickListener(marker2){
-    	
     	 var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><i class='iconfont icon-yonghuguanli' style='color: #707070; font-size: 20px;' onclick='alert(1)'></i><h4>";
          var sHtml2 = "</h4></li><li>";
          var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
          var sHtml4 = "</p><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>基站名称</th><th>经过时间</th></tr></thead><tbody>";
          var endHtml = "</tbody></table></div></div>";
-    	
-         console.log(map.getOverlays())
-    	
+         var showCount=""
+         var selectCardNum = "";
+         var option="";
+         var overlay = map.getOverlays();
+         //console.log(overlay)
+         var marker = null;
+         var markerTitle
+         isAddMarker=true;
+         var list = [];
+         var firstObj = {};
+         var obj = {};
+         for (var i = 0; i < overlay.length; i++) {
+        	 marker = overlay[i]
+        	 if(marker.point.lat == marker2.point.lat && marker.point.lng == marker2.point.lng){
+        		 
+                 if(marker != null){
+                	 isAddMarker=false
+                	 if(marker.test != null && marker.test != undefined){
+                		 list = marker.test
+                	 }else{
+                		 var obj = {};
+                		 marker2Title = marker.getTitle().split('\t');
+                		 firstObj["card_num"]=marker2Title[0]
+                		 firstObj["station_name"]=marker2Title[1]
+                		 firstObj["name"]=marker2Title[2]
+            	         list.push(firstObj)
+                	 }
+
+                	 marker2Title = marker2.getTitle().split('\t');
+                	 obj["card_num"]=marker2Title[0]
+			         obj["station_name"]=marker2Title[1]
+                	 obj["name"]=marker2Title[2]
+			         list.push(obj)
+                	 marker2 = marker;
+                	 marker2["test"]=list
+                	 $scope.labelSet(list[0].name+"：+"+list.length,marker2);
+                 }
+        		 break;
+        	 }
+		 }
+         console.log(marker2)
+         
+        
+         
+        
     	marker2.addEventListener("click", function (e) {
             var title_add = new Array();
             title_add = this.getTitle().split('\t');
             showPeopleInStation($scope.peopleStartTime, $scope.peopleEndTime+" 23:59:59",title_add[0]);  //根据物理编号查找
+            var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><i class='iconfont icon-yonghuguanli' style='color: #707070; font-size: 20px;'></i><h4>";
+            if(selectCardNum==""){
+	            if(list.length>1){
+		            for (var i = 0; i < list.length; i++) {
+		            		option += "<option value='"+list[i].card_num+"'>"+list[i].name+"</option>" 
+					}
+		            selectCardNum = "<select  id='"+title_add[0]+"' class='form-control'>"+option+"</select>";
+		            showCount = title_add[0] + ",经过"+ $scope.peopleInStation.length+"个 基站";
+	            }else{
+	            	selectCardNum = title_add[0];
+	            	showCount = "经过"+ $scope.peopleInStation.length+"个 基站";
+	            }
+            }
+            
             var electInfo='';
             for (var k = 0; k < $scope.peopleInStation.length; k++) {
             	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].station_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
             }
-            var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 +"经过"+ $scope.peopleInStation.length+"个 基站" + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
+            var infoWindow = new BMap.InfoWindow(sHtml + selectCardNum + sHtml2 + showCount + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
             var p = e.target;
             var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
             map.openInfoWindow(infoWindow, point);
 
+            setTimeout(() => {
+        		const device = $("#"+title_add[0])
+        		device.off("change")
+        		device.on("change", function(){
+        			console.log("change")
+        			showPeopleInStation($scope.peopleStartTime, $scope.peopleEndTime+" 23:59:59",$(this).val());  //根据物理编号查找
+        			electInfo="";
+        			for (var k = 0; k < $scope.peopleInStation.length; k++) {
+                    	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].station_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
+                    }
+                    $(this).parent().parent().next().html($(this).val()+",经过"+ $scope.peopleInStation.length+"个 基站")
+                    
+        			$("#tableArea tbody").html(electInfo)
+        			
+        		})
+        	}, 0);
         });
     	
     	
@@ -178,14 +250,15 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             var myIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
             marker2 = new BMap.Marker(pt,{icon:myIcon});
             $scope.labelSet(tmpPeople.people_name,marker2);
-            marker2.setTitle(tmpPeople.people_gua_card_num + '\t' + tmpStation.station_name);
+            marker2.setTitle(tmpPeople.people_gua_card_num + '\t' + tmpStation.station_name + '\t' +tmpPeople.people_name);
             //console.log(tmpPeople.people_gua_card_num)
             //console.log(tmpStation.station_name)
-            console.log(tmpStation)
+           // console.log(tmpStation)
 
             markerClickListener(marker2);
-            
-            map.addOverlay(marker2);
+            if(isAddMarker){
+            	map.addOverlay(marker2);
+            }
         }
         
       //用于基站跳动
@@ -308,7 +381,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             $scope.elecPt = new BMap.Point($scope.longitude, $scope.latitude);
             $scope.elecIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
             $scope.elecMarker = new BMap.Marker($scope.elecPt, {icon: $scope.elecIcon});
-            $scope.labelSet($scope.keywordForLocation,$scope.elecMarker);
+            $scope.labelSet($scope.keywordForLocation+":"+data.station_name,$scope.elecMarker);
             map.addOverlay($scope.elecMarker);
             $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             map.centerAndZoom($scope.elecPt, 17);
