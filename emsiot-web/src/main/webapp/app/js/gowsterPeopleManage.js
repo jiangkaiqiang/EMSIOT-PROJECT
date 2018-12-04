@@ -367,7 +367,7 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
                 });
             }
         }
-    }
+    };
 
     $scope.selected = [];
     $scope.toggle = function (electDto, list) {
@@ -425,8 +425,48 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
     function checkInput() {
         var flag = true;
         // 检查必须填写项
+
+        if (!$scope.phoneReg.test($scope.addPeopleTele)) {
+            alert('手机格式不正确');
+            flag = false;
+            return;
+        }
+
+        if ($scope.addPeopleName == undefined || $scope.addPeopleName == '') {
+            alert('姓名不能为空');
+            flag = false;
+            return;
+        }
+        if (!$scope.idCardReg.test($scope.addPeopleIdCards)) {
+            alert('身份证格式不正确');
+            flag = false;
+            return;
+        }
+        // 检查必须填写项
         if ($scope.addPeopleGuaCardNum == undefined || $scope.addPeopleGuaCardNum == '') {
             flag = false;
+            alert('防盗芯片不能为空');
+            return;
+        } else {
+            if (!$scope.guaCardNumReg.test($scope.addPeopleGuaCardNum)) {
+                flag = false;
+                alert('防盗芯片必须为6位数字');
+                return;
+            }
+        }
+        if ($scope.addGuardianName == undefined || $scope.addGuardianName == '') {
+            alert('监护人姓名不能为空');
+            flag = false;
+            return;
+        }
+        if (!$scope.phoneReg.test($scope.addGuardianTele)) {
+            alert('监护人手机格式不正确');
+            flag = false;
+            return;
+        }
+        if ($scope.addContactAddress == undefined || $scope.addContactAddress == '') {
+            alert('联系地址不能为空');
+            return;
         }
         return flag;
     }
@@ -442,8 +482,8 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
         {id: "0", name: "女"},
         {id: "1", name: "男"}
     ];
-    $scope.addPeopleAge = "25"
-    $scope.addPeopleSex = "0"
+    $scope.addPeopleAge = "25";
+    $scope.addPeopleSex = "0";
     $scope.addPeopleType = "3";
     $scope.submit = function () {
         if (checkInput()) {
@@ -480,9 +520,6 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
                 }
             });
         }
-        else {
-            alert("防盗芯片编号不能为空");
-        }
     }
     $scope.goUpdatePeople = function (peopleID) {
         for (var i = 0; i < $scope.AllPeopleDtos.length; i++) {
@@ -518,8 +555,42 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
     function checkInputForUpdate() {
         var flag = true;
         // 检查必须填写项
-        if ($scope.updatePeople.people.people_gua_card_num == undefined || $scope.updatePeople.people.people_gua_card_num == '') {
+        if (!$scope.phoneReg.test($scope.updatePeople.people.people_tele )) {
+            alert('手机格式不正确');
             flag = false;
+            return;
+        }
+        if (!$scope.idCardReg.test($scope.updatePeople.people.people_id_cards)) {
+            alert('身份证格式不正确');
+            flag = false;
+            return;
+        }
+        // 检查必须填写项
+        if ($scope.updatePeople.people.people_gua_card_num== undefined || $scope.updatePeople.people.people_gua_card_num == '') {
+            flag = false;
+            alert('防盗芯片不能为空');
+            return;
+        }else{
+            if(!$scope.guaCardNumReg.test($scope.updatePeople.people.people_gua_card_num)){
+                flag = false;
+                alert('防盗芯片必须为6位数字');
+                return;
+            }
+        }
+        if ($scope.updatePeople.people.guardian_name == undefined || $scope.updatePeople.people.guardian_name == '') {
+            alert('监护人姓名不能为空');
+            flag = false;
+            return;
+        }
+
+        if (!$scope.phoneReg.test($scope.updatePeople.people.guardian_tele)) {
+            alert('监护人手机格式不正确');
+            flag = false;
+            return;
+        }
+        if ($scope.updatePeople.people.contact_address == undefined || $scope.updatePeople.people.contact_address == '') {
+            alert('联系地址不能为空');
+            return;
         }
         return flag;
     }
@@ -560,8 +631,6 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
                     alert(data.message);
                 }
             });
-        } else {
-            alert("防盗芯片编号不能为空");
         }
     }
 
@@ -584,25 +653,10 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
     $scope.goSearchForTraceWithTime = function () {
         $scope.goSearchForTrace($scope.gua_card_numForTrace);
     }
-//		$scope.pageChangedForTrace = function() {
-//			$scope.goSearchForTrace($scope.gua_card_numForTrace);
-//		}
+
 
     //选择日期
-    $('#buyCarDateUpdate').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: "month",
-        autoclose: true,
-        maxDate: new Date(),
-        pickerPosition: "bottom-left"
-    });
-    $('#byCarDate').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: "month",
-        autoclose: true,
-        maxDate: new Date(),
-        pickerPosition: "bottom-left"
-    });
+
     $('#guijiSearchStart').datetimepicker({
         format: 'yyyy-mm-dd - hh:ii:ss.s',
         //minView: "month",
@@ -631,8 +685,6 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $("#djPrint").on('click', function () {
-        window.print();
-    })
+
 });
 

@@ -428,6 +428,11 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
                 return;
             }
         }
+        if ($scope.addPeopleName == undefined || $scope.addPeopleName == '') {
+            alert('姓名不能为空');
+            flag = false;
+            return;
+        }
         if (!$scope.idCardReg.test($scope.addPeopleIdCards)) {
             alert('身份证格式不正确');
             flag = false;
@@ -459,7 +464,7 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
             alert('联系地址不能为空');
             return;
         }
-        
+
 
         return flag;
     }
@@ -480,7 +485,6 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
     $scope.addPeopleType = "1";
     $scope.submit = function () {
         if (checkInput()) {
-            console.log("1111");
             data = {
                 'people_gua_card_num': $scope.addPeopleGuaCardNum,
                 'people_tele': $scope.addPeopleTele,
@@ -492,10 +496,10 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
                 'guardian_name': $scope.addGuardianName,
                 'guardian_tele': $scope.addGuardianTele,
                 'guardian_relation': $scope.addGuardianRelation,
-                'contact_address': $scope.addContactAddress,
                 'pro_id': $scope.addProvinceID,
                 'city_id': $scope.addCityID,
                 'area_id': $scope.addAreaID,
+                'contact_address': $scope.addContactAddress,
                 'people_pic': $scope.peoplePic,
                 'recorder_id': $rootScope.admin.user_id
             };

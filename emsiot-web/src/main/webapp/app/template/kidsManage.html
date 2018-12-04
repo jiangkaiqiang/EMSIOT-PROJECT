@@ -1,6 +1,6 @@
 <nav class="page-title shadow electManage">
     <div class="title-brand flex-between align-items">
-        <div class="title-text">小孩信息备案</div>
+        <div class="title-text">小孩管理</div>
         <ul class="title-nav flex align-items" ng-show="rootUserPowerDto.sysUser.opt_power==1">
             <li ng-show="rootUserPowerDto.electDelete==1">
                 <a href="" class="flex-items">
@@ -170,7 +170,7 @@
                    ng-click="goUpdatePeople(peopleDto.people.people_id)" data-toggle="modal"
                    data-target="#updateCar"></i>
 
-                <div class="dropdown">
+                <!--<div class="dropdown">
                     <span data-toggle="dropdown" class="glyphicon glyphicon-cog">
                     </span>
                     <ul class="dropdown-menu">
@@ -202,7 +202,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div>-->
             </td>
         </tr>
         </tbody>
@@ -248,7 +248,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type class="form-control" id="peopleTele" ng-model="addPeopleTele">
+                                    <input ng-attr-type class="form-control" id="peopleTele" ng-model="addPeopleTele" type="text">
                                 </div>
                             </div>
                         </div>
@@ -293,7 +293,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="addPeopleGuaCardNum">
                                 </div>
                             </div>
@@ -323,7 +323,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" ng-model="addGuardianTele">
+                                    <input ng-attr-type type="text" class="form-control" ng-model="addGuardianTele">
                                 </div>
                             </div>
                         </div>
@@ -369,7 +369,7 @@
                                 </label>
 
                                 <div class="col-sm-4">
-                                    <input ng-attr-type type='number' class="form-control" ng-model="addPeopleAge"/>
+                                    <input ng-attr-type type='number' class="form-control" ng-model="addPeopleAge" min="1"/>
                                 </div>
                             </div>
                         </div>
@@ -511,7 +511,7 @@
                     <div class="myModalTitle margin-bottom flex-items">
                         <i class="iconfont icon-yonghuguanli modal-img"></i>
 
-                        <div>人员信息</div>
+                        <div>小孩信息</div>
                     </div>
 
                     <div class="row">
@@ -522,7 +522,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="updatePeople.people.people_tele">
                                 </div>
                             </div>
@@ -565,7 +565,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="updatePeople.people.people_gua_card_num">
                                     <input ng-attr-type type="hidden" class="form-control"
                                            ng-model="updatePeopleGuaCardNum">
@@ -597,7 +597,7 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control"
+                                    <input ng-attr-type type="text" class="form-control"
                                            ng-model="updatePeople.people.guardian_tele">
                                 </div>
                             </div>
@@ -646,7 +646,7 @@
                                 <div class="col-sm-4" id='electBuyDate'>
 
                                     <input ng-attr-type type='number' class="form-control"
-                                           ng-model="updatePeople.people.people_age"/>
+                                           ng-model="updatePeople.people.people_age" min="1"/>
 
 
                                 </div>
