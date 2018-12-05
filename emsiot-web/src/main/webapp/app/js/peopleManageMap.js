@@ -5,7 +5,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     });    // 创建Map实例
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
-        
+
         if ($scope.user == null || $scope.user.user_id == 0 || $scope.user.user_id == undefined) {
             url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
             window.location.href = url;
@@ -34,9 +34,9 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             })
            // map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-            
+
             showCssFlag('#xsjizhan');
-            
+
             $scope.peopleLocation();
 
             // 获取在线人数
@@ -49,7 +49,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             }).success(function (data) {
                 $scope.inlineElects = data;
             });
-            
+
         });
     });
     var lushu=null;
@@ -88,7 +88,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
         setPlace();
     });
- 
+
     function setPlace() {
         map.clearOverlays();    //清除地图上
         function myFun() {
@@ -124,7 +124,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         //}
         value2.setLabel(label);
     }
-    
+
     var isAddMarker=true
     function markerClickListener(marker2){
     	 var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><i class='iconfont icon-yonghuguanli' style='color: #707070; font-size: 20px;' onclick='alert(1)'></i><h4>";
@@ -146,7 +146,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
          for (var i = 0; i < overlay.length; i++) {
         	 marker = overlay[i]
         	 if(marker.point.lat == marker2.point.lat && marker.point.lng == marker2.point.lng){
-        		 
+
                  if(marker != null){
                 	 isAddMarker=false
                 	 if(marker.test != null && marker.test != undefined){
@@ -173,10 +173,10 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         	 }
 		 }
          console.log(marker2)
-         
-        
-         
-        
+
+
+
+
     	marker2.addEventListener("click", function (e) {
             var title_add = new Array();
             title_add = this.getTitle().split('\t');
@@ -185,7 +185,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             if(selectCardNum==""){
 	            if(list.length>1){
 		            for (var i = 0; i < list.length; i++) {
-		            		option += "<option value='"+list[i].card_num+"'>"+list[i].name+"</option>" 
+		            		option += "<option value='"+list[i].card_num+"'>"+list[i].name+"</option>"
 					}
 		            selectCardNum = "<select  id='"+title_add[0]+"' class='form-control'>"+option+"</select>";
 		            showCount = title_add[0] + ",经过"+ $scope.peopleInStation.length+"个 基站";
@@ -194,7 +194,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	            	showCount = "经过"+ $scope.peopleInStation.length+"个 基站";
 	            }
             }
-            
+
             var electInfo='';
             for (var k = 0; k < $scope.peopleInStation.length; k++) {
             	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].station_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
@@ -215,14 +215,14 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     	electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].station_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].station_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
                     }
                     $(this).parent().parent().next().html($(this).val()+",经过"+ $scope.peopleInStation.length+"个 基站")
-                    
+
         			$("#tableArea tbody").html(electInfo)
-        			
+
         		})
         	}, 0);
         });
-    	
-    	
+
+
     }
 
     //显示基站和聚合
@@ -239,12 +239,12 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         var markers = []; //存放聚合的基站
         //var infoWindow;
         var tmpStation;
-        
+
         //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.peopleData.length; i++) {
             tmpStation = $scope.peopleData[i].station;
             tmpPeople = $scope.peopleData[i].people;
-            
+
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
             //报警车辆图标
             var myIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
@@ -260,7 +260,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             	map.addOverlay(marker2);
             }
         }
-        
+
       //用于基站跳动
         $scope.jizhanBounce=map.getOverlays();
     }
@@ -277,9 +277,9 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         for(var g =0;g < $scope.peopleData.length; g++){
         	if($scope.peopleData[g].station==null)continue;
             if(tablePoint==$scope.peopleData[g].ownerPlateNum){//表格获取到的地址等于循环基站时的基站地址
-               
+
                 var allOverlay = $scope.jizhanBounce;
-                
+
                 var Oe=null
                 for (var i = 0; i < allOverlay.length; i++) {
 					Oe = allOverlay[i].point;
@@ -311,7 +311,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         })
     }
 
-
+    $scope.AllPeopleType = [
+        {id: "1", name: "小孩"},
+        {id: "2", name: "老人"},
+        {id: "3", name: "吸毒者"},
+        {id: "4", name: "犯罪者"}
+    ];
+    $scope.peopleType = "0";
 
     //定义轨迹及定位查询条件的类型
     $scope.AllKeywordType = [
@@ -326,7 +332,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     	if($scope.elecMarker!=null){
     		$scope.elecMarker.hide();
     		$scope.elecMarker = null;
-    		
+
     		//map.clearOverlays();
     		//showStation();
     		$scope.peopleLocation()
@@ -355,7 +361,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             $scope.peopleIdCards = null;
         }
         else {
-        	
+
         }
 
         $http.get('/i/people/findPeopleLocation', {
@@ -364,10 +370,10 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 "peopleGuaCardNum": $scope.peopleGuaCardNum
             }
         }).success(function (data) {
-        	
+
             $scope.longitude = data.longitude;
             $scope.latitude = data.latitude;
-            
+
             if($scope.longitude == undefined || $scope.longitude == null){
             	return alert("未查到相应数据！");
             }
@@ -385,8 +391,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             map.addOverlay($scope.elecMarker);
             $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             map.centerAndZoom($scope.elecPt, 17);
-            
-            
+
+
           //用于基站跳动
             $scope.jizhanBounce=map.getOverlays();
         }).error(function(){
@@ -398,8 +404,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     $scope.findElectTrace = function () {            //显示车辆轨迹
     	//$scope.jizhanjuheFlag = 0;
     	//$scope.jizhankongzhi();
-    	
-        
+
+
         //showStation();
         if ($scope.keywordTypeForTrace == "1") {
         	if($scope.keywordForTrace == null || $scope.keywordForTrace == ""){
@@ -408,7 +414,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         	}
             $scope.peopleIdCards = $scope.keywordForTrace;
             $scope.peopleGuaCardNum = null
-            
+
         }
         else if ($scope.keywordTypeForTrace == "0") {
         	if($scope.keywordForTrace == null || $scope.keywordForTrace == ""){
@@ -417,7 +423,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         	}
             $scope.peopleGuaCardNum = $scope.keywordForTrace;
             $scope.peopleIdCards = null;
-            
+
         }
         else {
 
@@ -430,7 +436,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 "endTimeForTrace": $scope.endTimeForTrace
             }
         }).success(function (data) {
-        	
+
         	$scope.bigTotalItems = data.total;
             $scope.AllPeoplelarms = data;
             $scope.traceStationsLength = data.length;
@@ -440,7 +446,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 var pointsW = data[j].station.latitude;
                 $scope.pointsArr.push(new BMap.Point(pointsJ,pointsW));
             }
-            
+
             if (data.length == 1)
                 alert("该车辆仅经过一个基站：" + data[0].station.station_name);
             else if (data.length == 0)
@@ -469,8 +475,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     }
                     BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
                         var pointsArr=[initPos,targetPos];  //点数组
-                        var me = this,   
-                       
+                        var me = this,
+
                         //当前的帧数
                             currentCount = 0,
                         //步长，米/秒
@@ -489,7 +495,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                             strokeOpacity : 1
                         })); // 画线
                       //显示轨迹当前点的数据
-                        
+
                         //如果小于1直接移动到下一点
                         if (count < 1) {
                             me._moveNext(++me.i);
@@ -534,12 +540,12 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                         if(showLable == ""){
                         	showLable = me._opts.defaultContent
                         }
-                        
+
                         me._opts.defaultContent=showLable+":"+data[me.i+1].station.station_name
-                        
+
                     };
 
-                    
+
                     lushu = new BMapLib.LuShu(map,arrPois,{
                         defaultContent:$scope.keywordForTrace,//"从天安门到百度大厦"
                         autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
@@ -597,8 +603,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         	alert("搜索条件有误！");
         	return ;
         });
-        
-        
+
+
         $("#guijiModal").modal("hide");
         //用于基站跳动
         $scope.jizhanBounce=map.getOverlays();
@@ -611,8 +617,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         $("#detail i").toggleClass("down-up");
     }
     $scope.clearElectTrace = function () {
-    	
-    	
+
+
         $("#guijiModal").modal("hide");
         $scope.showOperation = false;
         $scope.showTable = false;
@@ -626,7 +632,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     		$scope.elecMarker = null;
         }
         //$scope.getElectalarmsByOptions();
-        
+
     };
 
 
@@ -658,10 +664,10 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     	minView: "month",
     	autoclose: true,
     	maxDate: new Date(),
-    	
+
     	pickerPosition: "bottom-left"
     });
-    
+
     $('#peopleEndTime').datetimepicker({
     	format: 'yyyy-mm-dd',
     	minView: "month",
@@ -674,7 +680,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     	var month = new Date(sysTime - 60*1000*60*24*30)
     	$scope.peopleStartTime=FormatDate(month,1);
     	$scope.peopleEndTime=FormatDate(sysTime,1);
-        
+
     })
 
     function showCssFlag(param) {
@@ -700,18 +706,18 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             $(this).removeClass("fa-angle-right").addClass("fa-angle-left")
         }
     });
-    
-    
-  
-	
-	
+
+
+
+
+
 	/*JS.Engine.on(
-			{ 
+			{
 				limitData : function(msgData){
-					
+
 					var message = msgData.split(";");
 					if($rootScope.admin.pro_power==-1){
-						alert(message[3]); 
+						alert(message[3]);
 					}
 					else if($rootScope.admin.pro_power==message[0]) {
 						if($rootScope.admin.city_power==-1){
@@ -726,7 +732,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 				}
 			}
 	);*/
-	
+
 	$scope.peopleLocation = function() {
 		$scope.showOperation = false;
         $scope.showTable = false;
@@ -739,7 +745,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 "proPower": $scope.user.pro_power,
                 "cityPower": $scope.user.city_power,
                 "areaPower": $scope.user.area_power
-                
+
             }
         }).success(function(data){
             $scope.peopleData = data;
@@ -758,7 +764,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             }*/
         })
     }
-	
+
 	//统计时间内经过改基站的车辆的数
     var time = new Date().getTime();//当前时间
     var start = new Date(time - 60*1000*60);//一小时
@@ -779,5 +785,5 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         }
         //return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+ date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
     }
-    
+
 });

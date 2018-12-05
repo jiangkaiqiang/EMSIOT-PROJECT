@@ -7,11 +7,20 @@
                     <p>{{inlineElects}}</p> <span> 线上人数</span>
                 </li>
             </ul>
-        </a></li>
+        </a>
+        </li>
 
     </ul>
 
     <ul class="flex home-nav-right flex-items flex-end col-sm-8">
+        <li style="height: 60px;">
+            <a class="flex flex-items" style="height:100%;"><!-- href="#/electManage" -->
+                <!--<label for="">查询类型： </label>-->
+                <select name="" ng-options="x.id as x.name for x in AllPeopleType" ng-model="peopleType" class="form-control">
+                    <option disabled="disabled" style='display: none' value=''></option>
+                </select>
+            </a>
+        </li>
         <li class="" style="width: 60%">
             <div class="flex-items">
                 <div class='input-group date' style="width: 40%;" id='peopleStartTime'>
