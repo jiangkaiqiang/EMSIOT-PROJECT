@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyun.oss.OSSClient;
 import com.ems.iot.manage.dao.CityMapper;
+import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.PeopleMapper;
 import com.ems.iot.manage.dao.PeopleStationMapper;
 import com.ems.iot.manage.dao.StationMapper;
@@ -61,6 +62,8 @@ public class PeopleController extends BaseController {
 	private SysUserMapper sysUserMapper;
 	@Autowired
 	private StationMapper stationMapper;
+	@Autowired
+	private ElectrombileMapper electrombileMapper;
 
 	/**
 	 * 根据电动车的ID寻找电动车
@@ -233,6 +236,9 @@ public class PeopleController extends BaseController {
 		if (peopleMapper.findPlateNumByPeopleGuaCardNum(people_gua_card_num)!=null) {
 			return new ResultDto(-1, "防盗芯片编号已存在，不可重复添加！");
 		}
+		if (electrombileMapper.findPlateNumByGuaCardNum(people_gua_card_num)!=null) {
+			return new ResultDto(-1, "防盗芯片编号在车辆备案中已存在！");
+		}
 		People people = new People();
 		people.setPeople_gua_card_num(people_gua_card_num);
 
@@ -316,6 +322,11 @@ public class PeopleController extends BaseController {
 			if(peopleNum.getPeople_gua_card_num().intValue() != wornCardNum ) {
 				return new ResultDto(-1, "防盗芯片编号已存在，不可重复添加！");
 			}
+		}
+		
+		Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(people_gua_card_num);
+		if (electrombile!=null) {
+			return new ResultDto(-1, "防盗芯片编号在车辆备案中已存在！");
 		}
 
 		People people = new People();

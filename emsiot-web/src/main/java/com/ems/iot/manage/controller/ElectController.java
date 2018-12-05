@@ -22,6 +22,7 @@ import com.aliyun.oss.OSSClient;
 import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
+import com.ems.iot.manage.dao.PeopleMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.BaseDto;
@@ -62,6 +63,8 @@ public class ElectController extends BaseController {
 	private SysUserMapper sysUserMapper;
 	@Autowired
 	private StationMapper stationMapper;
+	@Autowired
+	private PeopleMapper peopleMapper;
 
 	/**
 	 * 根据电动车的ID寻找电动车
@@ -327,6 +330,9 @@ public class ElectController extends BaseController {
 		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
 			return new ResultDto(-1, "防盗芯片编号已存在，不可重复添加！");
 		}
+		if (peopleMapper.findPlateNumByPeopleGuaCardNum(gua_card_num)!=null) {
+			return new ResultDto(-1, "防盗芯片编号在人员备案中已存在！");
+		}
 		if (electrombileMapper.findElectForFilter(null, plate_num)!=null) {
 			return new ResultDto(-1, "车牌号已存在，不可重复添加！");
 		}
@@ -459,6 +465,9 @@ public class ElectController extends BaseController {
 		}
 		if (owner_id==null){
 			return new ResultDto(-1, "车主身份证号不能为空");
+		}
+		if (peopleMapper.findPlateNumByPeopleGuaCardNum(gua_card_num)!=null) {
+			return new ResultDto(-1, "防盗芯片编号在人员备案中已存在！");
 		}
 //		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
 //			return new ResultDto(-1, "防盗芯片编号已存在，不可重复添加！");
