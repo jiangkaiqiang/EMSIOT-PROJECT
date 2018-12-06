@@ -201,6 +201,49 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("privatePower")) {
 	    	 sysUserDto.setPrivatePower("1");
 		 }
+	     //人员管理
+	     if (menuPowerList.contains("peopleWhole")) {
+	    	 sysUserDto.setPeopleWhole("1");
+		 }
+	     if (menuPowerList.contains("kidsManage")) {
+	    	 sysUserDto.setKidsManage("1");
+	     }
+	     if (menuPowerList.contains("kidsAdd")) {
+	    	 sysUserDto.setKidsAdd("1");
+	     }
+	     if (menuPowerList.contains("kidsEdit")) {
+	    	 sysUserDto.setKidsEdit("1");
+	     }
+	     if (menuPowerList.contains("kidsDelete")) {
+	    	 sysUserDto.setKidsDelete("1");
+	     }
+	     if (menuPowerList.contains("oldPeopleManage")) {
+	    	 sysUserDto.setOldPeopleManage("1");
+	     }
+	     if (menuPowerList.contains("oldPeopleAdd")) {
+	    	 sysUserDto.setOldPeopleAdd("1");
+	     }
+	     if (menuPowerList.contains("oldPeopleEdit")) {
+	    	 sysUserDto.setOldPeopleEdit("1");
+	     }
+	     if (menuPowerList.contains("oldPeopleDelete")) {
+	    	 sysUserDto.setOldPeopleDelete("1");
+	     }
+	     if (menuPowerList.contains("gowsterPeopleManage")) {
+	    	 sysUserDto.setGowsterPeopleManage("1");
+	     }
+	     if (menuPowerList.contains("gowsterPeopleAdd")) {
+	    	 sysUserDto.setGowsterPeopleAdd("1");
+	     }
+	     if (menuPowerList.contains("gowsterPeopleEdit")) {
+	    	 sysUserDto.setGowsterPeopleEdit("1");
+	     }
+	     if (menuPowerList.contains("gowsterPeopleDelete")) {
+	    	 sysUserDto.setGowsterPeopleDelete("1");
+	     }
+	     
+	     
+	     //
 	     if (sysUser.getPro_power().equals("-1")) {
 				sysUserDto.setPro_name("不限");
 			}

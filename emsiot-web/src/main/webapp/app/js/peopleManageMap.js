@@ -311,13 +311,34 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         })
     }
 
-    $scope.AllPeopleType = [
+    /*$scope.AllPeopleType = [
         {id: "1", name: "小孩"},
         {id: "2", name: "老人"},
         {id: "3", name: "吸毒者"},
         {id: "4", name: "犯罪者"}
     ];
-    $scope.peopleType = "0";
+    var objType = []
+    var objStrIds = "";
+    if($rootScope.rootUserPowerDto.kidsManage){
+    	objType[1]={id: "1", name: "小孩"}
+    	objStrIds+="1,"
+    }
+    if($rootScope.rootUserPowerDto.oldPeopleManage){
+    	objType[2] = {id: "2", name: "老人"}
+    	objStrIds+="2,"
+    }
+    if($rootScope.rootUserPowerDto.gowsterPeopleManage){
+    	objType[3] = {id: "3", name: "吸毒者"}
+    	objStrIds+="3,"
+    }
+    
+    if(objStrIds != ""){
+    	objStrIds = objStrIds.substring(0,objStrIds.length-1);
+    }
+    objType[0] = {id: objStrIds, name: "全部"}
+    $scope.AllPeopleType=objType
+    console.log(objStrIds)
+    $scope.peopleType = "0";*/
 
     //定义轨迹及定位查询条件的类型
     $scope.AllKeywordType = [

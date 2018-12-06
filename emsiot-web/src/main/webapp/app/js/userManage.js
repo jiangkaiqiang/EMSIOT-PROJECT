@@ -392,6 +392,51 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  if($("#privatePower").is(":checked")){
         		  menuPower = menuPower+"privatePower";
         	  }
+        	  
+        	  //人员管理权限start
+        	  
+        	  if($("#peopleWhole").is(":checked")){
+        		  menuPower = menuPower+"peopleWhole";
+        	  }
+        	  if($("#kidsManage").is(":checked")){
+        		  menuPower = menuPower+"kidsManage";
+        	  }
+        	  if($("#kidsAdd").is(":checked")){
+        		  menuPower = menuPower+"kidsAdd";
+        	  }
+        	  if($("#kidsEdit").is(":checked")){
+        		  menuPower = menuPower+"kidsEdit";
+        	  }
+        	  if($("#kidsDelete").is(":checked")){
+        		  menuPower = menuPower+"kidsDelete";
+        	  }
+        	  if($("#oldPeopleManage").is(":checked")){
+        		  menuPower = menuPower+"oldPeopleManage";
+        	  }
+        	  if($("#oldPeopleAdd").is(":checked")){
+        		  menuPower = menuPower+"oldPeopleAdd";
+        	  }
+        	  if($("#oldPeopleEdit").is(":checked")){
+        		  menuPower = menuPower+"oldPeopleEdit";
+        	  }
+        	  if($("#oldPeopleDelete").is(":checked")){
+        		  menuPower = menuPower+"oldPeopleDelete";
+        	  }
+        	  if($("#gowsterPeopleManage").is(":checked")){
+        		  menuPower = menuPower+"gowsterPeopleManage";
+        	  }
+        	  if($("#gowsterPeopleAdd").is(":checked")){
+        		  menuPower = menuPower+"gowsterPeopleAdd";
+        	  }
+        	  if($("#gowsterPeopleEdit").is(":checked")){
+        		  menuPower = menuPower+"gowsterPeopleEdit";
+        	  }
+        	  if($("#gowsterPeopleDelete").is(":checked")){
+        		  menuPower = menuPower+"gowsterPeopleDelete";
+        	  }
+        	  
+        	  //end
+        	  
         	  if($scope.addProvinceID==undefined || $scope.addProvinceID==null){
         		  $scope.addProvinceID = $scope.userPowerDto.sysUser.pro_power;
         	  }
@@ -714,6 +759,92 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 else{
 						 $("#privatePowerChange").prop("checked",false);
 					 }
+					 
+					 
+					//人员管理权限start
+					  
+					 if($scope.userForUpdate.peopleWhole=="1"){
+						 $("#peopleWholeChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#peopleWholeChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.kidsManage=="1"){
+						 $("#kidsManageChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#kidsManageChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.kidsAdd=="1"){
+						 $("#kidsAddChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#kidsAddChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.kidsEdit=="1"){
+						 $("#kidsEditChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#kidsEditChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.kidsDelete=="1"){
+						 $("#kidsDeleteChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#kidsDeleteChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.oldPeopleManage=="1"){
+						 $("#oldPeopleManageChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#oldPeopleManageChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.oldPeopleAdd=="1"){
+						 $("#oldPeopleAddChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#oldPeopleAddChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.oldPeopleEdit=="1"){
+						 $("#oldPeopleEditChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#oldPeopleEditChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.oldPeopleDelete=="1"){
+						 $("#oldPeopleDeleteChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#oldPeopleDeleteChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.gowsterPeopleManage=="1"){
+						 $("#gowsterPeopleManageChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#gowsterPeopleManageChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.gowsterPeopleAdd=="1"){
+						 $("#gowsterPeopleAddChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#gowsterPeopleAddChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.gowsterPeopleEdit=="1"){
+						 $("#gowsterPeopleEditChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#gowsterPeopleEditChange").prop("checked",false);
+					 }
+					 if($scope.userForUpdate.gowsterPeopleDelete=="1"){
+						 $("#gowsterPeopleDeleteChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#gowsterPeopleDeleteChange").prop("checked",false);
+					 }
+					 
+					//end
+					 
+					 
 			    }
 		     });
 		};
@@ -863,6 +994,56 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  if($("#privatePowerChange").is(":checked")){
 	        		  menuPower = menuPower+"privatePower";
 	        	  }
+	        	  
+	        	  
+	        	//人员管理权限start
+	        	  
+	        	  if($("#peopleWholeChange").is(":checked")){
+	        		  menuPower = menuPower+"peopleWhole";
+	        	  }
+	        	  if($("#kidsManageChange").is(":checked")){
+	        		  menuPower = menuPower+"kidsManage";
+	        	  }
+	        	  if($("#kidsAddChange").is(":checked")){
+	        		  menuPower = menuPower+"kidsAdd";
+	        	  }
+	        	  if($("#kidsEditChange").is(":checked")){
+	        		  menuPower = menuPower+"kidsEdit";
+	        	  }
+	        	  if($("#kidsDeleteChange").is(":checked")){
+	        		  menuPower = menuPower+"kidsDelete";
+	        	  }
+	        	  if($("#oldPeopleManageChange").is(":checked")){
+	        		  menuPower = menuPower+"oldPeopleManage";
+	        	  }
+	        	  if($("#oldPeopleAddChange").is(":checked")){
+	        		  menuPower = menuPower+"oldPeopleAdd";
+	        	  }
+	        	  if($("#oldPeopleEditChange").is(":checked")){
+	        		  menuPower = menuPower+"oldPeopleEdit";
+	        	  }
+	        	  if($("#oldPeopleDeleteChange").is(":checked")){
+	        		  menuPower = menuPower+"oldPeopleDelete";
+	        	  }
+	        	  if($("#gowsterPeopleManageChange").is(":checked")){
+	        		  menuPower = menuPower+"gowsterPeopleManage";
+	        	  }
+	        	  if($("#gowsterPeopleAddChange").is(":checked")){
+	        		  menuPower = menuPower+"gowsterPeopleAdd";
+	        	  }
+	        	  if($("#gowsterPeopleEditChange").is(":checked")){
+	        		  menuPower = menuPower+"gowsterPeopleEdit";
+	        	  }
+	        	  if($("#gowsterPeopleDeleteChange").is(":checked")){
+	        		  menuPower = menuPower+"gowsterPeopleDelete";
+	        	  }
+	        	  
+	        	  //end
+	        	  
+	        	  
+	        	  
+	        	  
+	        	  
 		            $http({
 		            	method : 'GET', 
 		    			url:'/i/user/updateUser',

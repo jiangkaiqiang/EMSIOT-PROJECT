@@ -99,6 +99,27 @@ public class SysUserDto {
 	
 	private String privatePower = "0";//隐私权限
 	
+	
+	
+	/*	
+	 * 附加人员管理的增删改查权限
+	*/	
+	private String peopleWhole = "0";//人员管理
+	private String kidsManage = "0";//人员管理-小孩管理
+	private String kidsAdd = "0";//人员管理-添加小孩
+	private String kidsEdit = "0";//人员管理-编辑小孩
+	private String kidsDelete = "0";//人员管理-删除小孩
+	
+	private String oldPeopleManage = "0";//人员管理-老人管理
+	private String oldPeopleAdd = "0";//人员管理-添加老人
+	private String oldPeopleEdit = "0";//人员管理-编辑老人
+	private String oldPeopleDelete = "0";//人员管理-删除老人
+	
+	private String gowsterPeopleManage = "0";//人员管理-吸毒者管理
+	private String gowsterPeopleAdd = "0";//人员管理-添加吸毒者
+	private String gowsterPeopleEdit = "0";//人员管理-编辑吸毒者
+	private String gowsterPeopleDelete = "0";//人员管理-删除吸毒者
+	
 	public String getArea_name() {
 		return area_name;
 	}
@@ -449,6 +470,110 @@ public class SysUserDto {
 
 	public void setSensitiveAlarmDelete(String sensitiveAlarmDelete) {
 		this.sensitiveAlarmDelete = sensitiveAlarmDelete;
+	}
+
+	public String getPeopleWhole() {
+		return peopleWhole;
+	}
+
+	public void setPeopleWhole(String peopleWhole) {
+		this.peopleWhole = peopleWhole;
+	}
+
+	public String getKidsManage() {
+		return kidsManage;
+	}
+
+	public void setKidsManage(String kidsManage) {
+		this.kidsManage = kidsManage;
+	}
+
+	public String getKidsAdd() {
+		return kidsAdd;
+	}
+
+	public void setKidsAdd(String kidsAdd) {
+		this.kidsAdd = kidsAdd;
+	}
+
+	public String getKidsEdit() {
+		return kidsEdit;
+	}
+
+	public void setKidsEdit(String kidsEdit) {
+		this.kidsEdit = kidsEdit;
+	}
+
+	public String getKidsDelete() {
+		return kidsDelete;
+	}
+
+	public void setKidsDelete(String kidsDelete) {
+		this.kidsDelete = kidsDelete;
+	}
+
+	public String getOldPeopleManage() {
+		return oldPeopleManage;
+	}
+
+	public void setOldPeopleManage(String oldPeopleManage) {
+		this.oldPeopleManage = oldPeopleManage;
+	}
+
+	public String getOldPeopleAdd() {
+		return oldPeopleAdd;
+	}
+
+	public void setOldPeopleAdd(String oldPeopleAdd) {
+		this.oldPeopleAdd = oldPeopleAdd;
+	}
+
+	public String getOldPeopleEdit() {
+		return oldPeopleEdit;
+	}
+
+	public void setOldPeopleEdit(String oldPeopleEdit) {
+		this.oldPeopleEdit = oldPeopleEdit;
+	}
+
+	public String getOldPeopleDelete() {
+		return oldPeopleDelete;
+	}
+
+	public void setOldPeopleDelete(String oldPeopleDelete) {
+		this.oldPeopleDelete = oldPeopleDelete;
+	}
+
+	public String getGowsterPeopleManage() {
+		return gowsterPeopleManage;
+	}
+
+	public void setGowsterPeopleManage(String gowsterPeopleManage) {
+		this.gowsterPeopleManage = gowsterPeopleManage;
+	}
+
+	public String getGowsterPeopleAdd() {
+		return gowsterPeopleAdd;
+	}
+
+	public void setGowsterPeopleAdd(String gowsterPeopleAdd) {
+		this.gowsterPeopleAdd = gowsterPeopleAdd;
+	}
+
+	public String getGowsterPeopleEdit() {
+		return gowsterPeopleEdit;
+	}
+
+	public void setGowsterPeopleEdit(String gowsterPeopleEdit) {
+		this.gowsterPeopleEdit = gowsterPeopleEdit;
+	}
+
+	public String getGowsterPeopleDelete() {
+		return gowsterPeopleDelete;
+	}
+
+	public void setGowsterPeopleDelete(String gowsterPeopleDelete) {
+		this.gowsterPeopleDelete = gowsterPeopleDelete;
 	}
 	
 }
