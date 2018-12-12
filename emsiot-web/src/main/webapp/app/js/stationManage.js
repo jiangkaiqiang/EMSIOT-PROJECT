@@ -54,7 +54,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                     }
                 }).success(function (data) {
                     $scope.stations = data;
-                    //console.log(data)
                     showStation();
                 });
             });
@@ -128,7 +127,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
             alert("没有添加基站权限！");
             return;
         }
-        mapStation.clearOverlays();
+        //mapStation.clearOverlays();
         var currentpt = new BMap.Point(e.point.lng, e.point.lat);
         $scope.addStationLng = e.point.lng;
         $scope.addStationLat = e.point.lat;
@@ -138,12 +137,9 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 $scope.addStationAddress = "获取不到具体位置";
             } else {
                 var addComp = rs.addressComponents;
-                /*console.log(rs);
-                 console.log(addComp);*/
                 $scope.addStationAddress = addComp.province + ","
                 + addComp.city + "," + addComp.district + ", "
                 + addComp.street + "," + addComp.streetNumber;
-                //console.log($scope.addStationAddress);
             }
             $("#addStation").modal("show");
             $("#addStationLng").val($scope.addStationLng);
@@ -164,6 +160,13 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         // });
     });
 
+    $(function () {$('#addStation').on('hide.bs.modal',function(){
+
+    	var allOverlay = mapStation.getOverlays()
+    	if(allOverlay!=null && allOverlay.length > 0){
+    		mapStation.removeOverlay(allOverlay[allOverlay.length-1]);
+    	}
+    })})
     $scope.goStationLocation = function (stationID) {
         $http.get('/i/station/findStationByID', {
             params: {
@@ -471,12 +474,9 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         var markers = []; //存放聚合的基站
         //var infoWindow;
         var tmpStation;
-        //console.log($scope.stations)
         //给每一个基站添加监听事件 和窗口信息
-        //console.log($scope.stations);
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
-            //console.log(tmpStation)
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
             //基站异常图标
             if (tmpStation.station_status == 1) {
@@ -485,22 +485,14 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
             } else {
                 marker2 = new BMap.Marker(pt);
             }
-            //var carNum=$scope.electsInStation.length;
-            // console.log(carNum)
-            //$scope.labelSet(carNum,marker2);
             marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_name + '\t' + tmpStation.station_status);
-            //marker2.setTitle(tmpStation.station_id);
-            //console.log($scope.stations.length);
-
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
-                //showSingleStation(title_add);  //根据物理编号查找
                 showStationRecord(title_add[0])
                 var electInfo = '';
                 var sHtml2 = '';
                 var sHtml3 = '';
-
                 var status = "";
                 var statusColor = ""
                 if (title_add[2] == 0) {
@@ -512,13 +504,10 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                     status = "检测中";
                     statusColor = "style='background:#fad733!important;'";
                 }
-
                 sHtml2 += "</h4>" + title_add[0] + "</li><li " + statusColor + " >" + status;
                 sHtml3 += "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i>" + title_add[1] + "<span>";
-
                 var station_status = '';
                 for (var k = 0; k < $scope.stationRecord.length; k++) {
-
                     if ($scope.stationRecord[k].station_status == 0) {
                         station_status = "正常";
                     } else {
@@ -530,7 +519,6 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 var p = e.target;
                 var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
                 mapStation.openInfoWindow(infoWindow, point);
-
             });
             markers.push(marker2);
         }
@@ -553,14 +541,12 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         if ($scope.tiao != null) {
             $scope.tiao.setAnimation(null);
         }
-        //for(var g =0;g < $scope.stations.length; g++){
-        // console.log(tablePoint==$scope.stations[g].station_address);
         var allOverlay = $scope.jizhanBounce;
-        //console.log(allOverlay)
         var Oe = null
         for (var i = 0; i < allOverlay.length; i++) {
             Oe = allOverlay[i].point
             if (Oe.lng == longitude && Oe.lat == latitude) {
+            	mapStation.centerAndZoom(new BMap.Point(longitude,latitude), 15);
                 $scope.tiao = allOverlay[i];//保存上一次跳动的基站
                 allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                 return;
@@ -568,12 +554,8 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 //markers=null;
             }
         }
-        //return;
 
-        //}
     };
-
-
     function showSingleStation(stationID) {
         $.ajax({
             method: 'GET',
@@ -586,8 +568,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
             $scope.singleStation = data;
         })
     }
-
-    $scope.limit = 10;
+    $scope.limit = 10;//目前默认10条
     function showStationRecord(stationPhyNum) {
         $.ajax({
             method: 'GET',
