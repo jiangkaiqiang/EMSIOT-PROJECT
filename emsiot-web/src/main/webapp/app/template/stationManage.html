@@ -66,7 +66,7 @@
                     <td ng-style="{true: myClass, false: ''}[station.station_status==1]">{{station.station_name}}</td>
                     <td ng-style="{true: myClass, false: ''}[station.station_status==1]">
                         <i ng-show="rootUserPowerDto.stationDelete==1 && rootUserPowerDto.sysUser.opt_power==1" class="glyphicon glyphicon-trash"
-                           ng-click="goDeleteStation(station.station_id)"></i>
+                           ng-click="goDeleteStation(station.station_id, station.longitude, station.latitude)"></i>
                         <i class="glyphicon glyphicon-map-marker" ng-click="goStationLocation(station.station_id)"
                            title="查看位置" ng-style style="color:#3C7ADA;"></i>
                         <!--<button ng-show="rootUserPowerDto.stationDelete==1" class="btn btn-primary btn-sm" ng-click="goDeleteStation(station.station_id)">删除</button>-->

@@ -449,12 +449,18 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         else {
 
         }
+        var endTimeForTrace = "";
+        if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
+        	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";
+        }else{
+        	endTimeForTrace = $scope.endTimeForTrace ;
+        }
         $http.get('/i/people/findPeopleTrace', {
             params: {
                 "peopleIdCards": $scope.peopleIdCards,
                 "peopleGuaCardNum": $scope.peopleGuaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
-                "endTimeForTrace": $scope.endTimeForTrace
+                "endTimeForTrace": endTimeForTrace
             }
         }).success(function (data) {
 
@@ -671,7 +677,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-
+    $scope.startTimeForTrace=$scope.doDateStr(new Date())
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd',
         minView: "month",
@@ -679,6 +685,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
+    $scope.endTimeForTrace=$scope.doDateStr(new Date())
     //报警车辆日期
     $('#peopleStartTime').datetimepicker({
     	format: 'yyyy-mm-dd',

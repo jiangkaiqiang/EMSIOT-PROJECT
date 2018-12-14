@@ -159,13 +159,13 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         // mapStation.clearOverlays();
         // });
     });
-
-    $(function () {$('#addStation').on('hide.bs.modal',function(){
-
+    var submitOK = false;
+    $(function () {$('#addStation').on('hidden.bs.modal',function(){
     	var allOverlay = mapStation.getOverlays()
-    	if(allOverlay!=null && allOverlay.length > 0){
+    	if(allOverlay!=null && allOverlay.length > 0 && !$scope.submitOK){
     		mapStation.removeOverlay(allOverlay[allOverlay.length-1]);
     	}
+    	$scope.submitOK = false;
     })})
     $scope.goStationLocation = function (stationID) {
         $http.get('/i/station/findStationByID', {
@@ -249,7 +249,8 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         return true;
     }
 
-    $scope.goDeleteStation = function (stationID) {
+    $scope.goDeleteStation = function (stationID,lng,lat) {
+    	console.log($scope.selected)
         if (delcfm()) {
             $http.get('/i/station/deleteStationByID', {
                 params: {
@@ -257,6 +258,13 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 }
             }).success(function (data) {
                 $scope.getStations();
+                var allOverlay = mapStation.getOverlays()
+                for (var i = 0; i < allOverlay.length; i++) {
+                	var Oe = allOverlay[i].point;
+                    if (Oe != null && Oe.lng == lng && Oe.lat == lat) {
+	            		mapStation.removeOverlay(allOverlay[i]);
+	            	}
+                }
                 alert("删除成功");
             });
         }
@@ -276,6 +284,15 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                     }
                 }).success(function (data) {
                     $scope.getStations();
+                    for (var j = 0; j < $scope.selected.length; j++) {
+                    	var allOverlay = mapStation.getOverlays()
+                        for (var i = 0; i < allOverlay.length; i++) {
+                        	var Oe = allOverlay[i].point;
+                            if (Oe != null && Oe.lng == $scope.selected[j].longitude && Oe.lat == $scope.selected[j].latitude) {
+        	            		mapStation.removeOverlay(allOverlay[i]);
+        	            	}
+                        }
+					}
                     alert("删除成功");
                 });
             }
@@ -394,9 +411,10 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
     $scope.dropInstallPic = function (installPic) {
         $scope.installPic = null;
     };
-
+    
     $scope.submit = function () {
         if (checkInput()) {
+        	
             var stationType = "";
             if ($scope.addStationType == "1")
                 stationType = "SP-RFS-336-391";
@@ -417,6 +435,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 'station_address': $scope.addStationAddress,
                 'install_pic': $scope.installPic
             };
+            
             Upload.upload({
                 url: '/i/station/addStation',
                 headers: {
@@ -427,6 +446,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 if (data.success) {
                     alert(data.message);
                     $scope.getStations();
+                    $scope.submitOK = true;
                     $("#addStation").modal("hide");
                 } else {
                     alert(data.message);
@@ -459,7 +479,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
     }
 
 
-    $scope.jizhanBounce = null;
+    //$scope.jizhanBounce = null;
     var markerClusterer = null;
     var marker2;
 
@@ -532,7 +552,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         }
 
         //用于基站跳动
-        $scope.jizhanBounce = mapStation.getOverlays();
+       // $scope.jizhanBounce = mapStation.getOverlays();
     }
 
 
@@ -541,7 +561,7 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
         if ($scope.tiao != null) {
             $scope.tiao.setAnimation(null);
         }
-        var allOverlay = $scope.jizhanBounce;
+        var allOverlay = mapStation.getOverlays();
         var Oe = null
         for (var i = 0; i < allOverlay.length; i++) {
             Oe = allOverlay[i].point

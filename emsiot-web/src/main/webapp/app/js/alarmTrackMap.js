@@ -447,12 +447,18 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         else {
 
         }
+        var endTimeForTrace = "";
+        if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
+        	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";
+        }else{
+        	endTimeForTrace = $scope.endTimeForTrace ;
+        }
         $http.get('/i/electalarm/findElectAlarmTrace', {
             params: {
                 "plateNum": $scope.plateNum,
                 "guaCardNum": $scope.guaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
-                "endTimeForTrace": $scope.endTimeForTrace
+                "endTimeForTrace": endTimeForTrace
             }
         }).success(function (data) {
         	
@@ -667,7 +673,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-
+    $scope.startTimeForTrace=$scope.doDateStr(new Date())
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd',
         minView: "month",
@@ -675,6 +681,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
+    $scope.endTimeForTrace=$scope.doDateStr(new Date())
     //报警车辆日期
     $('#alarmStartTime').datetimepicker({
     	format: 'yyyy-mm-dd',

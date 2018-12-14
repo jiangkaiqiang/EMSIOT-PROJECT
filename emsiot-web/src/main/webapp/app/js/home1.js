@@ -428,13 +428,19 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         else {
 
         }
+        var endTimeForTrace = "";
+        if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
+        	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";
+        }else{
+        	endTimeForTrace = $scope.endTimeForTrace ;
+        }
         var guijiModal = $("#guijiModal");
         $http.get('/i/elect/findElectTrace', {
             params: {
                 "plateNum": $scope.plateNum,
                 "guaCardNum": $scope.guaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
-                "endTimeForTrace": $scope.endTimeForTrace
+                "endTimeForTrace": endTimeForTrace
             }
         }).success(function (data) {
             $scope.traceStations = data;
@@ -635,7 +641,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-
+    $scope.startTimeForTrace=$scope.doDateStr(new Date())
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd',
         minView: "month",
@@ -643,7 +649,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-
+    $scope.endTimeForTrace=$scope.doDateStr(new Date())
     $scope.setCog = function(){
         $scope.center = map.getCenter();
         $scope.centerLat = $scope.center.lat;

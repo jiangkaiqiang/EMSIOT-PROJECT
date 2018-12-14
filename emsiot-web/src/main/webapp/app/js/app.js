@@ -12,7 +12,20 @@ coldWeb.controller('appCtrl', function ($rootScope, $scope, $state, $cookies, $h
 
     //防盗芯片验证
     $scope.guaCardNumReg = /^\d{6}$/;
-
+    $scope.doDateStr = function(dateTime,str){
+    	var date = new Date(dateTime);
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+        if(str==1){
+        	return year + "-" + month + "-" + day + " " + hours + ":" + min + ":" + seconds;
+        }else{
+        	return year + "-" + month + "-" + day;
+        }
+    }
 
 });
 coldWeb.run(function (editableOptions, adminService, $location) {

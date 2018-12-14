@@ -444,11 +444,11 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
         	alert('防盗芯片不能为空');
         	return;
         }else{
-        	if(!$scope.guaCardNumReg.test($scope.addPeopleGuaCardNum)){
+        	/*if(!$scope.guaCardNumReg.test($scope.addPeopleGuaCardNum)){
         		flag = false;
         		alert('防盗芯片必须为6位数字');
         		return;
-        	}
+        	}*/
         }
         if ($scope.addGuardianName == undefined || $scope.addGuardianName == '') {
         	alert('监护人姓名不能为空');
@@ -571,11 +571,11 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
             alert('防盗芯片不能为空');
             return;
         }else{
-            if(!$scope.guaCardNumReg.test($scope.updatePeople.people.people_gua_card_num)){
+            /*if(!$scope.guaCardNumReg.test($scope.updatePeople.people.people_gua_card_num)){
                 flag = false;
                 alert('防盗芯片必须为6位数字');
                 return;
-            }
+            }*/
         }
         if ($scope.updatePeople.people.guardian_name == undefined || $scope.updatePeople.people.guardian_name == '') {
         	alert('监护人姓名不能为空');

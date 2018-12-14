@@ -158,7 +158,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
         var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
-        var sHtml4 = "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'> <table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th style='width:25%!important'>限制区域</th><th style='width:25%!important'>车辆编号</th><th style='width:50%!important'>经过时间</th></tr></thead><tbody>";
+        var sHtml4 = "</p ><hr/><div class='tableArea margin-top2'> <table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th style='width:25%!important'>限制区域</th><th style='width:25%!important'>车辆编号</th><th style='width:50%!important'>经过时间</th></tr></thead><tbody>";
+        //var sHtml4 = "</p ><ul class='flex flex-time'><li class='active'>1分钟</li><li>5分钟</li><li>1小时</li></ul><hr/><div class='tableArea margin-top2'> <table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th style='width:25%!important'>限制区域</th><th style='width:25%!important'>车辆编号</th><th style='width:50%!important'>经过时间</th></tr></thead><tbody>";
         var endHtml = "</tbody></table></div></div>";
         var pt;
         var marker2;
@@ -181,7 +182,12 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
 
             //统计时间内经过改基站的车辆的数
             var time = new Date().getTime();//当前时间
-            var start = new Date(time - 60 * 1000 * 60);//一小时
+            var start 
+            if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+                start = new Date(time - 60 * 1000 * 60);//一小时
+            }else{
+                start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
+            }
             var end = new Date(time);
             // var num = tmpStation.station_phy_num;
             function FormatDate(strTime) {
