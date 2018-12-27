@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,9 @@ import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.StationStatusRecord;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.util.ResponseData;
+import com.ems.iot.manage.util.hardutil.ByteAndStr16;
+import com.ems.iot.manage.util.hardutil.CRC16B;
+import com.ems.iot.manage.util.hardutil.StationOrder;
 import com.ems.iot.manage.util.CometUtil;
 
 /**
@@ -81,201 +85,237 @@ public class HardAcceptController extends BaseController {
 	@RequestMapping(value = "/accepter")
 	@ResponseBody
 	public Object accepter(HttpServletRequest request,
-			@RequestParam(value = "eleGuaCardNum", required = false) Integer eleGuaCardNum,
+			@RequestParam(value = "eleGuaCardNum", required = false) String eleGuaCardNum,
 			@RequestParam(value = "stationPhyNum") Integer stationPhyNum,
 			@RequestParam(value = "hardReadTime", required = false) String hardReadTime)
 			throws UnsupportedEncodingException {
-		//SysUser user = (SysUser) request.getSession().getAttribute("user");
-		ElectrombileStation electrombileStation = new ElectrombileStation();
-		electrombileStation.setEle_gua_card_num(eleGuaCardNum);
-		electrombileStation.setStation_phy_num(stationPhyNum);
-		electrombileStation.setHard_read_time(hardReadTime);
-		Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(eleGuaCardNum);
-		// 如果是一辆黑名单车辆，则推送一条报警信息，并将其插入报警表之中
-		if (electrombile!=null && electrombile.getElect_state() == 2) {
-			MessageEntity messageEntity = new MessageEntity();
-			messageEntity.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
-			+"警报：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-			+ electrombileStation.getEle_gua_card_num() + "!");
-			CometUtil cometUtil = new CometUtil();
-			cometUtil.pushToAll(messageEntity);
-//			if (user != null) {
-//				if (user.getPro_power().equals("-1")) {
-//					MessageEntity messageEntity = new MessageEntity();
-//					messageEntity.setContent("警报：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-//							+ electrombileStation.getEle_gua_card_num() + "!");
-//					CometUtil cometUtil = new CometUtil();
-//					cometUtil.pushToAll(messageEntity);
-//				} else if (user.getPro_power().equals(electrombile.getPro_id() + "")) {
-//					if (user.getCity_power().equals("-1")) {
-//						MessageEntity messageEntity = new MessageEntity();
-//						messageEntity.setContent("警报：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-//								+ electrombileStation.getEle_gua_card_num() + "!");
-//						CometUtil cometUtil = new CometUtil();
-//						cometUtil.pushToAll(messageEntity);
-//					} else if (user.getCity_power().equals(electrombile.getCity_id() + "")) {
-//						if (user.getArea_power().equals("-1")||user.getArea_power().equals(electrombile.getArea_id()+"")) {
-//							MessageEntity messageEntity = new MessageEntity();
-//							messageEntity.setContent("警报：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-//									+ electrombileStation.getEle_gua_card_num() + "!");
-//							CometUtil cometUtil = new CometUtil();
-//							cometUtil.pushToAll(messageEntity);
-//						}
-//					}
-//				} 
-//			} 
-			// 插入报警表中
-			ElectAlarm electAlarm = new ElectAlarm();
-			electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
-			electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
-			electAlarmMapper.insert(electAlarm);
-		}
-		
-//			//处理限制区域报警-移除
-		/*List<LimitArea> limitAreas = limitAreaMapper.findAll();
-		for (LimitArea limitArea : limitAreas) {
-			String[] limitStationIDs = limitArea.getStation_ids().split(";");
-//		    	String[] limitElects = limitArea.getBlack_list_elects().split(";");
-			List<Integer> limitStationPhyNumsList = new ArrayList<Integer>();
-			for (String limitStationID : limitStationIDs) {
-				Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(limitStationID));
-				if (station!=null) {
-					limitStationPhyNumsList.add(station.getStation_phy_num());
-				}
-			}
-			if (limitStationPhyNumsList.contains(stationPhyNum)) {
-				
-				MessageEntity messageEntityLimit = new MessageEntity();
-				messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
-						+"限制区域报警：基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-						+ electrombileStation.getEle_gua_card_num() + "!");
-				CometUtil cometUtilLimit = new CometUtil();
-				cometUtilLimit.pushToLimit(messageEntityLimit);
-				
-				AreaAlarm areaAlarm = new AreaAlarm();
-				areaAlarm.setArea_name(limitArea.getLimit_area_name());
-				areaAlarm.setArea_type(2);//2表示限制区域
-				areaAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
-				areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
-				areaAlarm.setProcess_state(0);//0未处理，没有默认值sql报错Column 'process_state' cannot be null;
-				areaAlarmMapper.insert(areaAlarm);
-			}
-		}*/
-		
-	if(electrombile!=null) {
+		// SysUser user = (SysUser) request.getSession().getAttribute("user");
+		Electrombile electrombile = null;
+		List<ElectrombileStation> list = new ArrayList<ElectrombileStation>();
+		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
+			String[] eleGuaCardNums = eleGuaCardNum.split(",");
+			for (String guaCardNum : eleGuaCardNums) {
 
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		Date sysDate=new Date();
-//		//处理敏感区域报警
-		List<SensitiveArea> sensitiveAreas = sensitiveAreaMapper.findAll();
-		for (SensitiveArea sensitiveArea : sensitiveAreas) {
-			String[] sensitiveStationIDs = sensitiveArea.getStation_ids().split(";");
-	//	    	String[] limitElects = limitArea.getBlack_list_elects().split(";");
-			List<Integer> sensitiveStationPhyNumsList = new ArrayList<Integer>();
-			
-			//是否有开启0未开启1开启
-			if(sensitiveArea.getStatus()==0) {
-				continue;
-			}
-			//判断是否有时间，没有时间就始终进行，有时间就按不同时间进行
-			Date startTime = null;
-			Date endTime = null;
-			try {
-				Long sysDateL=sdf.parse(sdf.format(sysDate)).getTime();
-				
-				if(sensitiveArea.getSens_start_time()!=null && sensitiveArea.getSens_end_time()!=null) {
-					startTime = sdf.parse(sensitiveArea.getSens_start_time());
-					endTime = sdf.parse(sensitiveArea.getSens_end_time());
-					
-					if(!(sysDateL>=startTime.getTime() && sysDateL<=endTime.getTime())) {
-						continue;
+				ElectrombileStation electrombileStation = new ElectrombileStation();
+				electrombileStation.setEle_gua_card_num(Integer.valueOf(guaCardNum));
+				electrombileStation.setStation_phy_num(stationPhyNum);
+				electrombileStation.setHard_read_time(hardReadTime);
+				electrombile = electrombileMapper.findPlateNumByGuaCardNum(Integer.valueOf(guaCardNum));
+				// 如果是一辆黑名单车辆，则推送一条报警信息，并将其插入报警表之中
+				if (electrombile != null && electrombile.getElect_state() == 2) {
+					MessageEntity messageEntity = new MessageEntity();
+					messageEntity.setContent(electrombile.getPro_id() + ";" + electrombile.getCity_id() + ";"
+							+ electrombile.getArea_id() + ";" + "警报：基站" + electrombileStation.getStation_phy_num()
+							+ "发现可疑车辆" + electrombileStation.getEle_gua_card_num() + "!");
+					CometUtil cometUtil = new CometUtil();
+					cometUtil.pushToAll(messageEntity);
+					// if (user != null) {
+					// if (user.getPro_power().equals("-1")) {
+					// MessageEntity messageEntity = new MessageEntity();
+					// messageEntity.setContent("警报：基站" + electrombileStation.getStation_phy_num() +
+					// "发现可疑车辆"
+					// + electrombileStation.getEle_gua_card_num() + "!");
+					// CometUtil cometUtil = new CometUtil();
+					// cometUtil.pushToAll(messageEntity);
+					// } else if (user.getPro_power().equals(electrombile.getPro_id() + "")) {
+					// if (user.getCity_power().equals("-1")) {
+					// MessageEntity messageEntity = new MessageEntity();
+					// messageEntity.setContent("警报：基站" + electrombileStation.getStation_phy_num() +
+					// "发现可疑车辆"
+					// + electrombileStation.getEle_gua_card_num() + "!");
+					// CometUtil cometUtil = new CometUtil();
+					// cometUtil.pushToAll(messageEntity);
+					// } else if (user.getCity_power().equals(electrombile.getCity_id() + "")) {
+					// if
+					// (user.getArea_power().equals("-1")||user.getArea_power().equals(electrombile.getArea_id()+""))
+					// {
+					// MessageEntity messageEntity = new MessageEntity();
+					// messageEntity.setContent("警报：基站" + electrombileStation.getStation_phy_num() +
+					// "发现可疑车辆"
+					// + electrombileStation.getEle_gua_card_num() + "!");
+					// CometUtil cometUtil = new CometUtil();
+					// cometUtil.pushToAll(messageEntity);
+					// }
+					// }
+					// }
+					// }
+					// 插入报警表中
+					ElectAlarm electAlarm = new ElectAlarm();
+					electAlarm.setAlarm_gua_card_num(electrombileStation.getEle_gua_card_num());
+					electAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
+					electAlarmMapper.insert(electAlarm);
+				}
+
+				// //处理限制区域报警-移除
+				/*
+				 * List<LimitArea> limitAreas = limitAreaMapper.findAll(); for (LimitArea
+				 * limitArea : limitAreas) { String[] limitStationIDs =
+				 * limitArea.getStation_ids().split(";"); // String[] limitElects =
+				 * limitArea.getBlack_list_elects().split(";"); List<Integer>
+				 * limitStationPhyNumsList = new ArrayList<Integer>(); for (String
+				 * limitStationID : limitStationIDs) { Station station =
+				 * stationMapper.selectByPrimaryKey(Integer.valueOf(limitStationID)); if
+				 * (station!=null) { limitStationPhyNumsList.add(station.getStation_phy_num());
+				 * } } if (limitStationPhyNumsList.contains(stationPhyNum)) {
+				 * 
+				 * MessageEntity messageEntityLimit = new MessageEntity();
+				 * messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.
+				 * getCity_id()+";"+electrombile.getArea_id()+";" +"限制区域报警：基站" +
+				 * electrombileStation.getStation_phy_num() + "发现可疑车辆" +
+				 * electrombileStation.getEle_gua_card_num() + "!"); CometUtil cometUtilLimit =
+				 * new CometUtil(); cometUtilLimit.pushToLimit(messageEntityLimit);
+				 * 
+				 * AreaAlarm areaAlarm = new AreaAlarm();
+				 * areaAlarm.setArea_name(limitArea.getLimit_area_name());
+				 * areaAlarm.setArea_type(2);//2表示限制区域
+				 * areaAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
+				 * areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
+				 * areaAlarm.setProcess_state(0);//0未处理，没有默认值sql报错Column 'process_state' cannot
+				 * be null; areaAlarmMapper.insert(areaAlarm); } }
+				 */
+
+				if (electrombile != null) {
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date sysDate = new Date();
+					// //处理敏感区域报警
+					List<SensitiveArea> sensitiveAreas = sensitiveAreaMapper.findAll();
+					for (SensitiveArea sensitiveArea : sensitiveAreas) {
+						String[] sensitiveStationIDs = sensitiveArea.getStation_ids().split(";");
+						List<Integer> sensitiveStationPhyNumsList = new ArrayList<Integer>();
+						// 是否是限制车辆
+						String elects = sensitiveArea.getBlack_list_elects();
+						if (elects != null) {
+							// System.err.println(elects.indexOf(electrombile.getElect_id() + ""));
+							if (elects.indexOf(electrombile.getElect_id() + "") == -1) {
+								continue;
+							}
+						} else {
+							continue;
+						}
+						
+						for (String sensitiveStationID : sensitiveStationIDs) {
+							Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(sensitiveStationID));
+							if (station != null) {
+								sensitiveStationPhyNumsList.add(station.getStation_phy_num());
+							}
+						}
+						
+						if (!sensitiveStationPhyNumsList.contains(stationPhyNum)) {
+							continue;
+						}
+						
+						
+						// String[] limitElects = limitArea.getBlack_list_elects().split(";");
+						
+
+						// 是否有开启0未开启1开启
+						if (sensitiveArea.getStatus() == 0) {
+							continue;
+						}
+						// 判断是否有时间，没有时间就始终进行，有时间就按不同时间进行
+						Date startTime = null;
+						Date endTime = null;
+						try {
+							Long sysDateL = sdf.parse(sdf.format(sysDate)).getTime();
+
+							if (sensitiveArea.getSens_start_time() != null
+									&& sensitiveArea.getSens_end_time() != null) {
+								startTime = sdf.parse(sensitiveArea.getSens_start_time());
+								endTime = sdf.parse(sensitiveArea.getSens_end_time());
+
+								if (!(sysDateL >= startTime.getTime() && sysDateL <= endTime.getTime())) {
+									continue;
+								}
+
+							} else if (sensitiveArea.getSens_start_time() != null
+									&& sensitiveArea.getSens_end_time() == null) {
+								startTime = sdf.parse(sensitiveArea.getSens_start_time());
+								if (!(sysDateL >= startTime.getTime())) {
+									continue;
+								}
+
+							} else if (sensitiveArea.getSens_start_time() == null
+									&& sensitiveArea.getSens_end_time() != null) {
+								endTime = sdf.parse(sensitiveArea.getSens_end_time());
+								if (!(sysDateL <= endTime.getTime())) {
+									continue;
+								}
+							}
+
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							continue;
+						}
+
+						
+
+						
+
+						if (sensitiveStationPhyNumsList.contains(stationPhyNum)) {
+							Integer areaAlarmCount = areaAlarmMapper.findAreaAlarmCountByStationNumAndTime(
+									electrombile.getPlate_num(), sensitiveArea.getSensitive_area_name(), startTime,
+									endTime, null, null, null);
+							// 此车辆超出出现次数进行提示
+							if (sensitiveArea.getEnter_num() <= areaAlarmCount) {
+								MessageEntity messageEntityLimit = new MessageEntity();
+								messageEntityLimit.setContent(electrombile.getPro_id() + ";" + electrombile.getCity_id()
+										+ ";" + electrombile.getArea_id() + ";" + "经过限制区域 '"
+										+ sensitiveArea.getSensitive_area_name() + "' " + (areaAlarmCount + 1)
+										+ "次。 报警基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
+										+ electrombileStation.getEle_gua_card_num() + "!");
+								CometUtil cometUtilLimit = new CometUtil();
+								cometUtilLimit.pushToLimit(messageEntityLimit);
+							}
+
+							AreaAlarm areaAlarm = new AreaAlarm();
+							areaAlarm.setArea_name(sensitiveArea.getSensitive_area_name());
+							areaAlarm.setArea_type(1);// 1表示敏感区域
+							areaAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
+							areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
+							areaAlarm.setProcess_state(0);// 0未处理，没有默认值sql报错Column 'process_state' cannot be null;
+							areaAlarmMapper.insert(areaAlarm);
+						}
 					}
-				
-				}else if(sensitiveArea.getSens_start_time()!=null && sensitiveArea.getSens_end_time()==null){
-					startTime = sdf.parse(sensitiveArea.getSens_start_time());
-					if(!(sysDateL>=startTime.getTime())) {
-						continue;
+				}
+
+				if (electrombile == null) {
+					// 插入人员基站关系表
+					People people = peopleMapper.findPlateNumByPeopleGuaCardNum(Integer.valueOf(guaCardNum));
+					if (people != null) {
+						PeopleStation peopleStation = new PeopleStation();
+						peopleStation.setPeople_gua_card_num(Integer.valueOf(guaCardNum));
+						peopleStation.setStation_phy_num(stationPhyNum);
+
+						peopleStation.setHard_read_time(hardReadTime);
+						peopleStationMapper.insert(peopleStation);
 					}
-					
-				}else if(sensitiveArea.getSens_start_time()==null && sensitiveArea.getSens_end_time()!=null){
-					endTime = sdf.parse(sensitiveArea.getSens_end_time());
-					if(!(sysDateL<=endTime.getTime())) {
-						continue;
-					}
-				}
-			
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				continue;
-			}
-			
-			
-			//是否是限制车辆
-			String elects = sensitiveArea.getBlack_list_elects();
-			if(elects!=null) {
-				System.err.println(elects.indexOf(electrombile.getElect_id()+""));
-				if(elects.indexOf(electrombile.getElect_id()+"") == -1) {
-					continue;
-				}
-			}else {
-				continue;
-			}
-			
-			
-			
-			for (String sensitiveStationID : sensitiveStationIDs) {
-				Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(sensitiveStationID));
-				if (station!=null) {
-					sensitiveStationPhyNumsList.add(station.getStation_phy_num());
-				}
-			}
-			
-			
-			if (sensitiveStationPhyNumsList.contains(stationPhyNum)) {
-				Integer areaAlarmCount = areaAlarmMapper.findAreaAlarmCountByStationNumAndTime(electrombile.getPlate_num(), sensitiveArea.getSensitive_area_name(), startTime, endTime, null, null, null);
-				//此车辆超出出现次数进行提示
-				if(sensitiveArea.getEnter_num() <= areaAlarmCount) {
-					MessageEntity messageEntityLimit = new MessageEntity();
-					messageEntityLimit.setContent(electrombile.getPro_id()+";"+electrombile.getCity_id()+";"+electrombile.getArea_id()+";"
-							+"经过限制区域 '"+sensitiveArea.getSensitive_area_name()+"' "+(areaAlarmCount+1)+"次。 报警基站" + electrombileStation.getStation_phy_num() + "发现可疑车辆"
-							+ electrombileStation.getEle_gua_card_num() + "!");
-					CometUtil cometUtilLimit = new CometUtil();
-					cometUtilLimit.pushToLimit(messageEntityLimit);
+				}else {
+					list.add(electrombileStation);
 				}
 				
-				AreaAlarm areaAlarm = new AreaAlarm();
-				areaAlarm.setArea_name(sensitiveArea.getSensitive_area_name());
-				areaAlarm.setArea_type(1);//1表示敏感区域
-				areaAlarm.setAlarm_station_phy_num(electrombileStation.getStation_phy_num());
-				areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
-				areaAlarm.setProcess_state(0);//0未处理，没有默认值sql报错Column 'process_state' cannot be null;
-				areaAlarmMapper.insert(areaAlarm);
+				
+				
+				
+				
+				
 			}
-		}
-	}
-		
-		
-		if(electrombile==null) {
-			//插入人员基站关系表
-			People people = peopleMapper.findPlateNumByPeopleGuaCardNum(eleGuaCardNum);
-			if(people != null) {
-				PeopleStation peopleStation = new PeopleStation();
-				peopleStation.setPeople_gua_card_num(eleGuaCardNum);
-				peopleStation.setStation_phy_num(stationPhyNum);;
-				peopleStation.setHard_read_time(hardReadTime);
-				peopleStationMapper.insert(peopleStation);
+
+			if (list.size() > 0) {
+				// 插入车辆基站关系表中
+				//electrombileStationMapper.insert(electrombileStation);
+				/*
+				 * List<ElectrombileStation> list = new ArrayList<ElectrombileStation>(); for
+				 * (int i = 0; i < 75; i++) { list.add(electrombileStation); }
+				 * electrombileStationMapper.insertBatch(list);
+				 */
+				electrombileStationMapper.insertBatch(list);
 			}
-		}else {
-		
-		
-		// 插入车辆基站关系表中
-		electrombileStationMapper.insert(electrombileStation);
 		}
 		return ResponseData.newSuccess("接受成功");
 	}
-	
-	
+
 	/**
 	 * 接收硬件数据，并判断基站是否正常
 	 * 
@@ -291,25 +331,24 @@ public class HardAcceptController extends BaseController {
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum,
 			@RequestParam(value = "stationStatus", required = false) Integer stationStatus)
 			throws UnsupportedEncodingException {
-		
+
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
-		
-		
-		if(station.getStation_status() == 0 || station.getStation_status() == 1) {
+
+		if (station.getStation_status() == 0 || station.getStation_status() == 1) {
 			StationStatusRecord record = stationStatusRecordMapper.selectByStationPhyNumLimitOne(stationPhyNum);
-			if(record == null ) {
+			if (record == null) {
 				StationStatusRecord stationRecord = new StationStatusRecord();
 				stationRecord.setStation_phy_num(stationPhyNum);
 				stationRecord.setStation_status(stationStatus);
-				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				stationRecord.setUpdate_time(sdf.format(new Date()));
 				stationStatusRecordMapper.insert(stationRecord);
-			}else {
-				if(record.getStation_status() != stationStatus) {
+			} else {
+				if (record.getStation_status() != stationStatus) {
 					StationStatusRecord stationRecord = new StationStatusRecord();
 					stationRecord.setStation_phy_num(stationPhyNum);
 					stationRecord.setStation_status(stationStatus);
-					SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					stationRecord.setUpdate_time(sdf.format(new Date()));
 					stationStatusRecordMapper.insert(stationRecord);
 				}
@@ -318,20 +357,23 @@ public class HardAcceptController extends BaseController {
 			sta.setStation_phy_num(stationPhyNum);
 			sta.setStation_status(stationStatus);
 			stationMapper.updateStatusByStationNum(sta);
-			
+
 		}
 		return ResponseData.newSuccess("接受成功");
-		
+
 	}
-	
+
 	@RequestMapping(value = "/test")
 	@ResponseBody
 	public Object test() {
-		MessageEntity messageEntityLimit = new MessageEntity();
+		/*MessageEntity messageEntityLimit = new MessageEntity();
 		messageEntityLimit.setContent("测试;测试;测试;测试!");
 		CometUtil cometUtilLimit = new CometUtil();
 		cometUtilLimit.pushToLimit(messageEntityLimit);
+		*/
+		StationOrder s=new StationOrder();
+		s.test();
 		return ResponseData.newSuccess("接受成功");
 	}
-	
+
 }

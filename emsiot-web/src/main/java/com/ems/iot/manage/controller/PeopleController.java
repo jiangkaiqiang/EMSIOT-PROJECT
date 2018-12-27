@@ -438,20 +438,21 @@ public class PeopleController extends BaseController {
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
 			throws UnsupportedEncodingException {
 		People people = peopleMapper.findPeopleForLocation(peopleGuaCardNum, peopleIdCards);
-		List<PeopleStationDto> peopleStationDtos = new ArrayList<PeopleStationDto>();
+		//List<PeopleStationDto> peopleStationDtos = new ArrayList<PeopleStationDto>();
 		if (null != people) {
 			List<PeopleStation> peopleStations = peopleStationMapper
 					.selectByGuaCardNumForTrace(people.getPeople_gua_card_num(), startTimeForTrace, endTimeForTrace);
-			for (PeopleStation peopleStation : peopleStations) {
+			/*for (PeopleStation peopleStation : peopleStations) {
 				PeopleStationDto peopleStationDto = new PeopleStationDto();
 				peopleStationDto.setCrossTime(peopleStation.getUpdate_time());
 				peopleStationDto
 						.setStation(stationMapper.selectByStationPhyNum(peopleStation.getStation_phy_num()));
 				peopleStationDto.setPeople(people);
 				peopleStationDtos.add(peopleStationDto);
-			}
+			}*/
+			return peopleStations;
 		}
-		return peopleStationDtos;
+		return new ArrayList<PeopleStation>();
 	}
 
 	/**
@@ -525,8 +526,8 @@ public class PeopleController extends BaseController {
 			@RequestParam(value = "endTime", required = false) String endTime,
 			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum)
 			throws UnsupportedEncodingException {
-		List<PeopleStation> peopleStations = peopleStationMapper.selectElectsByGuaCardNumNumAndTimeDesc(peopleGuaCardNum, startTime, endTime);
-		List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
+		List<StationElectDto> peopleStations = peopleStationMapper.selectElectsByGuaCardNumNumAndTimeDesc(peopleGuaCardNum, startTime, endTime);
+		/*List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
 		for (PeopleStation peopleStation : peopleStations) {
 			StationElectDto stationElectDto = new StationElectDto();
 			stationElectDto.setCorssTime(peopleStation.getUpdate_time());
@@ -534,8 +535,8 @@ public class PeopleController extends BaseController {
 					.selectByStationPhyNum(peopleStation.getStation_phy_num());
 			stationElectDto.setStation_name(station.getStation_name());
 			stationElectDtos.add(stationElectDto);
-		}
-		return stationElectDtos;
+		}*/
+		return peopleStations;
 	}
 	
 	
@@ -568,7 +569,7 @@ public class PeopleController extends BaseController {
 		}
 		List<PeopleStation> peopleStations = peopleStationMapper
 				.selectPeopleStationPeopleLocationByTime(startTime, endTime, proPower, cityPower, areaPower);
-		List<PeopleStationDto> peopleStationDtos = new ArrayList<PeopleStationDto>();
+		/*List<PeopleStationDto> peopleStationDtos = new ArrayList<PeopleStationDto>();
 		for (PeopleStation peopleStation : peopleStations) {
 			PeopleStationDto peopleStationDto = new PeopleStationDto();
 			Station station = stationMapper.selectByStationPhyNum(peopleStation.getStation_phy_num());
@@ -579,9 +580,9 @@ public class PeopleController extends BaseController {
 			peopleStationDto.setPeople(people);
 			
 			peopleStationDtos.add(peopleStationDto);
-		}
+		}*/
 		
-		return peopleStationDtos;
+		return peopleStations;
 	}
 	
 	

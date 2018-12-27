@@ -12,6 +12,12 @@ public class PeopleStation {
 
     private String update_time;
 
+    //附加信息
+    private String people_name;
+    private String station_name;
+    private String longitude;
+    private String latitude;
+    private String people_tele;
 
     public Integer getPeo_sta_id() {
 		return peo_sta_id;
@@ -52,4 +58,45 @@ public class PeopleStation {
     public void setUpdate_time(String update_time) {
         this.update_time = update_time;
     }
+
+	public String getPeople_name() {
+		return people_name;
+	}
+
+	public void setPeople_name(String people_name) {
+		this.people_name = people_name;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getStation_name() {
+		return station_name;
+	}
+
+	public void setStation_name(String station_name) {
+		this.station_name = station_name;
+	}
+
+	public String getPeople_tele() {
+		return people_tele;
+	}
+
+	public void setPeople_tele(String people_tele) {
+		this.people_tele = people_tele;
+	}
+    
 }

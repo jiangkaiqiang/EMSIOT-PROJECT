@@ -4,7 +4,7 @@ angular.element(document).ready(function ($ngCookies, $http, $rootScope) {
     angular.bootstrap(document, ['ColdWeb']);
 });
 coldWeb.controller('appCtrl', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
-    //小孩手机验证
+    //学生手机验证
     $scope.phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
 
     //身份证验证
@@ -61,7 +61,9 @@ coldWeb.factory('adminService', ['$rootScope', '$http', function ($rootScope, $h
                 $http.get('/i/user/logout').success(function (data) {
                     $rootScope.admin = null;
                 });
+
                 window.location.reload();
+                 
             };
             JS.Engine.start('conn');
             JS.Engine.on(
@@ -142,6 +144,7 @@ coldWeb.factory('adminService', ['$rootScope', '$http', function ($rootScope, $h
 }])
 
 coldWeb.config(function ($stateProvider, $urlRouterProvider) {
+     
     $urlRouterProvider.otherwise("/home");
     $stateProvider.state('home', {
         url: '/home',

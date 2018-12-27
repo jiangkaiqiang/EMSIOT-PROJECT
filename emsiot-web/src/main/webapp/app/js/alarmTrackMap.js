@@ -63,14 +63,14 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                 $scope.inlineElects = data;
             });
             // 获取报警数量
-            $http.get('/i/electalarm/findElectAlarmsList', {
+            $http.get('/i/electalarm/findElectAlarmsListCount', {
                 params: {
                     "areaPower": $scope.user.area_power,
                     "cityPower": $scope.user.city_power,
                     "proPower": $scope.user.pro_power
                 }
             }).success(function (data) {
-                $scope.electAlarms = data;
+                $scope.electAlarmsCount = data;
             });
         });
     });
@@ -265,16 +265,16 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
         
         //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.alarmVehicle.length; i++) {
-            tmpStation = $scope.alarmVehicle[i].station;
-            tmpElectAlarm = $scope.alarmVehicle[i].electAlarm;
-            if(tmpStation==null || tmpElectAlarm==null || $scope.alarmVehicle[i].ownerPlateNum==null)continue;
+            /*tmpStation = $scope.alarmVehicle[i].station;
+            tmpElectAlarm = $scope.alarmVehicle[i].electAlarm;*/
+            //if(tmpStation==null || tmpElectAlarm==null || $scope.alarmVehicle[i].ownerPlateNum==null)continue;
             
-            pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
+            pt = new BMap.Point($scope.alarmVehicle[i].longitude, $scope.alarmVehicle[i].latitude);
             //报警车辆图标
             var myIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
             marker2 = new BMap.Marker(pt,{icon:myIcon});
-            $scope.labelSet($scope.alarmVehicle[i].ownerPlateNum,marker2);
-            marker2.setTitle(tmpElectAlarm.alarm_gua_card_num + '\t' + tmpStation.station_name + "\t" + $scope.alarmVehicle[i].ownerPlateNum);
+            $scope.labelSet($scope.alarmVehicle[i].plate_num,marker2);
+            marker2.setTitle($scope.alarmVehicle[i].alarm_gua_card_num + '\t' + $scope.alarmVehicle[i].station_name + "\t" + $scope.alarmVehicle[i].plate_num);
 
             markerClickListener(marker2);
             
@@ -467,13 +467,13 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             $scope.traceStationsLength = data.length;
             $scope.pointsArr = [];
             for(var j=0;j<data.length;j++){
-                var pointsJ = data[j].station.longitude;
-                var pointsW = data[j].station.latitude;
+                var pointsJ = data[j].longitude;
+                var pointsW = data[j].latitude;
                 $scope.pointsArr.push(new BMap.Point(pointsJ,pointsW));
             }
             
             if (data.length == 1)
-                alert("该车辆仅经过一个基站：" + data[0].station.station_name);
+                alert("该车辆仅经过一个基站：" + data[0].station_name);
             else if (data.length == 0)
                 alert("该车辆没有经过任何基站！");
             else{
@@ -493,7 +493,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 	                    marker=new BMap.Marker(arrPois[0],{
 	                        icon  : new BMap.Icon('../app/img/eb.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
-	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].statioName,{offset:new BMap.Size(0,-30)});
+	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].station_name,{offset:new BMap.Size(0,-30)});
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
 	                    marker.setLabel(label);
 	                    map.addOverlay(marker);lushu=1
@@ -565,7 +565,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
                         if(showLable == ""){
                         	showLable = me._opts.defaultContent
                         }
-                        me._opts.defaultContent=showLable+":"+data[me.i+1].statioName
+                        me._opts.defaultContent=showLable+":"+data[me.i+1].station_name
                     };
 
                     
@@ -733,7 +733,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
     
     
     ////////////////////////////////////////////////////////////////////////////
-	// 显示最大页数
+	/*// 显示最大页数
 	$scope.maxSize = 10;
 	// 总条目数(默认每页十条)
 	$scope.bigTotalItems = 10;
@@ -826,7 +826,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
 	          });
 	  	}
 	  	}
-	  }
+	  }*/
 	
 	
 	/*JS.Engine.on(
@@ -869,15 +869,7 @@ coldWeb.controller('alarmTrackMap', function ($rootScope, $scope, $state, $cooki
             map.clearOverlays();
             //$scope.clearElectTrace();
             showStation();
-           /* for (var i = 0; i < $scope.alarmVehicle.length; i++) {
-				if($scope.alarmVehicle[i].station!=null){
-		            var pt = new BMap.Point($scope.alarmVehicle[i].station.latitude, $scope.alarmVehicle[i].station.longitude);
-					var myIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
-					var marker2 = new BMap.Marker(pt,{icon:myIcon});
-		            map.addOverlay(marker2);
-		            marker2.setAnimation(BMAP_ANIMATION_BOUNCE);
-				}
-            }*/
+        
         })
     }
 	

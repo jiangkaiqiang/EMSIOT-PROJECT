@@ -158,6 +158,28 @@ public class ElectAlarmController extends BaseController {
 				areaPower);
 		return electAlarms;
 	}
+	/**
+	 * 返回所有报警数量
+	 * @return
+	 */
+	@RequestMapping(value = "/findElectAlarmsListCount")
+	@ResponseBody
+	public Object findElectalarmsListCount(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower) {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		Integer count = electAlarmMapper.findElectalarmsListCount(proPower, cityPower,
+				areaPower);
+		return count;
+	}
 	
 	
 	
@@ -179,11 +201,11 @@ public class ElectAlarmController extends BaseController {
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
 			throws UnsupportedEncodingException {
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
-		Page<ElectAlarmDto> traceStationDtos = new Page<ElectAlarmDto>();
+		//Page<ElectAlarmDto> traceStationDtos = new Page<ElectAlarmDto>();
 		if (null != electrombile) {
-			Page<ElectAlarm> electAlarms = electAlarmMapper
+			List<ElectAlarm> electAlarms = electAlarmMapper
 					.selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
-			for (ElectAlarm electAlarm : electAlarms) {
+			/*for (ElectAlarm electAlarm : electAlarms) {
 				ElectAlarmDto traceStationDto = new ElectAlarmDto();
 				//报警时间
 				//traceStationDto.setCrossTime(electAlarm.getAlarm_time());
@@ -207,9 +229,10 @@ public class ElectAlarmController extends BaseController {
 			}
 			traceStationDtos.setPageSize(electAlarms.getPageSize());
 			traceStationDtos.setPages(electAlarms.getPages());
-			traceStationDtos.setTotal(electAlarms.getTotal());
+			traceStationDtos.setTotal(electAlarms.getTotal());*/
+			return electAlarms;
 		}
-		return traceStationDtos;
+		return new ArrayList<ElectAlarm>();
 	}
 	
 	
@@ -254,9 +277,9 @@ public class ElectAlarmController extends BaseController {
 			@RequestParam(value = "endTime", required = false) String endTime,
 			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
 			throws UnsupportedEncodingException {
-		List<ElectAlarm> electAlarms = electAlarmMapper
+		List<StationElectDto> electAlarms = electAlarmMapper
 				.selectElectsByGuaCardNumNumAndTime(guaCardNum, startTime, endTime);
-		List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
+		/*List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
 		for (ElectAlarm electAlarm : electAlarms) {
 			StationElectDto stationElectDto = new StationElectDto();
 			stationElectDto.setCorssTime(electAlarm.getAlarm_time());
@@ -264,8 +287,8 @@ public class ElectAlarmController extends BaseController {
 					.selectByStationPhyNum(electAlarm.getAlarm_station_phy_num());
 			stationElectDto.setStation_name(station.getStation_name());
 			stationElectDtos.add(stationElectDto);
-		}
-		return stationElectDtos;
+		}*/
+		return electAlarms;
 	}
 	
 	
@@ -296,9 +319,8 @@ public class ElectAlarmController extends BaseController {
 		if (null == areaPower || areaPower == -1) {
 			areaPower = null;
 		}
-		List<ElectAlarm> electAlarms = electAlarmMapper
-				.selectElectAlarmVehicleByTime(startTime, endTime, proPower, cityPower, areaPower);
-		List<ElectAlarmDto> electAlarmDtos = new ArrayList<ElectAlarmDto>();
+		List<ElectAlarm> electAlarms = electAlarmMapper.selectElectAlarmVehicleByTime(startTime, endTime, proPower, cityPower, areaPower);
+		/*List<ElectAlarmDto> electAlarmDtos = new ArrayList<ElectAlarmDto>();
 		for (ElectAlarm electAlarm : electAlarms) {
 			ElectAlarmDto electAlarmDto = new ElectAlarmDto();
 			Station station = stationMapper.selectByStationPhyNum(electAlarm.getAlarm_station_phy_num());
@@ -311,9 +333,9 @@ public class ElectAlarmController extends BaseController {
 				electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
 			}
 			electAlarmDtos.add(electAlarmDto);
-		}
+		}*/
 		
-		return electAlarmDtos;
+		return electAlarms;
 	}
 	
 	

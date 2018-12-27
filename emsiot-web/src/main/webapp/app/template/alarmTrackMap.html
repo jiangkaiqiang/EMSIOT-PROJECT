@@ -12,7 +12,7 @@
             <ul class="flex flex-items">
                 <li><i class="iconfont icon-baojingcheliang1"></i></li>
                 <li>
-                    <p ng-style style="color:red;">{{electAlarms.length}}</p> <span> 报警数量</span>
+                    <p ng-style style="color:red;">{{electAlarmsCount}}</p> <span> 报警数量</span>
                 </li>
             </ul>
         </a></li>
@@ -260,7 +260,7 @@
                 <th style="width: 15%;">车主姓名</th>
                 <th style="width: 15%;">车主手机号</th>
                 <th>报警时间</th>
-                <th style="width: 5%" ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
+               <!--  <th style="width: 5%" ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th> -->
             </tr>
             </thead>
             <tbody>
@@ -269,20 +269,20 @@
                            ng-checked="exists(electAlarmDto, selected)"
                            ng-click="toggle(electAlarmDto, selected)"/>
                 </td>
-                <td title="{{electAlarmDto.ownerPlateNum}}">{{electAlarmDto.ownerPlateNum}}</td>
-                <td style="display: none;">{{electAlarmDto.statioAddress}}</td>
-                <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.statioAddress}}">
-                    {{electAlarmDto.statioName}}
+                <td title="{{electAlarmDto.plate_num}}">{{electAlarmDto.plate_num}}</td>
+                <td style="display: none;">{{electAlarmDto.station_address}}</td>
+                <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.station_address}}">
+                    {{electAlarmDto.station_name}}
                 </td>
-                <td title="{{electAlarmDto.ownerName}}">{{electAlarmDto.ownerName}}</td>
-                <td title="{{electAlarmDto.ownerTele}}">{{electAlarmDto.ownerTele}}</td>
-                <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.electAlarm.alarm_time}}">
-                    {{electAlarmDto.electAlarm.alarm_time}}
+                <td title="{{electAlarmDto.owner_name}}">{{electAlarmDto.owner_name}}</td>
+                <td title="{{electAlarmDto.owner_tele}}">{{electAlarmDto.owner_tele}}</td>
+                <td data-toggle="tooltip" data-placement="right" title="{{electAlarmDto.alarm_time}}">
+                    {{electAlarmDto.alarm_time}}
                 </td>
-                <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
+                <!-- <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
                     <i ng-show="rootUserPowerDto.alarmDelete==1" class="glyphicon glyphicon-trash"
-                       ng-click="goDeleteElectAlarm(electAlarmDto.electAlarm.elect_alarm_id)"></i>
-                </td>
+                       ng-click="goDeleteElectAlarm(electAlarmDto.elect_alarm_id)"></i>
+                </td> -->
             </tr>
             </tbody>
         </table>

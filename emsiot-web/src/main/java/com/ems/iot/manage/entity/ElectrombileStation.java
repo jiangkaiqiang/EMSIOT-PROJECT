@@ -12,6 +12,16 @@ public class ElectrombileStation {
     private String hard_read_time;
 
     private String update_time;
+    
+    ///////////////////////车辆信息
+    private String owner_name;
+    
+    private String plate_num;
+    
+    private String station_name;
+    private String longitude;
+    private String latitude;
+    private String station_address;
 
     public Integer getEle_sta_id() {
         return ele_sta_id;
@@ -52,4 +62,54 @@ public class ElectrombileStation {
     public void setUpdate_time(String update_time) {
         this.update_time = update_time;
     }
+
+	public String getOwner_name() {
+		return owner_name;
+	}
+
+	public void setOwner_name(String owner_name) {
+		this.owner_name = owner_name;
+	}
+
+	public String getPlate_num() {
+		return plate_num;
+	}
+
+	public void setPlate_num(String plate_num) {
+		this.plate_num = plate_num;
+	}
+
+	public String getStation_name() {
+		return station_name;
+	}
+
+	public void setStation_name(String station_name) {
+		this.station_name = station_name;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getStation_address() {
+		return station_address;
+	}
+
+	public void setStation_address(String station_address) {
+		this.station_address = station_address;
+	}
+    
+    
 }

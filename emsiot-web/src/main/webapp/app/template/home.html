@@ -4,7 +4,7 @@
             <ul class="flex flex-items">
                 <li><i class="iconfont icon-beiandengji"></i></li>
                 <li>
-                    <p>{{elects.length}}</p> <span>登记车辆</span>
+                    <p>{{electsCount}}</p> <span>登记车辆</span>
                 </li>
             </ul>
         </a></li>
@@ -12,7 +12,7 @@
             <ul class="flex flex-items">
                 <li><i class="iconfont icon-heimingdancheliang"></i></li>
                 <li>
-                    <p>{{blackElects.length}}</p> <span>黑名单车辆</span>
+                    <p>{{blackElectsCount}}</p> <span>黑名单车辆</span>
                 </li>
             </ul>
         </a></li>
@@ -20,7 +20,7 @@
             <ul class="flex flex-items">
                 <li><i class="iconfont icon-baojingcheliang1" ng-style style="color:red;"></i></li>
                 <li>
-                    <p>{{electAlarms.length}}</p> <span> 报警数量</span>
+                    <p>{{electAlarmsCount}}</p> <span> 报警数量</span>
                 </li>
             </ul>
         </a></li>
@@ -301,9 +301,9 @@
             <tbody>
             <tr ng-repeat="traceStation in traceStations"
                 style="cursor: pointer;">
-                <td title="{{traceStation.station.station_name}}">{{traceStation.station.station_name}}</td>
-                <td title="{{traceStation.station.station_address}}">{{traceStation.station.station_address}}</td>
-                <td title="{{traceStation.crossTime}}">{{traceStation.crossTime}}</td>
+                <td title="{{traceStation.station.station_name}}">{{traceStation.station_name}}</td>
+                <td title="{{traceStation.station.station_address}}">{{traceStation.station_address}}</td>
+                <td title="{{traceStation.crossTime}}">{{traceStation.update_time}}</td>
             </tr>
             </tbody>
         </table>

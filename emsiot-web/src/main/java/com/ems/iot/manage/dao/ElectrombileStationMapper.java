@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.entity.ElectrombileStation;
 
@@ -12,6 +13,8 @@ public interface ElectrombileStationMapper {
     int deleteByPrimaryKey(Integer ele_sta_id);
 
     int insert(ElectrombileStation record);
+    
+    int insertBatch(@Param("recordList")List<ElectrombileStation> recordList);
 
     int insertSelective(ElectrombileStation record);
 
@@ -45,6 +48,27 @@ public interface ElectrombileStationMapper {
      * @return
      */
     List<ElectrombileStation> selectElectsByStationPhyNumAndTime(@Param("stationPhyNum") int stationPhyNum,
+    		@Param("startTime") String startTime, @Param("endTime") String endTime);
+    
+    /**
+     * 2018-12-17
+     * 根据基站的物理编号和时间，查询某个基站下的车辆总数
+     * @param station_phy_num
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Integer selectElectsCountByStationPhyNumAndTime(@Param("stationPhyNum") int stationPhyNum,
+    		@Param("startTime") String startTime, @Param("endTime") String endTime);
+    /**
+     * 重写	2018-12-17
+     * 根据基站的物理编号和时间，查询某个基站下的车辆
+     * @param station_phy_num
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<StationElectDto> selectElectsByStationPhyNumAndTime2(@Param("stationPhyNum") int stationPhyNum,
     		@Param("startTime") String startTime, @Param("endTime") String endTime);
     
     /**

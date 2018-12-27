@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.ElectAlarmDto;
+import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.github.pagehelper.Page;
@@ -27,6 +29,8 @@ public interface ElectAlarmMapper {
     
     List<ElectAlarm> findElectalarmsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
+    Integer findElectalarmsListCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
     /**
      * 根据车辆芯片编号和时间，查询报警车辆轨迹
      * @param guaCardNum
@@ -34,7 +38,7 @@ public interface ElectAlarmMapper {
      * @param endTimeForTrace
      * @return
      */
-    Page<ElectAlarm> selectByGuaCardNumForTrace(@Param("guaCardNum") int guaCardNum,
+    List<ElectAlarm> selectByGuaCardNumForTrace(@Param("guaCardNum") int guaCardNum,
     		@Param("startTimeForTrace") String startTimeForTrace, @Param("endTimeForTrace") String endTimeForTrace);
     
     /**
@@ -62,7 +66,7 @@ public interface ElectAlarmMapper {
      * @param endTime
      * @return
      */
-    List<ElectAlarm> selectElectsByGuaCardNumNumAndTime(@Param("guaCardNum") int guaCardNum,
+    List<StationElectDto> selectElectsByGuaCardNumNumAndTime(@Param("guaCardNum") int guaCardNum,
     		@Param("startTime") String startTime, @Param("endTime") String endTime);
     
     

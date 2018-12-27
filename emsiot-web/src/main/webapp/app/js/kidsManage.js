@@ -470,9 +470,9 @@ coldWeb.controller('kidsManage', function ($rootScope, $scope, $state, $cookies,
     }
 
     $scope.AllPeopleType = [
-        {id: "1", name: "小孩"},
+        {id: "1", name: "学生"},
         {id: "2", name: "老人"},
-        {id: "3", name: "吸毒者"},
+        {id: "3", name: "戒毒者"},
         {id: "4", name: "犯罪者"}
     ];
 

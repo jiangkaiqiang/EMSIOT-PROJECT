@@ -55,7 +55,7 @@ public class UserAppController extends AppBaseController {
 				String cookie = cookieService.insertCookie(appUserName);
 	            return new AppResultDto(true, 1001, "登录成功", cookie);
 			}
-			return new AppResultDto(3001, "用户名密码错误", false);
+			return new AppResultDto(3001, "用户名或密码错误", false);
 		}else{
 			return new AppResultDto(3001, "用户名和密码不能为空", false);
 		}		

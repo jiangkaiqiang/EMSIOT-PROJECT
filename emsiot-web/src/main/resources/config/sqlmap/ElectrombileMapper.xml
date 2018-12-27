@@ -451,6 +451,21 @@
 		order by `recorder_time` desc
 	</select>
 	
+	<select id="findElectsListCount" parameterType="map" resultType="Integer">
+		SELECT count(*) FROM `electrombile`
+		<where>
+			<if test="proPower != null">
+			    pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+		</where>
+	</select>
+	
  <update id="updateByGuaCardNumSelective" parameterType="com.ems.iot.manage.entity.Electrombile">
     update electrombile
     <set>

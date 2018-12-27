@@ -100,23 +100,25 @@
 		ORDER BY diffTime ASC LIMIT 0, 1
 	</select>
 	<select id="selectByGuaCardNumForTrace" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
-		SELECT * FROM `people_station`
+		SELECT peopleStation.*,longitude,latitude,station_name,station_address,people_name,people_tele FROM people_station peopleStation 
+			left join people on people.people_gua_card_num = peopleStation.people_gua_card_num 
+			LEFT JOIN station on station.station_phy_num = peopleStation.station_phy_num 
 		<where>
 			<if test="guaCardNum != null">
-				people_gua_card_num = #{guaCardNum}
+				peopleStation.people_gua_card_num = #{guaCardNum}
 			</if>
 			<if test="startTimeForTrace!=null and startTimeForTrace!=''">
-				AND update_time &gt;= #{startTimeForTrace}
+				AND peopleStation.update_time &gt;= #{startTimeForTrace}
 			</if>
 			<if test="endTimeForTrace!=null and endTimeForTrace!=''">
-				AND update_time &lt;= #{endTimeForTrace}
+				AND peopleStation.update_time &lt;= #{endTimeForTrace}
 			</if>
 		</where>
-		order by `update_time` ASC
+		order by peopleStation.`update_time` ASC
 	</select>
 	
-	<select id="selectElectsByGuaCardNumNumAndTimeDesc" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
-		SELECT * FROM `people_station`
+	<select id="selectElectsByGuaCardNumNumAndTimeDesc" parameterType="map" resultType="com.ems.iot.manage.dto.StationElectDto">
+		SELECT update_time as corssTime,station_name FROM `people_station` LEFT JOIN station ON people_station.station_phy_num=station.station_phy_num
 		<where>
 			<if test="guaCardNum != null">
 				people_gua_card_num = #{guaCardNum}
@@ -168,7 +170,7 @@
 	</select>
 	
 	
-	<select id="selectPeopleStationPeopleLocationByTime" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+	<!-- <select id="selectPeopleStationPeopleLocationByTime" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
 		
 		SELECT peopleStation.* FROM people_station peopleStation 
 			left join people on people.people_gua_card_num = peopleStation.people_gua_card_num
@@ -211,6 +213,38 @@
 			</if>
 		</where>
 		GROUP BY peopleStation.people_gua_card_num 
+	</select> -->
+	<select id="selectPeopleStationPeopleLocationByTime" parameterType="map" resultType="com.ems.iot.manage.entity.PeopleStation">
+		
+	    
+	    select * from (
+		    SELECT peopleStation.*, people_name,longitude,latitude,station_name FROM people_station peopleStation 
+				left join people on people.people_gua_card_num = peopleStation.people_gua_card_num 
+				LEFT JOIN station on station.station_phy_num = peopleStation.station_phy_num 
+			<where> 
+		    	
+		        <if test="startTime!=null and startTime!=''">
+					AND peopleStation.update_time &gt;= #{startTime}
+				</if>
+				<if test="endTime!=null and endTime!=''">
+					AND peopleStation.update_time &lt;= #{endTime}
+				</if>
+		        
+				<if test="proPower != null">
+				    AND people.pro_id = #{proPower}
+				</if>
+				<if test="cityPower != null">
+					AND people.city_id = #{cityPower}
+				</if>
+				<if test="areaPower != null">
+					AND people.area_id = #{areaPower}
+				</if>
+			</where>
+			GROUP BY peopleStation.people_gua_card_num, peopleStation.update_time DESC
+	    ) a
+GROUP BY a.people_gua_card_num 
+	    
+
 	</select>
 	
 </mapper>

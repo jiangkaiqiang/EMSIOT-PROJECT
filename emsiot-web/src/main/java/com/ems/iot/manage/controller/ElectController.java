@@ -90,13 +90,32 @@ public class ElectController extends BaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
+	@RequestMapping(value = "/findElectsCountByStationIdAndTime")
+	@ResponseBody
+	public Object findElectsCountByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
+					throws UnsupportedEncodingException {
+		
+		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+		return count;
+	}
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping(value = "/findElectsByStationIdAndTime")
 	@ResponseBody
 	public Object findElectsByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
 			@RequestParam(value = "endTime", required = false) String endTime,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
 			throws UnsupportedEncodingException {
-		List<ElectrombileStation> electrombileStations = electrombileStationMapper
+		/*List<ElectrombileStation> electrombileStations = electrombileStationMapper
 				.selectElectsByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
 		List<StationElectDto> stationElectDtos = new ArrayList<StationElectDto>();
 		for (ElectrombileStation electrombileStation : electrombileStations) {
@@ -107,7 +126,8 @@ public class ElectController extends BaseController {
 			stationElectDto.setOwner_name(electrombile.getOwner_name());
 			stationElectDto.setPlate_num(electrombile.getPlate_num());
 			stationElectDtos.add(stationElectDto);
-		}
+		}*/
+		List<StationElectDto> stationElectDtos = electrombileStationMapper.selectElectsByStationPhyNumAndTime2(stationPhyNum, startTime, endTime);
 		return stationElectDtos;
 	}
 
@@ -675,19 +695,20 @@ public class ElectController extends BaseController {
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
 			throws UnsupportedEncodingException {
 		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
-		List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
+		//List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
 		if (null != electrombile) {
 			List<ElectrombileStation> electrombileStations = electrombileStationMapper
 					.selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
-			for (ElectrombileStation electrombileStation : electrombileStations) {
+			/*for (ElectrombileStation electrombileStation : electrombileStations) {
 				TraceStationDto traceStationDto = new TraceStationDto();
 				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
 				traceStationDto
 						.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
 				traceStationDtos.add(traceStationDto);
-			}
+			}*/
+			return electrombileStations;
 		}
-		return traceStationDtos;
+		return new ArrayList<ElectrombileStation>();
 	}
 
 	/**
@@ -716,6 +737,35 @@ public class ElectController extends BaseController {
 		}
 		List<Electrombile> electrombiles = electrombileMapper.findElectsList(proPower, cityPower, areaPower);
 		return electrombiles;
+	}
+	
+	/**
+	 * 2018-12-17
+	 * 获取所有备案登记车辆数量
+	 * 
+	 * @param proPower
+	 * @param cityPower
+	 * @param areaPower
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectsListCount")
+	@ResponseBody
+	public Object findElectsListCount(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+					throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		Integer count = electrombileMapper.findElectsListCount(proPower, cityPower, areaPower);
+		return count;
 	}
 	
 	

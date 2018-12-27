@@ -143,6 +143,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
          var list = [];
          var firstObj = {};
          var obj = {};
+
          for (var i = 0; i < overlay.length; i++) {
         	 marker = overlay[i]
         	 if(marker.point.lat == marker2.point.lat && marker.point.lng == marker2.point.lng){
@@ -172,7 +173,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         		 break;
         	 }
 		 }
-         console.log(marker2)
+         //console.log(marker2)
 
 
 
@@ -242,15 +243,15 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
         //给每一个基站添加监听事件 和窗口信息
         for (var i = 0; i < $scope.peopleData.length; i++) {
-            tmpStation = $scope.peopleData[i].station;
-            tmpPeople = $scope.peopleData[i].people;
+            /*tmpStation = $scope.peopleData[i].station;
+            tmpPeople = $scope.peopleData[i].people;*/
 
-            pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
+            pt = new BMap.Point($scope.peopleData[i].longitude, $scope.peopleData[i].latitude);
             //报警车辆图标
             var myIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
             marker2 = new BMap.Marker(pt,{icon:myIcon});
-            $scope.labelSet(tmpPeople.people_name,marker2);
-            marker2.setTitle(tmpPeople.people_gua_card_num + '\t' + tmpStation.station_name + '\t' +tmpPeople.people_name);
+            $scope.labelSet($scope.peopleData[i].people_name,marker2);
+            marker2.setTitle($scope.peopleData[i].people_gua_card_num + '\t' + $scope.peopleData[i].station_name + '\t' +$scope.peopleData[i].people_name);
             //console.log(tmpPeople.people_gua_card_num)
             //console.log(tmpStation.station_name)
            // console.log(tmpStation)
@@ -269,7 +270,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     $scope.jizhanBounce=null;
     $scope.tiao=null;
     //表格选中行，对应标注体现出来
-    $('#tableArea tbody').on('click','tr',function(e){
+    /*$('#tableArea tbody').on('click','tr',function(e){
     	if($scope.tiao!=null){
     		$scope.tiao.setAnimation(null);
     	}
@@ -293,7 +294,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 return;
             }
         }
-    });
+    });*/
 
     //根据时间和基站id获取基站下面的当前所有车辆
     function showPeopleInStation(startTime, endTime, peopleGuaCardNum) {
@@ -312,15 +313,15 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     }
 
     /*$scope.AllPeopleType = [
-        {id: "1", name: "小孩"},
+        {id: "1", name: "学生"},
         {id: "2", name: "老人"},
-        {id: "3", name: "吸毒者"},
+        {id: "3", name: "戒毒者"},
         {id: "4", name: "犯罪者"}
     ];
     var objType = []
     var objStrIds = "";
     if($rootScope.rootUserPowerDto.kidsManage){
-    	objType[1]={id: "1", name: "小孩"}
+    	objType[1]={id: "1", name: "学生"}
     	objStrIds+="1,"
     }
     if($rootScope.rootUserPowerDto.oldPeopleManage){
@@ -328,7 +329,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     	objStrIds+="2,"
     }
     if($rootScope.rootUserPowerDto.gowsterPeopleManage){
-    	objType[3] = {id: "3", name: "吸毒者"}
+    	objType[3] = {id: "3", name: "戒毒者"}
     	objStrIds+="3,"
     }
     
@@ -464,18 +465,18 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             }
         }).success(function (data) {
 
-        	$scope.bigTotalItems = data.total;
+        	//$scope.bigTotalItems = data.total;
             $scope.AllPeoplelarms = data;
             $scope.traceStationsLength = data.length;
             $scope.pointsArr = [];
             for(var j=0;j<data.length;j++){
-                var pointsJ = data[j].station.longitude;
-                var pointsW = data[j].station.latitude;
+                var pointsJ = data[j].longitude;
+                var pointsW = data[j].latitude;
                 $scope.pointsArr.push(new BMap.Point(pointsJ,pointsW));
             }
 
             if (data.length == 1)
-                alert("该车辆仅经过一个基站：" + data[0].station.station_name);
+                alert("该车辆仅经过一个基站：" + data[0].station_name);
             else if (data.length == 0)
                 alert("该车辆没有经过任何基站！");
             else{
@@ -495,7 +496,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	                    marker=new BMap.Marker(arrPois[0],{
 	                        icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
-	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].station.station_name,{offset:new BMap.Size(0,-30)});
+	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].station_name,{offset:new BMap.Size(0,-30)});
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
 	                    marker.setLabel(label);
 	                    map.addOverlay(marker);lushu=1
@@ -568,7 +569,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                         	showLable = me._opts.defaultContent
                         }
 
-                        me._opts.defaultContent=showLable+":"+data[me.i+1].station.station_name
+                        me._opts.defaultContent=showLable+":"+data[me.i+1].station_name
 
                     };
 

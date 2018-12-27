@@ -1,5 +1,5 @@
 coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
-    console.log('吸毒者管理')
+    console.log('戒毒者管理')
     $scope.load = function () {
         $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
             $rootScope.admin = data;
@@ -472,9 +472,9 @@ coldWeb.controller('gowsterPeopleManage', function ($rootScope, $scope, $state, 
     }
 
     $scope.AllPeopleType = [
-        {id: "1", name: "小孩"},
+        {id: "1", name: "学生"},
         {id: "2", name: "老人"},
-        {id: "3", name: "吸毒者"},
+        {id: "3", name: "戒毒者"},
         {id: "4", name: "犯罪者"}
     ];
 

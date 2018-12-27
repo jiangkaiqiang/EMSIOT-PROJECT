@@ -105,20 +105,20 @@ public class SysUserDto {
 	 * 附加人员管理的增删改查权限
 	*/	
 	private String peopleWhole = "0";//人员管理
-	private String kidsManage = "0";//人员管理-小孩管理
-	private String kidsAdd = "0";//人员管理-添加小孩
-	private String kidsEdit = "0";//人员管理-编辑小孩
-	private String kidsDelete = "0";//人员管理-删除小孩
+	private String kidsManage = "0";//人员管理-学生管理
+	private String kidsAdd = "0";//人员管理-添加学生
+	private String kidsEdit = "0";//人员管理-编辑学生
+	private String kidsDelete = "0";//人员管理-删除学生
 	
 	private String oldPeopleManage = "0";//人员管理-老人管理
 	private String oldPeopleAdd = "0";//人员管理-添加老人
 	private String oldPeopleEdit = "0";//人员管理-编辑老人
 	private String oldPeopleDelete = "0";//人员管理-删除老人
 	
-	private String gowsterPeopleManage = "0";//人员管理-吸毒者管理
-	private String gowsterPeopleAdd = "0";//人员管理-添加吸毒者
-	private String gowsterPeopleEdit = "0";//人员管理-编辑吸毒者
-	private String gowsterPeopleDelete = "0";//人员管理-删除吸毒者
+	private String gowsterPeopleManage = "0";//人员管理-戒毒者管理
+	private String gowsterPeopleAdd = "0";//人员管理-添加戒毒者
+	private String gowsterPeopleEdit = "0";//人员管理-编辑戒毒者
+	private String gowsterPeopleDelete = "0";//人员管理-删除戒毒者
 	
 	public String getArea_name() {
 		return area_name;

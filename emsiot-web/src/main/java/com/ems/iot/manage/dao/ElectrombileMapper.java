@@ -74,6 +74,15 @@ public interface ElectrombileMapper {
      * @return
      */
     List<Electrombile> findElectsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    /**
+     * 2018-12-17
+     * 获取某个管理员权限之内的所有车辆的数量.
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @return
+     */
+    Integer findElectsListCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
      /**
       * 根据车主的手机号获取车主所拥有的电动车（可能有多辆），为个人车主app提供服务
       * @param tele

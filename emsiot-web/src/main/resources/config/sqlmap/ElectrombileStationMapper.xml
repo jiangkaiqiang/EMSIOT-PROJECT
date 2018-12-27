@@ -100,7 +100,8 @@
 		ORDER BY diffTime ASC LIMIT 0, 1
 	</select>
 	<select id="selectByGuaCardNumForTrace" parameterType="map" resultType="com.ems.iot.manage.entity.ElectrombileStation">
-		SELECT * FROM `electrombile_station`
+		SELECT electrombile_station.*,longitude,latitude,station_name,station_address FROM `electrombile_station`
+		LEFT JOIN station on station.station_phy_num = electrombile_station.station_phy_num 
 		<where>
 			<if test="guaCardNum != null">
 				ele_gua_card_num = #{guaCardNum}
@@ -129,6 +130,40 @@
 		</where>
 		order by `update_time` ASC
 	</select>
+	
+	<!-- 附加某基站下的记录数  2018-12-17 -->
+	<select id="selectElectsCountByStationPhyNumAndTime" parameterType="map" resultType="Integer">
+		SELECT count(*) FROM `electrombile_station`
+		<where>
+			<if test="stationPhyNum != null">
+				station_phy_num = #{stationPhyNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND update_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND update_time &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 重写  关联表 2018-12-17 -->
+	<select id="selectElectsByStationPhyNumAndTime2" parameterType="map" resultType="com.ems.iot.manage.dto.StationElectDto">
+	    SELECT electrombile_station.update_time AS corssTime ,electrombile.owner_name, electrombile.plate_num FROM `electrombile_station` left join electrombile on electrombile_station.ele_gua_card_num = electrombile.gua_card_num
+		<where>
+			<if test="stationPhyNum != null">
+				electrombile_station.station_phy_num = #{stationPhyNum}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND update_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND update_time &lt;= #{endTime}
+			</if>
+		</where>
+		order by `update_time` ASC
+	</select>
+	
 	<select id="selectElectsByStationPhyNumNow" parameterType="map" resultType="com.ems.iot.manage.dto.Thermodynamic">
 	SELECT COUNT(*) as count,
     station.longitude as lng, station.latitude as lat
@@ -169,4 +204,21 @@
      <!-- 2018-11-01 wuzhongliang 隐藏 -->
      <!-- AND electrombile_station.update_time>DATE_SUB(NOW(), INTERVAL 100000 MINUTE) group by electrombile_station.ele_gua_card_num    -->
 	</select>
+	
+	
+	<insert id="insertBatch" parameterType="java.util.List">
+    <selectKey resultType ="java.lang.Integer" keyProperty= "id"
+         order= "AFTER">
+        SELECT LAST_INSERT_ID()
+    </selectKey >
+	    
+	    insert into electrombile_station (ele_sta_id, ele_gua_card_num, station_phy_num, 
+      hard_read_time, update_time)
+    values
+    <foreach collection ="recordList" item="list" index= "index" separator =",">
+     (#{list.ele_sta_id,jdbcType=INTEGER}, #{list.ele_gua_card_num,jdbcType=INTEGER}, #{list.station_phy_num,jdbcType=INTEGER}, 
+      #{list.hard_read_time,jdbcType=TIMESTAMP}, now())
+      </foreach>
+  </insert>
+	
 </mapper>

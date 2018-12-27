@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.PeopleStation;
@@ -40,7 +41,7 @@ public interface PeopleStationMapper {
     		@Param("startTimeForTrace") String startTimeForTrace, @Param("endTimeForTrace") String endTimeForTrace);
     
     
-    List<PeopleStation> selectElectsByGuaCardNumNumAndTimeDesc(@Param("guaCardNum") int guaCardNum,
+    List<StationElectDto> selectElectsByGuaCardNumNumAndTimeDesc(@Param("guaCardNum") int guaCardNum,
     		@Param("startTime") String startTimeForTrace, @Param("endTime") String endTimeForTrace);
     /**
      * 根据基站的物理编号和时间，查询某个基站下的人员

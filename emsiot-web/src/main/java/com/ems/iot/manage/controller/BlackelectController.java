@@ -345,4 +345,32 @@ public class BlackelectController extends BaseController {
 		List<Blackelect> blackelects = blackelectMapper.findBlackelectsList(proPower, cityPower, areaPower);
 		return blackelects;
 	}
+	/**
+	 * 2018-12-17
+	 * 获取该管理员权限下的所有车辆数量。
+	 * 
+	 * @param proPower
+	 * @param cityPower
+	 * @param areaPower
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findBlackelectsListCount")
+	@ResponseBody
+	public Object findBlackelectsListCount(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+					throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		Integer count = blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower);
+		return count;
+	}
 }

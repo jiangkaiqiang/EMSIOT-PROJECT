@@ -241,6 +241,10 @@ public class ElectUserAppController extends AppBaseController {
 		blackelect.setDeal_status(8);
 		blackelect.setDetail_address(detail_address);
 		blackelectMapper.insert(blackelect);
+		Electrombile electRecord = new Electrombile();
+		electRecord.setPlate_num(electrombile.getPlate_num());
+		electRecord.setElect_state(2);
+		electrombileMapper.updateByPlateNumSelective(electRecord);
 		return new AppResultDto(1001, "添加成功");
 	}
 	

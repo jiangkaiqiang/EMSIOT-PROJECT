@@ -117,9 +117,27 @@
 			</if>
 		</where>
    </select>
+
+   <!-- 报警数 2018-12-17 -->
+   <select id="findElectalarmsListCount" parameterType="map" resultType="Integer">
+        SELECT count(*) FROM `elect_alarm` left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
+        <where>
+			<if test="proPower != null">
+			    electrombile.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.area_id = #{areaPower}
+			</if>
+		</where>
+   </select>
    
    <select id="selectByGuaCardNumForTrace" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
-		SELECT * FROM `elect_alarm`
+		SELECT alarm.*, owner_tele,owner_name,plate_num,longitude,latitude,station_name,station_address FROM elect_alarm alarm 
+			left join electrombile on electrombile.gua_card_num = alarm.alarm_gua_card_num 
+			left join station on station.station_phy_num = alarm.alarm_station_phy_num
 		<where>
 			<if test="guaCardNum != null">
 				alarm_gua_card_num = #{guaCardNum}
@@ -171,8 +189,9 @@
 		order by `alarm_time` ASC
 	</select>
 	
-   <select id="selectElectsByGuaCardNumNumAndTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
-		SELECT * FROM `elect_alarm`
+   <select id="selectElectsByGuaCardNumNumAndTime" parameterType="map" resultType="com.ems.iot.manage.dto.StationElectDto">
+		
+		SELECT alarm_time as corssTime,station_name FROM `elect_alarm` LEFT JOIN station ON elect_alarm.alarm_station_phy_num=station.station_phy_num
 		<where>
 			<if test="guaCardNum != null">
 				alarm_gua_card_num = #{guaCardNum}
@@ -188,7 +207,7 @@
 	</select>
    
    
-   <select id="selectElectAlarmVehicleByTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+  <!--  <select id="selectElectAlarmVehicleByTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
 		
 		SELECT * FROM elect_alarm alarm 
 			left join electrombile on electrombile.gua_card_num = alarm.alarm_gua_card_num
@@ -231,7 +250,42 @@
 			</if>
 		</where>
 		GROUP BY alarm.alarm_gua_card_num 
-	</select>
+	</select> -->
    
+   
+   <select id="selectElectAlarmVehicleByTime" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+		
+		
+		 select * from (
+		    SELECT alarm.*, plate_num,longitude,latitude,station_name FROM elect_alarm alarm 
+				left join electrombile on electrombile.gua_card_num = alarm.alarm_gua_card_num 
+				LEFT JOIN station on station.station_phy_num = alarm.alarm_station_phy_num 
+			<where> 
+		    	
+		        <if test="startTime!=null and startTime!=''">
+					AND alarm_time &gt;= #{startTime}
+				</if>
+				<if test="endTime!=null and endTime!=''">
+					AND alarm_time &lt;= #{endTime}
+				</if>
+				<if test="proPower != null">
+				    AND electrombile.pro_id = #{proPower}
+				</if>
+				<if test="cityPower != null">
+					AND electrombile.city_id = #{cityPower}
+				</if>
+				<if test="areaPower != null">
+					AND electrombile.area_id = #{areaPower}
+				</if>
+			</where>
+			GROUP BY alarm.alarm_gua_card_num ,alarm_time DESC
+	    ) a
+GROUP BY a.alarm_gua_card_num 
+		
+		
+		
+		
+	</select>
+	
    
 </mapper>
