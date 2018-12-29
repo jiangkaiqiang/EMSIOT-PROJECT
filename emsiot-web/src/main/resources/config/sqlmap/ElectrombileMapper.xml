@@ -72,6 +72,7 @@
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Electrombile">
     insert into electrombile
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        recorder_time,
       <if test="elect_id != null">
         elect_id,
       </if>
@@ -141,9 +142,7 @@
       <if test="recorder_id != null">
         recorder_id,
       </if>
-      <if test="recorder_time != null">
-        recorder_time,
-      </if>
+      
       <if test="elect_state != null">
         elect_state,
       </if>
@@ -153,8 +152,29 @@
       <if test="black_list_time != null">
         black_list_time,
       </if>
+      
+      <if test="owner_id_type != null">
+        owner_id_type,
+      </if>
+      <if test="owner_sex != null">
+        owner_sex,
+      </if>
+      <if test="owner_nationality != null">
+        owner_nationality,
+      </if>
+      <if test="owner_id_issuing_authority != null">
+        owner_id_issuing_authority,
+      </if>
+      <if test="owner_id_useful_life != null">
+        owner_id_useful_life,
+      </if>
+      <if test="owner_pic != null">
+        owner_pic,
+      </if>
+      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        now(),
       <if test="elect_id != null">
         #{elect_id,jdbcType=INTEGER},
       </if>
@@ -224,9 +244,7 @@
       <if test="recorder_id != null">
         #{recorder_id,jdbcType=INTEGER},
       </if>
-      <if test="recorder_time != null">
-        #{recorder_time,jdbcType=TIMESTAMP},
-      </if>
+     
       <if test="elect_state != null">
         #{elect_state,jdbcType=INTEGER},
       </if>
@@ -236,6 +254,26 @@
       <if test="black_list_time != null">
         #{black_list_time,jdbcType=TIMESTAMP},
       </if>
+      
+      <if test="owner_id_type != null">
+        #{owner_id_type,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_sex != null">
+        #{owner_sex,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_nationality != null">
+        #{owner_nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id_issuing_authority != null">
+        #{owner_id_issuing_authority,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id_useful_life != null">
+        #{owner_id_useful_life,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_pic != null">
+        #{owner_pic,jdbcType=VARCHAR},
+      </if>
+      
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Electrombile">
@@ -325,6 +363,26 @@
       <if test="black_list_time != null">
         black_list_time = #{black_list_time,jdbcType=TIMESTAMP},
       </if>
+      
+      <if test="owner_id_type != null">
+        owner_id_type = #{owner_id_type,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_sex != null">
+        owner_sex = #{owner_sex,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_nationality != null">
+        owner_nationality = #{owner_nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id_issuing_authority != null">
+        owner_id_issuing_authority = #{owner_id_issuing_authority,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_id_useful_life != null">
+        owner_id_useful_life = #{owner_id_useful_life,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_pic != null">
+        owner_pic = #{owner_pic,jdbcType=VARCHAR},
+      </if>
+      
     </set>
     where elect_id = #{elect_id,jdbcType=INTEGER}
   </update>

@@ -85,6 +85,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     $scope.dropElectPic = function(electPic){
     	$scope.electPic = null;
     };
+    $scope.dropOwnerPic = function(ownerPic){
+    	$scope.ownerPic = null;
+    };
     $scope.dropElectPicForUpdate = function(electPic){
     	$scope.updateElect.electrombile.elect_pic = null;
     };
@@ -484,8 +487,40 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         {id:"1",name:"投保"},
         {id:"2",name:"未投保"}
     ];
+    function addGive(){
+    	if(rdcardIndex==0){
+		    $scope.addOwnerName = document.getElementsByName("username")[0].value
+		    $scope.addOwnerAddress = document.getElementsByName("address")[0].value
+		    $scope.addOwnerID = document.getElementsByName("id-user")[0].value
+		    $scope.addOwnerIdType = document.getElementsByName("ownerIdType")[0].value
+		    $scope.addOwnerSex = document.getElementsByName("ownerSex")[0].value
+		    $scope.addOwnerNationality = document.getElementsByName("ownerNationality")[0].value
+		    $scope.addOwnerIdIssuingAuthority = document.getElementsByName("ownerIdIssuingAuthority")[0].value
+		    $scope.addOwnerIdUsefulLife = document.getElementsByName("ownerIdUsefulLife")[0].value
+		    $scope.ownerPic = document.getElementsByName("jroot")[0].value
+    	}else if(rdcardIndex==1){
+    		
+    		$scope.updateElect.electrombile.owner_name = document.getElementsByName("username")[1].value
+		    $scope.updateElect.electrombile.owner_address = document.getElementsByName("address")[1].value
+		    $scope.updateElect.electrombile.owner_id = document.getElementsByName("id-user")[1].value
+		    $scope.updateElect.electrombile.owner_id_type = document.getElementsByName("ownerIdType")[1].value
+		    $scope.updateElect.electrombile.owner_sex = document.getElementsByName("ownerSex")[1].value
+		    $scope.updateElect.electrombile.owner_nationality = document.getElementsByName("ownerNationality")[1].value
+		    $scope.updateElect.electrombile.owner_id_issuing_authority = document.getElementsByName("ownerIdIssuingAuthority")[1].value
+		    $scope.updateElect.electrombile.owner_id_useful_life = document.getElementsByName("ownerIdUsefulLife")[1].value
+		    
+		    
+		    $scope.updateElect.electrombile.owner_pic = document.getElementsByName("jroot")[1].value
+		    
+		  
+    		
+    	}
+	}
     $scope.addInsurDetail = "2";
     $scope.submit = function(){
+    	if(rdcardIndex!=-1){
+    		addGive();
+    	}
         if (checkInput()){
         	data = {
         			'gua_card_num': $scope.addGuaCardNum,
@@ -507,10 +542,18 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'install_card_pic' : $scope.installCardPic,
     			    'insur_pic' : $scope.insurPic,
     			    'tele_fee_pic' : $scope.teleFeePic,
+    			    
+    			    'owner_pic' : $scope.ownerPic,
     			    'owner_tele' : $scope.addOwnerTele,
     			    'owner_name' : $scope.addOwnerName,
     			    'owner_address' : $scope.addOwnerAddress,
     			    'owner_id' : $scope.addOwnerID,
+    			    'owner_id_type' : $scope.addOwnerIdType,
+    			    'owner_sex' : $scope.addOwnerSex,
+    			    'owner_nationality' : $scope.addOwnerNationality,
+    			    'owner_id_issuing_authority	' : $scope.addOwnerIdIssuingAuthority,
+    			    'owner_id_useful_life' : $scope.addOwnerIdUsefulLife,
+    			    
     			    'recorder_id' : $rootScope.admin.user_id,
     			    'elect_state' : 1
 	            };
@@ -574,6 +617,20 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	    		   $scope.updateElect.electrombile.city_id = $scope.updateElect.electrombile.city_id==null?"-1":$scope.updateElect.electrombile.city_id+"";
 	    		   $scope.updateElect.electrombile.area_id = $scope.updateElect.electrombile.area_id==null?"-1":$scope.updateElect.electrombile.area_id+"";
 	    		   $scope.updateElect.electrombile.insur_detail = $scope.updateElect.electrombile.insur_detail+"";
+	    		   if($scope.updateElect.electrombile.owner_pic != null){
+	    			   document.all['photo'][1].src = $scope.updateElect.electrombile.owner_pic
+	    		   }else{
+	    			   document.all['photo'][1].src ="";
+	    			   document.getElementsByName("username")[1].value = null
+		    		   document.getElementsByName("address")[1].value = null
+		    		   document.getElementsByName("id-user")[1].value = null
+		   			   document.getElementsByName("ownerIdType")[1].value = null
+		   			   document.getElementsByName("ownerSex")[1].value = null
+		   			   document.getElementsByName("ownerNationality")[1].value = null
+		   			   document.getElementsByName("ownerIdIssuingAuthority")[1].value = null
+		   			   document.getElementsByName("ownerIdUsefulLife")[1].value = null
+	    		   }
+	    		   
 	    		   $http.get('/i/city/findCitysByProvinceId', {
 	    	            params: {
 	    	                "provinceID": $scope.updateElect.electrombile.pro_id
@@ -607,6 +664,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		        return flag;
 	    }
 		 $scope.update = function(){
+			 if(rdcardIndex!=-1){
+		    		addGive();
+		    	}
 			 if (checkInputForUpdate()){
 				 data = {
 						    'elect_id':$scope.updateElect.electrombile.elect_id,
@@ -633,6 +693,15 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    			    'owner_name' : $scope.updateElect.electrombile.owner_name,
 		    			    'owner_address' : $scope.updateElect.electrombile.owner_address,
 		    			    'owner_id' : $scope.updateElect.electrombile.owner_id,
+		    			    
+		    			    'owner_pic' : $scope.updateElect.electrombile.owner_pic,
+		    			    'owner_id_type' : $scope.updateElect.electrombile.owner_id_type,
+		    			    'owner_sex' : $scope.updateElect.electrombile.owner_sex,
+		    			    'owner_nationality' : $scope.updateElect.electrombile.owner_nationality,
+		    			    'owner_id_issuing_authority	' : $scope.updateElect.electrombile.owner_id_issuing_authority,
+		    			    'owner_id_useful_life' : $scope.updateElect.electrombile.owner_id_useful_life,
+		    			    
+		    			    
 		    			    'recorder_id' : $rootScope.admin.user_id,
 		    			    'elect_state' : 1
 			            };
@@ -724,5 +793,34 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	$("#djPrint").on('click',function(){
 		window.print();
 	})
+	
+	
+	/////////////////////////////////////////////
+	
+	$('#addCar').on('shown.bs.modal', function () {
+		myopen_onclick(0);
+		beginread_onclick();
+
+	});
+	$('#addCar').on('hidden.bs.modal', function () {
+		endread_onclick()
+		myclose_onclick()
+	});
+	
+	
+	$('#updateCar').on('shown.bs.modal', function () {
+		
+		myopen_onclick(1);
+		beginread_onclick();
+
+	});
+	$('#updateCar').on('hidden.bs.modal', function () {
+		endread_onclick()
+		myclose_onclick()
+
+	});
+
+
 });
+
 

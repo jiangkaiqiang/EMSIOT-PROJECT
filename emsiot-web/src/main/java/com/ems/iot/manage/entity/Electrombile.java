@@ -59,8 +59,67 @@ public class Electrombile {
     private String insur_pic;
 
     private String tele_fee_pic;
+    
+    ////////////////////
+    
+    private String owner_id_type;
+    private String owner_sex;
+    private String owner_nationality;
+    private String owner_id_issuing_authority;
+    private String owner_id_useful_life;
+    private String owner_pic;
+    
+    
 
-    public Integer getElect_id() {
+    public String getOwner_id_type() {
+		return owner_id_type;
+	}
+
+	public void setOwner_id_type(String owner_id_type) {
+		this.owner_id_type = owner_id_type;
+	}
+
+	public String getOwner_sex() {
+		return owner_sex;
+	}
+
+	public void setOwner_sex(String owner_sex) {
+		this.owner_sex = owner_sex;
+	}
+
+	public String getOwner_nationality() {
+		return owner_nationality;
+	}
+
+	public void setOwner_nationality(String owner_nationality) {
+		this.owner_nationality = owner_nationality;
+	}
+
+	public String getOwner_id_issuing_authority() {
+		return owner_id_issuing_authority;
+	}
+
+	public void setOwner_id_issuing_authority(String owner_id_issuing_authority) {
+		this.owner_id_issuing_authority = owner_id_issuing_authority;
+	}
+
+	public String getOwner_id_useful_life() {
+		return owner_id_useful_life;
+	}
+
+	public void setOwner_id_useful_life(String owner_id_useful_life) {
+		this.owner_id_useful_life = owner_id_useful_life;
+	}
+
+	public String getOwner_pic() {
+		return owner_pic;
+	}
+
+	public void setOwner_pic(String owner_pic) {
+		this.owner_pic = owner_pic;
+	}
+
+	public Integer getElect_id() {
         return elect_id;
     }
 

@@ -1,7 +1,11 @@
 package com.ems.iot.manage.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -43,6 +47,8 @@ import com.ems.iot.manage.util.ExcelImportUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import sun.misc.BASE64Decoder;
 
 /**
  * @author Barry
@@ -321,6 +327,12 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) MultipartFile tele_fee_pic,
 			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
+			
+			@RequestParam(required = false) String owner_id_type, @RequestParam(required = false) String owner_sex,
+			@RequestParam(required = false) String owner_nationality, @RequestParam(required = false) String owner_id_issuing_authority,
+			@RequestParam(required = false) String owner_id_useful_life,
+			@RequestParam(required = false) String owner_pic,
+			
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
 			throws ParseException, IOException {
 		if (gua_card_num == null) {
@@ -338,13 +350,13 @@ public class ElectController extends BaseController {
 		if (area_id==null || area_id==-1) {
 			return new ResultDto(-1, "车牌号所属区/县不能为空");
 		}
-		if (owner_tele==null){
+		if (owner_tele==null || "".equals(owner_tele)){
 			return new ResultDto(-1, "车主手机号不能为空");
 		}
-		if (owner_name==null){
+		if (owner_name==null || "".equals(owner_name)){
 			return new ResultDto(-1, "车主姓名不能为空");
 		}
-		if (owner_id==null){
+		if (owner_id==null || "".equals(owner_id)){
 			return new ResultDto(-1, "车主身份证号不能为空");
 		}
 		if (electrombileMapper.findElectForFilter(gua_card_num, null)!=null) {
@@ -379,8 +391,26 @@ public class ElectController extends BaseController {
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
 		
+		electrombile.setOwner_id_type(owner_id_type);
+		electrombile.setOwner_sex(owner_sex);
+		electrombile.setOwner_nationality(owner_nationality);
+		electrombile.setOwner_id_issuing_authority(owner_id_issuing_authority);
+		electrombile.setOwner_id_useful_life(owner_id_useful_life);
+		
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
+	    //本人照片
+	    if (null != owner_pic && !"".equals(owner_pic)) {
+	    	String dir = String.format("%s/ownerPic/", baseDir);
+	    	String owner_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), electrombile.getOwner_name(), "jpg");
+	    	// 上传文件流。
+	    	
+	    	InputStream file = new FileInputStream(owner_pic);
+	    	
+	    	/*InputStream inputStream = owner_pic.getInputStream();*/
+	    	ossClient.putObject("emsiot", dir+owner_pic_name, file);
+	    	electrombile.setOwner_pic(OssService.readUrl + dir+owner_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+	    }
 		if (null != elect_pic) {
 			String dir = String.format("%s/electPic/", baseDir);
 			String elect_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
@@ -429,7 +459,8 @@ public class ElectController extends BaseController {
 			ossClient.putObject("emsiot", dir+tele_fee_pic_name, inputStream);
 			electrombile.setTele_fee_pic(OssService.readUrl + dir+tele_fee_pic_name);
 		}
-		electrombileMapper.insert(electrombile);
+		//electrombileMapper.insert(electrombile);
+		electrombileMapper.insertSelective(electrombile);
 		 // 关闭OSSClient。
 	 	ossClient.shutdown();
 		return new ResultDto(0, "添加成功");
@@ -460,6 +491,12 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) MultipartFile tele_fee_pic,
 			@RequestParam(required = false) String owner_tele, @RequestParam(required = false) String owner_name,
 			@RequestParam(required = false) String owner_address, @RequestParam(required = false) String owner_id,
+			
+			@RequestParam(required = false) String owner_id_type, @RequestParam(required = false) String owner_sex,
+			@RequestParam(required = false) String owner_nationality, @RequestParam(required = false) String owner_id_issuing_authority,
+			@RequestParam(required = false) String owner_id_useful_life,
+			@RequestParam(required = false) String owner_pic,
+			
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
 			throws ParseException, IOException {
 		if (gua_card_num == null) {
@@ -477,13 +514,13 @@ public class ElectController extends BaseController {
 		if (area_id==null) {
 			return new ResultDto(-1, "车牌号所属区/县不能为空");
 		}
-		if (owner_tele==null){
+		if (owner_tele==null || "".equals(owner_tele) ){
 			return new ResultDto(-1, "车主手机号不能为空");
 		}
-		if (owner_name==null){
+		if (owner_name==null || "".equals(owner_name)){
 			return new ResultDto(-1, "车主姓名不能为空");
 		}
-		if (owner_id==null){
+		if (owner_id==null || "".equals(owner_id)){
 			return new ResultDto(-1, "车主身份证号不能为空");
 		}
 		if (peopleMapper.findPlateNumByPeopleGuaCardNum(gua_card_num)!=null) {
@@ -518,8 +555,26 @@ public class ElectController extends BaseController {
 		electrombile.setOwner_id(owner_id);
 		electrombile.setRecorder_id(recorder_id);
 		electrombile.setElect_state(elect_state);
+		
+		electrombile.setOwner_id_type(owner_id_type);
+		electrombile.setOwner_sex(owner_sex);
+		electrombile.setOwner_nationality(owner_nationality);
+		electrombile.setOwner_id_issuing_authority(owner_id_issuing_authority);
+		electrombile.setOwner_id_useful_life(owner_id_useful_life);
+		
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
+	   //修改本人照片
+	    if (null != owner_pic) {
+	    	String dir = String.format("%s/ownerPic/", baseDir);
+	    	String owner_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), electrombile.getOwner_name(), "jpg");
+	    	// 上传文件流。
+	    	
+	    	InputStream file = new FileInputStream(owner_pic);
+
+	    	ossClient.putObject("emsiot", dir+owner_pic_name, file);
+	    	electrombile.setOwner_pic(OssService.readUrl + dir+owner_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+	    }
 		if (null != elect_pic) {
 			String dir = String.format("%s/electPic/", baseDir);
 			String elect_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
@@ -830,4 +885,28 @@ public class ElectController extends BaseController {
 	// traceStationDtos.setTotal(electrombileStations.getTotal());
 	// return new PageInfo<TraceStationDto>(traceStationDtos);
 	// }
+	
+	//解码过程
+	public InputStream JImgPic(String imgStr,String ownerPic){
+		
+		BASE64Decoder decoder = new BASE64Decoder();
+		try{
+			//Base64解码
+			byte[] imageByte = decoder.decodeBuffer(ownerPic);
+			for(int i=0; i < imageByte.length; ++i) {
+				if(imageByte[i]<0){
+				//调整异常数据
+					imageByte[i]+=256;
+				}
+			}
+			//生成jpg图片
+			String imgFilePath="C:\\temp\\zp.jpg";//新生成的图片
+			InputStream file = new FileInputStream (imgFilePath);
+		
+			return file;
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
 }

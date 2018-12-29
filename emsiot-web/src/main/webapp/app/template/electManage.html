@@ -1,610 +1,713 @@
 <nav class="page-title shadow electManage">
-    <div class="title-brand flex-between align-items">
-        <div class="title-text">车辆备案</div>
-        <ul class="title-nav flex align-items" ng-show="rootUserPowerDto.sysUser.opt_power==1">
-            <li ng-show="rootUserPowerDto.electExport==1">
-                <a href="" class="flex-items">
-                    <i class="iconfont icon-daochu"></i>
-                    <span class="border-dashed" ng-click="goExportElects()">批量导出</span>
-                </a>
-            </li>
-            <li ng-show="rootUserPowerDto.electDelete==1">
-                <a href="" class="flex-items">
-                    <i class="iconfont icon-shanchu"></i>
-                    <span class="border-dashed" ng-click="goDeleteElects()">批量删除</span>
-                </a>
-            </li>
-            <li ng-show="rootUserPowerDto.electAdd==1">
-                <a href="" data-toggle="modal" data-target="#addCar">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    添加车辆
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="search-container">
-        <form class="form-inline">
-            <div class="block-content">
-                <div class="form-group">
-                    <label for="importUser">录入人&nbsp;&nbsp;&nbsp;</label>
-                    <select id="" class="form-control" id="importUser"
-                            ng-model="sysUserID" ng-disabled="editable"
-                            ng-options="x.user_id as x.user_name for x in sysUsers"></select>
-                </div>
-                <div class="form-group">
-                    <label for="area">车辆状态</label>
-                    <select id="" class="form-control"
-                                            ng-model="electState" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllElectState"></select>
-                </div>
-                <div class="form-group">
-                    <label for="">是否投保</label>
-                    <select id="" class="form-control"
-                                            ng-model="insurDetail" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllInsurStatus"></select>
-                </div>
+	<div class="title-brand flex-between align-items">
+		<div class="title-text">车辆备案</div>
+		<ul class="title-nav flex align-items"
+			ng-show="rootUserPowerDto.sysUser.opt_power==1">
+			<li ng-show="rootUserPowerDto.electExport==1"><a href=""
+				class="flex-items"> <i class="iconfont icon-daochu"></i> <span
+					class="border-dashed" ng-click="goExportElects()">批量导出</span>
+			</a></li>
+			<li ng-show="rootUserPowerDto.electDelete==1"><a href=""
+				class="flex-items"> <i class="iconfont icon-shanchu"></i> <span
+					class="border-dashed" ng-click="goDeleteElects()">批量删除</span>
+			</a></li>
+			<li ng-show="rootUserPowerDto.electAdd==1"><a href=""
+				data-toggle="modal" data-target="#addCar"> <i
+					class="glyphicon glyphicon-plus"></i> 添加车辆
+			</a></li>
+		</ul>
+	</div>
+	<div class="search-container">
+		<form class="form-inline">
+			<div class="block-content">
+				<div class="form-group">
+					<label for="importUser">录入人&nbsp;&nbsp;&nbsp;</label> <select id=""
+						class="form-control" id="importUser" ng-model="sysUserID"
+						ng-disabled="editable"
+						ng-options="x.user_id as x.user_name for x in sysUsers"></select>
+				</div>
+				<div class="form-group">
+					<label for="area">车辆状态</label> <select id="" class="form-control"
+						ng-model="electState" ng-disabled="editable"
+						ng-options="x.id as x.name for x in AllElectState"></select>
+				</div>
+				<div class="form-group">
+					<label for="">是否投保</label> <select id="" class="form-control"
+						ng-model="insurDetail" ng-disabled="editable"
+						ng-options="x.id as x.name for x in AllInsurStatus"></select>
+				</div>
 
-                <div class="form-group">
-                    <button ng-attr-type type="button" ng-click="goSearch()" class="btn btn-primary">搜索</button>
-                    <button ng-attr-type type="button" ng-click="showAll()" class="btn btn-primary">显示全部</button>
-                </div>
-                <span class="text-blue pull-right margin-top" ng-style style="color:#3C7ADA;cursor:pointer;" id="searchBlock">
-                    更多搜索条件
-                    <i class="fa fa-fw fa-angle-down text"></i>
-                    <!--<i class="fa fa-fw fa-angle-up "></i>-->
-                </span>
-            </div>
-            <div class="unblock-content" id="unblock">
-                <div class="form-group">
-                    <label for="area">所属区域</label>   
-                    <select ng-show="userPowerDto.sysUser.pro_power==-1" id="" class="form-control" ng-model="proID"
-                                            ng-change="getCitisForSearch()"
-                                            ng-options="x.province_id as x.name for x in provincesForSearch"></select>
-                    <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-default">{{userPowerDto.pro_name}}</button>
-                    <select  ng-show="userPowerDto.sysUser.city_power==-1"  id="" class="form-control" ng-model="cityID"
-                                            ng-change="getAreasForSearch()"
-                                            ng-options="x.city_id as x.name for x in citisForSearch"></select>
-                   <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-default">{{userPowerDto.city_name}}</button>
-                   <select ng-show="userPowerDto.sysUser.area_power==-1" id="" class="form-control" ng-model="areaID"
-                                            ng-options="x.area_id as x.name for x in areasForSearch"></select>
-                   <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-default">{{userPowerDto.area_name}}</button>
-                </div>
-                <div class="form-group">
-                    <select id="" class="form-control"
-                                            ng-model="searchKeyType"
-                                            ng-options="x.id as x.name for x in AllSearchKeyType"></select>
-                    <input ng-attr-type type="text" class="form-control" ng-model="searchKey" ng-attr-placeholder placeholder="请输入关键词"/>
-                </div>
+				<div class="form-group">
+					<button ng-attr-type type="button" ng-click="goSearch()"
+						class="btn btn-primary">搜索</button>
+					<button ng-attr-type type="button" ng-click="showAll()"
+						class="btn btn-primary">显示全部</button>
+				</div>
+				<span class="text-blue pull-right margin-top" ng-style
+					style="color: #3C7ADA; cursor: pointer;" id="searchBlock">
+					更多搜索条件 <i class="fa fa-fw fa-angle-down text"></i> <!--<i class="fa fa-fw fa-angle-up "></i>-->
+				</span>
+			</div>
+			<div class="unblock-content" id="unblock">
+				<div class="form-group">
+					<label for="area">所属区域</label> <select
+						ng-show="userPowerDto.sysUser.pro_power==-1" id=""
+						class="form-control" ng-model="proID"
+						ng-change="getCitisForSearch()"
+						ng-options="x.province_id as x.name for x in provincesForSearch"></select>
+					<button ng-show="userPowerDto.sysUser.pro_power!=-1"
+						class="btn btn-default">{{userPowerDto.pro_name}}</button>
+					<select ng-show="userPowerDto.sysUser.city_power==-1" id=""
+						class="form-control" ng-model="cityID"
+						ng-change="getAreasForSearch()"
+						ng-options="x.city_id as x.name for x in citisForSearch"></select>
+					<button ng-show="userPowerDto.sysUser.city_power!=-1"
+						class="btn btn-default">{{userPowerDto.city_name}}</button>
+					<select ng-show="userPowerDto.sysUser.area_power==-1" id=""
+						class="form-control" ng-model="areaID"
+						ng-options="x.area_id as x.name for x in areasForSearch"></select>
+					<button ng-show="userPowerDto.sysUser.area_power!=-1"
+						class="btn btn-default">{{userPowerDto.area_name}}</button>
+				</div>
+				<div class="form-group">
+					<select id="" class="form-control" ng-model="searchKeyType"
+						ng-options="x.id as x.name for x in AllSearchKeyType"></select> <input
+						ng-attr-type type="text" class="form-control" ng-model="searchKey"
+						ng-attr-placeholder placeholder="请输入关键词" />
+				</div>
 
-                <div class="form-group datePicker">
-                    <label>选择日期：</label>
-                    <!--指定 date标记-->
-                    <div class='input-group date' id='electDateStart'>
-                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间" ng-model="startTime"
-                               readonly/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
+				<div class="form-group datePicker">
+					<label>选择日期：</label>
+					<!--指定 date标记-->
+					<div class='input-group date' id='electDateStart'>
+						<input ng-attr-type type='text' class="form-control"
+							ng-attr-placeholder placeholder="选择开始时间" ng-model="startTime"
+							readonly /> <span class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
 						</span>
-                    </div>
-                    --
-                    <div class='input-group date' id='electDateEnd'>
-                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间" ng-model="endTime"
-                               readonly/> <span class="input-group-addon"> <span
-                            class="glyphicon glyphicon-calendar"></span>
+					</div>
+					--
+					<div class='input-group date' id='electDateEnd'>
+						<input ng-attr-type type='text' class="form-control"
+							ng-attr-placeholder placeholder="选择结束时间" ng-model="endTime"
+							readonly /> <span class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
 						</span>
-                    </div>
-                </div>
+					</div>
+				</div>
 
-            </div>
-        </form>
-    </div>
+			</div>
+		</form>
+	</div>
 </nav>
 
 
 <!-- 表格操作区域开始 -->
 <div class="tableArea shadow countent no-padding" id="tableAreatest">
-    <table class="table table-striped " id="tableArea" ng-model="AllElects">
-        <thead>
-        <tr>
-            <th>
-                <div>
-                    <input ng-attr-type type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
-                    <label for="allSecSon"></label>
-                </div>
-            </th>
-            <!-- <th>序号</th> -->
-            <th>车牌号</th>
-            <th ng-style style="min-width:75px!important;">防盗芯片编号</th>
-            <th>所属地区</th>
-            <th>车辆状态</th>
-            <th>录入人</th>
-            <th>是否投保</th>
-            <th>车主姓名</th>
-            <th>身份证号</th>
-            <th>联系电话</th>
-            <!-- <th>是否有效</th> -->
-            <th>添加时间</th>
-            <th ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="electDto in AllElectDtos">
-            <td>
-                <input ng-attr-type type="checkbox" ng-checked="exists(electDto, selected)"
-                       ng-click="toggle(electDto, selected)"/>
-            </td>
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.plate_num}}">{{electDto.electrombile.plate_num}}</td>
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.gua_card_num}}">{{electDto.electrombile.gua_card_num}}</td>
-            <td>
-                <button  class="btn btn-guiji-after"  data-toggle="tooltip" data-placement="right" title="{{electDto.provinceName}}_{{electDto.cityName}}_{{electDto.areaName}}">{{electDto.provinceName}}</button>
-            </td>
-            <td ng-bind="getState(electDto.electrombile.elect_state)"></td>
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.recordName}}">{{electDto.recordName}}</td>
-            <td ng-bind="getInsur(electDto.electrombile.insur_detail)"></td>
-            
-            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_name}}">
-            {{electDto.electrombile.owner_name}}</td>
-            <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
-            
-            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_id}}">
-            {{electDto.electrombile.owner_id}}</td>
-            <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
-            
-            <td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.owner_tele}}">
-            {{electDto.electrombile.owner_tele}}</td>
-            <td ng-show="rootUserPowerDto.privatePower!=1">******</td>
-            
-            <td data-toggle="tooltip" data-placement="right" title="{{electDto.electrombile.recorder_time}}">{{electDto.electrombile.recorder_time}}</td>
-            <td class="flex-items flex-center" ng-style style="overflow:visible;" ng-show="rootUserPowerDto.sysUser.opt_power==1">
-                <i ng-show="rootUserPowerDto.electDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i>
-                <i ng-show="rootUserPowerDto.electEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateElect(electDto.electrombile.elect_id)" data-toggle="modal" data-target="#updateCar"></i>
+	<table class="table table-striped " id="tableArea" ng-model="AllElects">
+		<thead>
+			<tr>
+				<th>
+					<div>
+						<input ng-attr-type type="checkbox" ng-checked="isChecked()"
+							ng-click="toggleAll()" class="checkBox"> <label
+							for="allSecSon"></label>
+					</div>
+				</th>
+				<!-- <th>序号</th> -->
+				<th>车牌号</th>
+				<th ng-style style="min-width: 75px !important;">防盗芯片编号</th>
+				<th>所属地区</th>
+				<th>车辆状态</th>
+				<th>录入人</th>
+				<th>是否投保</th>
+				<th>车主姓名</th>
+				<th>身份证号</th>
+				<th>联系电话</th>
+				<!-- <th>是否有效</th> -->
+				<th>添加时间</th>
+				<th ng-show="rootUserPowerDto.sysUser.opt_power==1">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="electDto in AllElectDtos">
+				<td><input ng-attr-type type="checkbox"
+					ng-checked="exists(electDto, selected)"
+					ng-click="toggle(electDto, selected)" /></td>
+				<td data-toggle="tooltip" data-placement="right"
+					title="{{electDto.electrombile.plate_num}}">{{electDto.electrombile.plate_num}}</td>
+				<td data-toggle="tooltip" data-placement="right"
+					title="{{electDto.electrombile.gua_card_num}}">{{electDto.electrombile.gua_card_num}}</td>
+				<td>
+					<button class="btn btn-guiji-after" data-toggle="tooltip"
+						data-placement="right"
+						title="{{electDto.provinceName}}_{{electDto.cityName}}_{{electDto.areaName}}">{{electDto.provinceName}}</button>
+				</td>
+				<td ng-bind="getState(electDto.electrombile.elect_state)"></td>
+				<td data-toggle="tooltip" data-placement="right"
+					title="{{electDto.recordName}}">{{electDto.recordName}}</td>
+				<td ng-bind="getInsur(electDto.electrombile.insur_detail)"></td>
 
-                <div class="dropdown">
-                    <span data-toggle="dropdown" class="glyphicon glyphicon-cog">
-                    </span>
-                    <ul class="dropdown-menu">
-                        <li >
-                            <a href="#" ng-click="goViewElect(electDto.electrombile.elect_id)" data-target="#viewModalElec"  data-toggle="modal">
-                                <i class="glyphicon glyphicon-eye-open"></i>
-                                查看详情
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" ng-click="goSearchForTrace(electDto.electrombile.gua_card_num)" data-toggle="modal" data-target="#guijiModalElec">
-                                <img src="app/img/table-guiji.png" alt=""/>
-                                查看轨迹
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="app/img/baoxianIcon.png" alt=""/>
-                                保险打印
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="modal" ng-click="goViewElect(electDto.electrombile.elect_id)" data-target="#viewModalElec">
-                                <i class="glyphicon glyphicon-list-alt" ></i>
-                                登记证打印
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="page">
-        <!-- 翻页功能 -->
-        <div class="row" ng-style style="text-align:center">
-            <pagination ng-change="pageChanged()" total-items="bigTotalItems"
-                        ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
-                        boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-        </div>
-    </div>
+				<td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip"
+					data-placement="right" title="{{electDto.electrombile.owner_name}}">
+					{{electDto.electrombile.owner_name}}</td>
+				<td ng-show="rootUserPowerDto.privatePower!=1">******</td>
+
+				<td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip"
+					data-placement="right" title="{{electDto.electrombile.owner_id}}">
+					{{electDto.electrombile.owner_id}}</td>
+				<td ng-show="rootUserPowerDto.privatePower!=1">******</td>
+
+				<td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip"
+					data-placement="right" title="{{electDto.electrombile.owner_tele}}">
+					{{electDto.electrombile.owner_tele}}</td>
+				<td ng-show="rootUserPowerDto.privatePower!=1">******</td>
+
+				<td data-toggle="tooltip" data-placement="right"
+					title="{{electDto.electrombile.recorder_time}}">{{electDto.electrombile.recorder_time}}</td>
+				<td class="flex-items flex-center" ng-style
+					style="overflow: visible;"
+					ng-show="rootUserPowerDto.sysUser.opt_power==1"><i
+					ng-show="rootUserPowerDto.electDelete==1"
+					class="glyphicon glyphicon-trash"
+					ng-click="goDeleteElect(electDto.electrombile.elect_id)"></i> <i
+					ng-show="rootUserPowerDto.electEdit==1"
+					class="glyphicon glyphicon-edit"
+					ng-click="goUpdateElect(electDto.electrombile.elect_id)"
+					data-toggle="modal" data-target="#updateCar"></i>
+
+					<div class="dropdown">
+						<span data-toggle="dropdown" class="glyphicon glyphicon-cog">
+						</span>
+						<ul class="dropdown-menu">
+							<li><a href="#"
+								ng-click="goViewElect(electDto.electrombile.elect_id)"
+								data-target="#viewModalElec" data-toggle="modal"> <i
+									class="glyphicon glyphicon-eye-open"></i> 查看详情
+							</a></li>
+							<li><a href="#"
+								ng-click="goSearchForTrace(electDto.electrombile.gua_card_num)"
+								data-toggle="modal" data-target="#guijiModalElec"> <img
+									src="app/img/table-guiji.png" alt="" /> 查看轨迹
+							</a></li>
+							<li><a href="#"> <img src="app/img/baoxianIcon.png"
+									alt="" /> 保险打印
+							</a></li>
+							<li><a href="#" data-toggle="modal"
+								ng-click="goViewElect(electDto.electrombile.elect_id)"
+								data-target="#viewModalElec"> <i
+									class="glyphicon glyphicon-list-alt"></i> 登记证打印
+							</a></li>
+						</ul>
+					</div></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="page">
+		<!-- 翻页功能 -->
+		<div class="row" ng-style style="text-align: center">
+			<pagination ng-change="pageChanged()" total-items="bigTotalItems"
+				ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+				boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+		</div>
+	</div>
 </div>
 <!-- 表格操作区域结束 -->
 
+<OBJECT classid="clsid:F1317711-6BDE-4658-ABAA-39E31D3704D3" width=0
+		height=0 align=center hspace=0 vspace=0 id=idcard name=rdcard>
+	</OBJECT>
 
 <!--  添加车辆模态框 -->
-<div class="modal fade" id="addCar" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button ng-attr-type type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <div class="modal-title" id="">
-                    备案登记
-                </div>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" name="electForm">
-                    <div class="myModalTitle margin-bottom flex-items">
-                        <i class="iconfont icon-yonghuguanli modal-img"></i>
+<div class="modal fade" id="addCar" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
 
-                        <div>车主信息</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label for="phoneNum" class="control-label col-md-4">
-                                    <i>*</i>
-                                    手机号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" id="phoneNum" ng-model="addOwnerTele">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    姓名：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addOwnerName" name="username">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="address" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    地址：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addOwnerAddress" name="address"
-                                           id="address">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="id-user" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    身份证：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addOwnerID" name="id-user"
-                                           id="id-user">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="divider-line"></div>
-
-                    <div class="myModalTitle flex-items margin-top2 margin-bottom">
-                        <i class="iconfont icon-diandongche modal-img" ></i>
-
-                        <div>车辆信息</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    防盗芯片：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addGuaCardNum">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    车牌号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addPlateNum">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车架号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addVeIdNum">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    投保明细：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <select id="" class="form-control"
-                                            ng-model="addInsurDetail" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllInsurType"></select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车辆品牌：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addElectBrand">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    购车日期：
-                                </label>
-
-                                <div class="col-sm-8" id='electBuyDate'>
-                                    <div class='input-group date' id='byCarDate'>
-                                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择购买时间" readonly
-                                               ng-model="addBuyDate"/>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-						                </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+	
 
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车辆颜色：
-                                </label>
 
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addElectColor">
-                                </div>
-                            </div>
-                        </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button ng-attr-type type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<div class="modal-title" id="">备案登记</div>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="electForm">
+					<div class="myModalTitle margin-bottom flex-items">
+						<i class="iconfont icon-yonghuguanli modal-img"></i>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    电机号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addMotorNum">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+						<div class="col-md-1">车主信息</div>
+						<div class="col-md-11" style="text-align: right;">
 
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group" id="adressArea">
-                                <label for="" class="col-sm-2 control-label">
-                                    <i>*</i>
-                                    所在区域：
-                                </label>
+							<!-- <input type="button" class="btn btn-guiji-after" value="打开机具"
+								name="myopen" onclick="myopen_onclick(0)" /> <input
+								type="button" class="btn btn-guiji-after" value="关闭机具"
+								name="myclose" onclick="myclose_onclick()" /> <input
+								type="button" class="btn btn-guiji-after" value="开始读卡"
+								name="beginread" onclick="beginread_onclick()" /> <input
+								type="button" class="btn btn-guiji-after" value="手动读卡"
+								name="read3" onclick="handread_onclick()" /> <input
+								type="button" class="btn btn-guiji-after" value="停止读卡"
+								name="endread" onclick="endread_onclick()" />
+ -->
 
-                                <div class="col-sm-10 flex">
-                                    <div class="col-sm-4">
-                                        <select id="" class="form-control" ng-show="userPowerDto.sysUser.pro_power==-1" ng-model="addProvinceID" ng-disabled="editable"
-                                                ng-change="getCitis()"
-                                                ng-options="x.province_id as x.name for x in provinces"></select>
-                                        <button ng-show="userPowerDto.sysUser.pro_power!=-1" class="btn btn-guiji-after">
-                                            {{userPowerDto.pro_name}}
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select id="" class="form-control" ng-show="userPowerDto.sysUser.city_power==-1"  ng-model="addCityID" ng-disabled="editable"
-                                                ng-change="getAreas(addCityID)"
-                                                ng-options="x.city_id as x.name for x in citis"></select>
-                                        <button ng-show="userPowerDto.sysUser.city_power!=-1" class="btn btn-guiji-after">
-                                            {{userPowerDto.city_name}}
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select id="" ng-show="userPowerDto.sysUser.area_power==-1" class="form-control" ng-model="addAreaID" ng-disabled="editable"
-                                                ng-options="x.area_id as x.name for x in areas"></select>
-                                        <button ng-show="userPowerDto.sysUser.area_power!=-1" class="btn btn-guiji-after">
-                                            {{userPowerDto.area_name}}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+						</div>
+					</div>
 
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="" class="col-sm-2 control-label">
-                                    备注：
-                                </label>
+					<div class="row fileup margin-top2">
+						<div class="col-sm-12">
+							<!--<div class="form-group fileup">-->
+							<div class="col-sm-6">
+								<label for="" class="col-sm-4 control-label"> 照片： </label>
 
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="addNote">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+								<div class="col-md-8 up-content">
+								<a class="picfile" href="javascript:;"> 
+									 <input type="hidden" id="ownerPic" name="jroot" ng-model="ownerPic" > 
+										<output id="pic_list" class="pic_list" style="display: block 1px red">
+											<span> <img name="photo"> 
+											</span>
+										</output>
+								</a>
 
-                    <div class="row">
-                        <div class="col-sm-12 flex-items ">
-                            <div class="col-sm-2" ng-style style="text-align:center;">
-                                <span> 车辆类型：</span>
-                            </div>
-                            <div class="col-sm-10">
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio" name="addElectType" ng-attr-value value ="2" checked>
-                                    两轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio" name="addElectType" ng-attr-value value="3">
-                                    三轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio"  name="addElectType" ng-attr-value value="4">
-                                    四轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio"  name="addElectType" ng-attr-value value="1">
-                                    摩托车
-                                </label>
-                            </div>
+								</div>
 
-                        </div>
-                    </div>
 
-                    <div class="row fileup margin-top2">
-                        <div class="col-sm-12">
-                            <!--<div class="form-group fileup">-->
-                            <label for="" class="col-sm-2 control-label">
-                                上传照片：
-                            </label>
+							</div>
 
-                            <div class="col-sm-10">
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <input ng-attr-type type="file" id="electPic" ngf-select="addElectPic()" ng-model="electPic"
-                                               name="electPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="electPic" title="{{electPic.name}}">
-                                                <i ng-click="dropElectPic(electPic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="" class="col-sm-4 control-label"> <i>*</i>
+										姓名：
+									</label>
 
-                                    <p>车辆照片(牌照)</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <input ng-attr-type type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
-                                               ng-model="indentityCardPic" name="indentityCardPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="indentityCardPic" title="{{indentityCardPic.name}}">
-                                            <i ng-click="dropIndentityCardPic(indentityCardPic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<div class="col-sm-8">
+										<input ng-attr-type type="text" class="form-control" ng-change="addPic()"
+											ng-model="addOwnerName" name="username">
+									</div>
+								</div>
+							</div>
 
-                                    <p>身份证照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file" id="recordPic"
-                                                                                  ngf-select="addRecordPic()"
-                                                                                  ng-model="recordPic"
-                                                                                  name="recordPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="recordPic" title="{{recordPic.name}}">
-                                                <i ng-click="dropRecordPic(recordPic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="id-user" class="col-sm-4 control-label"> <i>*</i>
+										身份证：
+									</label>
 
-                                    <p>备案登记表照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file"
-                                                                                  id="installCardPic"
-                                                                                  ngf-select="addInstallCardPic()"
-                                                                                  ng-model="installCardPic"
-                                                                                  name="installCardPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="installCardPic" title="{{installCardPic.name}}">
-                                                <i ng-click="dropInstallCardPic(installCardPic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<div class="col-sm-8">
+										<input ng-attr-type type="text" class="form-control"
+											ng-model="addOwnerID" name="id-user" id="id-user">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="ownerIdType" class="col-sm-4 control-label">
 
-                                    <p>安装芯片照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file"
-                                                                                  id="insurPic"
-                                                                                  ngf-select="addInsurPic()"
-                                                                                  ng-model="insurPic"
-                                                                                  name="insurPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="insurPic" title="{{insurPic.name}}">
-                                                <i ng-click="dropInsurPic(insurPic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+										证件类型： </label>
 
-                                    <p>保险单照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile"><input ng-attr-type type="file"
-                                                                                  id="teleFeePic"
-                                                                                  ngf-select="addTeleFeePic()"
-                                                                                  ng-model="teleFeePic"
-                                                                                  name="teleFeePic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="teleFeePic" title="{{teleFeePic.name}}">
-                                                <i ng-click="dropTeleFeePic(teleFeePic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<div class="col-sm-8">
+										<input ng-attr-type type="text" class="form-control"
+											ng-model="addOwnerIDType" name="ownerIdType" id="ownerIdType">
+									</div>
+								</div>
+							</div>
 
-                                    <p>话费单照片</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button ng-attr-type type="button" ng-click="submit()" class="btn btn-primary">
-                    添加
-                </button>
-                <button ng-attr-type type="button" class="btn btn-default"
-                        data-dismiss="modal">取消
-                </button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
+						</div>
+					</div>
+
+
+
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label for="phoneNum" class="control-label col-md-4"> <i>*</i>
+									手机号：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										id="phoneNum" name="phoneNum" ng-model="addOwnerTele" >
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerSex" class="col-sm-4 control-label"> 性别：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addOwnerSex" name="ownerSex" id="ownerSex">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="address" class="col-sm-4 control-label"> 
+									地址：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addOwnerAddress" name="address" id="address">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerNationality" class="col-sm-4 control-label"> 民族：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addOwnerNationality" name="ownerNationality" id="ownerNationality">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerIdIssuingAuthority" class="col-sm-4 control-label">
+
+									签发机关： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addOwnerIdIssuingAuthority" name="ownerIdIssuingAuthority" id="ownerIdIssuingAuthority">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerIdUsefulLife" class="col-sm-4 control-label">
+
+									有效期限： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addOwnerIdUsefulLife" name="ownerIdUsefulLife" id="ownerIdUsefulLife">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="divider-line"></div>
+
+					<div class="myModalTitle flex-items margin-top2 margin-bottom">
+						<i class="iconfont icon-diandongche modal-img"></i>
+
+						<div>车辆信息</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
+									防盗芯片：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addGuaCardNum">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
+									车牌号：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addPlateNum">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车架号： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addVeIdNum">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
+									投保明细：
+								</label>
+
+								<div class="col-sm-8">
+									<select id="" class="form-control" ng-model="addInsurDetail"
+										ng-disabled="editable"
+										ng-options="x.id as x.name for x in AllInsurType"></select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车辆品牌： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addElectBrand">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 购车日期： </label>
+
+								<div class="col-sm-8" id='electBuyDate'>
+									<div class='input-group date' id='byCarDate'>
+										<input ng-attr-type type='text' class="form-control"
+											ng-attr-placeholder placeholder="选择购买时间" readonly
+											ng-model="addBuyDate" /> <span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车辆颜色： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addElectColor">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 电机号： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addMotorNum">
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group" id="adressArea">
+								<label for="" class="col-sm-2 control-label"> <i>*</i>
+									所在区域：
+								</label>
+
+								<div class="col-sm-10 flex">
+									<div class="col-sm-4">
+										<select id="" class="form-control"
+											ng-show="userPowerDto.sysUser.pro_power==-1"
+											ng-model="addProvinceID" ng-disabled="editable"
+											ng-change="getCitis()"
+											ng-options="x.province_id as x.name for x in provinces"></select>
+										<button ng-show="userPowerDto.sysUser.pro_power!=-1"
+											class="btn btn-guiji-after">
+											{{userPowerDto.pro_name}}</button>
+									</div>
+									<div class="col-sm-4">
+										<select id="" class="form-control"
+											ng-show="userPowerDto.sysUser.city_power==-1"
+											ng-model="addCityID" ng-disabled="editable"
+											ng-change="getAreas(addCityID)"
+											ng-options="x.city_id as x.name for x in citis"></select>
+										<button ng-show="userPowerDto.sysUser.city_power!=-1"
+											class="btn btn-guiji-after">
+											{{userPowerDto.city_name}}</button>
+									</div>
+									<div class="col-sm-4">
+										<select id="" ng-show="userPowerDto.sysUser.area_power==-1"
+											class="form-control" ng-model="addAreaID"
+											ng-disabled="editable"
+											ng-options="x.area_id as x.name for x in areas"></select>
+										<button ng-show="userPowerDto.sysUser.area_power!=-1"
+											class="btn btn-guiji-after">
+											{{userPowerDto.area_name}}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label"> 备注： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="addNote">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12 flex-items ">
+							<div class="col-sm-2" ng-style style="text-align: center;">
+								<span> 车辆类型：</span>
+							</div>
+							<div class="col-sm-10">
+								<label class="radio-inline"> <input ng-attr-type
+									type="radio" name="addElectType" ng-attr-value value="2"
+									checked> 两轮
+								</label> <label class="radio-inline"> <input ng-attr-type
+									type="radio" name="addElectType" ng-attr-value value="3">
+									三轮
+								</label> <label class="radio-inline"> <input ng-attr-type
+									type="radio" name="addElectType" ng-attr-value value="4">
+									四轮
+								</label> <label class="radio-inline"> <input ng-attr-type
+									type="radio" name="addElectType" ng-attr-value value="1">
+									摩托车
+								</label>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row fileup margin-top2">
+						<div class="col-sm-12">
+							<!--<div class="form-group fileup">-->
+							<label for="" class="col-sm-2 control-label"> 上传照片： </label>
+
+							<div class="col-sm-10">
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="electPic" ngf-select="addElectPic()"
+										ng-model="electPic" name="electPic"> <output
+											id="pic_list" class="pic_list">
+											<span> <img ngf-src="electPic"
+												title="{{electPic.name}}"> <i
+												ng-click="dropElectPic(electPic)">&times;</i>
+											</span>
+										</output>
+									</a>
+
+									<p>车辆照片(牌照)</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="indentityCardPic"
+										ngf-select="addIndentityCardPic()" ng-model="indentityCardPic"
+										name="indentityCardPic"> <output id="pic_list"
+											class="pic_list">
+											<span> <img ngf-src="indentityCardPic"
+												title="{{indentityCardPic.name}}"> <i
+												ng-click="dropIndentityCardPic(indentityCardPic)">&times;</i>
+											</span>
+										</output>
+									</a>
+
+									<p>身份证照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"><input ng-attr-type
+										type="file" id="recordPic" ngf-select="addRecordPic()"
+										ng-model="recordPic" name="recordPic"> <output
+											id="pic_list" class="pic_list">
+											<span> <img ngf-src="recordPic" name="recordPic"
+												title="{{recordPic.name}}"> <i
+												ng-click="dropRecordPic(recordPic)">&times;</i>
+											</span>
+										</output> </a>
+
+									<p>备案登记表照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"><input ng-attr-type
+										type="file" id="installCardPic"
+										ngf-select="addInstallCardPic()" ng-model="installCardPic"
+										name="installCardPic"> <output id="pic_list"
+											class="pic_list">
+											<span> <img ngf-src="installCardPic"
+												title="{{installCardPic.name}}"> <i
+												ng-click="dropInstallCardPic(installCardPic)">&times;</i>
+											</span>
+										</output> </a>
+
+									<p>安装芯片照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"><input ng-attr-type
+										type="file" id="insurPic" ngf-select="addInsurPic()"
+										ng-model="insurPic" name="insurPic"> <output
+											id="pic_list" class="pic_list">
+											<span> <img ngf-src="insurPic"
+												title="{{insurPic.name}}"> <i
+												ng-click="dropInsurPic(insurPic)">&times;</i>
+											</span>
+										</output> </a>
+
+									<p>保险单照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"><input ng-attr-type
+										type="file" id="teleFeePic" ngf-select="addTeleFeePic()"
+										ng-model="teleFeePic" name="teleFeePic"> <output
+											id="pic_list" class="pic_list">
+											<span> <img ngf-src="teleFeePic"
+												title="{{teleFeePic.name}}"> <i
+												ng-click="dropTeleFeePic(teleFeePic)">&times;</i>
+											</span>
+										</output> </a>
+
+									<p>话费单照片</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-attr-type type="button" ng-click="submit()"
+					class="btn btn-primary">添加</button>
+				<button ng-attr-type type="button" class="btn btn-default"
+					data-dismiss="modal">取消</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
 </div>
 <!--  添加车辆模态框 end -->
 
@@ -612,810 +715,855 @@
 
 
 <!--  操作查看/打印登记证模态框 -->
-<div class="modal fade" id="viewModalElec" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button ng-attr-type type="button" class="close noprint"
-                        data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <div class="modal-title">
-                    查看车辆信息
-                </div>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" name="electForm">
-                    <div class="myModalTitle flex-items margin-bottom">
-                        <i class="iconfont icon-yonghuguanli modal-img"></i>
+<div class="modal fade" id="viewModalElec" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button ng-attr-type type="button" class="close noprint"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<div class="modal-title">查看车辆信息</div>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="electForm">
+					<div class="myModalTitle flex-items margin-bottom">
+						<i class="iconfont icon-yonghuguanli modal-img"></i>
 
-                        <div>车主信息</div>
-                    </div>
+						<div>车主信息</div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label for="phoneNum" class="control-label col-md-4">
-                                    <!--<i>*</i>-->
-                                    手机号：
-                                </label>
-                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
-                                    {{viewElect.electrombile.owner_tele}}
-                                </div>
-                                <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
-                                   ******
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <!--<i>*</i>-->
-                                    姓名：
-                                </label>
-                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
-                                    {{viewElect.electrombile.owner_name}}
-                                </div>
-                                <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
-                                   ******
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label for="phoneNum" class="control-label col-md-4"> <!--<i>*</i>-->
+									手机号：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_tele}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <!--<i>*</i>-->
+									姓名：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_name}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+							</div>
+						</div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="address" class="col-sm-4 control-label">
-                                    <!--<i>*</i>-->
-                                    地址：
-                                </label>
-                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
-                                    {{viewElect.electrombile.owner_address}}
-                                </div>
-                                 <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
-                                   ******
-                                </div>
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="address" class="col-sm-4 control-label"> <!--<i>*</i>-->
+									地址：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_address}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+							</div>
+						</div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="id-user" class="col-sm-4 control-label">
-                                    <!--<i>*</i>-->
-                                    身份证：
-                                </label>
-                                <div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
-                                    {{viewElect.electrombile.owner_id}}
-                                </div>
-                                <div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
-                                   ******
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="id-user" class="col-sm-4 control-label"> <!--<i>*</i>-->
+									身份证：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_id}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+							</div>
+						</div>
+					</div>
 
-                    <div class="divider-line"></div>
+					<div class="divider-line"></div>
 
-                    <div class="myModalTitle flex-items margin-top2 margin-bottom">
-                        <i class="iconfont icon-diandongche modal-img" ></i>
-                        <div>车辆信息</div>
-                    </div>
+					<div class="myModalTitle flex-items margin-top2 margin-bottom">
+						<i class="iconfont icon-diandongche modal-img"></i>
+						<div>车辆信息</div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <!--<i>*</i>-->
-                                    防盗芯片：
-                                </label>
-                                <div class="col-sm-8">
-                                      {{viewElect.electrombile.gua_card_num}}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车牌号：
-                                </label>
-                                <div class="col-sm-8">
-                                     {{viewElect.electrombile.plate_num}}
-                                </div>
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <!--<i>*</i>-->
+									防盗芯片：
+								</label>
+								<div class="col-sm-8">
+									{{viewElect.electrombile.gua_card_num}}</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车牌号： </label>
+								<div class="col-sm-8">
+									{{viewElect.electrombile.plate_num}}</div>
+							</div>
+						</div>
 
 
-                    </div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车架号：
-                                </label>
-                                <div class="col-sm-8">
-                                    {{viewElect.electrombile.ve_id_num}}
-                                </div>
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车架号： </label>
+								<div class="col-sm-8">
+									{{viewElect.electrombile.ve_id_num}}</div>
+							</div>
+						</div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <!--<i>*</i>-->
-                                    投保明细：
-                                </label>
-                                <div ng-show="viewElect.electrombile.insur_detail==1" class="col-sm-8">
-                                   已投保
-                                </div>
-                                <div ng-show="viewElect.electrombile.insur_detail==2" class="col-sm-8">
-                                   未投保
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <!--<i>*</i>-->
+									投保明细：
+								</label>
+								<div ng-show="viewElect.electrombile.insur_detail==1"
+									class="col-sm-8">已投保</div>
+								<div ng-show="viewElect.electrombile.insur_detail==2"
+									class="col-sm-8">未投保</div>
+							</div>
+						</div>
+					</div>
 
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车辆品牌：
-                                </label>
-                                <div class="col-sm-8">
-                                  {{viewElect.electrombile.elect_brand}}
-                                </div>
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车辆品牌： </label>
+								<div class="col-sm-8">
+									{{viewElect.electrombile.elect_brand}}</div>
+							</div>
+						</div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    购车日期：
-                                </label>
-                                <div class="col-sm-8">
-                                     {{viewElect.electrombile.buy_date}}
-                                </div>
-                            </div>
-                        </div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 购车日期： </label>
+								<div class="col-sm-8">{{viewElect.electrombile.buy_date}}
+								</div>
+							</div>
+						</div>
 
-                    </div>
+					</div>
 
 
-                    <div class="row">
+					<div class="row">
 
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车辆颜色：
-                                </label>
-                                <div class="col-sm-8">
-                                    {{viewElect.electrombile.elect_color}}
-                                </div>
-                            </div>
-                        </div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车辆颜色： </label>
+								<div class="col-sm-8">
+									{{viewElect.electrombile.elect_color}}</div>
+							</div>
+						</div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    电机号：
-                                </label>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 电机号： </label>
 
-                                <div class="col-sm-8">
-                                   {{viewElect.electrombile.motor_num}}
-                                </div>
-                            </div>
-                        </div>
+								<div class="col-sm-8">
+									{{viewElect.electrombile.motor_num}}</div>
+							</div>
+						</div>
 
-                    </div>
+					</div>
 
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group" id="viewArea">
-                                <label for="" class="col-sm-2 control-label">
-                                    <!--<i>*</i>-->
-                                    所在区域：
-                                </label>
-                                <div class="col-sm-8">
-                                    {{viewElect.provinceName}}_{{viewElect.cityName}}_{{viewElect.areaName}}
-                                </div>
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group" id="viewArea">
+								<label for="" class="col-sm-2 control-label"> <!--<i>*</i>-->
+									所在区域：
+								</label>
+								<div class="col-sm-8">
+									{{viewElect.provinceName}}_{{viewElect.cityName}}_{{viewElect.areaName}}
+								</div>
+							</div>
+						</div>
 
-                    </div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="" class="col-sm-2 control-label">
-                                    备注：
-                                </label>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label"> 备注： </label>
 
-                                <div class="col-sm-8">
-                                    {{viewElect.electrombile.note}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+								<div class="col-sm-8">{{viewElect.electrombile.note}}</div>
+							</div>
+						</div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-sm-12 flex-items ">
-                            <div class="col-sm-2" ng-style style="text-align:center;">
-                                <span> 车辆类型：</span>
-                            </div>
-                            <div class="col-sm-10">
-                               {{viewElect.electrombile.elect_type}}
-                            </div>
-                        </div>
-                    </div>
+					<div class="row">
+						<div class="col-sm-12 flex-items ">
+							<div class="col-sm-2" ng-style style="text-align: center;">
+								<span> 车辆类型：</span>
+							</div>
+							<div class="col-sm-10">
+								{{viewElect.electrombile.elect_type}}</div>
+						</div>
+					</div>
 
-                    <div class="row fileup margin-top2">
-                        <div class="col-sm-12">
-                            <!--<div class="form-group fileup">-->
-                            <label for="" class="col-sm-2 control-label">
-                                照片：
-                            </label>
+					<div class="row fileup margin-top2">
+						<div class="col-sm-12">
+							<!--<div class="form-group fileup">-->
+							<label for="" class="col-sm-2 control-label"> 照片： </label>
 
-                            <div class="col-sm-10">
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="viewElect.electrombile.elect_pic">
-                                            </span>
-                                        </output>
-                                    </a>
-                                    <p>车辆照片(牌照)</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                               <img ngf-src="viewElect.electrombile.indentity_card_pic">
-                                            </span>
-                                        </output>
-                                    </a>
-                                    <p>身份证照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                               <img ngf-src="viewElect.electrombile.record_pic">
-                                            </span>
-                                        </output>
-                                    </a>
+							<div class="col-sm-10">
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <output
+											id="pic_list" class="pic_list">
+											<span> <img ngf-src="viewElect.electrombile.elect_pic">
+											</span>
+										</output>
+									</a>
+									<p>车辆照片(牌照)</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <output
+											id="pic_list" class="pic_list">
+											<span> <img
+												ngf-src="viewElect.electrombile.indentity_card_pic">
+											</span>
+										</output>
+									</a>
+									<p>身份证照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <output
+											id="pic_list" class="pic_list">
+											<span> <img
+												ngf-src="viewElect.electrombile.record_pic">
+											</span>
+										</output>
+									</a>
 
-                                    <p>备案登记表照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                 <img ngf-src="viewElect.electrombile.install_card_pic">
-                                            </span>
-                                        </output>
-                                    </a>
-                                    <p>安装芯片照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                 <img ngf-src="viewElect.electrombile.insur_pic">
-                                            </span>
-                                        </output>
-                                    </a>
-                                    <p>保险单照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                 <img ngf-src="viewElect.electrombile.tele_fee_pic">
-                                            </span>
-                                        </output>
-                                    </a>
-                                    <p>话费单照片</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button ng-attr-type type="button" class="btn btn-guiji noprint"  id="djPrint" >
-                    <i class="glyphicon glyphicon-print"></i>
-                    登记证打印
-                </button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
+									<p>备案登记表照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <output
+											id="pic_list" class="pic_list">
+											<span> <img
+												ngf-src="viewElect.electrombile.install_card_pic">
+											</span>
+										</output>
+									</a>
+									<p>安装芯片照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <output
+											id="pic_list" class="pic_list">
+											<span> <img ngf-src="viewElect.electrombile.insur_pic">
+											</span>
+										</output>
+									</a>
+									<p>保险单照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <output
+											id="pic_list" class="pic_list">
+											<span> <img
+												ngf-src="viewElect.electrombile.tele_fee_pic">
+											</span>
+										</output>
+									</a>
+									<p>话费单照片</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-attr-type type="button" class="btn btn-guiji noprint"
+					id="djPrint">
+					<i class="glyphicon glyphicon-print"></i> 登记证打印
+				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
 </div>
 <!--  操作查看/打印登记证 end -->
 
 
 <!--  更新车辆模态框 -->
-<div class="modal fade" id="updateCar" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button ng-attr-type type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <div class="modal-title" id="myModalLabel">
-                    更新备案
-                </div>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" name="electForm">
-                    <div class="myModalTitle flex-items margin-bottom">
-                        <i class="iconfont icon-yonghuguanli modal-img"></i>
+<div class="modal fade" id="updateCar" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button ng-attr-type type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<div class="modal-title" id="myModalLabel">更新备案</div>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="electForm">
+					<div class="myModalTitle flex-items margin-bottom">
+						<i class="iconfont icon-yonghuguanli modal-img"></i>
 
-                        <div>车主信息</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label for="phoneNum" class="control-label col-md-4">
-                                    <i>*</i>
-                                    手机号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" id="phoneNum" ng-model="updateElect.electrombile.owner_tele">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    姓名：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.owner_name" name="username">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="address" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    地址：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.owner_address" name="address"
-                                           id="address">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="id-user" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    身份证：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.owner_id" name="id-user"
-                                           id="id-user">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="divider-line"></div>
-
-                    <div class="myModalTitle flex-items margin-top2 margin-bottom">
-                        <i class="iconfont icon-diandongche modal-img" ></i>
-
-                        <div>车辆信息</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    防盗芯片：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.gua_card_num">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车牌号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.plate_num">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车架号：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.ve_id_num">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    <i>*</i>
-                                    投保明细：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <select id="" class="form-control"
-                                            ng-model="updateElect.electrombile.insur_detail" ng-disabled="editable"
-                                            ng-options="x.id as x.name for x in AllInsurType"></select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车辆品牌：
-                                </label>
-
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.elect_brand">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    购车日期：
-                                </label>
-
-                                <div class="col-sm-8" id='electBuyDate'>
-                                    <div class='input-group date' id='buyCarDateUpdate'>
-                                        <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择购买时间" readonly
-                                               ng-model="updateElect.electrombile.buy_date"/>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-						                </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+						<div>车主信息</div>
+					</div>
 
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    车辆颜色：
-                                </label>
 
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.elect_color">
-                                </div>
-                            </div>
-                        </div>
+<div class="row fileup margin-top2">
+						<div class="col-sm-12">
+							<!--<div class="form-group fileup">-->
+							<div class="col-sm-6">
+								<label for="" class="col-sm-4 control-label"> 照片： </label>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label">
-                                    电机号：
-                                </label>
+								<div class="col-md-8 up-content">
+								<a class="picfile" href="javascript:;"> 
+									 <input type="hidden" id="ownerPic" name="jroot" ng-model="ownerPic" > 
+										<output id="pic_list" class="pic_list" style="display: block 1px red">
+											<span> <img name="photo"> <!-- <i
+												ng-click="dropOwnerPic(ownerPic)">&times;</i> -->
+											</span>
+										</output>
+								</a>
 
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.motor_num">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+								</div>
 
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group" id="adressArea">
-                                <label for="" class="col-sm-2 control-label">
-                                    <i>*</i>
-                                    所在区域：
-                                </label>
+							</div>
+
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
+									姓名：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_name" name="username">
+								</div>
+							</div>
+						</div>
+
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="id-user" class="col-sm-4 control-label"> <i>*</i>
+									身份证：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_id" name="id-user"
+										id="id-user">
+								</div>
+							</div>
+						</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="ownerIdType" class="col-sm-4 control-label">
+
+										证件类型： </label>
+
+									<div class="col-sm-8">
+										<input ng-attr-type type="text" class="form-control"
+											ng-model="updateElect.electrombile.owner_id_type" name="ownerIdType" id="ownerIdType">
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label for="phoneNum" class="control-label col-md-4"> <i>*</i>
+									手机号：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										id="phoneNum" ng-model="updateElect.electrombile.owner_tele">
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerSex" class="col-sm-4 control-label"> 性别：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_sex" name="ownerSex" id="ownerSex">
+								</div>
+							</div>
+						</div>
+						
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="address" class="col-sm-4 control-label"> 
+									地址：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_address"
+										name="address" id="address">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerNationality" class="col-sm-4 control-label"> 民族：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_nationality" name="ownerNationality" id="ownerNationality">
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerIdIssuingAuthority" class="col-sm-4 control-label">
+
+									签发机关： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_id_issuing_authority" name="ownerIdIssuingAuthority" id="ownerIdIssuingAuthority">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerIdUsefulLife" class="col-sm-4 control-label">
+
+									有效期限： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.owner_id_useful_life" name="ownerIdUsefulLife" id="ownerIdUsefulLife">
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+
+					<div class="divider-line"></div>
+
+					<div class="myModalTitle flex-items margin-top2 margin-bottom">
+						<i class="iconfont icon-diandongche modal-img"></i>
+
+						<div>车辆信息</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
+									防盗芯片：
+								</label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.gua_card_num">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车牌号： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.plate_num">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车架号： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.ve_id_num">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
+									投保明细：
+								</label>
+
+								<div class="col-sm-8">
+									<select id="" class="form-control"
+										ng-model="updateElect.electrombile.insur_detail"
+										ng-disabled="editable"
+										ng-options="x.id as x.name for x in AllInsurType"></select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车辆品牌： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.elect_brand">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 购车日期： </label>
+
+								<div class="col-sm-8" id='electBuyDate'>
+									<div class='input-group date' id='buyCarDateUpdate'>
+										<input ng-attr-type type='text' class="form-control"
+											ng-attr-placeholder placeholder="选择购买时间" readonly
+											ng-model="updateElect.electrombile.buy_date" /> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 车辆颜色： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.elect_color">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="" class="col-sm-4 control-label"> 电机号： </label>
+
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.motor_num">
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group" id="adressArea">
+								<label for="" class="col-sm-2 control-label"> <i>*</i>
+									所在区域：
+								</label>
 
 								<div class="col-sm-10">
-                                    <div class="col-sm-4">
-                                        <select ng-show="userPowerDto.sysUser.pro_power==-1"
-                                                class="form-control"
-                                                ng-model="updateElect.electrombile.pro_id"
-                                                ng-disabled="editable" ng-change="getCitisForUpdate()"
-                                                ng-options="x.province_id as x.name for x in provinces">
+									<div class="col-sm-4">
+										<select ng-show="userPowerDto.sysUser.pro_power==-1"
+											class="form-control"
+											ng-model="updateElect.electrombile.pro_id"
+											ng-disabled="editable" ng-change="getCitisForUpdate()"
+											ng-options="x.province_id as x.name for x in provinces">
 
-                                        </select>
-                                        <button ng-show="userPowerDto.sysUser.pro_power!=-1"
-                                                class="btn btn-guiji-after">
-                                            {{userPowerDto.pro_name}}
-                                        </button>
-                                    </div>
+										</select>
+										<button ng-show="userPowerDto.sysUser.pro_power!=-1"
+											class="btn btn-guiji-after">
+											{{userPowerDto.pro_name}}</button>
+									</div>
 
-                                    <div class="col-sm-4" ng-style style="margin:0 5px;">
-                                        <select ng-show="userPowerDto.sysUser.city_power==-1"
-                                                class="form-control"
-                                                ng-model="updateElect.electrombile.city_id"
-                                                ng-disabled="editable" ng-click="getAreasForUpdate(addCityID)"
-                                                ng-options="x.city_id as x.name for x in citisForUpdate">
+									<div class="col-sm-4" ng-style style="margin: 0 5px;">
+										<select ng-show="userPowerDto.sysUser.city_power==-1"
+											class="form-control"
+											ng-model="updateElect.electrombile.city_id"
+											ng-disabled="editable"
+											ng-click="getAreasForUpdate(addCityID)"
+											ng-options="x.city_id as x.name for x in citisForUpdate">
 
-                                        </select>
-                                        <button ng-show="userPowerDto.sysUser.city_power!=-1"
-                                                class="btn btn-guiji-after">
-                                            {{userPowerDto.city_name}}
-                                        </button>
-                                    </div>
+										</select>
+										<button ng-show="userPowerDto.sysUser.city_power!=-1"
+											class="btn btn-guiji-after">
+											{{userPowerDto.city_name}}</button>
+									</div>
 
-                                    <div class="col-sm-3">
-                                        <select ng-show="userPowerDto.sysUser.area_power==-1"
-                                                class="form-control"
-                                                ng-model="updateElect.electrombile.area_id"
-                                                ng-disabled="editable"
-                                                ng-options="x.area_id as x.name for x in areasForUpdate">
+									<div class="col-sm-3">
+										<select ng-show="userPowerDto.sysUser.area_power==-1"
+											class="form-control"
+											ng-model="updateElect.electrombile.area_id"
+											ng-disabled="editable"
+											ng-options="x.area_id as x.name for x in areasForUpdate">
 
-                                        </select>
-                                        <button ng-show="userPowerDto.sysUser.area_power!=-1"
-                                                class="btn btn-guiji-after">
-                                            {{userPowerDto.area_name}}
-                                        </button>
-                                    </div>
+										</select>
+										<button ng-show="userPowerDto.sysUser.area_power!=-1"
+											class="btn btn-guiji-after">
+											{{userPowerDto.area_name}}</button>
+									</div>
 
 								</div>
 							</div>
-                        </div>
+						</div>
 
-                    </div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="" class="col-sm-2 control-label">
-                                    备注：
-                                </label>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label"> 备注： </label>
 
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="text" class="form-control" ng-model="updateElect.electrombile.note">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+								<div class="col-sm-8">
+									<input ng-attr-type type="text" class="form-control"
+										ng-model="updateElect.electrombile.note">
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <div class="row">
-                        <div class="col-sm-12 flex-items ">
-                            <div class="col-sm-2" ng-style style="text-align:center;">
-                                <span> 车辆类型：</span>
-                            </div>
-                            <div class="col-sm-10">
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio" name="updateElectType" ng-attr-value value="2">
-                                    两轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio" name="updateElectType" ng-attr-value value="3">
-                                    三轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio"  name="updateElectType" ng-attr-value value="4">
-                                    四轮
-                                </label>
-                                <label class="radio-inline">
-                                    <input ng-attr-type type="radio"  name="updateElectType" ng-attr-value value="1">
-                                    摩托车
-                                </label>
-                            </div>
+					<div class="row">
+						<div class="col-sm-12 flex-items ">
+							<div class="col-sm-2" ng-style style="text-align: center;">
+								<span> 车辆类型：</span>
+							</div>
+							<div class="col-sm-10">
+								<label class="radio-inline"> <input ng-attr-type
+									type="radio" name="updateElectType" ng-attr-value value="2">
+									两轮
+								</label> <label class="radio-inline"> <input ng-attr-type
+									type="radio" name="updateElectType" ng-attr-value value="3">
+									三轮
+								</label> <label class="radio-inline"> <input ng-attr-type
+									type="radio" name="updateElectType" ng-attr-value value="4">
+									四轮
+								</label> <label class="radio-inline"> <input ng-attr-type
+									type="radio" name="updateElectType" ng-attr-value value="1">
+									摩托车
+								</label>
+							</div>
 
-                        </div>
-                    </div>
+						</div>
+					</div>
 
-                    <div class="row fileup margin-top2">
-                        <div class="col-sm-12">
-                            <!--<div class="form-group fileup">-->
-                            <label for="" class="col-sm-2 control-label">
-                                上传照片：
-                            </label>
+					<div class="row fileup margin-top2">
+						<div class="col-sm-12">
+							<!--<div class="form-group fileup">-->
+							<label for="" class="col-sm-2 control-label"> 上传照片： </label>
 
-                            <div class="col-sm-10">
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <input ng-attr-type type="file" id="electPic" ngf-select="addElectPic()" ng-model="updateElect.electrombile.elect_pic"
-                                               name="electPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="updateElect.electrombile.elect_pic">
-                                                <i ng-click="dropElectPicForUpdate(updateElect.electrombile.elect_pic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+							<div class="col-sm-10">
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="electPic" ngf-select="addElectPic()"
+										ng-model="updateElect.electrombile.elect_pic" name="electPic">
+										<output id="pic_list" class="pic_list">
+											<span> <img
+												ngf-src="updateElect.electrombile.elect_pic"> <i
+												ng-click="dropElectPicForUpdate(updateElect.electrombile.elect_pic)">&times;</i>
+											</span>
+										</output>
+									</a>
 
-                                    <p>车辆照片(牌照)</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                        <input ng-attr-type type="file" id="indentityCardPic" ngf-select="addIndentityCardPic()"
-                                               ng-model="updateElect.electrombile.indentity_card_pic" name="indentityCardPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="updateElect.electrombile.indentity_card_pic" >
-                                            <i ng-click="dropIndentityCardPicForUpdate(updateElect.electrombile.indentity_card_pic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<p>车辆照片(牌照)</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="indentityCardPic"
+										ngf-select="addIndentityCardPic()"
+										ng-model="updateElect.electrombile.indentity_card_pic"
+										name="indentityCardPic"> <output id="pic_list"
+											class="pic_list">
+											<span> <img
+												ngf-src="updateElect.electrombile.indentity_card_pic">
+												<i
+												ng-click="dropIndentityCardPicForUpdate(updateElect.electrombile.indentity_card_pic)">&times;</i>
+											</span>
+										</output>
+									</a>
 
-                                    <p>身份证照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                    <input ng-attr-type type="file" id="recordPic" ngf-select="addRecordPic()"
-                                      ng-model="updateElect.electrombile.record_pic"  name="recordPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="updateElect.electrombile.record_pic">
-                                                <i ng-click="dropRecordPicForUpdate(updateElect.electrombile.record_pic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<p>身份证照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="recordPic" ngf-select="addRecordPic()"
+										ng-model="updateElect.electrombile.record_pic"
+										name="recordPic"> <output id="pic_list"
+											class="pic_list">
+											<span> <img
+												ngf-src="updateElect.electrombile.record_pic"> <i
+												ng-click="dropRecordPicForUpdate(updateElect.electrombile.record_pic)">&times;</i>
+											</span>
+										</output>
+									</a>
 
-                                    <p>备案登记表照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                    <input ng-attr-type type="file" id="installCardPic" ngf-select="addInstallCardPic()"
-                                       ng-model="updateElect.electrombile.install_card_pic" name="installCardPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="updateElect.electrombile.install_card_pic" >
-                                                <i ng-click="dropInstallCardPicForUpdate(updateElect.electrombile.install_card_pic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<p>备案登记表照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="installCardPic"
+										ngf-select="addInstallCardPic()"
+										ng-model="updateElect.electrombile.install_card_pic"
+										name="installCardPic"> <output id="pic_list"
+											class="pic_list">
+											<span> <img
+												ngf-src="updateElect.electrombile.install_card_pic">
+												<i
+												ng-click="dropInstallCardPicForUpdate(updateElect.electrombile.install_card_pic)">&times;</i>
+											</span>
+										</output>
+									</a>
 
-                                    <p>安装芯片照片</p>
-                                </div>
-                                 <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                    <input ng-attr-type type="file" id="insurPic" ngf-select="addInsurPic()"
-                                       ng-model="updateElect.electrombile.insur_pic" name="insurPic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="updateElect.electrombile.insur_pic" >
-                                                <i ng-click="dropInsurPicForUpdate(updateElect.electrombile.insur_pic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<p>安装芯片照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="insurPic" ngf-select="addInsurPic()"
+										ng-model="updateElect.electrombile.insur_pic" name="insurPic">
+										<output id="pic_list" class="pic_list">
+											<span> <img
+												ngf-src="updateElect.electrombile.insur_pic"> <i
+												ng-click="dropInsurPicForUpdate(updateElect.electrombile.insur_pic)">&times;</i>
+											</span>
+										</output>
+									</a>
 
-                                    <p>保险单照片</p>
-                                </div>
-                                <div class="col-md-3 up-content">
-                                    <a href="javascript:;" class="picfile">
-                                    <input ng-attr-type type="file" id="teleFeePic" ngf-select="addTeleFeePic()"
-                                       ng-model="updateElect.electrombile.tele_fee_pic" name="teleFeePic">
-                                        <output id="pic_list" class="pic_list">
-                                            <span>
-                                                <img ngf-src="updateElect.electrombile.tele_fee_pic" >
-                                                <i ng-click="dropTeleFeePicForUpdate(updateElect.electrombile.tele_fee_pic)">&times;</i>
-                                            </span>
-                                        </output>
-                                    </a>
+									<p>保险单照片</p>
+								</div>
+								<div class="col-md-3 up-content">
+									<a href="javascript:;" class="picfile"> <input ng-attr-type
+										type="file" id="teleFeePic" ngf-select="addTeleFeePic()"
+										ng-model="updateElect.electrombile.tele_fee_pic"
+										name="teleFeePic"> <output id="pic_list"
+											class="pic_list">
+											<span> <img
+												ngf-src="updateElect.electrombile.tele_fee_pic"> <i
+												ng-click="dropTeleFeePicForUpdate(updateElect.electrombile.tele_fee_pic)">&times;</i>
+											</span>
+										</output>
+									</a>
 
-                                    <p>话费单照片</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button ng-attr-type type="button" ng-click="update()" class="btn btn-primary">
-                    更新
-                </button>
-                <button ng-attr-type type="button" class="btn btn-default"
-                        data-dismiss="modal">取消
-                </button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
+									<p>话费单照片</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-attr-type type="button" ng-click="update()"
+					class="btn btn-primary">更新</button>
+				<button ng-attr-type type="button" class="btn btn-default"
+					data-dismiss="modal">取消</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
 </div>
 <!--  更新车辆模态框 end -->
 
 
 <!--  操作查看轨迹模态框 -->
-<div class="modal fade" id="guijiModalElec" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button ng-attr-type type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <div class="modal-title" id="">
-                    查看轨迹
-                </div>
-            </div>
-            <div class="modal-body">
-                <form class="form-inline" name="electForm">
-                    <div class="form-group datePicker">
-                        <label>轨迹时间：</label>
-                        <!--指定 date标记-->
-                        <div class='input-group date' id='guijiSearchStart'>
-                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间" ng-model="searchTraceStart" readonly ng-style style="width:200px;"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                        </div>
-                        --
-                        <div class='input-group date' id='guijiSearchEnd'>
-                            <input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择结束时间" ng-model="searchTraceEnd" readonly ng-style style="width:200px;"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" ng-click="goSearchForTraceWithTime()" ng-style style="padding:6px 12px;">搜索</button>
-                </form>
+<div class="modal fade" id="guijiModalElec" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button ng-attr-type type="button" class="close"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<div class="modal-title" id="">查看轨迹</div>
+			</div>
+			<div class="modal-body">
+				<form class="form-inline" name="electForm">
+					<div class="form-group datePicker">
+						<label>轨迹时间：</label>
+						<!--指定 date标记-->
+						<div class='input-group date' id='guijiSearchStart'>
+							<input ng-attr-type type='text' class="form-control"
+								ng-attr-placeholder placeholder="选择开始时间"
+								ng-model="searchTraceStart" readonly ng-style
+								style="width: 200px;" /> <span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+						--
+						<div class='input-group date' id='guijiSearchEnd'>
+							<input ng-attr-type type='text' class="form-control"
+								ng-attr-placeholder placeholder="选择结束时间"
+								ng-model="searchTraceEnd" readonly ng-style
+								style="width: 200px;" /> <span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<button class="btn btn-primary"
+						ng-click="goSearchForTraceWithTime()" ng-style
+						style="padding: 6px 12px;">搜索</button>
+				</form>
 
-                <!-- 表格操作区域开始 -->
-                <div class="tableArea no-padding margin-top2 shadow">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th ng-style style="width:100px!important;">经过基站ID</th>
-                            <th>经过基站名称</th>
-                            <th>经过基站时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="traceStation in traceStations">
-                            <td>{{traceStation.station.station_id}}</td>
-                            <td>{{traceStation.station.station_name}}</td>
-                            <td>{{traceStation.crossTime}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- 表格操作区域结束 -->
+				<!-- 表格操作区域开始 -->
+				<div class="tableArea no-padding margin-top2 shadow">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th ng-style style="width: 100px !important;">经过基站ID</th>
+								<th>经过基站名称</th>
+								<th>经过基站时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="traceStation in traceStations">
+								<td>{{traceStation.station.station_id}}</td>
+								<td>{{traceStation.station.station_name}}</td>
+								<td>{{traceStation.crossTime}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格操作区域结束 -->
 
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal -->
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
 </div>
 <!--  操作查看轨迹模态框 end -->
+

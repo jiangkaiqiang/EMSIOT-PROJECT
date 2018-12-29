@@ -505,5 +505,143 @@
 </script>
 </body>
 
+<script for=idcard event="Readed()">
+      //alert('Readed');
+	  var ss;
+      getinfo_onclick();
+</script>
+<script>
 
+//神思二代身份证接口
+//打开机具
+var rdcardIndex = -1;
+function myopen_onclick (i){
+	var  pp ;
+
+	pp=rdcard.openport();
+		//alert(pp);
+	if(pp==0)
+		{
+			//alert("机具打开成功:"+i);
+		}
+		else
+		{	
+			//alert("机具打开失败: "+pp);
+		}	
+	rdcardIndex = i;
+    }
+
+//关闭机具
+function myclose_onclick () {
+	var  pp
+	pp=rdcard.closeport();
+	if(pp==0)
+        {
+		//alert("关闭机具成功");
+
+        }
+        else
+        {	
+        	//alert("关闭机具失败: "+pp);
+        }	
+	window_onUnload();
+	}
+//关闭页面调用
+ function unload () {
+	 $scope.myclose_onclick();
+	alert("Page is Close");
+}
+
+//开始读卡
+ function beginread_onclick() {
+	
+	var  pp
+	pp=rdcard.ReadCard2();
+	if(pp==0)
+        {
+	    //alert("启动读卡成功");
+        }
+        else
+        {	
+          //  alert("启动读卡失败: "+pp);
+        }
+	}
+
+
+//关闭读卡
+function endread_onclick(){
+	var  pp
+	pp=rdcard.endread();
+	if(pp==0)
+        {
+	    //alert("关闭读卡成功");
+        }
+        else
+        {	
+        //    alert("关闭读卡失败: "+pp);
+        }		
+	}
+
+//手动读卡
+function handread_onclick(){ 
+	
+	var  pp
+	pp=rdcard.readcard();
+	if(pp==0)
+        {
+	    //alert("手动读卡成功");
+            //showjpg_onclick();
+        }
+        else
+        {	
+         //   alert("手动读卡失败: "+pp);
+        }
+	}
+
+
+function getinfo_onclick() {
+	var  r1,r2;
+
+	document.getElementsByName("username")[rdcardIndex].value=rdcard.NameL;
+	document.getElementsByName("id-user")[rdcardIndex].value=rdcard.CardNo;
+	document.getElementsByName("address")[rdcardIndex].value=rdcard.Address;
+	document.getElementsByName("ownerSex")[rdcardIndex].value=rdcard.SexL;
+	document.getElementsByName("jroot")[rdcardIndex].value=rdcard.JPGfile;
+	document.getElementsByName("ownerNationality")[rdcardIndex].value=rdcard.NationL;
+	document.getElementsByName("ownerIdIssuingAuthority")[rdcardIndex].value=rdcard.Police;
+	document.getElementsByName("ownerIdUsefulLife")[rdcardIndex].value=rdcard.ActivityL;
+
+	if(rdcard.bHaveCard == "1")
+	{
+		if(rdcard.CardType == "I")
+		{
+			document.getElementsByName("ownerIdType")[rdcardIndex].value="外国人永久居留证";
+			ss=rdcard.CardType;
+        }
+        else if (rdcard.CardType == "J") {
+            document.getElementsByName("ownerIdType")[rdcardIndex].value = "港澳台居民居住证";
+			ss=rdcard.CardType;
+        }
+		else
+		{
+			document.getElementsByName("ownerIdType")[rdcardIndex].value="二代身份证";
+			ss=rdcard.CardType;
+		}
+	}
+	else
+	{
+		document.getElementsByName("ownerIdType")[rdcardIndex].value="";
+		ss=rdcard.CardType;
+	}
+	
+	document.all['photo'][rdcardIndex].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;
+	//document.all['recordPic'].src  = 'data:image/jpeg;base64,' + rdcard.FrontJpgPic;
+}
+
+ 
+ function window_onUnload(){
+	  rdcard.DeleteOutputFile();
+	  //rdcard.DeleteAllPicture();
+} 
+</script>
 </html>
