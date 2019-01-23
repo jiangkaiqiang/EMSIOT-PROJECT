@@ -261,23 +261,62 @@
 					<div class="row fileup margin-top2">
 						<div class="col-sm-12">
 							<!--<div class="form-group fileup">-->
-							<div class="col-sm-6">
-								<label for="" class="col-sm-4 control-label"> 照片： </label>
+							<!-- <div class="col-sm-6">
+								<label for="" class="col-sm-4 control-label"> 照片： </label> -->
 
-								<div class="col-md-8 up-content">
-								<a class="picfile" href="javascript:;"> 
-									 <input type="hidden" id="ownerPic" name="jroot" ng-model="ownerPic" > 
-										<output id="pic_list" class="pic_list" style="display: block 1px red">
-											<span> <img name="photo"> 
-											</span>
-										</output>
-								</a>
+								<!-- <div class="col-md-4 up-content" style="text-align: center;">
+									<a class="picfile" href="javascript:;"> 
+										 <input type="hidden" id="ownerPic" name="jroot" ng-model="ownerPic" > 
+											<output id="pic_list" class="pic_list" style="display: block 1px red">
+												 <img name="photo"> 
+												
+											</output>
+									</a>
+								<p style="text-align: center;">照片</p>
+								</div> -->
+								
+								
+							  <!-- <div class="col-md-8 up-content" style="text-align: center;">
+									<a href="javascript:;" class="picfile">
+									 <input type="hidden" id="ownerPic" name="ownerCardIdPic" ng-model="indentityCardPicJroot" > 
+										 <output id="pic_list" class="pic_list" style="display: block 1px red">
+												 <img name="ownerCardIdPhoto" 
+													title="{{indentityCardPic.name}}">
+												
+										 </output>
+									</a>
 
+									<p style="text-align: center;">身份证照片</p>
+								</div> -->
+
+
+								<div class="col-md-12 up-content" style="text-align: center;">
+									<a href="javascript:;" class="picfile" style="width: 324px;height: 204px;background-image: none;">
+									 <input type="hidden" id="ownerPic" name="ownerCardIdPic" ng-model="indentityCardPicJroot" > 
+										 <output id="pic_list" class="pic_list" style="display: block 1px red ;width: 324px;height: 204px;">
+												 <img name="ownerCardIdPhoto" style="width: 324px;height: 204px;"
+													title="{{indentityCardPic.name}}">
+												
+										 </output>
+									</a>
+
+									<p style="text-align: center;margin-bottom: 10px;">身份证照片</p>
+									
 								</div>
+
 
 
 							</div>
 
+							
+
+							
+
+						
+					</div>
+
+
+					<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="" class="col-sm-4 control-label"> <i>*</i>
@@ -285,13 +324,27 @@
 									</label>
 
 									<div class="col-sm-8">
-										<input ng-attr-type type="text" class="form-control" ng-change="addPic()"
+										<input ng-attr-type type="text" class="form-control"
 											ng-model="addOwnerName" name="username">
 									</div>
 								</div>
 							</div>
-
+							
 							<div class="col-md-6">
+								<div class="form-group">
+									<label for="" class="col-sm-4 control-label">
+										出生：
+									</label>
+
+									<div class="col-sm-8">
+										<input ng-attr-type type="text" class="form-control" 
+											ng-model="ownerBorn" name="ownerBorn">
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
 								<div class="form-group">
 									<label for="id-user" class="col-sm-4 control-label"> <i>*</i>
 										身份证：
@@ -315,10 +368,7 @@
 									</div>
 								</div>
 							</div>
-
-						</div>
 					</div>
-
 
 
 
@@ -625,7 +675,7 @@
 
 									<p>车辆照片(牌照)</p>
 								</div>
-								<div class="col-md-3 up-content">
+								<!-- <div class="col-md-3 up-content">
 									<a href="javascript:;" class="picfile"> <input ng-attr-type
 										type="file" id="indentityCardPic"
 										ngf-select="addIndentityCardPic()" ng-model="indentityCardPic"
@@ -639,7 +689,7 @@
 									</a>
 
 									<p>身份证照片</p>
-								</div>
+								</div> -->
 								<div class="col-md-3 up-content">
 									<a href="javascript:;" class="picfile"><input ng-attr-type
 										type="file" id="recordPic" ngf-select="addRecordPic()"
@@ -1016,28 +1066,48 @@
 
 
 
-<div class="row fileup margin-top2">
+					<div class="row fileup margin-top2">
 						<div class="col-sm-12">
 							<!--<div class="form-group fileup">-->
-							<div class="col-sm-6">
-								<label for="" class="col-sm-4 control-label"> 照片： </label>
+							
 
-								<div class="col-md-8 up-content">
+								<!-- <div class="col-md-4 up-content">
 								<a class="picfile" href="javascript:;"> 
 									 <input type="hidden" id="ownerPic" name="jroot" ng-model="ownerPic" > 
 										<output id="pic_list" class="pic_list" style="display: block 1px red">
-											<span> <img name="photo"> <!-- <i
-												ng-click="dropOwnerPic(ownerPic)">&times;</i> -->
+											<span> <img name="photo"> <i
+												ng-click="dropOwnerPic(ownerPic)">&times;</i>
 											</span>
 										</output>
+										<p style="text-align: center;">照片</p>
 								</a>
 
+								</div> -->
+
+								<div class="col-md-12 up-content" style="text-align: center;">
+									<a href="javascript:;" class="picfile" style="width: 324px;height: 204px;background-image: none;">
+									 <input type="hidden" id="ownerPic" name="ownerCardIdPic" ng-model="indentityCardPicJroot" > 
+										 <output id="pic_list" class="pic_list" style="display: block 1px red ;width: 324px;height: 204px;">
+												 <img name="ownerCardIdPhoto" style="width: 324px;height: 204px;"
+													title="{{indentityCardPic.name}}">
+												
+										 </output>
+									</a>
+
+									<p style="text-align: center;margin-bottom: 10px;">身份证照片</p>
+									
 								</div>
 
+							
 
-							</div>
+							
+						</div>
+							
+					</div>
 
-							<div class="col-md-6">
+					
+					<div class="row">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> <i>*</i>
 									姓名：
@@ -1049,8 +1119,22 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="col-md-6">
+								<div class="form-group">
+									<label for="" class="col-sm-4 control-label">
+										出生：
+									</label>
 
-							<div class="col-md-6">
+									<div class="col-sm-8">
+										<input ng-attr-type type="text" class="form-control"
+											ng-model="updateElect.electrombile.owner_born" name="ownerBorn">
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="row">
+					<div class="col-md-6">
 							<div class="form-group">
 								<label for="id-user" class="col-sm-4 control-label"> <i>*</i>
 									身份证：
@@ -1077,9 +1161,8 @@
 							</div>
 
 						</div>
-					</div>
-
-
+					
+					
 
 
 
@@ -1403,7 +1486,7 @@
 
 									<p>车辆照片(牌照)</p>
 								</div>
-								<div class="col-md-3 up-content">
+								<!-- <div class="col-md-3 up-content">
 									<a href="javascript:;" class="picfile"> <input ng-attr-type
 										type="file" id="indentityCardPic"
 										ngf-select="addIndentityCardPic()"
@@ -1419,7 +1502,7 @@
 									</a>
 
 									<p>身份证照片</p>
-								</div>
+								</div> -->
 								<div class="col-md-3 up-content">
 									<a href="javascript:;" class="picfile"> <input ng-attr-type
 										type="file" id="recordPic" ngf-select="addRecordPic()"

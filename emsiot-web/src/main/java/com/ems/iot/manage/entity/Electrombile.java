@@ -68,6 +68,7 @@ public class Electrombile {
     private String owner_id_issuing_authority;
     private String owner_id_useful_life;
     private String owner_pic;
+    private String owner_born;
     
     
 
@@ -350,5 +351,14 @@ public class Electrombile {
 	public void setTele_fee_pic(String tele_fee_pic) {
 		this.tele_fee_pic = tele_fee_pic;
 	}
+
+	public String getOwner_born() {
+		return owner_born;
+	}
+
+	public void setOwner_born(String owner_born) {
+		this.owner_born = owner_born;
+	}
     
+	
 }

@@ -320,7 +320,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) Integer city_id, @RequestParam(required = false) Integer area_id,
 			@RequestParam(required = false) Integer elect_type, @RequestParam(required = false) Integer insur_detail,
 			@RequestParam(required = false) MultipartFile elect_pic,
-			@RequestParam(required = false) MultipartFile indentity_card_pic,
+			@RequestParam(required = false) String indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
 			@RequestParam(required = false) MultipartFile insur_pic,
@@ -332,6 +332,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) String owner_nationality, @RequestParam(required = false) String owner_id_issuing_authority,
 			@RequestParam(required = false) String owner_id_useful_life,
 			@RequestParam(required = false) String owner_pic,
+			@RequestParam(required = false) String owner_born,
 			
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
 			throws ParseException, IOException {
@@ -396,20 +397,33 @@ public class ElectController extends BaseController {
 		electrombile.setOwner_nationality(owner_nationality);
 		electrombile.setOwner_id_issuing_authority(owner_id_issuing_authority);
 		electrombile.setOwner_id_useful_life(owner_id_useful_life);
+		electrombile.setOwner_born(owner_born);
 		
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 	    //本人照片
-	    if (null != owner_pic && !"".equals(owner_pic)) {
+	    /*if (null != owner_pic && !"".equals(owner_pic)) {
 	    	String dir = String.format("%s/ownerPic/", baseDir);
 	    	String owner_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), electrombile.getOwner_name(), "jpg");
 	    	// 上传文件流。
 	    	
 	    	InputStream file = new FileInputStream(owner_pic);
 	    	
-	    	/*InputStream inputStream = owner_pic.getInputStream();*/
+	    	InputStream inputStream = owner_pic.getInputStream();
 	    	ossClient.putObject("emsiot", dir+owner_pic_name, file);
 	    	electrombile.setOwner_pic(OssService.readUrl + dir+owner_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+	    }*/
+	    //本人身份证照片
+	    if (null != indentity_card_pic && !"".equals(indentity_card_pic)) {
+	    	String dir = String.format("%s/ownerPic/", baseDir);
+	    	String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), "h", "jpg");
+	    	// 上传文件流。
+	    	
+	    	InputStream file = new FileInputStream(indentity_card_pic);
+	    	
+	    	/*InputStream inputStream = owner_pic.getInputStream();*/
+	    	ossClient.putObject("emsiot", dir+indentity_card_pic_name, file);
+	    	electrombile.setIndentity_card_pic(OssService.readUrl + dir+indentity_card_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 	    }
 		if (null != elect_pic) {
 			String dir = String.format("%s/electPic/", baseDir);
@@ -419,14 +433,14 @@ public class ElectController extends BaseController {
 			ossClient.putObject("emsiot", dir+elect_pic_name, inputStream);
 			electrombile.setElect_pic(OssService.readUrl + dir+elect_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
-		if (null != indentity_card_pic) {
+		/*if (null != indentity_card_pic) {
 			String dir = String.format("%s/indCardPic/", baseDir);
 			String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
 			// 上传文件流。
 			InputStream inputStream = indentity_card_pic.getInputStream();
 			ossClient.putObject("emsiot", dir+indentity_card_pic_name, inputStream);
 			electrombile.setIndentity_card_pic(OssService.readUrl + dir+indentity_card_pic_name);
-		}
+		}*/
 		if (null != record_pic) {
 			String dir = String.format("%s/recordPic/", baseDir);
 			String record_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
@@ -484,7 +498,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) Integer area_id, @RequestParam(required = false) Integer elect_type,
 			@RequestParam(required = false) Integer insur_detail,
 			@RequestParam(required = false) MultipartFile elect_pic,
-			@RequestParam(required = false) MultipartFile indentity_card_pic,
+			@RequestParam(required = false) String indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
 			@RequestParam(required = false) MultipartFile insur_pic,
@@ -496,6 +510,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) String owner_nationality, @RequestParam(required = false) String owner_id_issuing_authority,
 			@RequestParam(required = false) String owner_id_useful_life,
 			@RequestParam(required = false) String owner_pic,
+			@RequestParam(required = false) String owner_born,
 			
 			@RequestParam(required = false) Integer recorder_id, @RequestParam(required = false) Integer elect_state)
 			throws ParseException, IOException {
@@ -561,11 +576,12 @@ public class ElectController extends BaseController {
 		electrombile.setOwner_nationality(owner_nationality);
 		electrombile.setOwner_id_issuing_authority(owner_id_issuing_authority);
 		electrombile.setOwner_id_useful_life(owner_id_useful_life);
+		electrombile.setOwner_born(owner_born);
 		
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
 	   //修改本人照片
-	    if (null != owner_pic) {
+	   /* if (null != owner_pic) {
 	    	String dir = String.format("%s/ownerPic/", baseDir);
 	    	String owner_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), electrombile.getOwner_name(), "jpg");
 	    	// 上传文件流。
@@ -574,6 +590,18 @@ public class ElectController extends BaseController {
 
 	    	ossClient.putObject("emsiot", dir+owner_pic_name, file);
 	    	electrombile.setOwner_pic(OssService.readUrl + dir+owner_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
+	    }*/
+	  //修改本人身份证照片
+	    if (null != indentity_card_pic && !"".equals(indentity_card_pic) && indentity_card_pic.indexOf("C:")>-1) {
+	    	String dir = String.format("%s/ownerPic/", baseDir);
+	    	String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), "h", "jpg");
+	    	// 上传文件流。
+	    	
+	    	InputStream file = new FileInputStream(indentity_card_pic);
+	    	
+	    	/*InputStream inputStream = owner_pic.getInputStream();*/
+	    	ossClient.putObject("emsiot", dir+indentity_card_pic_name, file);
+	    	electrombile.setIndentity_card_pic(OssService.readUrl + dir+indentity_card_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 	    }
 		if (null != elect_pic) {
 			String dir = String.format("%s/electPic/", baseDir);
@@ -583,14 +611,14 @@ public class ElectController extends BaseController {
 			ossClient.putObject("emsiot", dir+elect_pic_name, inputStream);
 			electrombile.setElect_pic(OssService.readUrl + dir+elect_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
-		if (null != indentity_card_pic) {
+		/*if (null != indentity_card_pic) {
 			String dir = String.format("%s/indCardPic/", baseDir);
 			String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");
 			// 上传文件流。
 			InputStream inputStream = indentity_card_pic.getInputStream();
 			ossClient.putObject("emsiot", dir+indentity_card_pic_name, inputStream);
 			electrombile.setIndentity_card_pic(OssService.readUrl + dir+indentity_card_pic_name);
-		}
+		}*/
 		if (null != record_pic) {
 			String dir = String.format("%s/recordPic/", baseDir);
 			String record_pic_name = String.format("%s_%s.%s", electrombile.getGua_card_num(), new Date().getTime(), "jpg");

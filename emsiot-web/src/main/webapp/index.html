@@ -606,10 +606,12 @@ function getinfo_onclick() {
 	document.getElementsByName("id-user")[rdcardIndex].value=rdcard.CardNo;
 	document.getElementsByName("address")[rdcardIndex].value=rdcard.Address;
 	document.getElementsByName("ownerSex")[rdcardIndex].value=rdcard.SexL;
-	document.getElementsByName("jroot")[rdcardIndex].value=rdcard.JPGfile;
+	//document.getElementsByName("jroot")[rdcardIndex].value=rdcard.JPGfile;
+	
 	document.getElementsByName("ownerNationality")[rdcardIndex].value=rdcard.NationL;
 	document.getElementsByName("ownerIdIssuingAuthority")[rdcardIndex].value=rdcard.Police;
 	document.getElementsByName("ownerIdUsefulLife")[rdcardIndex].value=rdcard.ActivityL;
+	document.getElementsByName("ownerBorn")[rdcardIndex].value=rdcard.BornL;
 
 	if(rdcard.bHaveCard == "1")
 	{
@@ -634,7 +636,11 @@ function getinfo_onclick() {
 		ss=rdcard.CardType;
 	}
 	
-	document.all['photo'][rdcardIndex].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;
+	//document.all['photo'][rdcardIndex].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;
+	//console.log(rdcard.FrontJpgPic)
+	rdcard.SaveCardPic("C:\\temp\\sfzh.jpg","C:\\temp\\sfzs.jpg",1)
+	document.getElementsByName("ownerCardIdPic")[rdcardIndex].value="C:\\temp\\sfzh.jpg";
+	document.getElementsByName('ownerCardIdPhoto')[rdcardIndex].src  = 'C:\\temp\\sfzh.jpg';
 	//document.all['recordPic'].src  = 'data:image/jpeg;base64,' + rdcard.FrontJpgPic;
 }
 

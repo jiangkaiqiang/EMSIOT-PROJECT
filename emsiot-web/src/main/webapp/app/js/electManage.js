@@ -497,7 +497,9 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    $scope.addOwnerNationality = document.getElementsByName("ownerNationality")[0].value
 		    $scope.addOwnerIdIssuingAuthority = document.getElementsByName("ownerIdIssuingAuthority")[0].value
 		    $scope.addOwnerIdUsefulLife = document.getElementsByName("ownerIdUsefulLife")[0].value
-		    $scope.ownerPic = document.getElementsByName("jroot")[0].value
+		    //$scope.ownerPic = document.getElementsByName("jroot")[0].value
+		    $scope.indentityCardPic = document.getElementsByName("ownerCardIdPic")[0].value
+		    $scope.ownerBorn = document.getElementsByName("ownerBorn")[0].value
     	}else if(rdcardIndex==1){
     		
     		$scope.updateElect.electrombile.owner_name = document.getElementsByName("username")[1].value
@@ -508,10 +510,10 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    $scope.updateElect.electrombile.owner_nationality = document.getElementsByName("ownerNationality")[1].value
 		    $scope.updateElect.electrombile.owner_id_issuing_authority = document.getElementsByName("ownerIdIssuingAuthority")[1].value
 		    $scope.updateElect.electrombile.owner_id_useful_life = document.getElementsByName("ownerIdUsefulLife")[1].value
-		    
-		    
-		    $scope.updateElect.electrombile.owner_pic = document.getElementsByName("jroot")[1].value
-		    
+		    //$scope.updateElect.electrombile.owner_pic = document.getElementsByName("jroot")[1].value
+		    $scope.updateElect.electrombile.indentity_card_pic = document.getElementsByName("ownerCardIdPic")[1].value
+		    $scope.updateElect.electrombile.owner_born = document.getElementsByName("ownerBorn")[1].value
+
 		  
     		
     	}
@@ -553,6 +555,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'owner_nationality' : $scope.addOwnerNationality,
     			    'owner_id_issuing_authority	' : $scope.addOwnerIdIssuingAuthority,
     			    'owner_id_useful_life' : $scope.addOwnerIdUsefulLife,
+    			    'owner_born' : $scope.ownerBorn,
     			    
     			    'recorder_id' : $rootScope.admin.user_id,
     			    'elect_state' : 1
@@ -617,18 +620,21 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	    		   $scope.updateElect.electrombile.city_id = $scope.updateElect.electrombile.city_id==null?"-1":$scope.updateElect.electrombile.city_id+"";
 	    		   $scope.updateElect.electrombile.area_id = $scope.updateElect.electrombile.area_id==null?"-1":$scope.updateElect.electrombile.area_id+"";
 	    		   $scope.updateElect.electrombile.insur_detail = $scope.updateElect.electrombile.insur_detail+"";
-	    		   if($scope.updateElect.electrombile.owner_pic != null){
-	    			   document.all['photo'][1].src = $scope.updateElect.electrombile.owner_pic
+	    		   if($scope.updateElect.electrombile.indentity_card_pic != null){
+	    			   //document.all['photo'][1].src = $scope.updateElect.electrombile.owner_pic
+	    			   document.all['ownerCardIdPhoto'][1].src = $scope.updateElect.electrombile.indentity_card_pic
 	    		   }else{
-	    			   document.all['photo'][1].src ="";
-	    			   document.getElementsByName("username")[1].value = null
-		    		   document.getElementsByName("address")[1].value = null
-		    		   document.getElementsByName("id-user")[1].value = null
-		   			   document.getElementsByName("ownerIdType")[1].value = null
-		   			   document.getElementsByName("ownerSex")[1].value = null
-		   			   document.getElementsByName("ownerNationality")[1].value = null
-		   			   document.getElementsByName("ownerIdIssuingAuthority")[1].value = null
-		   			   document.getElementsByName("ownerIdUsefulLife")[1].value = null
+	    			   //document.all['photo'][1].src ="";
+	    			   document.all['ownerCardIdPhoto'][1].src ="";
+//	    			   document.getElementsByName("username")[1].value = null
+//		    		   document.getElementsByName("address")[1].value = null
+//		    		   document.getElementsByName("id-user")[1].value = null
+//		   			   document.getElementsByName("ownerIdType")[1].value = null
+//		   			   document.getElementsByName("ownerSex")[1].value = null
+//		   			   document.getElementsByName("ownerNationality")[1].value = null
+//		   			   document.getElementsByName("ownerIdIssuingAuthority")[1].value = null
+//		   			   document.getElementsByName("ownerIdUsefulLife")[1].value = null
+//		   			   document.getElementsByName("ownerBorn")[1].value = null
 	    		   }
 	    		   
 	    		   $http.get('/i/city/findCitysByProvinceId', {
@@ -700,6 +706,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    			    'owner_nationality' : $scope.updateElect.electrombile.owner_nationality,
 		    			    'owner_id_issuing_authority	' : $scope.updateElect.electrombile.owner_id_issuing_authority,
 		    			    'owner_id_useful_life' : $scope.updateElect.electrombile.owner_id_useful_life,
+		    			    'owner_born' : $scope.updateElect.electrombile.owner_born,
 		    			    
 		    			    
 		    			    'recorder_id' : $rootScope.admin.user_id,

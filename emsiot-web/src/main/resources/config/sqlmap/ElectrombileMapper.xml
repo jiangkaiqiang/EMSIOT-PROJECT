@@ -171,6 +171,9 @@
       <if test="owner_pic != null">
         owner_pic,
       </if>
+      <if test="owner_born != null">
+        owner_born,
+      </if>
       
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -272,6 +275,9 @@
       </if>
       <if test="owner_pic != null">
         #{owner_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_born != null">
+        #{owner_born,jdbcType=VARCHAR},
       </if>
       
     </trim>
@@ -381,6 +387,9 @@
       </if>
       <if test="owner_pic != null">
         owner_pic = #{owner_pic,jdbcType=VARCHAR},
+      </if>
+      <if test="owner_born != null">
+        owner_born = #{owner_born,jdbcType=VARCHAR},
       </if>
       
     </set>

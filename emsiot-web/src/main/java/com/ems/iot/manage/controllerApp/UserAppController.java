@@ -200,7 +200,7 @@ public class UserAppController extends AppBaseController {
 		if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
-		if (password==null) {
+		if (password==null || password.equals("")) {
 			return new ResultDto(3001, "密码不能为空", false);
 		}
 		if (appUserID==null) {

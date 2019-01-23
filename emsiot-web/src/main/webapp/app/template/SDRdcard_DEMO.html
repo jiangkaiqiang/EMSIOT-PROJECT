@@ -1,0 +1,517 @@
+
+<HTML>
+<H1  style = "color:#0000A0;" align=center ><font size="6">      神思第二代身份证验证系统——支持U口/串口</font></H1>
+<style type="text/css">
+<!--
+.STYLE1{
+	font-family:"方正宋体-人口信息";}
+.S1 {
+	width:1002px;
+	margin:0 auto;
+	color:#01c;
+	border:0;}
+.S1 table{
+	border:1px solid #707070;}
+-->
+</style>
+<HR><center>
+<OBJECT
+	  classid="clsid:F1317711-6BDE-4658-ABAA-39E31D3704D3"                  
+	  width=390
+	  height=300
+	  align=center
+	  hspace=0
+	  vspace=0
+	  id=idcard
+	  name=rdcard	
+>
+</OBJECT>
+  <body  onbeforeunload="Unload()" >
+	<table width="680" border="0">
+	  <tr>
+	    <td><input type="button" value="打开机具"         style="width:140px;"    name="myopen"    onclick="myopen_onclick()"   /></td>
+	    <td><input type="button" value="关闭机具"         style="width:140px;"    name="myclose"   onclick="myclose_onclick()"  /></td>
+	    <td><input type="button" value="开始读卡"         style="width:140px;"    name="beginread" onClick="beginread_onclick()"/></td>
+	    <td><input type="button" value="等待读卡"         style="width:140px;"    name="read3"     onclick="read3_onclick()"    /></td>
+	    <td><input type="button" value="停止读卡"         style="width:140px;"    name="endread"   onclick="endread_onclick()"  /></td>
+	  </tr>
+	  <tr>
+	    <td><input type="button" value="手动读卡"         style="width:140px;"  name="handread"  onclick="handread_onclick()"/></td>
+	    <td><input type="button" value="保存身份证图片"   style="width:140px;"  name="SaveCard"  onclick="SaveCard_onclick()"/></td>
+	    <td><input type="button" value="读设备模块号"     style="width:140px;"  name="ReadsNum"  onclick="ReadsNum_onclick()"/></td>
+	    <td><input type="button" value="设置文件路径"     style="width:140px;"  name="savepath"  onclick="savepath_onclick()"/></td>
+            <td><input type="button" value="清空所有属性"     style="width:140px;"  name="MyClear"   onClick="MyClear_onclick()"/></td> 
+	  </tr>
+	</table>
+      <form name=tcard>
+       <table class="s1" >
+          <tr>
+            <td width="12%" ><IMG height=126 alt="" width=102 border=0 name=photo id=jpgfile style="left:10px;"></td>
+            <td>
+                <table width="820" border="1" style="color:#0011CC"  >
+                  <tr>
+                    <td align="right">提示信息</td>
+                    <td><input name="tResult" type="text" size="40" /></td>
+                    <td align="right">设备模块号</td>
+                    <td><input name="tsNum" type="text" size="40" /></td>
+                  </tr>
+				  <tr>
+                    <td align="right">证件类型标识</td>
+                    <td><input name="tCardType" type="text" size="40" /></td>
+                    <td align="right">证件类型</td>
+                    <td><input name="tCardT" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">姓名name</td>
+                    <td><input name="tName" type="text" size="40" /></td>
+                    <td align="right">姓名nameL</td>
+                    <td><input name="tNameL" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">性别sex</td>
+                    <td><input name="tSex" type="text" size="40" /></td>
+                    <td align="right">性别sexL</td>
+                    <td><input name="tSexL" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">民族nation</td>
+                    <td><input name="tFolk" type="text" size="40" /></td>
+                    <td align="right">民族nationL</td>
+                    <td><input name="tFolkL" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">出生Born</td>
+                    <td><input name="tBirth" type="text" size="40" /></td>
+                    <td align="right">出生BornL</td>
+                    <td><input name="tBirthL" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">公民身份号码</td>
+                    <td><input name="tcardID" type="text" size="40" /></td>
+                    <td align="right">住    址</td>
+                    <td><input name="tAddr" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">最新住址</td>
+                    <td><input name="tnewAddr" type="text" size="40" /></td>
+                    <td align="right">签发机关</td>
+                    <td><input name="tIssue" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">有效期限</td>
+                    <td><input name="tBeginEnd" type="text" size="40" /></td>
+                    <td align="right">有效期限L</td>
+                    <td><input name="tBeginEndL" type="text" size="40" /></td>
+                  </tr>
+                   <tr>
+                    <td align="right">通行证号码</td>
+                    <td><input name="tPassPortId" type="text" size="40" /></td>
+                    <td align="right">签发次数</td>
+                    <td><input name="tSignCount" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">头像JPG</td>
+                    <td><input name="jbuff" type="text" size="40" /></td>
+                    <td align="right">头像BMP</td>
+                    <td><input name="bbuff" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">头像JPGroot</td>
+                    <td><input name="jroot" type="text" size="40" /></td>
+                    <td align="right">头像BMProot</td>
+                    <td><input name="broot" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">指纹特征值1</td>
+                    <td><input name="Fchar1" type="text" size="40" /></td>
+                    <td align="right">指纹特征值2</td>
+                    <td><input name="Fchar2" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">指位信息1</td>
+                    <td><input name="FNUM1" type="text" size="40" /></td>
+                    <td align="right">指位信息2</td>
+                    <td><input name="FNUM2" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">指纹质量1</td>
+                    <td><input name="Fzl1" type="text" size="40" /></td>
+                    <td align="right">指纹质量2</td>
+                    <td><input name="Fzl2" type="text" size="40" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right">指纹注册结果1</td>
+                    <td><input name="Fzhuce1" type="text" size="40" /></td>
+                    <td align="right">指纹注册结果2</td>
+                    <td><input name="Fzhuce2" type="text" size="40" /></td>
+                  </tr>
+                </table>
+             </td>
+       </tr>
+     </table>
+
+    </form>
+  </body>
+
+<script for=idcard event="Readed()">
+      //alert('Readed');
+	  var ss;
+      getinfo_onclick();
+</script>
+
+<script for=idcard event="Closed()">
+      //window.close();
+</script>
+
+<script for=idcard event="Opened()">
+      //window.close();
+</script>
+
+<SCRIPT>
+
+
+  	function SaveCard_onclick(){
+	var  pp
+	if(ss=="J")
+	{
+		document.getElementsByName("tResult")[0].value="港澳台居民居住证暂不支持保存正反面照片";
+		return;
+	}
+	pp = rdcard.ExportBMP("D:\\"); 
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="保存成功";
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="保存失败: "+pp;
+        }
+	}
+
+	function myopen_onclick(){
+	var  pp ;
+	pp=rdcard.openport();
+		//alert(pp);
+	if(pp==0)
+		{
+		document.getElementsByName("tResult")[0].value="openport成功";
+		}
+		else
+		{	
+			document.getElementsByName("tResult")[0].value="openport失败: "+pp;
+		}	
+    }	
+	    
+	function myclose_onclick(){
+	var  pp
+	pp=rdcard.closeport();
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="closeport成功";
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="closeport失败: "+pp;
+        }		
+	}
+        function Unload(){
+		MyClose_onclick();
+		//alert("Page is Close");
+	}
+
+	function endread_onclick(){
+	var  pp
+	pp=rdcard.endread();
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="endread成功";
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="endread失败: "+pp;
+        }		
+	}
+
+	function handread_onclick(){ 
+		
+	var  pp
+	pp=rdcard.readcard();
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="readcard成功";
+            //showjpg_onclick();
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="readcard失败: "+pp;
+        }
+	}
+	
+	function beginread_onclick(){
+		
+	var  pp
+	pp=rdcard.ReadCard2();
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="ReadCard2成功";
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="ReadCard2失败: "+pp;
+        }
+	}
+	function read3_onclick(){
+		
+	var  pp
+	pp=rdcard.ReadCard3();
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="ReadCard3成功";
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="ReadCard3失败: "+pp;
+        }
+	}
+    
+	function ReadsNum_onclick(){
+	var  pp
+	pp = rdcard.ReadSecurityNum();
+	if(pp==0)
+        {
+            document.getElementsByName("tsNum")[0].value=rdcard.SecurityNum;	
+            document.getElementsByName("tResult")[0].value=rdcard.sResultMsg;
+        }
+        else
+        {
+            document.getElementsByName("tsNum")[0].value="读模块号码失败";	
+            document.getElementsByName("tResult")[0].value="读模块号码失败: "+pp;
+        }
+	}
+	
+
+	function showjpgIE6(){
+        //alert('读照片成功');
+        document.getElementsByName("photo")[0].src = "file:///C|/null.JPEG";
+
+	if(rdcard.PhotoPath == "")  
+	  document.getElementsByName("photo")[0].src = "file:///C|/null.JPEG";
+	else 	
+	  document.getElementsByName("photo")[0].src = rdcard.PhotoPath	;	
+    }
+	function showjpgIE8(){
+        //alert('读照片成功');
+        document.all['photo'].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;	
+    }
+
+
+     function getinfo_onclick(){
+	var  r1,r2;
+	document.getElementsByName("tName")[0].value=rdcard.NameS;
+	document.getElementsByName("tNameL")[0].value=rdcard.NameL;
+	document.getElementsByName("tSex")[0].value=rdcard.Sex;
+	document.getElementsByName("tSexL")[0].value=rdcard.SexL;
+	document.getElementsByName("tFolk")[0].value=rdcard.Nation;
+	document.getElementsByName("tFolkL")[0].value=rdcard.NationL;
+	document.getElementsByName("tBirth")[0].value=rdcard.Born;
+	document.getElementsByName("tBirthL")[0].value=rdcard.BornL;
+	document.getElementsByName("tcardID")[0].value=rdcard.CardNo;
+	document.getElementsByName("tAddr")[0].value=rdcard.Address;
+	document.getElementsByName("tnewAddr")[0].value=rdcard.newAddress;
+	document.getElementsByName("tIssue")[0].value =rdcard.Police;
+	document.getElementsByName("tBeginEnd")[0].value=rdcard.Activity;
+	document.getElementsByName("tBeginEndL")[0].value = rdcard.ActivityL;
+	document.getElementsByName("tPassPortId")[0].value = rdcard.PassPortId;
+	document.getElementsByName("tSignCount")[0].value = rdcard.SignCount;
+	document.getElementsByName("jroot")[0].value=rdcard.JPGfile;
+	document.getElementsByName("broot")[0].value=rdcard.BMPfile;
+	document.getElementsByName("jbuff")[0].value=rdcard.JPGBuffer;
+	document.getElementsByName("bbuff")[0].value=rdcard.BMPBuffer;
+    document.getElementsByName("Fchar1")[0].value=rdcard.FGchar1;
+    document.getElementsByName("Fchar2")[0].value=rdcard.FGchar2;
+	document.getElementsByName("tCardType")[0].value=rdcard.CardType;
+	console.log(rdcard.JPGfile);
+	console.log(rdcard.strSavePath);
+	console.log(rdcard.SaveCardPic("C:\\temp\\sfzh.jpg","C:\\temp\\sfzs.jpg",1));
+	if(rdcard.bHaveCard == "1")
+	{
+		if(rdcard.CardType == "I")
+		{
+			document.getElementsByName("tCardT")[0].value="外国人永久居留证";
+			ss=rdcard.CardType;
+        }
+        else if (rdcard.CardType == "J") {
+            document.getElementsByName("tCardT")[0].value = "港澳台居民居住证";
+			ss=rdcard.CardType;
+        }
+		else
+		{
+			document.getElementsByName("tCardT")[0].value="二代身份证";
+			ss=rdcard.CardType;
+		}
+	}
+	else
+	{
+		document.getElementsByName("tCardT")[0].value="";
+		ss=rdcard.CardType;
+	} 
+	
+    r1 = rdcard.FGNUM1;
+    r2 = rdcard.FGNUM2;
+	switch(r1)
+	{
+	case 11:
+	  document.getElementsByName("FNUM1")[0].value="右手拇指";
+	  break;
+	case 12:
+	  document.getElementsByName("FNUM1")[0].value="右手食指";
+	  break;
+	case 13:
+	  document.getElementsByName("FNUM1")[0].value="右手中指";
+	  break;
+	case 14:
+	  document.getElementsByName("FNUM1")[0].value="右手环指";
+	  break;
+	case 15:
+	  document.getElementsByName("FNUM1")[0].value="右手小指";
+	  break;
+	case 16:
+	  document.getElementsByName("FNUM1")[0].value="左手拇指";
+	  break;
+	case 17:
+	  document.getElementsByName("FNUM1")[0].value="左手食指";
+	  break;
+	case 18:
+	  document.getElementsByName("FNUM1")[0].value="左手中指";
+	  break;
+	case 19:
+	  document.getElementsByName("FNUM1")[0].value="左手环指";
+	  break;
+	case 20:
+	  document.getElementsByName("FNUM1")[0].value="左手小指";
+	  break;
+	default:
+	  document.getElementsByName("FNUM1")[0].value="";
+	}	
+	switch(r2)
+	{
+	case 11:
+	  document.getElementsByName("FNUM2")[0].value="右手拇指";
+	  break;
+	case 12:
+	  document.getElementsByName("FNUM2")[0].value="右手食指";
+	  break;
+	case 13:
+	  document.getElementsByName("FNUM2")[0].value="右手中指";
+	  break;
+	case 14:
+	  document.getElementsByName("FNUM2")[0].value="右手环指";
+	  break;
+	case 15:
+	  document.getElementsByName("FNUM2")[0].value="右手小指";
+	  break;
+	case 16:
+	  document.getElementsByName("FNUM2")[0].value="左手拇指";
+	  break;
+	case 17:
+	  document.getElementsByName("FNUM2")[0].value="左手食指";
+	  break;
+	case 18:
+	  document.getElementsByName("FNUM2")[0].value="左手中指";
+	  break;
+	case 19:
+	  document.getElementsByName("FNUM2")[0].value="左手环指";
+	  break;
+	case 20:
+	  document.getElementsByName("FNUM2")[0].value="左手小指";
+	  break;
+	default:
+	  document.getElementsByName("FNUM2")[0].value="";
+	}
+
+
+        r1 = rdcard.FGQualityScore1;
+        r2 = rdcard.FGQualityScore2;
+	if(r1 == 0)  
+	  document.getElementsByName("Fzl1")[0].value="";
+	else 	
+	  document.getElementsByName("Fzl1")[0].value=rdcard.FGQualityScore1;
+	if(r2 == 0)  
+	  document.getElementsByName("Fzl2")[0].value="";
+	else 	
+	  document.getElementsByName("Fzl2")[0].value=rdcard.FGQualityScore2;
+
+
+        r1 = rdcard.FGRegistry1;
+        r2 = rdcard.FGRegistry2;
+	switch(r1)
+	{
+	case 1:
+	  document.getElementsByName("Fzhuce1")[0].value="注册成功";
+	  break;
+	case 2:
+	  document.getElementsByName("Fzhuce1")[0].value="注册失败";
+	  break;
+	case 3:
+	  document.getElementsByName("Fzhuce1")[0].value="未注册";
+	  break;
+	case 9:
+	  document.getElementsByName("Fzhuce1")[0].value="未知";
+	  break;
+	default:
+	  document.getElementsByName("Fzhuce1")[0].value="";
+	}
+	switch(r2)
+	{
+	case 1:
+	  document.getElementsByName("Fzhuce2")[0].value="注册成功";
+	  break;
+	case 2:
+	  document.getElementsByName("Fzhuce2")[0].value="注册失败";
+	  break;
+	case 3:
+	  document.getElementsByName("Fzhuce2")[0].value="未注册";
+	  break;
+	case 9:
+	  document.getElementsByName("Fzhuce2")[0].value="未知";
+	  break;
+	default:
+	  document.getElementsByName("Fzhuce2")[0].value="";
+	}
+        document.getElementsByName("tResult")[0].value=idcard.sResultMsg;
+        document.all['photo'].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;	
+
+     }
+
+
+
+
+	function savepath_onclick(){
+
+	document.getElementsByName("tResult")[0].value="路径设置成功";
+	}
+
+
+	function MyClear_onclick(){
+        var  pp		
+        pp = rdcard.ClearAll();
+        getinfo_onclick();
+        document.getElementsByName("tsNum")[0].value="";
+	if(pp==0)
+        {
+	    document.getElementsByName("tResult")[0].value="清空成功";
+        }
+        else
+        {	
+            document.getElementsByName("tResult")[0].value="清空失败: "+pp;
+        }
+	window_onUnload()
+	}
+
+
+	function window_onUnload(){
+		  rdcard.DeleteOutputFile();
+		  rdcard.DeleteAllPicture();
+	}  
+</SCRIPT>
+</HTML>
