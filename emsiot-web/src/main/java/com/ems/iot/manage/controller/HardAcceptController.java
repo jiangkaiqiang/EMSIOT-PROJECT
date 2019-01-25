@@ -1,5 +1,7 @@
 package com.ems.iot.manage.controller;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ import com.ems.iot.manage.dao.PeopleStationMapper;
 import com.ems.iot.manage.dao.SensitiveAreaMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.StationStatusRecordMapper;
+import com.ems.iot.manage.dto.ElectStationInfluxDto;
 import com.ems.iot.manage.entity.AreaAlarm;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
@@ -38,10 +41,12 @@ import com.ems.iot.manage.entity.SensitiveArea;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.StationStatusRecord;
 import com.ems.iot.manage.entity.SysUser;
+import com.ems.iot.manage.service.base.HttpService;
+import com.ems.iot.manage.service.base.impl.HttpServiceImpl;
 import com.ems.iot.manage.util.ResponseData;
 import com.ems.iot.manage.util.hardutil.ByteAndStr16;
 import com.ems.iot.manage.util.hardutil.CRC16B;
-import com.ems.iot.manage.util.hardutil.StationOrder;
+//import com.ems.iot.manage.util.hardutil.StationOrder;
 import com.ems.iot.manage.util.CometUtil;
 
 /**
@@ -73,6 +78,11 @@ public class HardAcceptController extends BaseController {
 	@Autowired
 	private PeopleStationMapper peopleStationMapper;
 
+	private static String influxDbWriteUrl = "http://47.100.242.28:8086/write";
+	
+	private static String influxDbQueryUrl = "http://47.100.242.28:8086/query";
+	
+	private static String electStationTable = "electStationTest1";
 	/**
 	 * 接收硬件数据，并判断是否报警
 	 * 
@@ -363,17 +373,206 @@ public class HardAcceptController extends BaseController {
 
 	}
 
-	@RequestMapping(value = "/test")
+//	@RequestMapping(value = "/test")
+//	@ResponseBody
+//	public Object test() {
+//		/*MessageEntity messageEntityLimit = new MessageEntity();
+//		messageEntityLimit.setContent("测试;测试;测试;测试!");
+//		CometUtil cometUtilLimit = new CometUtil();
+//		cometUtilLimit.pushToLimit(messageEntityLimit);
+//		*/
+//		StationOrder s=new StationOrder();
+//		s.test();
+//		return ResponseData.newSuccess("接受成功");
+//	}
+
+	/**
+	 * 接收硬件数据，并判断是否报警，将其插入到influxdb中
+	 * 
+	 * @param eleGuaCardNum
+	 * @param stationPhyNum
+	 * @param hardReadTime
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/accepterIntoInfluxDb")
 	@ResponseBody
-	public Object test() {
-		/*MessageEntity messageEntityLimit = new MessageEntity();
-		messageEntityLimit.setContent("测试;测试;测试;测试!");
-		CometUtil cometUtilLimit = new CometUtil();
-		cometUtilLimit.pushToLimit(messageEntityLimit);
-		*/
-		StationOrder s=new StationOrder();
-		s.test();
+	public Object accepterIntoInfluxDb(HttpServletRequest request,
+			@RequestParam(value = "eleGuaCardNum", required = false) String eleGuaCardNum,
+			@RequestParam(value = "stationPhyNum") Integer stationPhyNum,
+			@RequestParam(value = "hardReadTime", required = false) String hardReadTime)
+			throws UnsupportedEncodingException {
+		// SysUser user = (SysUser) request.getSession().getAttribute("user");
+		HttpService httpService = new HttpServiceImpl();
+		Electrombile electrombile = null;
+		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
+		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
+			String[] eleGuaCardNums = eleGuaCardNum.split(",");
+			for (String guaCardNum : eleGuaCardNums) {
+				electrombile = electrombileMapper.findPlateNumByGuaCardNum(Integer.valueOf(guaCardNum));
+				// 如果是一辆黑名单车辆，则推送一条报警信息，并将其插入报警表之中
+				if (electrombile != null) {
+					doAreaAlarm(electrombile, stationPhyNum);
+					if (electrombile.getElect_state() == 2) {
+						doElectAlarm(electrombile, station);
+					} else {
+						
+					}
+					ElectStationInfluxDto electStationInfluxDto = new ElectStationInfluxDto();
+					electStationInfluxDto.setElectrombile(electrombile);
+					electStationInfluxDto.setStation(station);
+					electStationInfluxDto.setHard_read_time(hardReadTime);
+					String paramString = electStationTable+
+							",gua_card_num="+electStationInfluxDto.getElectrombile().getGua_card_num()+
+							",plate_num="+electStationInfluxDto.getElectrombile().getPlate_num()+
+							",station_phy_num="+electStationInfluxDto.getStation().getStation_phy_num()+
+							",station_name="+electStationInfluxDto.getStation().getStation_name()+
+							",owner_name="+electStationInfluxDto.getElectrombile().getOwner_name()+
+							",owner_id="+electStationInfluxDto.getElectrombile().getOwner_id()+
+							",owner_tele="+electStationInfluxDto.getElectrombile().getOwner_tele()+
+							" longitude="+electStationInfluxDto.getStation().getLongitude()+
+							",latitude="+electStationInfluxDto.getStation().getLatitude()+
+							//",station_type="+electStationInfluxDto.getStation().getStation_type()+
+							",station_status="+electStationInfluxDto.getStation().getStation_status()+
+							//",owner_address="+electStationInfluxDto.getElectrombile().getOwner_address()+
+							",elect_state="+electStationInfluxDto.getElectrombile().getElect_state()+
+							",insur_detail="+electStationInfluxDto.getElectrombile().getInsur_detail()+
+							",pro_id="+electStationInfluxDto.getElectrombile().getPro_id()+
+							",city_id="+electStationInfluxDto.getElectrombile().getCity_id()+
+							",area_id="+electStationInfluxDto.getElectrombile().getArea_id();
+							//",hard_read_time="+electStationInfluxDto.getHard_read_time();
+					httpService.sendPost(influxDbWriteUrl+"?db=emsiot",paramString);
+				}
+				else{
+					// 插入人员基站关系表
+					People people = peopleMapper.findPlateNumByPeopleGuaCardNum(Integer.valueOf(guaCardNum));
+					if (people != null) {
+						
+					} else {
+						
+					}
+				} 
+
+			}
+		}
 		return ResponseData.newSuccess("接受成功");
 	}
 
+	public void doElectAlarm(Electrombile electrombile,Station station) {
+		MessageEntity messageEntity = new MessageEntity();
+		messageEntity.setContent(electrombile.getPro_id() + ";" + electrombile.getCity_id() + ";"
+				+ electrombile.getArea_id() + ";" + "警报：基站" + station.getStation_name()
+				+ "发现可疑车辆" + electrombile.getPlate_num() + "!");
+		CometUtil cometUtil = new CometUtil();
+		cometUtil.pushToAll(messageEntity);
+		// 插入报警表中
+		ElectAlarm electAlarm = new ElectAlarm();
+		electAlarm.setAlarm_gua_card_num(electrombile.getGua_card_num());
+		electAlarm.setAlarm_station_phy_num(station.getStation_phy_num());
+		electAlarmMapper.insert(electAlarm);
+	}
+    public void doAreaAlarm(Electrombile electrombile,Integer stationPhyNum) {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date sysDate = new Date();
+		// //处理敏感区域报警
+		List<SensitiveArea> sensitiveAreas = sensitiveAreaMapper.findAll();
+		for (SensitiveArea sensitiveArea : sensitiveAreas) {
+			String[] sensitiveStationIDs = sensitiveArea.getStation_ids().split(";");
+			List<Integer> sensitiveStationPhyNumsList = new ArrayList<Integer>();
+			// 是否是限制车辆
+			String elects = sensitiveArea.getBlack_list_elects();
+			if (elects != null) {
+				// System.err.println(elects.indexOf(electrombile.getElect_id()
+				// + ""));
+				if (elects.indexOf(electrombile.getElect_id() + "") == -1) {
+					continue;
+				}
+			} else {
+				continue;
+			}
+			for (String sensitiveStationID : sensitiveStationIDs) {
+				Station station = stationMapper.selectByPrimaryKey(Integer.valueOf(sensitiveStationID));
+				if (station != null) {
+					sensitiveStationPhyNumsList.add(station.getStation_phy_num());
+				}
+			}
+
+			if (!sensitiveStationPhyNumsList.contains(stationPhyNum)) {
+				continue;
+			}
+			// String[] limitElects =
+			// limitArea.getBlack_list_elects().split(";");
+			// 是否有开启0未开启1开启
+			if (sensitiveArea.getStatus() == 0) {
+				continue;
+			}
+			// 判断是否有时间，没有时间就始终进行，有时间就按不同时间进行
+			Date startTime = null;
+			Date endTime = null;
+			try {
+				Long sysDateL = sdf.parse(sdf.format(sysDate)).getTime();
+
+				if (sensitiveArea.getSens_start_time() != null
+						&& sensitiveArea.getSens_end_time() != null) {
+					startTime = sdf.parse(sensitiveArea.getSens_start_time());
+					endTime = sdf.parse(sensitiveArea.getSens_end_time());
+
+					if (!(sysDateL >= startTime.getTime() && sysDateL <= endTime.getTime())) {
+						continue;
+					}
+
+				} else if (sensitiveArea.getSens_start_time() != null
+						&& sensitiveArea.getSens_end_time() == null) {
+					startTime = sdf.parse(sensitiveArea.getSens_start_time());
+					if (!(sysDateL >= startTime.getTime())) {
+						continue;
+					}
+
+				} else if (sensitiveArea.getSens_start_time() == null
+						&& sensitiveArea.getSens_end_time() != null) {
+					endTime = sdf.parse(sensitiveArea.getSens_end_time());
+					if (!(sysDateL <= endTime.getTime())) {
+						continue;
+					}
+				}
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				continue;
+			}
+			if (sensitiveStationPhyNumsList.contains(stationPhyNum)) {
+				Integer areaAlarmCount = areaAlarmMapper.findAreaAlarmCountByStationNumAndTime(
+						electrombile.getPlate_num(), sensitiveArea.getSensitive_area_name(), startTime,
+						endTime, null, null, null);
+				// 此车辆超出出现次数进行提示
+				if (sensitiveArea.getEnter_num() <= areaAlarmCount) {
+					MessageEntity messageEntityLimit = new MessageEntity();
+					messageEntityLimit.setContent(electrombile.getPro_id() + ";" + electrombile.getCity_id()
+							+ ";" + electrombile.getArea_id() + ";" + "经过限制区域 '"
+							+ sensitiveArea.getSensitive_area_name() + "' " + (areaAlarmCount + 1)
+							+ "次。 报警基站" + stationPhyNum + "发现可疑车辆"
+							+ electrombile.getPlate_num() + "!");
+					CometUtil cometUtilLimit = new CometUtil();
+					cometUtilLimit.pushToLimit(messageEntityLimit);
+				}
+				AreaAlarm areaAlarm = new AreaAlarm();
+				areaAlarm.setArea_name(sensitiveArea.getSensitive_area_name());
+				areaAlarm.setArea_type(1);// 1表示敏感区域
+				areaAlarm.setAlarm_station_phy_num(stationPhyNum);
+				areaAlarm.setEnter_plate_num(electrombile.getPlate_num());
+				areaAlarm.setProcess_state(0);// 0未处理，没有默认值sql报错Column
+												// 'process_state'
+												// cannot be null;
+				areaAlarmMapper.insert(areaAlarm);
+			}
+		}
+	}
+    
+    public static void main(String[] args) {
+    	HttpService httpService = new HttpServiceImpl();
+    	//String readString = httpService.sendGet(influxDbQueryUrl+"?db=emsiot&q=SELECT%20*%20FROM%20cpu_load_short%20WHERE%20value=0.65");
+    	String writeString = httpService.sendPost(influxDbWriteUrl+"?db=emsiot","cpu_load_short,host=server05,region=us-west value=0.65,value2=0.86");
+    	System.out.println(writeString);
+	}
 }
