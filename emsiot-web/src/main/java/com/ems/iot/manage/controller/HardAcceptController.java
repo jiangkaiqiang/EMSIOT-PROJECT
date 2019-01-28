@@ -7,7 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +51,7 @@ import com.ems.iot.manage.util.hardutil.ByteAndStr16;
 import com.ems.iot.manage.util.hardutil.CRC16B;
 //import com.ems.iot.manage.util.hardutil.StationOrder;
 import com.ems.iot.manage.util.CometUtil;
+import com.ems.iot.manage.util.InfluxDBConnection;
 
 /**
  * @author Barry
@@ -78,11 +82,11 @@ public class HardAcceptController extends BaseController {
 	@Autowired
 	private PeopleStationMapper peopleStationMapper;
 
-	private static String influxDbWriteUrl = "http://47.100.242.28:8086/write";
+	private static String influxDbWriteUrl = "http://47.100.242.28:8086";
 	
-	private static String influxDbQueryUrl = "http://47.100.242.28:8086/query";
+	private static String influxDbQueryUrl = "http://47.100.242.28:8086";
 	
-	private static String electStationTable = "electStationTest1";
+	private static String electStationTable = "electStationTest2";
 	/**
 	 * 接收硬件数据，并判断是否报警
 	 * 
@@ -422,26 +426,52 @@ public class HardAcceptController extends BaseController {
 					electStationInfluxDto.setElectrombile(electrombile);
 					electStationInfluxDto.setStation(station);
 					electStationInfluxDto.setHard_read_time(hardReadTime);
-					String paramString = electStationTable+
-							",gua_card_num="+electStationInfluxDto.getElectrombile().getGua_card_num()+
-							",plate_num="+electStationInfluxDto.getElectrombile().getPlate_num()+
-							",station_phy_num="+electStationInfluxDto.getStation().getStation_phy_num()+
-							",station_name="+electStationInfluxDto.getStation().getStation_name()+
-							",owner_name="+electStationInfluxDto.getElectrombile().getOwner_name()+
-							",owner_id="+electStationInfluxDto.getElectrombile().getOwner_id()+
-							",owner_tele="+electStationInfluxDto.getElectrombile().getOwner_tele()+
-							" longitude="+electStationInfluxDto.getStation().getLongitude()+
-							",latitude="+electStationInfluxDto.getStation().getLatitude()+
-							//",station_type="+electStationInfluxDto.getStation().getStation_type()+
-							",station_status="+electStationInfluxDto.getStation().getStation_status()+
-							//",owner_address="+electStationInfluxDto.getElectrombile().getOwner_address()+
-							",elect_state="+electStationInfluxDto.getElectrombile().getElect_state()+
-							",insur_detail="+electStationInfluxDto.getElectrombile().getInsur_detail()+
-							",pro_id="+electStationInfluxDto.getElectrombile().getPro_id()+
-							",city_id="+electStationInfluxDto.getElectrombile().getCity_id()+
-							",area_id="+electStationInfluxDto.getElectrombile().getArea_id();
-							//",hard_read_time="+electStationInfluxDto.getHard_read_time();
-					httpService.sendPost(influxDbWriteUrl+"?db=emsiot",paramString);
+					//使用http api进行操作---------------------------------------
+//					String paramString = electStationTable+
+//							",gua_card_num="+electStationInfluxDto.getElectrombile().getGua_card_num()+
+//							",plate_num="+electStationInfluxDto.getElectrombile().getPlate_num()+
+//							",station_phy_num="+electStationInfluxDto.getStation().getStation_phy_num()+
+//							",station_name="+electStationInfluxDto.getStation().getStation_name()+
+//							",owner_name="+electStationInfluxDto.getElectrombile().getOwner_name()+
+//							",owner_id="+electStationInfluxDto.getElectrombile().getOwner_id()+
+//							",owner_tele="+electStationInfluxDto.getElectrombile().getOwner_tele()+
+//							" longitude="+electStationInfluxDto.getStation().getLongitude()+
+//							",latitude="+electStationInfluxDto.getStation().getLatitude()+
+//							//",station_type="+electStationInfluxDto.getStation().getStation_type()+
+//							",station_status="+electStationInfluxDto.getStation().getStation_status()+
+//							//",owner_address="+electStationInfluxDto.getElectrombile().getOwner_address()+
+//							",elect_state="+electStationInfluxDto.getElectrombile().getElect_state()+
+//							",insur_detail="+electStationInfluxDto.getElectrombile().getInsur_detail()+
+//							",pro_id="+electStationInfluxDto.getElectrombile().getPro_id()+
+//							",city_id="+electStationInfluxDto.getElectrombile().getCity_id()+
+//							",area_id="+electStationInfluxDto.getElectrombile().getArea_id();
+//							//",hard_read_time="+electStationInfluxDto.getHard_read_time();
+//					httpService.sendPost(influxDbWriteUrl+"/write?db=emsiot",paramString);
+					//使用java api进行操作，推荐使用此种方式--------------------------
+					InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
+					Map<String, String> tags = new HashMap<String, String>();
+					tags.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num()+"");
+					tags.put("plate_num", electStationInfluxDto.getElectrombile().getPlate_num());
+					tags.put("station_phy_num", electStationInfluxDto.getStation().getStation_phy_num()+"");
+					tags.put("station_name", electStationInfluxDto.getStation().getStation_name());
+					tags.put("owner_name", electStationInfluxDto.getElectrombile().getOwner_name());
+					tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
+					tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());
+					Map<String, Object> fields = new HashMap<String, Object>();
+					fields.put("longitude", electStationInfluxDto.getStation().getLongitude());
+					fields.put("latitude", electStationInfluxDto.getStation().getLatitude());
+					fields.put("station_type", electStationInfluxDto.getStation().getStation_type());
+					fields.put("station_status", electStationInfluxDto.getStation().getStation_status());
+					fields.put("owner_addres", electStationInfluxDto.getElectrombile().getOwner_address());
+					fields.put("elect_state", electStationInfluxDto.getElectrombile().getElect_state());
+					fields.put("insur_detail", electStationInfluxDto.getElectrombile().getInsur_detail());
+					fields.put("pro_id", electStationInfluxDto.getElectrombile().getPro_id());
+					fields.put("city_id", electStationInfluxDto.getElectrombile().getCity_id());
+					fields.put("area_id", electStationInfluxDto.getElectrombile().getArea_id());
+					fields.put("hard_read_time", electStationInfluxDto.getHard_read_time());
+					// 时间使用毫秒为单位
+					influxDBConnection.insert(electStationTable, tags, fields, System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+					
 				}
 				else{
 					// 插入人员基站关系表
@@ -568,11 +598,11 @@ public class HardAcceptController extends BaseController {
 			}
 		}
 	}
-    
+    //测试http api进行操作influxdb
     public static void main(String[] args) {
     	HttpService httpService = new HttpServiceImpl();
-    	//String readString = httpService.sendGet(influxDbQueryUrl+"?db=emsiot&q=SELECT%20*%20FROM%20cpu_load_short%20WHERE%20value=0.65");
-    	String writeString = httpService.sendPost(influxDbWriteUrl+"?db=emsiot","cpu_load_short,host=server05,region=us-west value=0.65,value2=0.86");
+    	//String readString = httpService.sendGet(influxDbQueryUrl+"/query?db=emsiot&q=SELECT%20*%20FROM%20cpu_load_short%20WHERE%20value=0.65");
+    	String writeString = httpService.sendPost(influxDbWriteUrl+"/write?db=emsiot","cpu_load_short,host=server05,region=us-west value=0.65,value2=0.86");
     	System.out.println(writeString);
 	}
 }
