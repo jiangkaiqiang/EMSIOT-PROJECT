@@ -454,6 +454,7 @@ public class HardAcceptController extends BaseController {
 					tags.put("plate_num", electStationInfluxDto.getElectrombile().getPlate_num());
 					tags.put("station_phy_num", electStationInfluxDto.getStation().getStation_phy_num()+"");
 					tags.put("station_name", electStationInfluxDto.getStation().getStation_name());
+					tags.put("station_address", electStationInfluxDto.getStation().getStation_address());
 					tags.put("owner_name", electStationInfluxDto.getElectrombile().getOwner_name());
 					tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
 					tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());

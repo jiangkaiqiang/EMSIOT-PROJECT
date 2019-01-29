@@ -8,12 +8,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.influxdb.dto.QueryResult;
+import org.influxdb.dto.QueryResult.Result;
+import org.influxdb.dto.QueryResult.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +49,7 @@ import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.OssService;
 import com.ems.iot.manage.util.ExcelImportUtil;
+import com.ems.iot.manage.util.InfluxDBConnection;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -71,7 +77,8 @@ public class ElectController extends BaseController {
 	private StationMapper stationMapper;
 	@Autowired
 	private PeopleMapper peopleMapper;
-
+	
+	InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 	/**
 	 * 根据电动车的ID寻找电动车
 	 * 
@@ -103,8 +110,58 @@ public class ElectController extends BaseController {
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
 					throws UnsupportedEncodingException {
 		
-		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+//		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+//		return count;
+		
+		//查询influxdb 2019-01-29
+		int count = 0;
+		String strSql=" SELECT count(*) FROM electStationTest2 ";
+		String where = "";
+		if( stationPhyNum != null) {
+			where += " station_phy_num = '"+stationPhyNum+"'";
+		}
+		if( startTime != null && !"".equals(startTime)) {
+			if(!where.equals("")) {
+				where += " and time >= '" + startTime+"'";
+			}else {
+				where += " time >= '" + startTime+"'";
+			}
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if(!where.equals("")) {
+			strSql+=" where "+where;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			
+			List<List<Object>> listVal = series.get(0).getValues();
+			count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
+			
+		}
 		return count;
+		
 	}
 	/**
 	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
@@ -133,8 +190,63 @@ public class ElectController extends BaseController {
 			stationElectDto.setPlate_num(electrombile.getPlate_num());
 			stationElectDtos.add(stationElectDto);
 		}*/
-		List<StationElectDto> stationElectDtos = electrombileStationMapper.selectElectsByStationPhyNumAndTime2(stationPhyNum, startTime, endTime);
-		return stationElectDtos;
+		//List<StationElectDto> stationElectDtos = electrombileStationMapper.selectElectsByStationPhyNumAndTime2(stationPhyNum, startTime, endTime);
+		//return stationElectDtos;
+		
+		
+		//查询influxdb 2019-01-29
+		String strSql=" SELECT * FROM electStationTest2 ";
+		String where = "";
+		if( stationPhyNum != null) {
+			where += " station_phy_num = '"+stationPhyNum+"'";
+		}
+		if( startTime != null && !"".equals(startTime)) {
+			if(!where.equals("")) {
+				where += " and time >= '" + startTime+"'";
+			}else {
+				where += " time >= '" + startTime+"'";
+			}
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if(!where.equals("")) {
+			strSql+=" where "+where;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			for (List<Object> lists : listVal) {
+				StationElectDto elect = new StationElectDto();
+				elect.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
+				elect.setPlate_num(lists.get(listCol.indexOf("plate_num")).toString());
+				elect.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				elect.setCorssTime(lists.get(listCol.indexOf("hard_read_time")).toString());
+				listElect.add(elect);
+			}
+		}
+		return listElect;
 	}
 
 	/**
@@ -750,18 +862,91 @@ public class ElectController extends BaseController {
 	public Object findElectLocation(@RequestParam(value = "plateNum", required = false) String plateNum,
 			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
 			throws UnsupportedEncodingException {
-		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
+//		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
+//		Station station = new Station();
+//		if (null != electrombile) {
+//			ElectrombileStation electrombileStation = electrombileStationMapper
+//					.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
+//			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
+//		}
+//		return station;
+		
 		Station station = new Station();
-		if (null != electrombile) {
-			ElectrombileStation electrombileStation = electrombileStationMapper
-					.selectByGuaCardNumForLocation(electrombile.getGua_card_num());
-			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
+		String strSql=" SELECT * FROM electStationTest2 ";
+		String where = "";
+		if( plateNum != null && !"".equals(plateNum)) {
+			where += " plate_num = '"+plateNum+"'";
 		}
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = '"+guaCardNum+"'";
+			}else {
+				where += " gua_card_num = '"+guaCardNum+"'";
+			}
+		}
+		if(plateNum != null && guaCardNum != null ) {
+			return station;
+		}
+		if(!where.equals("")) {
+			strSql+=" where "+ where +" order by time desc limit 1 ";
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			List<Object> values = listVal.get(0);
+			station.setLatitude(values.get(listCol.indexOf("latitude")).toString());
+			station.setLongitude(values.get(listCol.indexOf("longitude")).toString());
+			station.setStation_phy_num(Integer.parseInt(values.get(listCol.indexOf("station_phy_num")).toString()));
+			station.setStation_name(values.get(listCol.indexOf("station_name")).toString());
+			station.setStation_address(values.get(listCol.indexOf("station_address")).toString());
+			station.setStation_type(values.get(listCol.indexOf("station_type")).toString());
+		}
+		
+		
 		return station;
+		
 	}
 
 	/**
 	 * 查询车辆轨迹
+	 * 
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @param startTimeForTrace
+	 * @param endTimeForTrace
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+//	@RequestMapping(value = "/findElectTrace")
+//	@ResponseBody
+//	public Object findElectTrace(@RequestParam(value = "plateNum", required = false) String plateNum,
+//			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
+//			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
+//			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
+//			throws UnsupportedEncodingException {
+//		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
+//		//List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
+//		if (null != electrombile) {
+//			List<ElectrombileStation> electrombileStations = electrombileStationMapper
+//					.selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
+//			/*for (ElectrombileStation electrombileStation : electrombileStations) {
+//				TraceStationDto traceStationDto = new TraceStationDto();
+//				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
+//				traceStationDto
+//						.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
+//				traceStationDtos.add(traceStationDto);
+//			}*/
+//			return electrombileStations;
+//		}
+//		return new ArrayList<ElectrombileStation>();
+//	}
+	
+	/**
+	 * 查询车辆轨迹   查询influxdb 2019-01-29  重写
 	 * 
 	 * @param plateNum
 	 * @param guaCardNum
@@ -776,22 +961,76 @@ public class ElectController extends BaseController {
 			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
 			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
-			throws UnsupportedEncodingException {
-		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
-		//List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
-		if (null != electrombile) {
-			List<ElectrombileStation> electrombileStations = electrombileStationMapper
-					.selectByGuaCardNumForTrace(electrombile.getGua_card_num(), startTimeForTrace, endTimeForTrace);
-			/*for (ElectrombileStation electrombileStation : electrombileStations) {
-				TraceStationDto traceStationDto = new TraceStationDto();
-				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
-				traceStationDto
-						.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
-				traceStationDtos.add(traceStationDto);
-			}*/
-			return electrombileStations;
+					throws UnsupportedEncodingException {
+		String strSql=" SELECT * FROM electStationTest2 ";
+		String where = "";
+		if( plateNum != null && !"".equals(plateNum)) {
+			where += " plate_num = '"+plateNum+"'";
 		}
-		return new ArrayList<ElectrombileStation>();
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = '"+guaCardNum+"'";
+			}else {
+				where += " gua_card_num = '"+guaCardNum+"'";
+			}
+		}
+		if(plateNum != null && guaCardNum != null ) {
+			return new ArrayList<ElectrombileStation>();
+		}
+		if( startTimeForTrace != null && !"".equals(startTimeForTrace)) {
+			if(!where.equals("")) {
+				where += " and time >= '" + startTimeForTrace+"'";
+			}else {
+				where += " time >= '" + startTimeForTrace+"'";
+			}
+		}
+		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTimeForTrace);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if(!where.equals("")) {
+			strSql+=" where "+where;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		List<ElectrombileStation> listElect = new ArrayList<ElectrombileStation>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			
+			for (List<Object> lists : listVal) {
+				ElectrombileStation elect = new ElectrombileStation();
+				elect.setEle_gua_card_num(Integer.parseInt(lists.get(listCol.indexOf("gua_card_num")).toString()));
+				elect.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
+				elect.setHard_read_time(lists.get(listCol.indexOf("hard_read_time")).toString());
+				elect.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
+				elect.setPlate_num(lists.get(listCol.indexOf("plate_num")).toString());
+				elect.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				elect.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
+				elect.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
+				elect.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
+				elect.setUpdate_time(lists.get(listCol.indexOf("hard_read_time")).toString());
+				listElect.add(elect);
+			}
+		}
+		return listElect;
 	}
 
 	/**

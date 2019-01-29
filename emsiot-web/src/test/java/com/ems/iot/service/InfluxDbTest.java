@@ -1,6 +1,10 @@
 package com.ems.iot.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +25,69 @@ import com.ems.iot.manage.util.InfluxDBConnection;
  */
 public class InfluxDbTest {
 	public static void main(String[] args) {
-		testQuery();
+		//testQuery();
 		//testInsert();
 		//testBatchPoints();
+		testElectQuery();
+		//testDelete();
+	}
+	public static void testElectQuery() {
+		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
+		/*QueryResult results = influxDBConnection
+				.query("SELECT * FROM electStationTest2 order by time desc limit 1000");*/
+		String strSql="SELECT * FROM electStationTest2  " + 
+				//"station_phy_num = '28954' and"+
+				// "  time >= '2019-01-28' and time < '2019-01-30' "+
+
+				 " order by time desc ";
+		
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Date date=new Date();
+		Calendar calendar = Calendar.getInstance();
+		try {
+			
+			date=sdf.parse("2019-01-28");
+			calendar.setTime(date);
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			System.err.println(sdf.format(calendar.getTime()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		//results.getResults()是同时查询多条SQL语句的返回值，此处我们只有一条SQL，所以只取第一个结果集即可。
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> list = series.get(0).getColumns();
+			List<List<Object>> lists = series.get(0).getValues();
+			System.err.println(list.indexOf("owner_name"));
+			for (String str : list) {
+				System.err.print(str+", ");
+			}
+			System.err.println();
+			for (List<Object> list2 : lists) {
+				for (int i = 0; i < list2.size(); i++) {
+					System.err.print(list2.get(i)+", ");
+				}
+				System.err.println();
+			}
+			
+			//System.out.println(series.get(0));
+		}else {
+			System.err.println(oneResult.getError());
+		}
+	}
+	public static void testDelete() {
+		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
+		String results = influxDBConnection
+				.deleteMeasurementData("DELETE FROM electStationTest2 ");
+		//results.getResults()是同时查询多条SQL语句的返回值，此处我们只有一条SQL，所以只取第一个结果集即可。
+
+		System.out.println(results);
+
 	}
 	public static void testQuery() {
 		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
