@@ -15,4 +15,9 @@ public class Constant {
     public static String CHANNEL_LIMIT_DATA= "limitData";
     public static String separator = File.separator;
     public static String url = separator+"emsiot";
+    public static String influxDbUrl = "http://47.100.242.28:8086";
+    public static String influxDbUserName = "admin";
+    public static String influxDbPassword = "admin";
+    public static String emsiotDbName = "emsiot";
+    public static String electStationTable = "electStationTest3";
 }

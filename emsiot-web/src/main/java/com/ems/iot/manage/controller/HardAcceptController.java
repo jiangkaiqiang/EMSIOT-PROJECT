@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.hwpf.usermodel.DateAndTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,7 @@ import com.ems.iot.manage.util.hardutil.ByteAndStr16;
 import com.ems.iot.manage.util.hardutil.CRC16B;
 //import com.ems.iot.manage.util.hardutil.StationOrder;
 import com.ems.iot.manage.util.CometUtil;
+import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.InfluxDBConnection;
 
 /**
@@ -82,11 +84,6 @@ public class HardAcceptController extends BaseController {
 	@Autowired
 	private PeopleStationMapper peopleStationMapper;
 
-	private static String influxDbWriteUrl = "http://47.100.242.28:8086";
-	
-	private static String influxDbQueryUrl = "http://47.100.242.28:8086";
-	
-	private static String electStationTable = "electStationTest2";
 	/**
 	 * 接收硬件数据，并判断是否报警
 	 * 
@@ -411,6 +408,9 @@ public class HardAcceptController extends BaseController {
 		Electrombile electrombile = null;
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
 		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
+			//使用java api进行操作，推荐使用此种方式--------------------------
+			InfluxDBConnection influxDBConnection = new InfluxDBConnection(Constant.influxDbUserName, Constant.influxDbPassword, 
+					Constant.influxDbUrl, Constant.emsiotDbName, null);
 			String[] eleGuaCardNums = eleGuaCardNum.split(",");
 			for (String guaCardNum : eleGuaCardNums) {
 				electrombile = electrombileMapper.findPlateNumByGuaCardNum(Integer.valueOf(guaCardNum));
@@ -447,8 +447,6 @@ public class HardAcceptController extends BaseController {
 //							",area_id="+electStationInfluxDto.getElectrombile().getArea_id();
 //							//",hard_read_time="+electStationInfluxDto.getHard_read_time();
 //					httpService.sendPost(influxDbWriteUrl+"/write?db=emsiot",paramString);
-					//使用java api进行操作，推荐使用此种方式--------------------------
-					InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 					Map<String, String> tags = new HashMap<String, String>();
 					tags.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num()+"");
 					tags.put("plate_num", electStationInfluxDto.getElectrombile().getPlate_num());
@@ -471,7 +469,10 @@ public class HardAcceptController extends BaseController {
 					fields.put("area_id", electStationInfluxDto.getElectrombile().getArea_id());
 					fields.put("hard_read_time", electStationInfluxDto.getHard_read_time());
 					// 时间使用毫秒为单位
-					influxDBConnection.insert(electStationTable, tags, fields, System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+				    //System.out.println(System.currentTimeMillis());
+				    Date date = new Date();
+				    date.setHours(date.getHours()+8);
+					influxDBConnection.insert(Constant.electStationTable, tags, fields, date.getTime() , TimeUnit.MILLISECONDS);
 					
 				}
 				else{
@@ -602,8 +603,8 @@ public class HardAcceptController extends BaseController {
     //测试http api进行操作influxdb
     public static void main(String[] args) {
     	HttpService httpService = new HttpServiceImpl();
-    	//String readString = httpService.sendGet(influxDbQueryUrl+"/query?db=emsiot&q=SELECT%20*%20FROM%20cpu_load_short%20WHERE%20value=0.65");
-    	String writeString = httpService.sendPost(influxDbWriteUrl+"/write?db=emsiot","cpu_load_short,host=server05,region=us-west value=0.65,value2=0.86");
+    	//String readString = httpService.sendGet(Constant.influxDbUrl+"/query?db=emsiot&q=SELECT%20*%20FROM%20cpu_load_short%20WHERE%20value=0.65");
+    	String writeString = httpService.sendPost(Constant.influxDbUrl+"/write?db=emsiot","cpu_load_short,host=server05,region=us-west value=0.65,value2=0.86");
     	System.out.println(writeString);
 	}
 }
