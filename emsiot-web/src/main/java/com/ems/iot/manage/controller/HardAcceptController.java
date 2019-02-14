@@ -471,7 +471,7 @@ public class HardAcceptController extends BaseController {
 				    //System.out.println(System.currentTimeMillis());
 				    Date date = new Date();
 				    date.setHours(date.getHours()+8);
-				    Point point = influxDBConnection.pointBuilder(Constant.electStationTable, System.currentTimeMillis(), tags, fields);
+				    Point point = influxDBConnection.pointBuilder(Constant.electStationTable, date.getTime(), tags, fields);
 				    eleBatchPoints.point(point);
 					doAreaAlarm(electrombile, stationPhyNum);
 					if (electrombile.getElect_state() == 2) {

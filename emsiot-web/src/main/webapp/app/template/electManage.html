@@ -782,10 +782,180 @@
 						<div>车主信息</div>
 					</div>
 
+
+					<div class="row fileup margin-top2">
+						<div class="col-sm-12">
+								<div class="col-md-12 up-content" style="text-align: center;">
+									<a href="javascript:;" ng-show="rootUserPowerDto.privatePower==1" class="picfile" style="width: 324px;height: 204px;background-image: none;">
+
+										 <output id="pic_list" class="pic_list" style="display: block 1px red ;width: 324px;height: 204px;">
+											<img style="width: 324px;height: 204px;"
+													src="{{viewElect.electrombile.indentity_card_pic}}">
+										 </output>
+	
+									</a>
+									<a href="javascript:;" ng-show="rootUserPowerDto.privatePower!=1" class="picfile" style="width: 324px;height: 204px;background-image: none;">
+
+										 <output id="pic_list" class="pic_list" style="display: block 1px red ;width: 324px;height: 204px;">
+											<img style="width: 324px;height: 204px;"
+													src="">
+									
+										 </output>
+	
+									</a>
+
+									<p style="text-align: center;margin-bottom: 10px;">身份证照片</p>
+									
+								</div>
+							</div>
+
+					</div>
+
+
+					<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="" class="col-sm-4 control-label"> <i>*</i>
+										姓名：
+									</label>
+
+									<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_name}}</div>
+									<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="" class="col-sm-4 control-label">
+										出生：
+									</label>
+									<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_born}}</div>
+									<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+								</div>
+							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+								<div class="form-group">
+									<label for="id-user" class="col-sm-4 control-label"> <i>*</i>
+										身份证：
+									</label>
+									<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_id}}</div>
+									<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="ownerIdType" class="col-sm-4 control-label">
+
+										证件类型： </label>
+									<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_id_type}}</div>
+									<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+								</div>
+							</div>
+					</div>
+
+
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group ">
-								<label for="phoneNum" class="control-label col-md-4"> <!--<i>*</i>-->
+								<label for="phoneNum" class="control-label col-md-4"> <i>*</i>
+									手机号：
+								</label>
+
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_tele}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerSex" class="col-sm-4 control-label"> 性别：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+								{{viewElect.electrombile.owner_sex}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+								******</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="address" class="col-sm-4 control-label"> 
+									地址：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+									{{viewElect.electrombile.owner_address}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+									******</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerNationality" class="col-sm-4 control-label"> 民族：
+								</label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+								{{viewElect.electrombile.owner_nationality}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+								******</div>
+							</div>
+						</div>
+					</div>
+
+					
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerIdIssuingAuthority" class="col-sm-4 control-label">
+
+									签发机关： </label>
+								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+								{{viewElect.electrombile.owner_id_issuing_authority}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+								******</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="ownerIdUsefulLife" class="col-sm-4 control-label">
+
+									有效期限： </label>
+									<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
+								{{viewElect.electrombile.owner_id_useful_life}}</div>
+								<div ng-show="rootUserPowerDto.privatePower!=1" class="col-sm-8">
+								******</div>
+							</div>
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+
+					<!-- <div class="row">
+						<div class="col-md-6">
+							<div class="form-group ">
+								<label for="phoneNum" class="control-label col-md-4"> <i>*</i>
 									手机号：
 								</label>
 								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
@@ -796,7 +966,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="" class="col-sm-4 control-label"> <!--<i>*</i>-->
+								<label for="" class="col-sm-4 control-label"> <i>*</i>
 									姓名：
 								</label>
 								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
@@ -810,7 +980,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="address" class="col-sm-4 control-label"> <!--<i>*</i>-->
+								<label for="address" class="col-sm-4 control-label"> <i>*</i>
 									地址：
 								</label>
 								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
@@ -822,7 +992,7 @@
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="id-user" class="col-sm-4 control-label"> <!--<i>*</i>-->
+								<label for="id-user" class="col-sm-4 control-label"> <i>*</i>
 									身份证：
 								</label>
 								<div ng-show="rootUserPowerDto.privatePower==1" class="col-sm-8">
@@ -831,7 +1001,7 @@
 									******</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<div class="divider-line"></div>
 
@@ -977,7 +1147,7 @@
 									</a>
 									<p>车辆照片(牌照)</p>
 								</div>
-								<div class="col-md-3 up-content">
+								<!-- <div class="col-md-3 up-content">
 									<a href="javascript:;" class="picfile"> <output
 											id="pic_list" class="pic_list">
 											<span> <img
@@ -986,7 +1156,7 @@
 										</output>
 									</a>
 									<p>身份证照片</p>
-								</div>
+								</div> -->
 								<div class="col-md-3 up-content">
 									<a href="javascript:;" class="picfile"> <output
 											id="pic_list" class="pic_list">

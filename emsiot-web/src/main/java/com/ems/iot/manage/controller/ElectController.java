@@ -48,6 +48,7 @@ import com.ems.iot.manage.entity.Province;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.OssService;
+import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.ExcelImportUtil;
 import com.ems.iot.manage.util.InfluxDBConnection;
 import com.github.pagehelper.Page;
@@ -115,17 +116,11 @@ public class ElectController extends BaseController {
 		
 		//查询influxdb 2019-01-29
 		int count = 0;
-		String strSql=" SELECT count(*) FROM electStationTest2 ";
+		String strSql=" SELECT count(*) FROM " + Constant.electStationTable;
 		String where = "";
-		if( stationPhyNum != null) {
-			where += " station_phy_num = '"+stationPhyNum+"'";
-		}
+		
 		if( startTime != null && !"".equals(startTime)) {
-			if(!where.equals("")) {
-				where += " and time >= '" + startTime+"'";
-			}else {
-				where += " time >= '" + startTime+"'";
-			}
+			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -146,13 +141,20 @@ public class ElectController extends BaseController {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
+		if( stationPhyNum != null) {
+			if(!where.equals("")) {
+				where += " and station_phy_num = '"+stationPhyNum+"'";
+			}else {
+				where += " station_phy_num = '"+stationPhyNum+"'";
+			}
+		}
 		if(!where.equals("")) {
 			strSql+=" where "+where;
 		}
 		QueryResult results = influxDBConnection
 				.query(strSql);
 		Result oneResult = results.getResults().get(0);
-		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		
 		if (oneResult.getSeries() != null) {
 			List<Series> series = oneResult.getSeries();
 			
@@ -195,17 +197,11 @@ public class ElectController extends BaseController {
 		
 		
 		//查询influxdb 2019-01-29
-		String strSql=" SELECT * FROM electStationTest2 ";
+		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
-		if( stationPhyNum != null) {
-			where += " station_phy_num = '"+stationPhyNum+"'";
-		}
+		
 		if( startTime != null && !"".equals(startTime)) {
-			if(!where.equals("")) {
-				where += " and time >= '" + startTime+"'";
-			}else {
-				where += " time >= '" + startTime+"'";
-			}
+			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -224,6 +220,13 @@ public class ElectController extends BaseController {
 				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if( stationPhyNum != null) {
+			if(!where.equals("")) {
+				where += " and station_phy_num = '"+stationPhyNum+"'";
+			}else {
+				where += " station_phy_num = '"+stationPhyNum+"'";
 			}
 		}
 		if(!where.equals("")) {
@@ -294,9 +297,81 @@ public class ElectController extends BaseController {
 		if (null == areaPower || areaPower == -1) {
 			areaPower = null;
 		}
-		List<Integer> inlineList = electrombileStationMapper.selectElectsByEleGuaCardNumNow(proPower, cityPower,
+		/*List<Integer> inlineList = electrombileStationMapper.selectElectsByEleGuaCardNumNow(proPower, cityPower,
 				areaPower);
-		return inlineList.size();
+		return inlineList.size();*/
+		
+		
+		int count = 0;
+		Date sysDate = new Date();
+		String startTime = null;
+		String endTime = null;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		startTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);
+		String strSql=" SELECT count(DISTINCT(gua_card_num)) FROM " + Constant.electStationTable;
+		String where = "";
+		if( startTime != null && !"".equals(startTime)) {
+			where += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
+			}
+		}
+		
+		if(!where.equals("")) {
+			strSql+=" where "+ where ;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			
+			List<List<Object>> listVal = series.get(0).getValues();
+			count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
+			
+		}
+		return count;
+
 	}
 
 	/**
@@ -872,16 +947,16 @@ public class ElectController extends BaseController {
 //		return station;
 		
 		Station station = new Station();
-		String strSql=" SELECT * FROM electStationTest2 ";
+		String strSql=" SELECT * FROM  " + Constant.electStationTable;
 		String where = "";
 		if( plateNum != null && !"".equals(plateNum)) {
 			where += " plate_num = '"+plateNum+"'";
 		}
 		if( guaCardNum != null ) {
 			if(!where.equals("")) {
-				where += " and gua_card_num = '"+guaCardNum+"'";
+				where += " and gua_card_num = "+guaCardNum;
 			}else {
-				where += " gua_card_num = '"+guaCardNum+"'";
+				where += " gua_card_num = "+guaCardNum;
 			}
 		}
 		if(plateNum != null && guaCardNum != null ) {
@@ -962,27 +1037,11 @@ public class ElectController extends BaseController {
 			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
 					throws UnsupportedEncodingException {
-		String strSql=" SELECT * FROM electStationTest2 ";
+		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
-		if( plateNum != null && !"".equals(plateNum)) {
-			where += " plate_num = '"+plateNum+"'";
-		}
-		if( guaCardNum != null ) {
-			if(!where.equals("")) {
-				where += " and gua_card_num = '"+guaCardNum+"'";
-			}else {
-				where += " gua_card_num = '"+guaCardNum+"'";
-			}
-		}
-		if(plateNum != null && guaCardNum != null ) {
-			return new ArrayList<ElectrombileStation>();
-		}
+		
 		if( startTimeForTrace != null && !"".equals(startTimeForTrace)) {
-			if(!where.equals("")) {
-				where += " and time >= '" + startTimeForTrace+"'";
-			}else {
-				where += " time >= '" + startTimeForTrace+"'";
-			}
+			where += " time >= '" + startTimeForTrace+"'";
 		}
 		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -1003,6 +1062,26 @@ public class ElectController extends BaseController {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
+		
+		if( plateNum != null && !"".equals(plateNum)) {
+			if(!where.equals("")) {
+				where += " and plate_num = '"+plateNum+"'";
+			}else {
+				
+				where += " plate_num = '"+plateNum+"'";
+			}
+		}
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = "+guaCardNum;
+			}else {
+				where += " gua_card_num = "+guaCardNum;
+			}
+		}
+		if(plateNum != null && guaCardNum != null ) {
+			return new ArrayList<ElectrombileStation>();
+		}
+		
 		if(!where.equals("")) {
 			strSql+=" where "+where;
 		}
@@ -1014,10 +1093,11 @@ public class ElectController extends BaseController {
 			List<Series> series = oneResult.getSeries();
 			List<String> listCol = series.get(0).getColumns();
 			List<List<Object>> listVal = series.get(0).getValues();
-			
+			double card_num;
 			for (List<Object> lists : listVal) {
 				ElectrombileStation elect = new ElectrombileStation();
-				elect.setEle_gua_card_num(Integer.parseInt(lists.get(listCol.indexOf("gua_card_num")).toString()));
+				card_num=Double.valueOf(lists.get(listCol.indexOf("gua_card_num")).toString());
+				elect.setEle_gua_card_num((int)card_num);
 				elect.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
 				elect.setHard_read_time(lists.get(listCol.indexOf("hard_read_time")).toString());
 				elect.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
