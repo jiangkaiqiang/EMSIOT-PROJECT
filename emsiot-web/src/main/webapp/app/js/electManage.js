@@ -710,7 +710,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    			    
 		    			    
 		    			    'recorder_id' : $rootScope.admin.user_id,
-		    			    'elect_state' : 1
+		    			    /*'elect_state' : 1*/
 			            };
 			       Upload.upload({
 			                url: '/i/elect/updateElect',
