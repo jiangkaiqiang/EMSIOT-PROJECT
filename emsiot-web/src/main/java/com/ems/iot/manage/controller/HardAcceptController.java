@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.hwpf.usermodel.DateAndTime;
+import org.influxdb.InfluxDB.ConsistencyLevel;
+import org.influxdb.dto.BatchPoints;
+import org.influxdb.dto.Point;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -412,16 +415,12 @@ public class HardAcceptController extends BaseController {
 			InfluxDBConnection influxDBConnection = new InfluxDBConnection(Constant.influxDbUserName, Constant.influxDbPassword, 
 					Constant.influxDbUrl, Constant.emsiotDbName, null);
 			String[] eleGuaCardNums = eleGuaCardNum.split(",");
+			BatchPoints eleBatchPoints = BatchPoints.database("emsiot")
+					.retentionPolicy(null).consistency(ConsistencyLevel.ALL).build();
 			for (String guaCardNum : eleGuaCardNums) {
 				electrombile = electrombileMapper.findPlateNumByGuaCardNum(Integer.valueOf(guaCardNum));
 				// 如果是一辆黑名单车辆，则推送一条报警信息，并将其插入报警表之中
 				if (electrombile != null) {
-					doAreaAlarm(electrombile, stationPhyNum);
-					if (electrombile.getElect_state() == 2) {
-						doElectAlarm(electrombile, station);
-					} else {
-						
-					}
 					ElectStationInfluxDto electStationInfluxDto = new ElectStationInfluxDto();
 					electStationInfluxDto.setElectrombile(electrombile);
 					electStationInfluxDto.setStation(station);
@@ -448,7 +447,6 @@ public class HardAcceptController extends BaseController {
 //							//",hard_read_time="+electStationInfluxDto.getHard_read_time();
 //					httpService.sendPost(influxDbWriteUrl+"/write?db=emsiot",paramString);
 					Map<String, String> tags = new HashMap<String, String>();
-					tags.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num()+"");
 					tags.put("plate_num", electStationInfluxDto.getElectrombile().getPlate_num());
 					tags.put("station_phy_num", electStationInfluxDto.getStation().getStation_phy_num()+"");
 					tags.put("station_name", electStationInfluxDto.getStation().getStation_name());
@@ -457,6 +455,7 @@ public class HardAcceptController extends BaseController {
 					tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
 					tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());
 					Map<String, Object> fields = new HashMap<String, Object>();
+					fields.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num());
 					fields.put("longitude", electStationInfluxDto.getStation().getLongitude());
 					fields.put("latitude", electStationInfluxDto.getStation().getLatitude());
 					fields.put("station_type", electStationInfluxDto.getStation().getStation_type());
@@ -472,8 +471,13 @@ public class HardAcceptController extends BaseController {
 				    //System.out.println(System.currentTimeMillis());
 				    Date date = new Date();
 				    date.setHours(date.getHours()+8);
-					influxDBConnection.insert(Constant.electStationTable, tags, fields, date.getTime() , TimeUnit.MILLISECONDS);
-					
+				    Point point = influxDBConnection.pointBuilder(Constant.electStationTable, System.currentTimeMillis(), tags, fields);
+				    eleBatchPoints.point(point);
+					doAreaAlarm(electrombile, stationPhyNum);
+					if (electrombile.getElect_state() == 2) {
+						doElectAlarm(electrombile, station);
+					} else {	
+					}
 				}
 				else{
 					// 插入人员基站关系表
@@ -486,6 +490,7 @@ public class HardAcceptController extends BaseController {
 				} 
 
 			}
+			influxDBConnection.batchInsert(eleBatchPoints);
 		}
 		return ResponseData.newSuccess("接受成功");
 	}
