@@ -142,15 +142,15 @@ $scope.AllStationType = [
     {id:"2",name:"RG-RFS-336-392"}
 ];
 $scope.AllStationStatus = [
-    {id:"0",name:"正常"},
-    {id:"1",name:"故障"}
+    {id:"0",name:"在线"},
+    {id:"1",name:"离线"}
 ];
 
 $scope.getStatus = function(i){
 	if(i==0)
-		return '正常';
+		return '在线';
     else{
-		return '故障';
+		return '离线';
 	}
 }
 $scope.addStationType = "1";
@@ -199,10 +199,10 @@ $scope.dropInstallPic = function(installPic){
         }).success(function(data){ 
         	$scope.viewStation = data;
         	if($scope.viewStation.station_status=="0"){
- 			   $scope.viewStation.station_status = "正常";
+ 			   $scope.viewStation.station_status = "在线";
  		   }
  		   else if($scope.viewStation.station_status=="1"){
- 			   $scope.viewStation.station_status = "故障";
+ 			   $scope.viewStation.station_status = "离线";
  		   }
  		   else{
  			   

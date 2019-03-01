@@ -343,7 +343,8 @@ public class HardAcceptController extends BaseController {
 	@ResponseBody
 	public Object accepterStatis(HttpServletRequest request,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum,
-			@RequestParam(value = "stationStatus", required = false) Integer stationStatus)
+			@RequestParam(value = "stationStatus", required = false) Integer stationStatus,
+			@RequestParam(value = "port", required = false) String port)
 			throws UnsupportedEncodingException {
 
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
@@ -354,6 +355,7 @@ public class HardAcceptController extends BaseController {
 				StationStatusRecord stationRecord = new StationStatusRecord();
 				stationRecord.setStation_phy_num(stationPhyNum);
 				stationRecord.setStation_status(stationStatus);
+				stationRecord.setPort(port);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				stationRecord.setUpdate_time(sdf.format(new Date()));
 				stationStatusRecordMapper.insert(stationRecord);
@@ -362,6 +364,7 @@ public class HardAcceptController extends BaseController {
 					StationStatusRecord stationRecord = new StationStatusRecord();
 					stationRecord.setStation_phy_num(stationPhyNum);
 					stationRecord.setStation_status(stationStatus);
+					stationRecord.setPort(port);
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					stationRecord.setUpdate_time(sdf.format(new Date()));
 					stationStatusRecordMapper.insert(stationRecord);
@@ -375,6 +378,28 @@ public class HardAcceptController extends BaseController {
 		}
 		return ResponseData.newSuccess("接受成功");
 
+	}
+	
+	/**
+	 * 接收硬件数据，并判断基站是否正常
+	 * 
+	 * @param eleGuaCardNum
+	 * @param stationPhyNum
+	 * @param hardReadTime
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/accepterOnlineStatisByPort")
+	@ResponseBody
+	public Object accepterOnlineStatisByPort(HttpServletRequest request,
+			@RequestParam(value = "port", required = false) Integer port)
+					throws UnsupportedEncodingException {
+		
+		List<StationStatusRecord> listData = stationStatusRecordMapper.onlineStatisByPort(port);
+			
+		
+		return listData;
+		
 	}
 
 //	@RequestMapping(value = "/test")

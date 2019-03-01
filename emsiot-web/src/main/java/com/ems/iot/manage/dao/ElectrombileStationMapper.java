@@ -15,6 +15,8 @@ public interface ElectrombileStationMapper {
     int insert(ElectrombileStation record);
     
     int insertBatch(@Param("recordList")List<ElectrombileStation> recordList);
+    
+    //int updateStationOffBatch(@Param("stationPhyNum")List<Integer> stationList);
 
     int insertSelective(ElectrombileStation record);
 

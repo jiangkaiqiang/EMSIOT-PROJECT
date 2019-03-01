@@ -312,4 +312,15 @@
         station_status = #{station_status}
     where station_phy_num = #{station_phy_num}
   </update>
+  
+	<!-- <update id="updateStationOffBatch" parameterType="java.util.List">
+	 update `station`
+	    set station_status = 0
+	    where station_phy_num in
+      <foreach collection="stationPhyNum" index="index" item="item" 
+        separator="," open="(" close=")">
+        #{item}
+      </foreach>
+
+  	</update> -->
 </mapper>

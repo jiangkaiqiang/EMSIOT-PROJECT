@@ -382,10 +382,10 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
     }];
     $scope.AllStationStatus = [{
         id: "0",
-        name: "正常"
+        name: "在线"
     }, {
         id: "1",
-        name: "故障"
+        name: "离线"
     }];
     $scope.addStationType = "1";
     $scope.addStationStatus = "0";
@@ -426,7 +426,8 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 'longitude': $scope.addStationLng,
                 'latitude': $scope.addStationLat,
                 'station_type': stationType,
-                'station_status': $scope.addStationStatus,
+                //'station_status': $scope.addStationStatus,
+                'station_status': '1',
                 'install_date': $scope.addInstallDate,
                 'soft_version': $scope.addSoftVersion,
                 'contact_person': $scope.addcontactPerson,
@@ -516,9 +517,9 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 var status = "";
                 var statusColor = ""
                 if (title_add[2] == 0) {
-                    status = "正常";
+                    status = "在线";
                 } else if (title_add[2] == 1) {
-                    status = "故障";
+                    status = "离线";
                     statusColor = "style='background:#CCC!important;'";
                 } else if (title_add[2] == 2) {
                     status = "检测中";
@@ -529,9 +530,9 @@ coldWeb.controller('stationManage', function ($rootScope, $scope, $state,
                 var station_status = '';
                 for (var k = 0; k < $scope.stationRecord.length; k++) {
                     if ($scope.stationRecord[k].station_status == 0) {
-                        station_status = "正常";
+                        station_status = "在线";
                     } else {
-                        station_status = "故障";
+                        station_status = "离线";
                     }
                     electInfo += "<tr><td title='" + $scope.stationRecord[k].station_phy_num + "'>" + $scope.stationRecord[k].station_phy_num + "</td>" + "<td title='" + station_status + "'>" + station_status + "</td>" + "<td title='" + $scope.stationRecord[k].update_time + "'>" + $scope.stationRecord[k].update_time + "</td></tr>";
                 }

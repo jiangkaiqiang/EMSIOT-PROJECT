@@ -16,9 +16,9 @@
   </delete>
   <insert id="insert" parameterType="com.ems.iot.manage.entity.StationStatusRecord">
     insert into station_status_record (station_status_id, station_phy_num,  
-      station_status, update_time)
+      station_status, update_time, port)
     values (#{station_status_id,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER},
-      #{station_status,jdbcType=INTEGER}, #{update_time,jdbcType=TIMESTAMP})
+      #{station_status,jdbcType=INTEGER}, #{update_time,jdbcType=TIMESTAMP}, #{port,jdbcType=varchar})
   </insert>
   <select id="findStationsRecordByStationNumAndLimit" parameterType="map" resultType="com.ems.iot.manage.entity.StationStatusRecord">
         SELECT * FROM `station_status_record`
@@ -62,4 +62,18 @@
     order by `update_time` desc limit 1
   </select>
     
+    <select id="onlineStatisByPort" parameterType="java.lang.Integer" resultType="com.ems.iot.manage.entity.StationStatusRecord">
+	    
+	    select SUBSTRING_INDEX(GROUP_CONCAT(update_time ORDER BY update_time DESC),  
+        ',',  
+        1  ) update_time,
+SUBSTRING_INDEX(GROUP_CONCAT(station_status ORDER BY update_time DESC),  
+        ',',  
+        1  ) station_status,
+SUBSTRING_INDEX(GROUP_CONCAT(port ORDER BY update_time DESC),  
+        ',',  
+        1  ) port
+,station_phy_num  from station_status_record GROUP BY station_phy_num  HAVING station_status=0 and port = #{port}
+	    
+	</select>
 </mapper>

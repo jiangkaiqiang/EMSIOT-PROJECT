@@ -14,6 +14,8 @@ public class StationStatusRecord {
     private String station_name;
     
     private String station_address;
+    
+    private String port;
 
 	public Integer getStation_status_id() {
 		return station_status_id;
@@ -61,6 +63,14 @@ public class StationStatusRecord {
 
 	public void setStation_address(String station_address) {
 		this.station_address = station_address;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
 	}
     
    

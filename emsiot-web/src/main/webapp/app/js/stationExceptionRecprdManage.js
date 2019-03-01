@@ -138,15 +138,15 @@ $scope.getStationIDsFromSelected = function(audit){
 
 $scope.AllStationStatus = [
 	{id:"",name:"全部"},
-    {id:"0",name:"正常"},
-    {id:"1",name:"故障"}
+    {id:"0",name:"在线"},
+    {id:"1",name:"离线"}
 ];
 
 $scope.getStatus = function(i){
 	if(i==0)
-		return '正常';
+		return '在线';
     else{
-		return '故障';
+		return '离线';
 	}
 }
 

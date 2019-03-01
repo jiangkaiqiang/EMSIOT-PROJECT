@@ -20,4 +20,6 @@ public interface StationStatusRecordMapper {
     
     StationStatusRecord selectByStationPhyNumLimitOne(Integer stationPhyNum);
     
+    List<StationStatusRecord> onlineStatisByPort(@Param("port")Integer port);
+    
 }
