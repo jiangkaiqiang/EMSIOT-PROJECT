@@ -149,7 +149,7 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
 //    if(admin == null || admin.user_id == 0 || admin.user_id == undefined){
 //    	$urlRouterProvider.
 //    }
-    //$urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/home");
     $stateProvider.state('home', {
         url: '/home',
         controller: 'home',
