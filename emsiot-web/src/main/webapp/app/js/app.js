@@ -35,6 +35,8 @@ coldWeb.run(function (editableOptions, adminService, $location) {
         if (admin == null || admin.user_id == 0 || admin.user_id == undefined) {
             url = "http://" + $location.host() + ":" + $location.port() + "/login.html";
             window.location.href = url;
+        }else{
+        	 document.getElementById("app").style.display="block";
         }
         adminService.setAdmin(admin);
     });
@@ -144,8 +146,10 @@ coldWeb.factory('adminService', ['$rootScope', '$http', function ($rootScope, $h
 }])
 
 coldWeb.config(function ($stateProvider, $urlRouterProvider) {
-     
-    $urlRouterProvider.otherwise("/home");
+//    if(admin == null || admin.user_id == 0 || admin.user_id == undefined){
+//    	$urlRouterProvider.
+//    }
+    //$urlRouterProvider.otherwise("/home");
     $stateProvider.state('home', {
         url: '/home',
         controller: 'home',

@@ -111,10 +111,18 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
         }
         var end = new Date(time);
-        for (var i = 0; i < $scope.stations.length; i++) {
-            tmpStation = $scope.stations[i];
-            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
-            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
+//      for (var i = 0; i < $scope.stations.length; i++) {
+//            tmpStation = $scope.stations[i];
+//            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
+//            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
+//      }	
+        var stationPhyRefrehNums = [];
+        for(var i = 0; i < $scope.stations.length; i++){
+        	stationPhyRefrehNums.push($scope.stations[i].station_phy_num);
+        }
+        var carRefrehNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyRefrehNums);
+        for(var i = 0; i < $scope.stations.length; i++){
+        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[i]);
         }
         if(markerClusterer!=null){
             markerClusterer._redraw();
@@ -227,6 +235,19 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
          var grymarkers = [];*/
         var tmpStation;
         //给每一个基站添加监听事件 和窗口信息
+        var stationPhyInitNums = [];
+        for(var i = 0; i < $scope.stations.length; i++){
+        	stationPhyInitNums.push($scope.stations[i].station_phy_num);
+        }
+        var time = new Date().getTime();//当前时间
+        var start;
+        if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+            start = new Date(time - 60 * 1000 * 60);//一小时
+        }else{
+            start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
+        }
+        var end = new Date(time);
+        var carInitNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyInitNums);
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
@@ -240,24 +261,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
             //统计时间内经过改基站的车辆的数
 
-            var time = new Date().getTime();//当前时间
-            var start;
-            if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
-                start = new Date(time - 60 * 1000 * 60);//一小时
-            }else{
-                start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
-            }
-            var end = new Date(time);
-            var num = tmpStation.station_phy_num;
-
-
-
+            //var num = tmpStation.station_phy_num;
             //console.log(FormatDate(start) ,FormatDate(end) );
             //showElectsInStation(FormatDate(start), FormatDate(end), num);
-            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
+            //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
             //$scope.labelSet(carNum, marker2);
             //marker2.setTitle(carNum);
-            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
+            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[i]);
 
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
@@ -341,10 +351,28 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     			"stationPhyNum": stationPhyNum
     		}
     	}).success(function (data) {
-    		count=data
+    		count=data;
     	})
-    	return count
+    	return count;
     }
+    //根据时间和基站的ids批量获取基站下面的经过车辆数量
+    function showElectsCountInStations(startTime, endTime, stationPhyNums) {
+    	var count = [];
+    	$.ajax({
+    		method: 'GET',
+    		url: '/i/elect/findElectsCountByStationsIdAndTime',
+    		async: false,
+    		data: {
+    			"startTime": startTime,
+    			"endTime": endTime,
+    			"stationPhyNums": stationPhyNums
+    		}
+    	}).success(function (data) {
+    		counts=data;
+    	})
+    	return counts;
+    }
+    
     //根据时间和基站id获取基站下面的当前所有车辆
     function showElectsInStation(startTime, endTime, stationPhyNum) {
         $.ajax({

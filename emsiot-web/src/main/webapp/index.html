@@ -26,12 +26,15 @@
     <link rel="stylesheet" type="text/css" href="app/css/specialArea.css">
     <link rel="stylesheet" type="text/css" href="app/css/limitArea.css">
     <link rel="stylesheet" type="text/css"  href="bower_components/angular-multi-select-master/isteven-multi-select.css"/>
+    <script type="text/javascript" src="assets/js/jquery-1.12.0.min.js"></script>
     <!--[if lt IE 10]><link rel="stylesheet" type="text/css" href="app/css/ie9.css"><![endif]-->
 </head>
 
 <body ng-controller="appCtrl">
-<div class="app app-header-fixed" id="app">
-
+<div class="app app-header-fixed" id="app" >
+    <script>
+     document.getElementById("app").style.display="none";
+    </script>
     <!-- navbar -->
     <div class="app-header navbar">
         <!-- navbar header -->
@@ -380,7 +383,7 @@
 
 
 </div>
-<script type="text/javascript" src="assets/js/jquery-1.12.0.min.js"></script>
+
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/js/smartpaginator.js"></script>
 
