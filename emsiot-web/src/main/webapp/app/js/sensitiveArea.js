@@ -441,7 +441,7 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
         ;
     }
 
-
+    $scope.deSelectVal="";
     //------------修改-------------------
     $scope.goUpdateSensitiveArea = function (electID) {
         $http({
@@ -462,6 +462,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
             } else if ($scope.updateSensitiveArea.status == 1) {
                 $(":checkbox[id='updateStatus']").prop("checked", "checked");
             }
+            $('#updateBlackelectPlatenum').multiselect("deselect",$scope.deSelectVal)
+            $scope.deSelectVal=valObj
             $('#updateBlackelectPlatenum').multiselect("select", valObj)
 
         })
@@ -643,6 +645,8 @@ coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cooki
             } else if ($scope.sensitiveArea.status == 1) {
                 $(":checkbox[id='viewStatus']").prop("checked", "checked");
             }
+            $('#viewBlackelectPlatenum').multiselect("deselect",$scope.deSelectVal)
+            $scope.deSelectVal=valObj
             $('#viewBlackelectPlatenum').multiselect("select", valObj)
         })
 

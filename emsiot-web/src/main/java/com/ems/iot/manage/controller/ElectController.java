@@ -174,6 +174,85 @@ public class ElectController extends BaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
+	@RequestMapping(value = "/findElectsCountByStationsIdAndTime")
+	@ResponseBody
+	public Object findElectsCountByStationsIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "stationPhyNumStr", required = false) String stationPhyNumStr)
+					throws UnsupportedEncodingException {
+		
+//		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+//		return count;
+		String[] stationPhyNums=null;
+		if(stationPhyNumStr!=null) {
+			stationPhyNums=stationPhyNumStr.split(",");
+		}
+		//查询influxdb 2019-01-29
+		int count = 0;
+		String strSql=" SELECT count(*) FROM " + Constant.electStationTable;
+		String where = "";
+		String timeCond = "";
+		if( startTime != null && !"".equals(startTime)) {
+			timeCond += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!timeCond.equals("")) {
+				timeCond += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		Map<String, Object> mapList=new HashMap<String, Object>();
+		String sql="";
+		for (String str : stationPhyNums) {
+			
+				if(!timeCond.equals("")) {
+					where = " and station_phy_num = '"+str+"'";
+				}else {
+					where = " station_phy_num = '"+str+"'";
+				}
+
+				sql=strSql+" where "+timeCond+where;
+				
+				QueryResult results = influxDBConnection
+						.query(sql);
+				Result oneResult = results.getResults().get(0);
+				if (oneResult.getSeries() != null) {
+					List<Series> series = oneResult.getSeries();
+					
+					List<List<Object>> listVal = series.get(0).getValues();
+					count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
+					mapList.put(str, count);
+				}else {
+					mapList.put(str, 0);
+				}
+			
+			
+		}
+		return mapList;
+		
+	}
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping(value = "/findElectsByStationIdAndTime")
 	@ResponseBody
 	public Object findElectsByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,

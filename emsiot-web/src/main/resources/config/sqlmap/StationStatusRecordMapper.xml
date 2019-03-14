@@ -18,7 +18,7 @@
     insert into station_status_record (station_status_id, station_phy_num,  
       station_status, update_time, port)
     values (#{station_status_id,jdbcType=INTEGER}, #{station_phy_num,jdbcType=INTEGER},
-      #{station_status,jdbcType=INTEGER}, #{update_time,jdbcType=TIMESTAMP}, #{port,jdbcType=varchar})
+      #{station_status,jdbcType=INTEGER}, #{update_time,jdbcType=TIMESTAMP}, #{port,jdbcType=INTEGER})
   </insert>
   <select id="findStationsRecordByStationNumAndLimit" parameterType="map" resultType="com.ems.iot.manage.entity.StationStatusRecord">
         SELECT * FROM `station_status_record`

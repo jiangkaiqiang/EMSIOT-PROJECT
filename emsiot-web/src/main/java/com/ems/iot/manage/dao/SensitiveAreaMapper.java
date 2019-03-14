@@ -28,12 +28,16 @@ public interface SensitiveAreaMapper {
     
     List<SensitiveArea> findAll();
     
+    List<SensitiveArea> findAllsensitiveName(@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
+    
     /**
      * 防止出现相同名字的限制区域
      * @param limitAreaName
      * @return
      */
     SensitiveArea findSensitiveAreaForFilter(@Param("sensitiveAreaName")String sensitiveAreaName);
+    
+    SensitiveArea findSensitiveAreaById(@Param("sensitiveAreaId")String sensitiveAreaId);
     
     Page<AreaAlarm> findAllSensitiveAreaAlarmByOptions(@Param("plateNum")String plateNum, @Param("areaName")String areaName, @Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
     		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);

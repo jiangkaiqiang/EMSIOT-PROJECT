@@ -24,6 +24,28 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 			 });
 		   });	 
 	};
+	
+	/*$scope.sensitiveName = []
+	$scope.findAllSensitiveName=function(){
+		$http({
+			method : 'POST',
+			url: '/i/sensitiveArea/findAllsensitiveName',
+			params :{
+				"proPower" : $scope.admin.pro_power,
+				"cityPower" : $scope.admin.city_power,
+				"areaPower" : $scope.admin.area_power
+			}
+		}).success(function(data){
+			console.log(data)
+			$scope.sensitiveName = data;
+			if(data.length>0){
+				$scope.sensitiveAreaId=data[0].sensitive_area_id
+			}
+	
+		});
+	}
+	$scope.findAllSensitiveName();*/
+	
 
 	//获取限制区域报警列表
 	//显示最大页数
@@ -54,6 +76,28 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 		
 	});
 	};
+	
+	/*$scope.sensitiveAlarmElects=function(){
+		$http({
+			method : 'POST',
+			url: '/i/sensitiveArea/findAllSensitiveAreaAlarmByOptions',
+			params :{
+				"pageNum" : $scope.bigCurrentPage,
+				"pageSize" :$scope.maxSize,
+				"areaId" :$scope.sensitiveAreaId,
+				"plateNum" :$scope.plateNum,
+				"alarmDateStart" : $scope.startTime ,
+				"alarmDateEnd" : $scope.endTime,
+				"proPower" : $scope.admin.pro_power,
+				"cityPower" : $scope.admin.city_power,
+				"areaPower" : $scope.admin.area_power
+			}
+		}).success(function(data){
+			$scope.bigTotalItems = data.data.total;
+			$scope.AllSensitiveAlarmElects = data.data.list;
+			
+		});
+	};*/
 	$scope.load();
 	$scope.sensitiveAlarmElects();
 	$scope.pageChanged = function() {
@@ -90,7 +134,6 @@ coldWeb.controller('sensitiveAreaAlarm', function($rootScope, $scope, $state, $c
 			$scope.selected = $scope.AllSensitiveAlarmElects.slice(0);
 		}
 	};
-
 
 	//删除报警信息
 	function delAlarm() {

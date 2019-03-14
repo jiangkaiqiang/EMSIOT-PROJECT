@@ -247,7 +247,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             tmpPeople = $scope.peopleData[i].people;*/
 
             pt = new BMap.Point($scope.peopleData[i].longitude, $scope.peopleData[i].latitude);
-            //报警车辆图标
+            //人员图标
             var myIcon = new BMap.Icon("../app/img/people-icon.png", new BMap.Size(67, 51));
             marker2 = new BMap.Marker(pt,{icon:myIcon});
             $scope.labelSet($scope.peopleData[i].people_name,marker2);
@@ -487,12 +487,12 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             	$scope.elecMarker = null;
             	map.clearOverlays();
             	var showLable="";
-                for (var i = 0; i < data.length - 1; i++) {
-                    var marker;
-                   // var lushu;
-                    var arrPois=$scope.pointsArr;
-                    map.setViewport(arrPois);
-                    if(lushu==null){
+            	
+            	var marker;
+                // var lushu;
+                 var arrPois=$scope.pointsArr;
+                 map.setViewport(arrPois);
+                 if(lushu==null){
 	                    marker=new BMap.Marker(arrPois[0],{
 	                        icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
 	                    });
@@ -500,7 +500,10 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
 	                    marker.setLabel(label);
 	                    map.addOverlay(marker);lushu=1
-                    }
+                 }
+            	
+                for (var i = 0; i < data.length - 1; i++) {
+                    
                     BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
                         var pointsArr=[initPos,targetPos];  //点数组
                         var me = this,
@@ -574,52 +577,54 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     };
 
 
-                    lushu = new BMapLib.LuShu(map,arrPois,{
-                        defaultContent:$scope.keywordForTrace,//"从天安门到百度大厦"
-                        autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                        icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
-                        speed: 350,
-                        enableRotation:true,//是否设置marker随着道路的走向进行旋转
-                        landmarkPois:[
-                            {lng:$scope.pointsArr[0],lat:$scope.pointsArr[1],html:'加油站',pauseTime:2}
-                        ]
-
-                    });
-                    marker.addEventListener("click",function(){
-                        marker.enableMassClear();   //设置后可以隐藏改点的覆盖物
-                        marker.hide();
-                        lushu.start();
-                        //map.clearOverlays();  //清除所有覆盖物
-                    });
-
-                    //drv.search('天安门', '百度大厦');
-                    // lushu.start();
-                    // lushu.pause();
-                    //绑定事件
-                    $("run").onclick = function(){
-                        marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
-                        marker.hide();
-                        lushu.start();
-                        //map.clearOverlays();    //清除所有覆盖物
-                    }
-                    //$("stop").onclick = function(){
-                    //    marker.enableMassClear();
-                    //    marker.hide();
-                    //    lushu.stop();
-                    //}
-                    $("pause").onclick = function(){
-                        lushu.pause();
-                    }
-                    $("hide").onclick = function(){
-                        lushu.hideInfoWindow();
-                    }
-                    $("show").onclick = function(){
-                        lushu.showInfoWindow();
-                    }
-                    function $(element){
-                        return document.getElementById(element);
-                    }
                 }
+
+                lushu = new BMapLib.LuShu(map,arrPois,{
+                    defaultContent:$scope.keywordForTrace,//"从天安门到百度大厦"
+                    autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                    icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
+                    speed: 350,
+                    enableRotation:true,//是否设置marker随着道路的走向进行旋转
+                    landmarkPois:[
+                        {lng:$scope.pointsArr[0],lat:$scope.pointsArr[1],html:'加油站',pauseTime:2}
+                    ]
+
+                });
+                marker.addEventListener("click",function(){
+                    marker.enableMassClear();   //设置后可以隐藏改点的覆盖物
+                    marker.hide();
+                    lushu.start();
+                    //map.clearOverlays();  //清除所有覆盖物
+                });
+
+                //drv.search('天安门', '百度大厦');
+                // lushu.start();
+                // lushu.pause();
+                //绑定事件
+                $("run").onclick = function(){
+                    marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
+                    marker.hide();
+                    lushu.start();
+                    //map.clearOverlays();    //清除所有覆盖物
+                }
+                //$("stop").onclick = function(){
+                //    marker.enableMassClear();
+                //    marker.hide();
+                //    lushu.stop();
+                //}
+                $("pause").onclick = function(){
+                    lushu.pause();
+                }
+                $("hide").onclick = function(){
+                    lushu.hideInfoWindow();
+                }
+                $("show").onclick = function(){
+                    lushu.showInfoWindow();
+                }
+                function $(element){
+                    return document.getElementById(element);
+                }
+                
             }
             $scope.showOperation = true;
             $scope.showTable = true;

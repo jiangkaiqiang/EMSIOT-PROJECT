@@ -3,9 +3,14 @@ package com.ems.iot.manage.controller;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.influxdb.dto.QueryResult;
+import org.influxdb.dto.QueryResult.Result;
+import org.influxdb.dto.QueryResult.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +25,14 @@ import com.ems.iot.manage.dao.SensitiveAreaMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.entity.AreaAlarm;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.LimitArea;
 import com.ems.iot.manage.entity.SensitiveArea;
 import com.ems.iot.manage.entity.Station;
+import com.ems.iot.manage.util.Constant;
+import com.ems.iot.manage.util.InfluxDBConnection;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,6 +48,8 @@ public class SensitiveAreaController {
 	private SensitiveAreaMapper sensitiveAreaMapper;
 	@Autowired
 	private AreaAlarmMapper areaAlarmMapper;
+	
+	InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 	/**
 	 * 添加敏感区域
 	 * @return
@@ -160,7 +170,6 @@ public class SensitiveAreaController {
 //		
 		return new ResultDto(0, "更新成功");
 	}
-	
 	
 	
 	/**
@@ -421,5 +430,173 @@ public class SensitiveAreaController {
 		return areaAlarms;
 	}
 	
+	
+
+	/**
+	 * 查询现有的区域限制
+	 */
+	@RequestMapping(value="/findAllsensitiveName",method=RequestMethod.POST)
+	@ResponseBody
+	public Object findAllsensitiveName(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower) {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		List<SensitiveArea> sensitiveAreas = sensitiveAreaMapper.findAllsensitiveName(proPower, cityPower, areaPower);
+		return sensitiveAreas;
+		
+	}
+	
+	/**
+	 * 根据条件查询所有报警信息
+	 * 
+	 * @returnx
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
+	 *//*
+	@RequestMapping(value = "/findAllSensitiveAreaAlarmByOptions")
+	@ResponseBody
+	public Object findAllSensitiveAreaAlarmByOptions(@RequestParam(value="pageNum",required=false) Integer pageNum,
+			@RequestParam(value="pageSize",required=false) Integer pageSize,
+			@RequestParam(value="plateNum",required=false) String plateNum,
+			@RequestParam(value="areaId",required=false) String areaId,
+			@RequestParam(value="alarmDateStart",required=false) String alarmDateStartStr,
+			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower
+			) throws UnsupportedEncodingException, ParseException {
+		pageNum = pageNum == null? 1:pageNum;
+		pageSize = pageSize==null? 12:pageSize;
+		PageHelper.startPage(pageNum, pageSize);
+		
+		String guaCardNumStr = null;
+		String stationStr;
+		String startTime;
+		String endTime;
+		Integer status;
+		Integer appear;
+		SensitiveArea sensitiveArea = sensitiveAreaMapper.findSensitiveAreaById(areaId);
+		
+		
+		
+		stationStr = sensitiveArea.getStation_ids().replaceAll(";", ",");
+		if(sensitiveArea.getBlack_list_elects()!=null) {
+			guaCardNumStr = sensitiveArea.getBlack_list_elects().replaceAll(";", ",");
+		}
+		startTime = sensitiveArea.getSens_start_time();
+		endTime = sensitiveArea.getSens_end_time();
+		status = sensitiveArea.getStatus();
+		appear = sensitiveArea.getEnter_num();
+		
+		
+		String sql = " select * from " + Constant.electStationTable ;
+		
+		String limitAreaConditions = "";
+		String areaConditions = "";
+		
+		//时间条件
+		if( startTime != null && !"".equals(startTime)) {
+			limitAreaConditions += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!limitAreaConditions.equals("")) {
+				limitAreaConditions += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				limitAreaConditions += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		
+		//基站条件
+		if(stationStr!=null && !stationStr.equals("")) {
+			if(!limitAreaConditions.equals("")) {
+				limitAreaConditions += " and station_phy_num in ("+stationStr+")";
+			}else {
+				limitAreaConditions += " station_phy_num in ("+stationStr+")";
+			}
+		}
+		
+		//车辆条件
+		if(guaCardNumStr!=null && !guaCardNumStr.equals("")) {
+			if(!limitAreaConditions.equals("")) {
+				limitAreaConditions += " and gua_card_num in ("+guaCardNumStr+")";
+			}else {
+				limitAreaConditions += " gua_card_num in ("+guaCardNumStr+")";
+			}
+		}
+		//状态条件
+		if(status!=null) {
+			if(!limitAreaConditions.equals("")) {
+				limitAreaConditions += " and gua_card_num = "+status;
+			}else {
+				limitAreaConditions += " gua_card_num in ("+guaCardNumStr+")";
+			}
+		}
+		//次数条件
+		sql+=" where "+limitAreaConditions;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd - HH:mm:ss");
+		Date alarmDateStart=null;
+		Date alarmDateEnd=null;
+		if(alarmDateStartStr!="" && alarmDateStartStr!=null){
+			alarmDateStart=sdf.parse(alarmDateStartStr);
+		}
+		if(alarmDateEndStr!="" && alarmDateEndStr!=null){
+			alarmDateEnd=sdf.parse(alarmDateEndStr);
+		}
+		if (proPower != null) {
+			areaConditions += " and pro_id ="+proPower;
+		}
+		if (cityPower!=null) {
+			
+			areaConditions += " and city_id ="+cityPower;
+		}
+		if (areaPower!=null) {
+			areaConditions += " and area_id ="+areaPower;
+		}
+		sql += areaConditions+" LIMIT "+pageSize+" OFFSET "+((pageNum-1)*pageSize);
+		QueryResult results = influxDBConnection
+				.query(sql);
+		Result oneResult = results.getResults().get(0);
+		List<AreaAlarm> listAreaAlarm = new ArrayList<AreaAlarm>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			for (List<Object> lists : listVal) {
+				AreaAlarm areaAlarm = new AreaAlarm();
+				areaAlarm.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
+				areaAlarm.setOwner_tele(lists.get(listCol.indexOf("owner_tele")).toString());
+				areaAlarm.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				areaAlarm.setEnter_time(lists.get(listCol.indexOf("time")).toString());
+				areaAlarm.setArea_name(sensitiveArea.getSensitive_area_name());
+				areaAlarm.setEnter_plate_num(lists.get(listCol.indexOf("plate_num")).toString());
+				listAreaAlarm.add(areaAlarm);
+			}
+			
+		}
+		
+		
+		return listAreaAlarm;
+	}*/
 	
 }

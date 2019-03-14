@@ -29,17 +29,20 @@ public class InfluxDbTest {
 		//testInsert();
 		//testBatchPoints();
 		testElectQuery();
+		//testCountQuery();
 		//testDelete();
 	}
 	public static void testElectQuery() {
 		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 		/*QueryResult results = influxDBConnection count(DISTINCT(gua_card_num))
 				.query("SELECT * FROM electStationTest2 order by time desc limit 1000");*/
-		String strSql="SELECT * FROM electStationTest3  " + 
-				//"station_phy_num = '28954' and"+
-				 //"  time >= '2019-02-11' and time < '2019-02-12' "+
+		String strSql="select * from electStationTest3 " +
+				//" where station_phy_num = '28954'"+
+				 " where time >= '2019-03-13' and time < '2019-03-14' " +
 			
-				 " order by time desc limit 10";
+				 "  GROUP BY gua_card_num ";
+				/*" order by time desc ";*/
+		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date=new Date();
 		Calendar calendar = Calendar.getInstance();
@@ -75,7 +78,7 @@ public class InfluxDbTest {
 				System.err.println();
 			}
 			
-			//System.out.println(series.get(0));
+			System.out.println(lists.size());
 		}else {
 			System.err.println(oneResult.getError());
 		}
@@ -141,5 +144,17 @@ public class InfluxDbTest {
 		records.add(batchPoints2.lineProtocol());
 		// 将两条数据批量插入到数据库中
 		influxDBConnection.batchInsert("emsiot", null, ConsistencyLevel.ALL, records);
+	}
+	public static void testCountQuery() {
+		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
+		QueryResult results = influxDBConnection
+				.query("SELECT * FROM electStationTest3 order by time desc");
+		//results.getResults()是同时查询多条SQL语句的返回值，此处我们只有一条SQL，所以只取第一个结果集即可。
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			System.out.println(series.get(0).getValues().size());
+		}	
+		
 	}
 }

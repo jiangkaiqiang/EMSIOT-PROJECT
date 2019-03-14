@@ -427,7 +427,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="col-sm-4 control-label">
                                     关联车牌号：
@@ -435,6 +435,16 @@
 
                                 <div class="col-sm-8">
                                     <input ng-attr-type type="text" class="form-control" ng-model="sensitiveArea.list_elects">
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4 control-label"><i>*</i>
+                                    出现次数：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input ng-attr-type type="number" class="form-control" min="1" value="1" ng-model="sensitiveArea.enter_num">
                                 </div>
                             </div>
                         </div>
@@ -501,16 +511,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="" class="col-sm-4 control-label"><i>*</i>
-                                    出现次数：
-                                </label>
-                                <div class="col-sm-8">
-                                    <input ng-attr-type type="number" class="form-control" min="1" value="1" ng-model="sensitiveArea.enter_num">
-                                </div>
-                            </div>
-                        </div>
+                        
                        
                     </div>
 

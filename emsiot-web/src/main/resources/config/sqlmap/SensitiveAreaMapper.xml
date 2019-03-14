@@ -154,6 +154,15 @@
 		</where>
    </select>
    
+  <select id="findSensitiveAreaById" parameterType="map" resultType="com.ems.iot.manage.entity.SensitiveArea">
+        SELECT  * FROM `sensitive_area`
+        <where>
+			<if test="sensitiveAreaId != null and sensitiveAreaId != ''">
+				sensitive_area_Id = #{sensitiveAreaId}
+			</if>
+		</where>
+   </select>
+   
   
    <select id="findAllSensitiveAreas" parameterType="map" resultType="com.ems.iot.manage.entity.SensitiveArea">
         SELECT  * FROM `sensitive_area`
@@ -216,5 +225,21 @@
 			order by area_alarm.enter_time desc
    </select>
     
+    
+    <select id="findAllsensitiveName" parameterType="map" resultType="com.ems.iot.manage.entity.SensitiveArea" >
+        select sensitive_area_id,sensitive_area_name from sensitive_area
+        <where>
+            <if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+        </where>
+        
+    </select>
   
 </mapper>

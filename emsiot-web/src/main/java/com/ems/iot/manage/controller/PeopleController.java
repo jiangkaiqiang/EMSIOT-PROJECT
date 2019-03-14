@@ -512,7 +512,7 @@ public class PeopleController extends BaseController {
 	
 	
 	/**
-	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
+	 * 根据基站的物理编号和时间，查询某个基站下的人员，为页面点击基站显示基站下的人员提供服务
 	 * 
 	 * @param startTime
 	 * @param endTime

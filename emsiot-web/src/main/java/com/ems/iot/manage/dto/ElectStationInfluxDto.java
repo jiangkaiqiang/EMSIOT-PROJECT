@@ -1,6 +1,7 @@
 package com.ems.iot.manage.dto;
 
 import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.People;
 import com.ems.iot.manage.entity.Station;
 
 public class ElectStationInfluxDto {
@@ -9,6 +10,8 @@ public class ElectStationInfluxDto {
 	private Station station;
 	
 	private String hard_read_time;
+	
+	private People people;
 
 	public Electrombile getElectrombile() {
 		return electrombile;
@@ -32,6 +35,14 @@ public class ElectStationInfluxDto {
 
 	public void setHard_read_time(String hard_read_time) {
 		this.hard_read_time = hard_read_time;
+	}
+
+	public People getPeople() {
+		return people;
+	}
+
+	public void setPeople(People people) {
+		this.people = people;
 	}
 
 }

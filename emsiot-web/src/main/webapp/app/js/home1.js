@@ -116,13 +116,18 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 //            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
 //            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
 //      }	
-        var stationPhyRefrehNums = [];
+
+        var stationPhyRefrehNums = '';
         for(var i = 0; i < $scope.stations.length; i++){
-        	stationPhyRefrehNums.push($scope.stations[i].station_phy_num);
+        	if(stationPhyRefrehNums=="")
+        		stationPhyRefrehNums=$scope.stations[i].station_phy_num;
+        	else
+        		stationPhyRefrehNums+=","+$scope.stations[i].station_phy_num
         }
         var carRefrehNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyRefrehNums);
         for(var i = 0; i < $scope.stations.length; i++){
-        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[i]);
+        	tmpStation = $scope.stations[i];
+        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[tmpStation.station_phy_num]);
         }
         if(markerClusterer!=null){
             markerClusterer._redraw();
@@ -235,9 +240,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
          var grymarkers = [];*/
         var tmpStation;
         //给每一个基站添加监听事件 和窗口信息
-        var stationPhyInitNums = [];
+        var stationPhyInitNums = '';
         for(var i = 0; i < $scope.stations.length; i++){
-        	stationPhyInitNums.push($scope.stations[i].station_phy_num);
+        	if(stationPhyInitNums=="")
+        		stationPhyInitNums=$scope.stations[i].station_phy_num;
+        	else
+        		stationPhyInitNums+=","+$scope.stations[i].station_phy_num
         }
         var time = new Date().getTime();//当前时间
         var start;
@@ -247,6 +255,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
         }
         var end = new Date(time);
+       
         var carInitNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyInitNums);
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
@@ -267,7 +276,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
             //$scope.labelSet(carNum, marker2);
             //marker2.setTitle(carNum);
-            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[i]);
+            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[tmpStation.station_phy_num]);
 
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
@@ -356,8 +365,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     	return count;
     }
     //根据时间和基站的ids批量获取基站下面的经过车辆数量
-    function showElectsCountInStations(startTime, endTime, stationPhyNums) {
-    	var count = [];
+    function showElectsCountInStations(startTime, endTime, stationPhyNumStr) {
+    	var counts;
     	$.ajax({
     		method: 'GET',
     		url: '/i/elect/findElectsCountByStationsIdAndTime',
@@ -365,7 +374,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     		data: {
     			"startTime": startTime,
     			"endTime": endTime,
-    			"stationPhyNums": stationPhyNums
+    			"stationPhyNumStr": stationPhyNumStr
     		}
     	}).success(function (data) {
     		counts=data;
@@ -502,31 +511,34 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 alert("该车辆仅经过一个基站：" + data[0].station_name);
             else if (data.length == 0)
                 alert("该车辆没有经过任何基站！");
-            else
+            else{
+            	var marker;
+                // var lushu;
+                var arrPois = $scope.pointsArr;
+                map.setViewport(arrPois);
+                if (lushu == null) {
+                    marker = new BMap.Marker(arrPois[0], {
+                        icon: new BMap.Icon('../app/img/eb.png',
+                            new BMap.Size(50, 30),
+                            {anchor: new BMap.Size(27, 23)})
+                    });
+                    marker.setZIndex(10);//设置单个marker的index
+                    var label = new BMap.Label($scope.electNumForTraceTable, {offset: new BMap.Size(0, -30)});
+                    label.setStyle({
+                        border: "1px solid rgb(204, 204, 204)",
+                        color: "rgb(0, 0, 0)",
+                        borderRadius: "10px",
+                        padding: "5px 10px",
+                        background: "rgb(255, 255, 255)"
+                    });
+                    marker.setLabel(label);
+                    map.addOverlay(marker);
+                    lushu = 1
+                }
+            	
+            
                 for (var i = 0; i < data.length - 1; i++) {
-                    var marker;
-                    // var lushu;
-                    var arrPois = $scope.pointsArr;
-                    map.setViewport(arrPois);
-                    if (lushu == null) {
-                        marker = new BMap.Marker(arrPois[0], {
-                            icon: new BMap.Icon('../app/img/eb.png',
-                                new BMap.Size(50, 30),
-                                {anchor: new BMap.Size(27, 23)})
-                        });
-                        marker.setZIndex(10);//设置单个marker的index
-                        var label = new BMap.Label($scope.electNumForTraceTable, {offset: new BMap.Size(0, -30)});
-                        label.setStyle({
-                            border: "1px solid rgb(204, 204, 204)",
-                            color: "rgb(0, 0, 0)",
-                            borderRadius: "10px",
-                            padding: "5px 10px",
-                            background: "rgb(255, 255, 255)"
-                        });
-                        marker.setLabel(label);
-                        map.addOverlay(marker);
-                        lushu = 1
-                    }
+                    
                     BMapLib.LuShu.prototype._move = function (initPos, targetPos, effect) {
                         var pointsArr = [initPos, targetPos];  //点数组
                         var me = this,
@@ -589,7 +601,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                             }
                         }, timer);
                     };
-
+                }
+            
 
                     lushu = new BMapLib.LuShu(map, arrPois, {
                         defaultContent: $scope.electNumForTraceTable,//"从天安门到百度大厦"
@@ -627,7 +640,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     function $(element) {
                         return document.getElementById(element);
                     }
-                }
+            }
 
             guijiModal.modal("hide");
 
