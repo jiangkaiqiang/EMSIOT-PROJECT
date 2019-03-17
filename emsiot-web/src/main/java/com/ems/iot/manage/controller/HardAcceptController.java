@@ -1,7 +1,5 @@
 package com.ems.iot.manage.controller;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,21 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.poi.hwpf.usermodel.DateAndTime;
 import org.influxdb.InfluxDB.ConsistencyLevel;
 import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ems.iot.manage.dao.AreaAlarmMapper;
 import com.ems.iot.manage.dao.ElectAlarmMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
@@ -37,24 +29,20 @@ import com.ems.iot.manage.dao.SensitiveAreaMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.StationStatusRecordMapper;
 import com.ems.iot.manage.dto.ElectStationInfluxDto;
+import com.ems.iot.manage.dto.PeopleStationInfluxDto;
 import com.ems.iot.manage.entity.AreaAlarm;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
-import com.ems.iot.manage.entity.LimitArea;
 import com.ems.iot.manage.entity.MessageEntity;
 import com.ems.iot.manage.entity.People;
 import com.ems.iot.manage.entity.PeopleStation;
 import com.ems.iot.manage.entity.SensitiveArea;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.StationStatusRecord;
-import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.base.HttpService;
 import com.ems.iot.manage.service.base.impl.HttpServiceImpl;
 import com.ems.iot.manage.util.ResponseData;
-import com.ems.iot.manage.util.hardutil.ByteAndStr16;
-import com.ems.iot.manage.util.hardutil.CRC16B;
-//import com.ems.iot.manage.util.hardutil.StationOrder;
 import com.ems.iot.manage.util.CometUtil;
 import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.InfluxDBConnection;
@@ -110,7 +98,6 @@ public class HardAcceptController extends BaseController {
 		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
 			String[] eleGuaCardNums = eleGuaCardNum.split(",");
 			for (String guaCardNum : eleGuaCardNums) {
-
 				ElectrombileStation electrombileStation = new ElectrombileStation();
 				electrombileStation.setEle_gua_card_num(Integer.valueOf(guaCardNum));
 				electrombileStation.setStation_phy_num(stationPhyNum);
@@ -263,11 +250,6 @@ public class HardAcceptController extends BaseController {
 							e.printStackTrace();
 							continue;
 						}
-
-						
-
-						
-
 						if (sensitiveStationPhyNumsList.contains(stationPhyNum)) {
 							Integer areaAlarmCount = areaAlarmMapper.findAreaAlarmCountByStationNumAndTime(
 									electrombile.getPlate_num(), sensitiveArea.getSensitive_area_name(), startTime,
@@ -309,14 +291,7 @@ public class HardAcceptController extends BaseController {
 				}else {
 					list.add(electrombileStation);
 				}
-				
-				
-				
-				
-				
-				
 			}
-
 			if (list.size() > 0) {
 				// 插入车辆基站关系表中
 				//electrombileStationMapper.insert(electrombileStation);
@@ -347,7 +322,6 @@ public class HardAcceptController extends BaseController {
 			@RequestParam(value = "stationStatus", required = false) Integer stationStatus,
 			@RequestParam(value = "port", required = false) String port)
 			throws UnsupportedEncodingException {
-
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
 		if(station==null)
 			return ResponseData.newSuccess("基站编号不存在");
@@ -376,7 +350,6 @@ public class HardAcceptController extends BaseController {
 			sta.setStation_phy_num(stationPhyNum);
 			sta.setStation_status(stationStatus);
 			stationMapper.updateStatusByStationNum(sta);
-
 		}
 		return ResponseData.newSuccess("接受成功");
 
@@ -384,7 +357,6 @@ public class HardAcceptController extends BaseController {
 	
 	/**
 	 * 获取处于正常的基站数据
-	 * 
 	 * @param eleGuaCardNum
 	 * @param stationPhyNum
 	 * @param hardReadTime
@@ -396,26 +368,9 @@ public class HardAcceptController extends BaseController {
 	public Object accepterOnlineStatisByPort(HttpServletRequest request,
 			@RequestParam(value = "port", required = false) Integer port)
 					throws UnsupportedEncodingException {
-		
 		List<StationStatusRecord> listData = stationStatusRecordMapper.onlineStatisByPort(port);
-			
-		
 		return listData;
-		
 	}
-
-//	@RequestMapping(value = "/test")
-//	@ResponseBody
-//	public Object test() {
-//		/*MessageEntity messageEntityLimit = new MessageEntity();
-//		messageEntityLimit.setContent("测试;测试;测试;测试!");
-//		CometUtil cometUtilLimit = new CometUtil();
-//		cometUtilLimit.pushToLimit(messageEntityLimit);
-//		*/
-//		StationOrder s=new StationOrder();
-//		s.test();
-//		return ResponseData.newSuccess("接受成功");
-//	}
 
 	/**
 	 * 接收硬件数据，并判断是否报警，将其插入到influxdb中
@@ -433,75 +388,32 @@ public class HardAcceptController extends BaseController {
 			@RequestParam(value = "stationPhyNum") Integer stationPhyNum,
 			@RequestParam(value = "hardReadTime", required = false) String hardReadTime)
 			throws UnsupportedEncodingException {
-		// SysUser user = (SysUser) request.getSession().getAttribute("user");
-		//HttpService httpService = new HttpServiceImpl();
 		Electrombile electrombile = null;
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
 		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
-			//使用java api进行操作，推荐使用此种方式--------------------------
 			InfluxDBConnection influxDBConnection = new InfluxDBConnection(Constant.influxDbUserName, Constant.influxDbPassword, 
 					Constant.influxDbUrl, Constant.emsiotDbName, null);
 			String[] eleGuaCardNums = eleGuaCardNum.split(",");
-			BatchPoints eleBatchPoints = BatchPoints.database("emsiot")
+			BatchPoints batchPoints = BatchPoints.database("emsiot")
 					.retentionPolicy(null).consistency(ConsistencyLevel.ALL).build();
 			for (String guaCardNum : eleGuaCardNums) {
+				/**
+				 * 查询该id是否在车辆表中
+				 * if(在车辆表中){
+				 *     执行车辆基站的报警及插入逻辑
+				 * }else if(在人员表中){
+				 *     执行人员车辆报警及插入逻辑
+				 * }
+				*/
 				electrombile = electrombileMapper.findPlateNumByGuaCardNum(Integer.valueOf(guaCardNum));
-				// 如果是一辆黑名单车辆，则推送一条报警信息，并将其插入报警表之中
 				if (electrombile != null) {
-					ElectStationInfluxDto electStationInfluxDto = new ElectStationInfluxDto();
-					electStationInfluxDto.setElectrombile(electrombile);
-					electStationInfluxDto.setStation(station);
-					electStationInfluxDto.setHard_read_time(hardReadTime);
-					//使用http api进行操作---------------------------------------
-//					String paramString = electStationTable+
-//							",gua_card_num="+electStationInfluxDto.getElectrombile().getGua_card_num()+
-//							",plate_num="+electStationInfluxDto.getElectrombile().getPlate_num()+
-//							",station_phy_num="+electStationInfluxDto.getStation().getStation_phy_num()+
-//							",station_name="+electStationInfluxDto.getStation().getStation_name()+
-//							",owner_name="+electStationInfluxDto.getElectrombile().getOwner_name()+
-//							",owner_id="+electStationInfluxDto.getElectrombile().getOwner_id()+
-//							",owner_tele="+electStationInfluxDto.getElectrombile().getOwner_tele()+
-//							" longitude="+electStationInfluxDto.getStation().getLongitude()+
-//							",latitude="+electStationInfluxDto.getStation().getLatitude()+
-//							//",station_type="+electStationInfluxDto.getStation().getStation_type()+
-//							",station_status="+electStationInfluxDto.getStation().getStation_status()+
-//							//",owner_address="+electStationInfluxDto.getElectrombile().getOwner_address()+
-//							",elect_state="+electStationInfluxDto.getElectrombile().getElect_state()+
-//							",insur_detail="+electStationInfluxDto.getElectrombile().getInsur_detail()+
-//							",pro_id="+electStationInfluxDto.getElectrombile().getPro_id()+
-//							",city_id="+electStationInfluxDto.getElectrombile().getCity_id()+
-//							",area_id="+electStationInfluxDto.getElectrombile().getArea_id();
-//							//",hard_read_time="+electStationInfluxDto.getHard_read_time();
-//					httpService.sendPost(influxDbWriteUrl+"/write?db=emsiot",paramString);
-					Map<String, String> tags = new HashMap<String, String>();
-					tags.put("station_phy_num", electStationInfluxDto.getStation().getStation_phy_num().toString());
-					tags.put("plate_num", electStationInfluxDto.getElectrombile().getPlate_num());
-					tags.put("station_name", electStationInfluxDto.getStation().getStation_name());
-					tags.put("station_address", electStationInfluxDto.getStation().getStation_address());
-					tags.put("owner_name", electStationInfluxDto.getElectrombile().getOwner_name());
-					tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
-					tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());
-					Map<String, Object> fields = new HashMap<String, Object>();
-					fields.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num());
-					fields.put("longitude", electStationInfluxDto.getStation().getLongitude());
-					fields.put("latitude", electStationInfluxDto.getStation().getLatitude());
-					fields.put("station_type", electStationInfluxDto.getStation().getStation_type());
-					fields.put("station_status", electStationInfluxDto.getStation().getStation_status());
-					fields.put("owner_addres", electStationInfluxDto.getElectrombile().getOwner_address());
-					fields.put("elect_state", electStationInfluxDto.getElectrombile().getElect_state());
-					fields.put("insur_detail", electStationInfluxDto.getElectrombile().getInsur_detail());
-					fields.put("pro_id", electStationInfluxDto.getElectrombile().getPro_id());
-					fields.put("city_id", electStationInfluxDto.getElectrombile().getCity_id());
-					fields.put("area_id", electStationInfluxDto.getElectrombile().getArea_id());
-					fields.put("hard_read_time", electStationInfluxDto.getHard_read_time());
-					// 时间使用毫秒为单位
-				    //System.out.println(System.currentTimeMillis());
-				    Date date = new Date();
-				    date.setHours(date.getHours()+8);
-				    Point point = influxDBConnection.pointBuilder(Constant.electStationTable, date.getTime(), tags, fields);
-				    eleBatchPoints.point(point);
+					Point point = doElectInfluxBatchInsert(electrombile, station, hardReadTime, influxDBConnection);
+				    batchPoints.point(point);
 				    final Electrombile elect = electrombile;
 				    final Integer stationNum = stationPhyNum;
+				    /**
+				     * 启动新的线程执行车辆报警逻辑
+				     */
 				    Executors.newCachedThreadPool().execute(
 							new Runnable() {
 								public void run() {
@@ -510,29 +422,31 @@ public class HardAcceptController extends BaseController {
 							}
 					);
 					if (electrombile.getElect_state() == 2) {
+						//车辆报警
 						doElectAlarm(electrombile, station);
 					} else {	
 					}
 				}
-				else{
-					// 插入人员基站关系表
+				else{	
 					People people = peopleMapper.findPlateNumByPeopleGuaCardNum(Integer.valueOf(guaCardNum));
 					if (people != null) {
-						
-						Point point=doPeople(people, station, hardReadTime, influxDBConnection);
-						eleBatchPoints.point(point);
-						
+						Point point=doPeopleInfluxBatchInsert(people, station, hardReadTime, influxDBConnection);
+						batchPoints.point(point);
 					} else {
-						
 					}
 				} 
-
 			}
-			influxDBConnection.batchInsert(eleBatchPoints);
+			influxDBConnection.batchInsert(batchPoints);
 		}
 		return ResponseData.newSuccess("接受成功");
 	}
-	//电动车报警
+	
+	
+	/**
+	 * 执行电动车报警，实时推送到前端并插入到车辆报警表中
+	 * @param electrombile
+	 * @param station
+	 */
 	public void doElectAlarm(Electrombile electrombile,Station station) {
 		MessageEntity messageEntity = new MessageEntity();
 		messageEntity.setContent(electrombile.getPro_id() + ";" + electrombile.getCity_id() + ";"
@@ -547,45 +461,94 @@ public class HardAcceptController extends BaseController {
 		electAlarmMapper.insert(electAlarm);
 	}
 
-	//
-	public Point doPeople(People people, Station station, String hardReadTime, InfluxDBConnection influxDBConnection) {
-		
+	/**
+	 * 批量插入车辆基站硬件采集数据至influxDB
+	 * @param electrombile
+	 * @param station
+	 * @param hardReadTime
+	 * @param influxDBConnection
+	 * @return
+	 */
+	public Point doElectInfluxBatchInsert(Electrombile electrombile, Station station, String hardReadTime, InfluxDBConnection influxDBConnection) {
 		ElectStationInfluxDto electStationInfluxDto = new ElectStationInfluxDto();
-		electStationInfluxDto.setPeople(people);
+		electStationInfluxDto.setElectrombile(electrombile);
 		electStationInfluxDto.setStation(station);
 		electStationInfluxDto.setHard_read_time(hardReadTime);
-		
 		Map<String, String> tags = new HashMap<String, String>();
 		tags.put("station_phy_num", electStationInfluxDto.getStation().getStation_phy_num().toString());
+		tags.put("plate_num", electStationInfluxDto.getElectrombile().getPlate_num());
 		tags.put("station_name", electStationInfluxDto.getStation().getStation_name());
 		tags.put("station_address", electStationInfluxDto.getStation().getStation_address());
-		tags.put("people_name", electStationInfluxDto.getPeople().getPeople_name());
-		tags.put("people_id_cards", electStationInfluxDto.getPeople().getPeople_id_cards());
-		tags.put("people_tele", electStationInfluxDto.getPeople().getPeople_tele());
-		tags.put("guardian_relation", electStationInfluxDto.getPeople().getGuardian_relation());
+		tags.put("owner_name", electStationInfluxDto.getElectrombile().getOwner_name());
+		tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
+		tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());
 		Map<String, Object> fields = new HashMap<String, Object>();
+		fields.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num());
 		fields.put("longitude", electStationInfluxDto.getStation().getLongitude());
 		fields.put("latitude", electStationInfluxDto.getStation().getLatitude());
 		fields.put("station_type", electStationInfluxDto.getStation().getStation_type());
 		fields.put("station_status", electStationInfluxDto.getStation().getStation_status());
-		fields.put("people_gua_card_num", electStationInfluxDto.getPeople().getPeople_gua_card_num());
-		fields.put("people_sex", electStationInfluxDto.getPeople().getPeople_sex());
-		fields.put("people_age", electStationInfluxDto.getPeople().getPeople_age());
-		fields.put("people_type", electStationInfluxDto.getPeople().getPeople_type());
-		fields.put("guardian_name", electStationInfluxDto.getPeople().getGuardian_name());
-		fields.put("guardian_tele", electStationInfluxDto.getPeople().getGuardian_tele());
-		fields.put("contact_address", electStationInfluxDto.getPeople().getContact_address());
-		fields.put("pro_id", electStationInfluxDto.getPeople().getPro_id());
-		fields.put("city_id", electStationInfluxDto.getPeople().getCity_id());
-		fields.put("area_id", electStationInfluxDto.getPeople().getArea_id());
+		fields.put("owner_addres", electStationInfluxDto.getElectrombile().getOwner_address());
+		fields.put("elect_state", electStationInfluxDto.getElectrombile().getElect_state());
+		fields.put("insur_detail", electStationInfluxDto.getElectrombile().getInsur_detail());
+		fields.put("pro_id", electStationInfluxDto.getElectrombile().getPro_id());
+		fields.put("city_id", electStationInfluxDto.getElectrombile().getCity_id());
+		fields.put("area_id", electStationInfluxDto.getElectrombile().getArea_id());
 		fields.put("hard_read_time", electStationInfluxDto.getHard_read_time());
+		// 时间使用毫秒为单位
+	    //System.out.println(System.currentTimeMillis());
+	    Date date = new Date();
+	    date.setHours(date.getHours()+8);
+	    Point point = influxDBConnection.pointBuilder(Constant.electStationTable, date.getTime(), tags, fields);
+	    return point;
+	}
+	/**
+	 * 批量插入人员基站硬件采集数据至influxDB
+	 * @param people
+	 * @param station
+	 * @param hardReadTime
+	 * @param influxDBConnection
+	 * @return
+	 */
+	public Point doPeopleInfluxBatchInsert(People people, Station station, String hardReadTime, InfluxDBConnection influxDBConnection) {
+		PeopleStationInfluxDto peopleStationInfluxDto = new PeopleStationInfluxDto();
+		peopleStationInfluxDto.setPeople(people);
+		peopleStationInfluxDto.setStation(station);
+		peopleStationInfluxDto.setHard_read_time(hardReadTime);
+		Map<String, String> tags = new HashMap<String, String>();
+		tags.put("station_phy_num", peopleStationInfluxDto.getStation().getStation_phy_num().toString());
+		tags.put("station_name", peopleStationInfluxDto.getStation().getStation_name());
+		tags.put("station_address", peopleStationInfluxDto.getStation().getStation_address());
+		tags.put("people_name", peopleStationInfluxDto.getPeople().getPeople_name());
+		tags.put("people_id_cards", peopleStationInfluxDto.getPeople().getPeople_id_cards());
+		tags.put("people_tele", peopleStationInfluxDto.getPeople().getPeople_tele());
+		tags.put("guardian_relation", peopleStationInfluxDto.getPeople().getGuardian_relation());
+		Map<String, Object> fields = new HashMap<String, Object>();
+		fields.put("longitude", peopleStationInfluxDto.getStation().getLongitude());
+		fields.put("latitude", peopleStationInfluxDto.getStation().getLatitude());
+		fields.put("station_type", peopleStationInfluxDto.getStation().getStation_type());
+		fields.put("station_status", peopleStationInfluxDto.getStation().getStation_status());
+		fields.put("people_gua_card_num", peopleStationInfluxDto.getPeople().getPeople_gua_card_num());
+		fields.put("people_sex", peopleStationInfluxDto.getPeople().getPeople_sex());
+		fields.put("people_age", peopleStationInfluxDto.getPeople().getPeople_age());
+		fields.put("people_type", peopleStationInfluxDto.getPeople().getPeople_type());
+		fields.put("guardian_name", peopleStationInfluxDto.getPeople().getGuardian_name());
+		fields.put("guardian_tele", peopleStationInfluxDto.getPeople().getGuardian_tele());
+		fields.put("contact_address", peopleStationInfluxDto.getPeople().getContact_address());
+		fields.put("pro_id", peopleStationInfluxDto.getPeople().getPro_id());
+		fields.put("city_id", peopleStationInfluxDto.getPeople().getCity_id());
+		fields.put("area_id", peopleStationInfluxDto.getPeople().getArea_id());
+		fields.put("hard_read_time", peopleStationInfluxDto.getHard_read_time());
 		Date date = new Date();
 	    date.setHours(date.getHours()+8);
 	    Point point = influxDBConnection.pointBuilder(Constant.peopleStationTable, date.getTime(), tags, fields);
-	    
 	    return point;
 	}
-	
+	/**
+	 * 执行车辆区域报警
+	 * @param electrombile
+	 * @param stationPhyNum
+	 */
     public void doAreaAlarm(Electrombile electrombile,Integer stationPhyNum) {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date sysDate = new Date();
@@ -611,7 +574,6 @@ public class HardAcceptController extends BaseController {
 					sensitiveStationPhyNumsList.add(station.getStation_phy_num());
 				}
 			}
-
 			if (!sensitiveStationPhyNumsList.contains(stationPhyNum)) {
 				continue;
 			}
@@ -626,12 +588,10 @@ public class HardAcceptController extends BaseController {
 			Date endTime = null;
 			try {
 				Long sysDateL = sdf.parse(sdf.format(sysDate)).getTime();
-
 				if (sensitiveArea.getSens_start_time() != null
 						&& sensitiveArea.getSens_end_time() != null) {
 					startTime = sdf.parse(sensitiveArea.getSens_start_time());
 					endTime = sdf.parse(sensitiveArea.getSens_end_time());
-
 					if (!(sysDateL >= startTime.getTime() && sysDateL <= endTime.getTime())) {
 						continue;
 					}

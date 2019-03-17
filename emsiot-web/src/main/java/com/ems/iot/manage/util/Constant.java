@@ -20,5 +20,5 @@ public class Constant {
     public static String influxDbPassword = "admin";
     public static String emsiotDbName = "emsiot";
     public static String electStationTable = "electStationTest3";
-    public static String peopleStationTable = "peopleStationTest";
+    public static String peopleStationTable = "peopleStationTest1";
 }
