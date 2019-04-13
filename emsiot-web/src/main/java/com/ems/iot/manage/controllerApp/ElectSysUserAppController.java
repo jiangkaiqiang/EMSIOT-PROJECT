@@ -1,5 +1,7 @@
 package com.ems.iot.manage.controllerApp;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
 import com.ems.iot.manage.entity.Area;
+import com.ems.iot.manage.entity.Blackelect;
 import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Electrombile;
@@ -566,5 +569,50 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
 		return new AppResultDto(electrombiles.size());
+	}
+	
+	/**
+	 * 根据车辆的防盗芯片编号返回车辆的车牌号，为手持器App提供车牌号查询服务
+	 * @param token
+	 * @param guaCardNum
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findPlateNumByGuaCardNum")
+	@ResponseBody
+	public Object findPlateNumByGuaCardNum(
+			@RequestParam(value="token", required=false) String token,
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum
+			) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		Electrombile electrombile = electrombileMapper.findPlateNumByGuaCardNum(guaCardNum);
+		return new AppResultDto(electrombile.getPlate_num());
+	}
+	/**
+	 * 跟用户的token获取用户所在的区域，并获取到该区域内所有的黑名单车辆，为手持器App提供黑名单车辆查询服务
+	 * @param token
+	 * @param guaCardNum
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findBlackElectsByToken")
+	@ResponseBody
+	public Object findBlackElectsByToken(
+			@RequestParam(value="token", required=false) String token,
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum
+			) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		List<Electrombile> electrombiles = null;
+		if (sysUser!=null) {
+			electrombiles = electrombileMapper.findElectsListByElectState(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()), 2);
+		}
+		return new AppResultDto(electrombiles);
 	}
 }
