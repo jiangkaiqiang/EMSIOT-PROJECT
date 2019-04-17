@@ -600,7 +600,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
 
 
-
+ 
 
 
                                     //for (var i = 0; i < data.length - 1; i++) {
