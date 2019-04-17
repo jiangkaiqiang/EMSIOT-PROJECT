@@ -274,10 +274,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 markers: bluemarkers,
                 girdSize: 100,
                 styles: [{
-                    url: '/app/img/blue-60.png',
-                    size: new BMap.Size(60, 60),
-                    backgroundColor: '#4783E7',
-                    color: '#000000'
+                    url: '../app/img/blue3.png',
+                    size: new BMap.Size(50, 50),
+                    backgroundColor: 'rgba(102,179,255,0.1)',
+                    textColor: '#ffffff',
+                    textSize: 14,
+                    lineHeight: 15
                 }]
             });
         markerClusterer1.setMaxZoom(14);

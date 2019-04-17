@@ -1,7 +1,8 @@
 coldWeb.controller('sensitiveArea', function ($rootScope, $scope, $state, $cookies, $http, Upload, $location) {
     var sensitiveAreaMap = new BMap.Map("sensitiveAreaMap", {
         minZoom: 5,
-        maxZoom: 30
+        maxZoom: 30,
+        enableMapClick:false
     });
     $scope.load = function () {
         $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
