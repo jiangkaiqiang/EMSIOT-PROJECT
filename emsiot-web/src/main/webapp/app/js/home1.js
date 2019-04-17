@@ -103,8 +103,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 }).success(function (data) {
                     $scope.electAlarmsCount = data;
                 });
-
-
+                
+               
             });
         });
     };
@@ -124,7 +124,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 //            tmpStation = $scope.stations[i];
 //            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
 //            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
-//      }
+//      }	
 
         var stationPhyRefrehNums = '';
         for(var i = 0; i < $scope.stations.length; i++){
@@ -136,7 +136,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var carRefrehNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyRefrehNums);
         for(var i = 0; i < $scope.stations.length; i++){
         	tmpStation = $scope.stations[i];
-        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[tmpStation.station_phy_num]);
+        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[tmpStation.station_phy_num]==undefined?0:carRefrehNums[tmpStation.station_phy_num]);
         }
         if(markerClusterer!=null){
             markerClusterer._redraw();
@@ -264,7 +264,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
         }
         var end = new Date(time);
-
+       
         var carInitNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyInitNums);
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
@@ -285,13 +285,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
             //$scope.labelSet(carNum, marker2);
             //marker2.setTitle(carNum);
-            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[tmpStation.station_phy_num]);
+            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + (carInitNums[tmpStation.station_phy_num]==undefined?0:carInitNums[tmpStation.station_phy_num]));
 
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 //title_add = tmpStation.station_phy_num;
-                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
+                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0],title_add[2]);  //根据物理编号查找
                 var electInfo = '';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
                     //2018-10-15 修改
@@ -381,25 +381,29 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     		url: '/i/elect/findElectsCountByStationsIdAndTime',
     		async: false,
     		data: {
-    			"startTime": startTime,
-    			"endTime": endTime,
-    			"stationPhyNumStr": stationPhyNumStr
+//    			"startTime": startTime,
+//    			"endTime": endTime,
+    			"stationPhyNumStr": stationPhyNumStr,
+    			"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power
     		}
     	}).success(function (data) {
     		counts=data;
     	})
     	return counts;
     }
-
+    
     //根据时间和基站id获取基站下面的当前所有车辆
-    function showElectsInStation(startTime, endTime, stationPhyNum) {
+    function showElectsInStation(startTime, endTime, stationPhyNum,limit) {
         $.ajax({
             method: 'GET',
             url: '/i/elect/findElectsByStationIdAndTime',
             async: false,
             data: {
-                "startTime": startTime,
-                "endTime": endTime,
+//                "startTime": startTime,
+//                "endTime": endTime,
+                "limit": limit,
                 "stationPhyNum": stationPhyNum
             }
         }).success(function (data) {
@@ -524,165 +528,116 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             	var marker;
                 // var lushu;
                 var arrPois = $scope.pointsArr;
-                console.log(arrPois)
                 map.setViewport(arrPois);
-                //if (lushu == null) {
-                //    //marker = new BMap.Marker(arrPois[0], {
-                //    //    icon: new BMap.Icon('../app/img/eb.png',
-                //    //        new BMap.Size(50, 30),
-                //    //        {anchor: new BMap.Size(27, 23)})
-                //    //});
-                //    //marker.setZIndex(10);//设置单个marker的index
-                //    var label = new BMap.Label($scope.electNumForTraceTable, {offset: new BMap.Size(0, -30)});
-                //    label.setStyle({
-                //        border: "1px solid rgb(204, 204, 204)",
-                //        color: "rgb(0, 0, 0)",
-                //        borderRadius: "10px",
-                //        padding: "5px 10px",
-                //        background: "rgb(255, 255, 255)"
-                //    });
-                //    //marker.setLabel(label);
-                //    //map.addOverlay(marker);
-                //    lushu = 1
-                //}
-
-
-                // 实例化一个驾车导航用来生成路线
-                var drv = new BMap.DrivingRoute(map, {
-                    onSearchComplete: function(res) {
-                        if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-                            var plan = res.getPlan(0);
-                            var arrPois = [];
-                            for (var j = 0; j < plan.getNumRoutes(); j++) {
-                                var route = plan.getRoute(j);
-                                arrPois = arrPois.concat(route.getPath());
-                            }
-                            map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
-                            map.setViewport(arrPois);
-
-                            lushu = new BMapLib.LuShu(map, arrPois, {
-                                defaultContent: $scope.electNumForTraceTable,//"从天安门到百度大厦"
-                                autoView: true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                                icon: new BMap.Icon('../app/img/eb.png', new BMap.Size(50, 30), {anchor: new BMap.Size(27, 23)}),
-                                speed: 300,
-                                enableRotation: true,//是否设置marker随着道路的走向进行旋转
-                                landmarkPois: [
-                                    {lng: $scope.pointsArr[0], lat: $scope.pointsArr[1], html: '加油站', pauseTime: 2}
-                                    ]
-                                })
-                            }
-                        }
+                if (lushu == null) {
+                    marker = new BMap.Marker(arrPois[0], {
+                        icon: new BMap.Icon('../app/img/eb.png',
+                            new BMap.Size(50, 30),
+                            {anchor: new BMap.Size(27, 23)})
                     });
-                    var start=new BMap.Point(arrPois[0].lng,arrPois[0].lat);
-                    var end=new BMap.Point(arrPois[arrPois.length-1].lng,arrPois[arrPois.length-1].lat);
-                //console.log(arrPois)
-                //console.log(start)
-                //console.log(end)
-                var otherArr =arrPois.slice(1,arrPois.length-1)
-                console.log(arrPois.slice(1,arrPois.length-1))
-                var wayArr = [];
-                for(var i = 0;i<otherArr.length;i++){
-                    wayArr.push(new BMap.Point(arrPois[i].lng,arrPois[i].lat))
-
+                    marker.setZIndex(10);//设置单个marker的index
+                    var label = new BMap.Label($scope.electNumForTraceTable, {offset: new BMap.Size(0, -30)});
+                    label.setStyle({
+                        border: "1px solid rgb(204, 204, 204)",
+                        color: "rgb(0, 0, 0)",
+                        borderRadius: "10px",
+                        padding: "5px 10px",
+                        background: "rgb(255, 255, 255)"
+                    });
+                    marker.setLabel(label);
+                    map.addOverlay(marker);
+                    lushu = 1
                 }
-                console.log(wayArr)
-                    drv.search(start, end,{waypoints:wayArr});
+            	
+            
+                for (var i = 0; i < data.length - 1; i++) {
+                    
+                    BMapLib.LuShu.prototype._move = function (initPos, targetPos, effect) {
+                        var pointsArr = [initPos, targetPos];  //点数组
+                        var me = this,
+                        //当前的帧数
+                            currentCount = 0,
+                        //步长，米/秒
+                            timer = 10,
+                            step = this._opts.speed / (1000 / timer),
+                        //初始坐标
+                            init_pos = this._projection.lngLatToPoint(initPos),
+                        //获取结束点的(x,y)坐标
+                            target_pos = this._projection.lngLatToPoint(targetPos),
+                        //总的步长
+                            count = Math.round(me._getDistance(init_pos, target_pos) / step);
+                        //显示折线 syj201607191107
+                        this._map.addOverlay(new BMap.Polyline(pointsArr, {
+                            strokeColor: "rgb(102, 179, 255)",
+                            strokeWeight: 2,
+                            strokeOpacity: 1
+                        })); // 画线
+                        //如果小于1直接移动到下一点
+                        if (count < 1) {
+                            me._moveNext(++me.i);
+                            return;
+                        }
+                        me._intervalFlag = setInterval(function () {
+                            //两点之间当前帧数大于总帧数的时候，则说明已经完成移动
+                            if (currentCount >= count) {
+                                clearInterval(me._intervalFlag);
+                                //移动的点已经超过总的长度
+                                if (me.i > me._path.length) {
+                                    return;
+                                }
+                                //运行下一个点
+                                me._moveNext(++me.i);
+                            } else {
+                                currentCount++;
+                                var x = effect(init_pos.x, target_pos.x, currentCount, count),
+                                    y = effect(init_pos.y, target_pos.y, currentCount, count),
+                                    pos = me._projection.pointToLngLat(new BMap.Pixel(x, y));
+                                //设置marker
+                                if (currentCount == 1) {
+                                    var proPos = null;
+                                    if (me.i - 1 >= 0) {
+                                        proPos = me._path[me.i - 1];
+                                    }
+                                    if (me._opts.enableRotation == true) {
+                                        me.setRotation(proPos, initPos, targetPos);
+                                    }
+                                    if (me._opts.autoView) {
+                                        if (!me._map.getBounds().containsPoint(pos)) {
+                                            me._map.setCenter(pos);
+                                        }
+                                    }
+                                }
+                                //正在移动
+                                me._marker.setPosition(pos);
+                                //设置自定义overlay的位置
+                                me._setInfoWin(pos);
+                            }
+                        }, timer);
+                    };
+                }
+            
 
+                    lushu = new BMapLib.LuShu(map, arrPois, {
+                        defaultContent: $scope.electNumForTraceTable,//"从天安门到百度大厦"
+                        autoView: true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                        icon: new BMap.Icon('../app/img/eb.png', new BMap.Size(50, 30), {anchor: new BMap.Size(27, 23)}),
+                        speed: 350,
+                        enableRotation: true,//是否设置marker随着道路的走向进行旋转
+                        landmarkPois: [
+                            {lng: $scope.pointsArr[0], lat: $scope.pointsArr[1], html: '加油站', pauseTime: 2}
+                        ]
 
-
- 
-
-
-                                    //for (var i = 0; i < data.length - 1; i++) {
-
-                //    BMapLib.LuShu.prototype._move = function (initPos, targetPos, effect) {
-                //        var pointsArr = [initPos, targetPos];  //点数组
-                //        var me = this,
-                //        //当前的帧数
-                //            currentCount = 0,
-                //        //步长，米/秒
-                //            timer = 10,
-                //            step = this._opts.speed / (1000 / timer),
-                //        //初始坐标
-                //            init_pos = this._projection.lngLatToPoint(initPos),
-                //        //获取结束点的(x,y)坐标
-                //            target_pos = this._projection.lngLatToPoint(targetPos),
-                //        //总的步长
-                //            count = Math.round(me._getDistance(init_pos, target_pos) / step);
-                //        //显示折线 syj201607191107
-                //        this._map.addOverlay(new BMap.Polyline(pointsArr, {
-                //            strokeColor: "rgb(102, 179, 255)",
-                //            strokeWeight: 2,
-                //            strokeOpacity: 1
-                //        })); // 画线
-                //        //如果小于1直接移动到下一点
-                //        if (count < 1) {
-                //            me._moveNext(++me.i);
-                //            return;
-                //        }
-                //        me._intervalFlag = setInterval(function () {
-                //            //两点之间当前帧数大于总帧数的时候，则说明已经完成移动
-                //            if (currentCount >= count) {
-                //                clearInterval(me._intervalFlag);
-                //                //移动的点已经超过总的长度
-                //                if (me.i > me._path.length) {
-                //                    return;
-                //                }
-                //                //运行下一个点
-                //                me._moveNext(++me.i);
-                //            } else {
-                //                currentCount++;
-                //                var x = effect(init_pos.x, target_pos.x, currentCount, count),
-                //                    y = effect(init_pos.y, target_pos.y, currentCount, count),
-                //                    pos = me._projection.pointToLngLat(new BMap.Pixel(x, y));
-                //                //设置marker
-                //                if (currentCount == 1) {
-                //                    var proPos = null;
-                //                    if (me.i - 1 >= 0) {
-                //                        proPos = me._path[me.i - 1];
-                //                    }
-                //                    if (me._opts.enableRotation == true) {
-                //                        me.setRotation(proPos, initPos, targetPos);
-                //                    }
-                //                    if (me._opts.autoView) {
-                //                        if (!me._map.getBounds().containsPoint(pos)) {
-                //                            me._map.setCenter(pos);
-                //                        }
-                //                    }
-                //                }
-                //                //正在移动
-                //                me._marker.setPosition(pos);
-                //                //设置自定义overlay的位置
-                //                me._setInfoWin(pos);
-                //            }
-                //        }, timer);
-                //    };
-                //}
-
-
-                    //lushu = new BMapLib.LuShu(map, arrPois, {
-                    //    defaultContent: $scope.electNumForTraceTable,//"从天安门到百度大厦"
-                    //    autoView: true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                    //    icon: new BMap.Icon('../app/img/eb.png', new BMap.Size(50, 30), {anchor: new BMap.Size(27, 23)}),
-                    //    speed: 350,
-                    //    enableRotation: true,//是否设置marker随着道路的走向进行旋转
-                    //    landmarkPois: [
-                    //        {lng: $scope.pointsArr[0], lat: $scope.pointsArr[1], html: '加油站', pauseTime: 2}
-                    //    ]
-                    //
-                    //});
-                    //marker.addEventListener("click", function () {
-                    //    marker.enableMassClear();   //设置后可以隐藏改点的覆盖物
-                    //    marker.hide();
-                    //    lushu.start();
-                    //});
-
-
+                    });
+                    marker.addEventListener("click", function () {
+                        marker.enableMassClear();   //设置后可以隐藏改点的覆盖物
+                        marker.hide();
+                        lushu.start();
+                    });
 
                     //绑定事件
                     $("run").onclick = function () {
-                       // marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
-                        //marker.hide();
+                        marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
+                        marker.hide();
                         lushu.start();
                     }
 
@@ -793,7 +748,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     "fixedQueryTime": $scope.configTim
                 }
             }).success(function (data) {
-
+                
                 $scope.user.fixed_lat = $scope.centerLat;
                 $scope.user.fixed_lon = $scope.centerLng;
                 $scope.user.fixed_zoom = $scope.zoomNow;
@@ -815,7 +770,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     };
 
     //定是函数
-
+    
 
 
     //显示基站聚合开关选项控制
@@ -830,6 +785,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             alert("隐藏基站");
             $scope.jizhanFlag = 0;
             if (markerClusterer != null) {
+            	markerClusterer._redraw();
                 markerClusterer.clearMarkers();
             }
             map.clearOverlays();
