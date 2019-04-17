@@ -601,6 +601,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         			title_add = this._markers[i].getTitle().split('\t');
         			var k=parseInt(title_add[2])
         			counts += k;
+
         			this._clusterMarker.setText({name:' ',value:counts});
         			this._map.removeOverlay(this._markers[i])
         		}
