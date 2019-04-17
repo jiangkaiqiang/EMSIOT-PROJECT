@@ -390,6 +390,8 @@ public class HardAcceptController extends BaseController {
 			throws UnsupportedEncodingException {
 		Electrombile electrombile = null;
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
+		if(station==null)
+			return ResponseData.newSuccess("基站编号不存在");
 		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
 			InfluxDBConnection influxDBConnection = new InfluxDBConnection(Constant.influxDbUserName, Constant.influxDbPassword, 
 					Constant.influxDbUrl, Constant.emsiotDbName, null);

@@ -229,6 +229,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     var markers = [];
 
     function showStation() {
+    	//sHtml基站点击事件的显示内容。
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
         var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
@@ -236,11 +237,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
         var endHtml = "</tbody></table></div></div>";
         var pt;
-        /*   var bluemarkers = []; //存放聚合的基站
-         var grymarkers = [];*/
         var tmpStation;
         //给每一个基站添加监听事件 和窗口信息
         var stationPhyInitNums = '';
+        //将基站编号拼成字符串'，'隔开
         for(var i = 0; i < $scope.stations.length; i++){
         	if(stationPhyInitNums=="")
         		stationPhyInitNums=$scope.stations[i].station_phy_num;
@@ -249,6 +249,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }
         var time = new Date().getTime();//当前时间
         var start;
+        //查询时间
         if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
             start = new Date(time - 60 * 1000 * 60);//一小时
         }else{
@@ -267,17 +268,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             } else {
                 marker2 = new BMap.Marker(pt);
             }
-
-            //统计时间内经过改基站的车辆的数
-
-            //var num = tmpStation.station_phy_num;
-            //console.log(FormatDate(start) ,FormatDate(end) );
-            //showElectsInStation(FormatDate(start), FormatDate(end), num);
-            //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
-            //$scope.labelSet(carNum, marker2);
-            //marker2.setTitle(carNum);
             marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[tmpStation.station_phy_num]);
-
+            //基站的点击事件
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
@@ -296,7 +288,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             });
             markers.push(marker2);
         }
-        //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+        //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可(聚合)。
         markerClusterer = new BMapLib.MarkerClusterer(map,
             {
                 markers: markers,
@@ -347,7 +339,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }
     });
 
-    //根据时间和基站id获取基站下面的当前所有车辆
+    //根据时间和基站id获取基站下面的当前所有车辆数量
     function showElectsCountInStation(startTime, endTime, stationPhyNum) {
     	var count = 0;
     	$.ajax({
@@ -364,7 +356,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     	})
     	return count;
     }
-    //根据时间和基站的ids批量获取基站下面的经过车辆数量
+    //根据时间和基站的ids批量获取基站下面的经过车辆数量数量
     function showElectsCountInStations(startTime, endTime, stationPhyNumStr) {
     	var counts;
     	$.ajax({
