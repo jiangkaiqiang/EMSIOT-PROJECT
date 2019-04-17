@@ -136,7 +136,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var carRefrehNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyRefrehNums);
         for(var i = 0; i < $scope.stations.length; i++){
         	tmpStation = $scope.stations[i];
-        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[tmpStation.station_phy_num]);
+        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[tmpStation.station_phy_num]==undefined?0:carRefrehNums[tmpStation.station_phy_num]);
         }
         if(markerClusterer!=null){
             markerClusterer._redraw();
@@ -285,13 +285,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
             //$scope.labelSet(carNum, marker2);
             //marker2.setTitle(carNum);
-            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[tmpStation.station_phy_num]);
+            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + (carInitNums[tmpStation.station_phy_num]==undefined?0:carInitNums[tmpStation.station_phy_num]));
 
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 //title_add = tmpStation.station_phy_num;
-                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
+                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0],title_add[2]);  //根据物理编号查找
                 var electInfo = '';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
                     //2018-10-15 修改
@@ -381,9 +381,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     		url: '/i/elect/findElectsCountByStationsIdAndTime',
     		async: false,
     		data: {
-    			"startTime": startTime,
-    			"endTime": endTime,
-    			"stationPhyNumStr": stationPhyNumStr
+//    			"startTime": startTime,
+//    			"endTime": endTime,
+    			"stationPhyNumStr": stationPhyNumStr,
+    			"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power
     		}
     	}).success(function (data) {
     		counts=data;
@@ -392,14 +395,15 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     }
     
     //根据时间和基站id获取基站下面的当前所有车辆
-    function showElectsInStation(startTime, endTime, stationPhyNum) {
+    function showElectsInStation(startTime, endTime, stationPhyNum,limit) {
         $.ajax({
             method: 'GET',
             url: '/i/elect/findElectsByStationIdAndTime',
             async: false,
             data: {
-                "startTime": startTime,
-                "endTime": endTime,
+//                "startTime": startTime,
+//                "endTime": endTime,
+                "limit": limit,
                 "stationPhyNum": stationPhyNum
             }
         }).success(function (data) {
@@ -781,6 +785,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             alert("隐藏基站");
             $scope.jizhanFlag = 0;
             if (markerClusterer != null) {
+            	markerClusterer._redraw();
                 markerClusterer.clearMarkers();
             }
             map.clearOverlays();

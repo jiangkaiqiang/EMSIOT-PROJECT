@@ -36,6 +36,7 @@ import com.ems.iot.manage.dto.PeopleDto;
 import com.ems.iot.manage.dto.PeopleStationDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.StationElectDto;
+import com.ems.iot.manage.dto.StationPeopleDto;
 import com.ems.iot.manage.entity.Area;
 import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.ElectAlarm;
@@ -495,31 +496,31 @@ public class PeopleController extends BaseController {
 	}
 	
 	
-	/**
-	 * 找到最近一段时间的报警车辆，为报警车辆功能提供服务
-	 * 
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	@RequestMapping(value = "/findInlinePeoplesNum")
-	@ResponseBody
-	public Object findInlinePeoplesNum(@RequestParam(value = "proPower", required = false) Integer proPower,
-			@RequestParam(value = "cityPower", required = false) Integer cityPower,
-			@RequestParam(value = "areaPower", required = false) Integer areaPower)
-			throws UnsupportedEncodingException {
-		if (null == proPower || proPower == -1) {
-			proPower = null;
-		}
-		if (null == cityPower || cityPower == -1) {
-			cityPower = null;
-		}
-		if (null == areaPower || areaPower == -1) {
-			areaPower = null;
-		}
-		List<Integer> inlineList = peopleStationMapper.selectPeoplesByEleGuaCardNumNow(proPower, cityPower,
-				areaPower);
-		return inlineList.size();
-	}
+//	/**
+//	 * 找到最近一段时间的报警车辆，为报警车辆功能提供服务
+//	 * 
+//	 * @return
+//	 * @throws UnsupportedEncodingException
+//	 */
+//	@RequestMapping(value = "/findInlinePeoplesNum")
+//	@ResponseBody
+//	public Object findInlinePeoplesNum(@RequestParam(value = "proPower", required = false) Integer proPower,
+//			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+//			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+//			throws UnsupportedEncodingException {
+//		if (null == proPower || proPower == -1) {
+//			proPower = null;
+//		}
+//		if (null == cityPower || cityPower == -1) {
+//			cityPower = null;
+//		}
+//		if (null == areaPower || areaPower == -1) {
+//			areaPower = null;
+//		}
+//		List<Integer> inlineList = peopleStationMapper.selectPeoplesByEleGuaCardNumNow(proPower, cityPower,
+//				areaPower);
+//		return inlineList.size();
+//	}
 	
 	
 	/**
@@ -743,18 +744,18 @@ public class PeopleController extends BaseController {
 		QueryResult results = influxDBConnection
 				.query(strSql);
 		Result oneResult = results.getResults().get(0);
-		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		List<StationPeopleDto> listElect = new ArrayList<StationPeopleDto>();
 		if (oneResult.getSeries() != null) {
 			List<Series> series = oneResult.getSeries();
 			List<String> listCol = series.get(0).getColumns();
 			List<List<Object>> listVal = series.get(0).getValues();
 			for (List<Object> lists : listVal) {
-				StationElectDto elect = new StationElectDto();
-				elect.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
-				elect.setPlate_num(lists.get(listCol.indexOf("plate_num")).toString());
-				elect.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
-				elect.setCorssTime(lists.get(listCol.indexOf("hard_read_time")).toString());
-				listElect.add(elect);
+				StationPeopleDto people = new StationPeopleDto();
+				people.setPeople_name(lists.get(listCol.indexOf("people_name")).toString());
+				people.setPeople_id_cards(lists.get(listCol.indexOf("people_id_cards")).toString());
+				people.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				people.setCorssTime(lists.get(listCol.indexOf("hard_read_time")).toString());
+				listElect.add(people);
 			}
 		}
 		return listElect;
@@ -765,23 +766,23 @@ public class PeopleController extends BaseController {
 	//人员定位
 	@RequestMapping(value = "/findPeopleLocation")
 	@ResponseBody
-	public Object findPeopleLocation(@RequestParam(value = "plateNum", required = false) String plateNum,
-			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
+	public Object findPeopleLocation(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
+			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum)
 			throws UnsupportedEncodingException {
 		Station station = new Station();
 		String strSql=" SELECT * FROM  " + Constant.peopleStationTable;
 		String where = "";
-		if( plateNum != null && !"".equals(plateNum)) {
-			where += " plate_num = '"+plateNum+"'";
+		if( peopleIdCards != null && !"".equals(peopleIdCards)) {
+			where += " people_id_cards = '"+peopleIdCards+"'";
 		}
-		if( guaCardNum != null ) {
+		if( peopleGuaCardNum != null ) {
 			if(!where.equals("")) {
-				where += " and gua_card_num = "+guaCardNum;
+				where += " and people_gua_card_num = "+peopleGuaCardNum;
 			}else {
-				where += " gua_card_num = "+guaCardNum;
+				where += " people_gua_card_num = "+peopleGuaCardNum;
 			}
 		}
-		if(plateNum != null && guaCardNum != null ) {
+		if(peopleIdCards != null && peopleGuaCardNum != null ) {
 			return station;
 		}
 		if(!where.equals("")) {
@@ -821,12 +822,12 @@ public class PeopleController extends BaseController {
 	 */
 	@RequestMapping(value = "/findPeopleTrace")
 	@ResponseBody
-	public Object findPeopleTrace(@RequestParam(value = "plateNum", required = false) String plateNum,
-			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
+	public Object findPeopleTrace(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
+			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum,
 			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
 					throws UnsupportedEncodingException {
-		String strSql=" SELECT * FROM " + Constant.electStationTable;
+		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
 		String where = "";
 		
 		if( startTimeForTrace != null && !"".equals(startTimeForTrace)) {
@@ -852,22 +853,22 @@ public class PeopleController extends BaseController {
 			}
 		}
 		
-		if( plateNum != null && !"".equals(plateNum)) {
+		if( peopleIdCards != null && !"".equals(peopleIdCards)) {
 			if(!where.equals("")) {
-				where += " and plate_num = '"+plateNum+"'";
+				where += " and people_id_cards = '"+peopleIdCards+"'";
 			}else {
 				
-				where += " plate_num = '"+plateNum+"'";
+				where += " people_id_cards = '"+peopleIdCards+"'";
 			}
 		}
-		if( guaCardNum != null ) {
+		if( peopleGuaCardNum != null ) {
 			if(!where.equals("")) {
-				where += " and gua_card_num = "+guaCardNum;
+				where += " and people_gua_card_num = "+peopleGuaCardNum;
 			}else {
-				where += " gua_card_num = "+guaCardNum;
+				where += " people_gua_card_num = "+peopleGuaCardNum;
 			}
 		}
-		if(plateNum != null && guaCardNum != null ) {
+		if(peopleIdCards != null && peopleGuaCardNum != null ) {
 			return new ArrayList<PeopleStation>();
 		}
 		
@@ -885,7 +886,7 @@ public class PeopleController extends BaseController {
 			double card_num;
 			for (List<Object> lists : listVal) {
 				PeopleStation people = new PeopleStation();
-				card_num=Double.valueOf(lists.get(listCol.indexOf("gua_card_num")).toString());
+				card_num=Double.valueOf(lists.get(listCol.indexOf("people_gua_card_num")).toString());
 				people.setPeople_gua_card_num((int)card_num);
 				people.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
 				people.setHard_read_time(lists.get(listCol.indexOf("hard_read_time")).toString());
@@ -898,6 +899,72 @@ public class PeopleController extends BaseController {
 			}
 		}
 		return listPeople;
+	}
+	
+	
+	/**
+	 * 找到最近一段时间的报警车辆，为报警车辆功能提供服务
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findInlinePeoplesNum")
+	@ResponseBody
+	public Object findInlinePeoplesNum(@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
+			throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
+		int count = 0;
+		
+		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
+		String where = "";
+		
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
+			}
+		}
+		
+		if(!where.equals("")) {
+			strSql+=" where "+ where ;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			
+			
+			count = series.get(0).getValues().size();
+		}
+		return count;
 	}
 	
 }
