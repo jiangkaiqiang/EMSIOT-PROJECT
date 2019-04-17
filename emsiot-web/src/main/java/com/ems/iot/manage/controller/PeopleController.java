@@ -890,6 +890,8 @@ public class PeopleController extends BaseController {
 				people.setPeople_gua_card_num((int)card_num);
 				people.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
 				people.setHard_read_time(lists.get(listCol.indexOf("hard_read_time")).toString());
+				people.setPeople_name(lists.get(listCol.indexOf("people_name")).toString());
+				people.setPeople_tele(lists.get(listCol.indexOf("people_tele")).toString());
 				
 				people.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
 				people.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
