@@ -3,6 +3,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         minZoom: 5,
         maxZoom: 30
     });    // 创建Map实例
+    map.addControl(new BMap.MapTypeControl(
+        {
+            mapTypes:[
+                BMAP_NORMAL_MAP,
+                BMAP_HYBRID_MAP
+            ]}
+    ));
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
 
@@ -212,12 +219,12 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	            markers: markers,
 	            girdSize: 100,
 	            styles: [{
-	                url: '../app/img/blue.png',
-	                size: new BMap.Size(92, 92),
-	                backgroundColor: '#4783E7',
-	                textColor: '#fff',
-	                textSize: 14,
-	                lineHeight: 25
+	                url: '../app/img/blue3.png',
+                    size: new BMap.Size(50, 50),
+                    backgroundColor: 'rgba(102,179,255,0.1)',
+                    textColor: '#ffffff',
+                    textSize: 14,
+                    lineHeight: 15
 	             }]
 	         });
 	        markerClusterer.setMaxZoom(15);

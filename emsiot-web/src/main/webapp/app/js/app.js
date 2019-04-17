@@ -218,6 +218,10 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/kidsManage',
         controller: 'kidsManage',
         templateUrl: 'app/template/kidsManage.html'
+    }).state('policeManage', {
+        url: '/policeManage',
+        controller: 'policeManage',
+        templateUrl: 'app/template/policeManage.html'
     }).state('peopleManageMap', {
         url: '/peopleManageMap',
         controller: 'peopleManageMap',

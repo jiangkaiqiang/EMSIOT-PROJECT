@@ -263,7 +263,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     url: '/app/img/red-60.png',
                     size: new BMap.Size(60, 60),
                     backgroundColor: '#E64B4E',
-                    color: 'white'
+                    color: '#000000'
                 }]
             });
         markerClusterer.setMaxZoom(14);
@@ -277,7 +277,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     url: '/app/img/blue-60.png',
                     size: new BMap.Size(60, 60),
                     backgroundColor: '#4783E7',
-                    color: 'white'
+                    color: '#000000'
                 }]
             });
         markerClusterer1.setMaxZoom(14);

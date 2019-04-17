@@ -1,8 +1,17 @@
 coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http, $location) {
     var map = new BMap.Map("allmap", {
         minZoom: 5,
-        maxZoom: 30
+        maxZoom: 30,
+        //mapType:BMAP_HYBRID_MAP
     });    // 创建Map实例
+
+    map.addControl(new BMap.MapTypeControl(
+        {
+           mapTypes:[
+               BMAP_NORMAL_MAP,
+               BMAP_HYBRID_MAP
+        ]}
+    ));
     $scope.load = function(){
         $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
             $scope.user = data;
@@ -302,12 +311,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 markers: markers,
                 girdSize: 100,
                 styles: [{
-                    url: '../app/img/blue.png',
-                    size: new BMap.Size(92, 92),
-                    backgroundColor: '#4783E7',
-                    textColor: '#fff',
+                    url: '../app/img/blue3.png',
+                    size: new BMap.Size(50, 50),
+                    backgroundColor: 'rgba(102,179,255,0.1)',
+                    textColor: '#ffffff',
                     textSize: 14,
-                    lineHeight: 25
+                    lineHeight: 15
                 }]
             });
         markerClusterer.setMaxZoom(15);
@@ -760,11 +769,11 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     
 
 
-    //显示基站开关选项控制
-    /*$scope.jizhanFlag = 1;
+    //显示基站聚合开关选项控制
+    $scope.jizhanFlag = 1;
     $('#xsjizhan').parent(".swichWrap").click(function () {
         if ($scope.jizhanFlag == 0) {
-            alert("显示基站");
+            alert("显示基站聚合");
             showStation();
             $scope.jizhanFlag = 1;
         }
@@ -777,7 +786,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             map.clearOverlays();
         }
         showCssFlag('#xsjizhan');
-    });*/
+    });
 
     function showCssFlag(param) {
         $(param).toggleClass("active");

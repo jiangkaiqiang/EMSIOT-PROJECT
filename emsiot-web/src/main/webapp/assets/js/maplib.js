@@ -457,7 +457,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 		this._isReal = false; //真的是个聚合
         this._styles = markerClusterer.getStyles();
         this._labels = [];
-        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, {name:'经过车辆',value : this._markers.length}, {"styles":this._markerClusterer.getStyles()});
+        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, {name:'经过车辆11',value : this._markers.length}, {"styles":this._markerClusterer.getStyles()});
         //this._map.addOverlay(this._clusterMarker);
     }
 
@@ -552,12 +552,12 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var position = marker.getPosition();
         var titleAdds = marker.getTitle().split('\t')[2];
         //创建label
-        var label = new BMap.Label('经过车辆：'+titleAdds, {offset: new BMap.Size(0, -27)});
+        var label = new BMap.Label(''+titleAdds, {offset: new BMap.Size(0, -27)});
         label.setStyle({
             color: "#fff",
             fontSize: "14px",
-            backgroundColor: "#66B3FF",
-            border: "1px solid rgb(102, 179, 255)",
+            backgroundColor: "rgba(102,179,255,0.8)",
+            border: "1px solid rgba(102,179,255,0.8)",
             fontWeight: "normal",
             display: "block",
             borderShadow: "0 5px 15px rgba(0, 0, 0, 0.6)",
@@ -601,7 +601,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         			title_add = this._markers[i].getTitle().split('\t');
         			var k=parseInt(title_add[2])
         			counts += k;
-        			this._clusterMarker.setText({name:'经过车辆',value:counts});
+        			this._clusterMarker.setText({name:' ',value:counts});
         			this._map.removeOverlay(this._markers[i])
         		}
 
