@@ -229,7 +229,7 @@
     <ul class="flex-between">
         <li class="flex-items"><i class="iconfont icon-cheliangguanli"
                                   style="color: #2C7DFA; font-size: 25px;"></i>
-            <h4>报警车辆&nbsp;{{electNumForTraceTable}}</h4></li>
+            <h4>人员轨迹&nbsp;{{electNumForTraceTable}}</h4></li>
         <li ng-show="traceStationsLength!=null">经过{{traceStationsLength}}个&nbsp;基站</li>
     </ul>
     <div class="tableArea" ng-style style="margin-top: 5%;">
@@ -257,7 +257,7 @@
                            ng-checked="exists(peopleDto, selected)"
                            ng-click="toggle(peopleDto, selected)"/>
                 </td>
-                <td title="{{peopleDto.people.people_name}}">{{peopleDto.people_name}}</td>
+                <td title="{{peopleDto.people_name}}">{{peopleDto.people_name}}</td>
                 <td style="display: none;">{{peopleDto.station_address}}</td>
                 <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.station_address}}">
                     {{peopleDto.station_name}}

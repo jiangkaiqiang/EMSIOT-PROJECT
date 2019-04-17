@@ -3,13 +3,6 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         minZoom: 5,
         maxZoom: 30
     });    // 创建Map实例
-    map.addControl(new BMap.MapTypeControl(
-        {
-            mapTypes:[
-                BMAP_NORMAL_MAP,
-                BMAP_HYBRID_MAP
-            ]}
-    ));
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
 
@@ -151,7 +144,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         var sHtml = "<div id='positionTable' class='shadow position-car-table'><ul class='flex-between'><li class='flex-items'><img src='app/img/station.png'/><h4>";
         var sHtml2 = "</h4></li><li>";
         var sHtml3 = "</li></ul><p class='flex-items'><i class='glyphicon glyphicon-map-marker'></i><span>";
-        var sHtml4 = "</p><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
+        var sHtml4 = "</p><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>姓名</th><th>经过时间</th></tr></thead><tbody>";
         //var sHtml4 = "</p><ul class='flex flex-time'><li class='active searchTime'>1分钟</li><li class='searchTime'>5分钟</li><li class='searchTime'>1小时</li></ul><hr/><div class='tableArea margin-top2'><table class='table table-striped ' id='tableArea' ng-model='AllElects'><thead><tr><th>序号</th><th>车辆编号</th><th>经过时间</th></tr></thead><tbody>";
         var endHtml = "</tbody></table></div></div>";
         var pt;
@@ -191,7 +184,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             //统计时间内经过改基站的车辆的数
             //var num = tmpStation.station_phy_num;
             //console.log(FormatDate(start) ,FormatDate(end) );
-            //showElectsInStation(FormatDate(start), FormatDate(end), num);
+            //showPeopleInStation(FormatDate(start), FormatDate(end), num);
             //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
             //$scope.labelSet(carNum, marker2);
             //marker2.setTitle(carNum);
@@ -200,13 +193,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 //title_add = tmpStation.station_phy_num;
-                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
-                var electInfo = '';
-                for (var k = 0; k < $scope.electsInStation.length; k++) {
+                showPeopleInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
+                var peopleInfo = '';
+                for (var k = 0; k < $scope.peopleInStation.length; k++) {
                     //2018-10-15 修改
-                    electInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.electsInStation[k].plate_num + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].plate_num + "</td>" + "<td title='" + $scope.electsInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.electsInStation[k].corssTime + "</td></tr>";
+                    peopleInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].people_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].people_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
                 }
-                var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 + $scope.electsInStation.length + "辆" + sHtml3 + title_add[1] + sHtml4 + electInfo + endHtml);
+                var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 + $scope.peopleInStation.length + "辆" + sHtml3 + title_add[1] + sHtml4 + peopleInfo + endHtml);
                 var p = e.target;
                 var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
                 map.openInfoWindow(infoWindow, point);
@@ -219,7 +212,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	            markers: markers,
 	            girdSize: 100,
 	            styles: [{
-	                url: '../app/img/blue3.png',
+	            	url: '../app/img/blue3.png',
                     size: new BMap.Size(50, 50),
                     backgroundColor: 'rgba(102,179,255,0.1)',
                     textColor: '#ffffff',
@@ -284,6 +277,21 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     }
 
   */
+    function showPeopleInStation(startTime, endTime, stationPhyNum) {
+        $.ajax({
+            method: 'GET',
+            url: '/i/people/findPeoplesByStationIdAndTime1',
+            async: false,
+            data: {
+//                "startTime": startTime,
+//                "endTime": endTime,
+                "stationPhyNum": stationPhyNum
+            }
+        }).success(function (data) {
+            $scope.peopleInStation = data;
+
+        })
+    }
     //根据时间和基站的ids批量获取基站下面的经过车辆数量
     function showElectsCountInStations(startTime, endTime, stationPhyNumStr) {
     	var counts;
@@ -292,8 +300,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     		url: '/i/people/findPeoplesCountByStationsIdAndTime',
     		async: false,
     		data: {
-    			"startTime": startTime,
-    			"endTime": endTime,
+//    			"startTime": startTime,
+//    			"endTime": endTime,
     			"stationPhyNumStr": stationPhyNumStr
     		}
     	}).success(function (data) {
@@ -588,7 +596,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             }
             $scope.showOperation = true;
             $scope.showTable = true;
-            $scope.electNumForTraceTable = $scope.keywordForTrace;
+            $scope.peopleNumForTraceTable = $scope.keywordForTrace;
         }).error(function(){
             $("#positionTable").removeClass("rightToggle");
             $scope.showOperation = false;
@@ -771,7 +779,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     var time = new Date().getTime();//当前时间
     var start = new Date(time - 60*1000*60);//一小时
     var end = new Date(time);
-    function FormatDate (strTime,elect) {
+    function FormatDate (strTime,people) {
         var date = new Date(strTime);
         //2018-10-15 修改
         var year = date.getFullYear();
@@ -780,7 +788,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         var hours = date.getHours() < 10?"0"+date.getHours():date.getHours();
         var min = date.getMinutes() < 10?"0"+date.getMinutes():date.getMinutes();
         var seconds = date.getSeconds() < 10?"0"+date.getSeconds():date.getSeconds();
-        if(elect==0){
+        if(people==0){
         	return year + "-" + month + "-" + day + " " + hours + ":" + min + ":" +seconds
         }else{
         	return year + "-" + month + "-" + day

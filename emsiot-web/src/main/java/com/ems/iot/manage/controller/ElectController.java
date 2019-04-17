@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.conn.util.PublicSuffixList;
 import org.influxdb.dto.QueryResult;
 import org.influxdb.dto.QueryResult.Result;
 import org.influxdb.dto.QueryResult.Series;
@@ -165,6 +166,49 @@ public class ElectController extends BaseController {
 		return count;
 		
 	}
+	
+	public List<Integer> areaCar(Integer proPower,Integer cityPower,Integer areaPower) {
+		String strSqlCard=" SELECT DISTINCT(gua_card_num) FROM " + Constant.electStationTable;
+		String whereCard = "";
+		if( proPower != null) {
+			if(!whereCard.equals("")) {
+				whereCard += " and pro_id = "+proPower;
+			}else {
+		
+				whereCard += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!whereCard.equals("")) {
+				whereCard += " and city_id = "+cityPower;
+			}else {
+				whereCard += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!whereCard.equals("")) {
+				whereCard += " and area_id = "+areaPower;
+			}else {
+				whereCard += " area_id = "+areaPower;
+			}
+		}
+		if(!whereCard.equals("")) {
+			strSqlCard+=" where "+ whereCard ;
+		}
+		QueryResult resultsCard = influxDBConnection
+				.query(strSqlCard);
+		Result oneResultCard = resultsCard.getResults().get(0);
+		
+		List<Integer> cardArray=new ArrayList<Integer>();
+		if (oneResultCard.getSeries() != null) {
+			List<Series> seriesCard = oneResultCard.getSeries();
+			List<List<Object>> listVal = seriesCard.get(0).getValues();
+			for (List<Object> lists : listVal) {
+				cardArray.add((int)Float.parseFloat(lists.get(1).toString()));
+			}
+		}
+		return cardArray;
+	}
 	/**
 	 * 根据基站的物理编号和时间，查询某个基站下的车辆，为页面点击基站显示基站下的车辆提供服务
 	 * 
@@ -178,7 +222,10 @@ public class ElectController extends BaseController {
 	@ResponseBody
 	public Object findElectsCountByStationsIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
 			@RequestParam(value = "endTime", required = false) String endTime,
-			@RequestParam(value = "stationPhyNumStr", required = false) String stationPhyNumStr)
+			@RequestParam(value = "stationPhyNumStr", required = false) String stationPhyNumStr,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
 		
 //		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
@@ -187,9 +234,16 @@ public class ElectController extends BaseController {
 		if(stationPhyNumStr!=null) {
 			stationPhyNums=stationPhyNumStr.split(",");
 		}
+		
+		//查询该区域的车辆
+		List<Integer> cardArray = areaCar(proPower, cityPower, areaPower);
+		
+		
+		
+		
 		//查询influxdb 2019-01-29
 		int count = 0;
-		String strSql=" SELECT count(*) FROM " + Constant.electStationTable;
+		String strSql=" SELECT gua_card_num,station_phy_num FROM " + Constant.electStationTable;
 		String where = "";
 		String timeCond = "";
 		if( startTime != null && !"".equals(startTime)) {
@@ -214,29 +268,33 @@ public class ElectController extends BaseController {
 				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
-		Map<String, Object> mapList=new HashMap<String, Object>();
+		Map<String, Integer> mapList=new HashMap<String, Integer>();
 		String sql="";
-		for (String str : stationPhyNums) {
+		for (Integer str : cardArray) {
 			
 				if(!timeCond.equals("")) {
-					where = " and station_phy_num = '"+str+"'";
+					where = " and gua_card_num = "+str;
 				}else {
-					where = " station_phy_num = '"+str+"'";
+					where = " gua_card_num = "+str;
 				}
 
-				sql=strSql+" where "+timeCond+where;
+				sql=strSql+" where "+timeCond+where+" order by time desc limit 1";
 				
 				QueryResult results = influxDBConnection
 						.query(sql);
 				Result oneResult = results.getResults().get(0);
 				if (oneResult.getSeries() != null) {
 					List<Series> series = oneResult.getSeries();
-					
+					List<String> list = series.get(0).getColumns();
 					List<List<Object>> listVal = series.get(0).getValues();
-					count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
-					mapList.put(str, count);
-				}else {
-					mapList.put(str, 0);
+					count = series.get(0).getValues().size();
+					String stationNum = listVal.get(0).get(2).toString();
+					Integer cardNum = (int)Float.parseFloat(listVal.get(0).get(1).toString());
+					if(mapList.containsKey(stationNum)) {
+						mapList.put(stationNum, mapList.get(stationNum)+count);
+					}else {
+						mapList.put(stationNum, count);
+					}
 				}
 			
 			
@@ -257,6 +315,7 @@ public class ElectController extends BaseController {
 	@ResponseBody
 	public Object findElectsByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
 			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "limit", required = false) String limit,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
 			throws UnsupportedEncodingException {
 		/*List<ElectrombileStation> electrombileStations = electrombileStationMapper
@@ -273,8 +332,10 @@ public class ElectController extends BaseController {
 		}*/
 		//List<StationElectDto> stationElectDtos = electrombileStationMapper.selectElectsByStationPhyNumAndTime2(stationPhyNum, startTime, endTime);
 		//return stationElectDtos;
-		
-		
+		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		if("0".equals(limit)) {
+			return listElect;
+		}
 		//查询influxdb 2019-01-29
 		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
@@ -309,12 +370,12 @@ public class ElectController extends BaseController {
 			}
 		}
 		if(!where.equals("")) {
-			strSql+=" where "+where;
+			strSql+=" where "+where +" order by time desc limit "+limit;
 		}
 		QueryResult results = influxDBConnection
 				.query(strSql);
 		Result oneResult = results.getResults().get(0);
-		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		
 		if (oneResult.getSeries() != null) {
 			List<Series> series = oneResult.getSeries();
 			List<String> listCol = series.get(0).getColumns();
