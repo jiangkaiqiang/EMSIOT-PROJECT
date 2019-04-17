@@ -4,10 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.influxdb.dto.QueryResult;
+import org.influxdb.dto.QueryResult.Result;
+import org.influxdb.dto.QueryResult.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +40,15 @@ import com.ems.iot.manage.entity.Area;
 import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
+import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.People;
 import com.ems.iot.manage.entity.PeopleStation;
 import com.ems.iot.manage.entity.Province;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.OssService;
+import com.ems.iot.manage.util.Constant;
+import com.ems.iot.manage.util.InfluxDBConnection;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -65,6 +75,7 @@ public class PeopleController extends BaseController {
 	@Autowired
 	private ElectrombileMapper electrombileMapper;
 
+	InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 	/**
 	 * 根据电动车的ID寻找电动车
 	 * 
@@ -405,7 +416,7 @@ public class PeopleController extends BaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findPeopleLocation")
+	/*@RequestMapping(value = "/findPeopleLocation")
 	@ResponseBody
 	public Object findPeopleLocation(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
 			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum)
@@ -418,7 +429,7 @@ public class PeopleController extends BaseController {
 			station = stationMapper.selectByStationPhyNum(peopleStation.getStation_phy_num());
 		}
 		return station;
-	}
+	}*/
 
 	/**
 	 * 查询人员轨迹
@@ -430,9 +441,9 @@ public class PeopleController extends BaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findPeopleTrace")
+	@RequestMapping(value = "/findPeopleTrace1")
 	@ResponseBody
-	public Object findPeopleTrace(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
+	public Object findPeopleTrace1(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
 			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum,
 			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
 			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
@@ -585,5 +596,308 @@ public class PeopleController extends BaseController {
 		return peopleStations;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	// influxdb查询接口
+	
+	
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的车辆数量。
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findPeoplesCountByStationsIdAndTime")
+	@ResponseBody
+	public Object findPeoplesCountByStationsIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "stationPhyNumStr", required = false) String stationPhyNumStr)
+					throws UnsupportedEncodingException {
+		
+//		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
+//		return count;
+		String[] stationPhyNums=null;
+		if(stationPhyNumStr!=null) {
+			stationPhyNums=stationPhyNumStr.split(",");
+		}
+		//查询influxdb 2019-01-29
+		int count = 0;
+		String strSql=" SELECT count(*) FROM " + Constant.peopleStationTable;
+		String where = "";
+		String timeCond = "";
+		if( startTime != null && !"".equals(startTime)) {
+			timeCond += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!timeCond.equals("")) {
+				timeCond += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		Map<String, Object> mapList=new HashMap<String, Object>();
+		String sql="";
+		for (String str : stationPhyNums) {
+			
+				if(!timeCond.equals("")) {
+					where = " and station_phy_num = '"+str+"'";
+				}else {
+					where = " station_phy_num = '"+str+"'";
+				}
+
+				sql=strSql+" where "+timeCond+where;
+				
+				QueryResult results = influxDBConnection
+						.query(sql);
+				Result oneResult = results.getResults().get(0);
+				if (oneResult.getSeries() != null) {
+					List<Series> series = oneResult.getSeries();
+					
+					List<List<Object>> listVal = series.get(0).getValues();
+					count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
+					mapList.put(str, count);
+				}else {
+					mapList.put(str, 0);
+				}
+			
+			
+		}
+		return mapList;
+		
+	}
+	
+	/**
+	 * 根据基站的物理编号和时间，查询某个基站下的人员，为页面点击基站显示基站下的车辆提供服务
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param station_phy_num
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findPeoplesByStationIdAndTime1")
+	@ResponseBody
+	public Object findPeoplesByStationIdAndTime1(@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
+			throws UnsupportedEncodingException {
+		
+		
+		
+		//查询influxdb 2019-01-29
+		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
+		String where = "";
+		
+		if( startTime != null && !"".equals(startTime)) {
+			where += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if( stationPhyNum != null) {
+			if(!where.equals("")) {
+				where += " and station_phy_num = '"+stationPhyNum+"'";
+			}else {
+				where += " station_phy_num = '"+stationPhyNum+"'";
+			}
+		}
+		if(!where.equals("")) {
+			strSql+=" where "+where;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			for (List<Object> lists : listVal) {
+				StationElectDto elect = new StationElectDto();
+				elect.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
+				elect.setPlate_num(lists.get(listCol.indexOf("plate_num")).toString());
+				elect.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				elect.setCorssTime(lists.get(listCol.indexOf("hard_read_time")).toString());
+				listElect.add(elect);
+			}
+		}
+		return listElect;
+	}
+	
+	
+	
+	//人员定位
+	@RequestMapping(value = "/findPeopleLocation")
+	@ResponseBody
+	public Object findPeopleLocation(@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
+			throws UnsupportedEncodingException {
+		Station station = new Station();
+		String strSql=" SELECT * FROM  " + Constant.peopleStationTable;
+		String where = "";
+		if( plateNum != null && !"".equals(plateNum)) {
+			where += " plate_num = '"+plateNum+"'";
+		}
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = "+guaCardNum;
+			}else {
+				where += " gua_card_num = "+guaCardNum;
+			}
+		}
+		if(plateNum != null && guaCardNum != null ) {
+			return station;
+		}
+		if(!where.equals("")) {
+			strSql+=" where "+ where +" order by time desc limit 1 ";
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			List<Object> values = listVal.get(0);
+			station.setLatitude(values.get(listCol.indexOf("latitude")).toString());
+			station.setLongitude(values.get(listCol.indexOf("longitude")).toString());
+			station.setStation_phy_num(Integer.parseInt(values.get(listCol.indexOf("station_phy_num")).toString()));
+			station.setStation_name(values.get(listCol.indexOf("station_name")).toString());
+			station.setStation_address(values.get(listCol.indexOf("station_address")).toString());
+			station.setStation_type(values.get(listCol.indexOf("station_type")).toString());
+		}
+		
+		
+		return station;
+		
+	}
+	
+
+	/**
+	 * 查询车辆轨迹   查询influxdb 
+	 * 
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @param startTimeForTrace
+	 * @param endTimeForTrace
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findPeopleTrace")
+	@ResponseBody
+	public Object findPeopleTrace(@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
+			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
+			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
+					throws UnsupportedEncodingException {
+		String strSql=" SELECT * FROM " + Constant.electStationTable;
+		String where = "";
+		
+		if( startTimeForTrace != null && !"".equals(startTimeForTrace)) {
+			where += " time >= '" + startTimeForTrace+"'";
+		}
+		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTimeForTrace);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		
+		if( plateNum != null && !"".equals(plateNum)) {
+			if(!where.equals("")) {
+				where += " and plate_num = '"+plateNum+"'";
+			}else {
+				
+				where += " plate_num = '"+plateNum+"'";
+			}
+		}
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = "+guaCardNum;
+			}else {
+				where += " gua_card_num = "+guaCardNum;
+			}
+		}
+		if(plateNum != null && guaCardNum != null ) {
+			return new ArrayList<PeopleStation>();
+		}
+		
+		if(!where.equals("")) {
+			strSql+=" where "+where;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		List<PeopleStation> listPeople = new ArrayList<PeopleStation>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			double card_num;
+			for (List<Object> lists : listVal) {
+				PeopleStation people = new PeopleStation();
+				card_num=Double.valueOf(lists.get(listCol.indexOf("gua_card_num")).toString());
+				people.setPeople_gua_card_num((int)card_num);
+				people.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
+				people.setHard_read_time(lists.get(listCol.indexOf("hard_read_time")).toString());
+				
+				people.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				people.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
+				people.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
+				people.setUpdate_time(lists.get(listCol.indexOf("time")).toString());
+				listPeople.add(people);
+			}
+		}
+		return listPeople;
+	}
 	
 }
