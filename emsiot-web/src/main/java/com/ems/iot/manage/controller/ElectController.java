@@ -41,6 +41,7 @@ import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.dto.Thermodynamic;
 import com.ems.iot.manage.dto.TraceStationDto;
+import com.ems.iot.manage.dto.ElectCountAndList;
 import com.ems.iot.manage.entity.Area;
 import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.Electrombile;
@@ -109,6 +110,9 @@ public class ElectController extends BaseController {
 	@ResponseBody
 	public Object findElectsCountByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
 			@RequestParam(value = "endTime", required = false) String endTime,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
 					throws UnsupportedEncodingException {
 		
@@ -140,6 +144,28 @@ public class ElectController extends BaseController {
 				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
 			}
 		}
 		if( stationPhyNum != null) {
@@ -237,6 +263,7 @@ public class ElectController extends BaseController {
 		
 		//查询该区域的车辆
 		List<Integer> cardArray = areaCar(proPower, cityPower, areaPower);
+		ElectCountAndList countAndList=new ElectCountAndList();
 		
 		
 		
@@ -248,7 +275,7 @@ public class ElectController extends BaseController {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		startTime = sdf.format(sysDate);
 		endTime = sdf.format(sysDate);
-		String strSql=" SELECT gua_card_num,station_phy_num FROM " + Constant.electStationTable;
+		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
 		String timeCond = "";
 		if( startTime != null && !"".equals(startTime)) {
@@ -273,7 +300,31 @@ public class ElectController extends BaseController {
 				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
+		if( proPower != null) {
+			if(!timeCond.equals("")) {
+				timeCond += " and pro_id = "+proPower;
+			}else {
+		
+				timeCond += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!timeCond.equals("")) {
+				timeCond += " and city_id = "+cityPower;
+			}else {
+				timeCond += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!timeCond.equals("")) {
+				timeCond += " and area_id = "+areaPower;
+			}else {
+				timeCond += " area_id = "+areaPower;
+			}
+		}
+		
 		Map<String, Integer> mapList=new HashMap<String, Integer>();
+		Map<String, List<StationElectDto>> mapElectList=new HashMap<String, List<StationElectDto>>();
 		String sql="";
 		for (Integer str : cardArray) {
 			
@@ -290,21 +341,41 @@ public class ElectController extends BaseController {
 				Result oneResult = results.getResults().get(0);
 				if (oneResult.getSeries() != null) {
 					List<Series> series = oneResult.getSeries();
-					List<String> list = series.get(0).getColumns();
+					List<String> listCol = series.get(0).getColumns();
 					List<List<Object>> listVal = series.get(0).getValues();
 					count = series.get(0).getValues().size();
-					String stationNum = listVal.get(0).get(2).toString();
-					Integer cardNum = (int)Float.parseFloat(listVal.get(0).get(1).toString());
+					String stationNum = listVal.get(0).get(listCol.indexOf("station_phy_num")).toString();
+					Integer cardNum = (int)Float.parseFloat(listVal.get(0).get(listCol.indexOf("gua_card_num")).toString());
 					if(mapList.containsKey(stationNum)) {
 						mapList.put(stationNum, mapList.get(stationNum)+count);
 					}else {
 						mapList.put(stationNum, count);
 					}
+					//基站下车辆的数据
+					//List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+					StationElectDto elect = new StationElectDto();
+					elect.setOwner_name(listVal.get(0).get(listCol.indexOf("owner_name")).toString());
+					elect.setPlate_num(listVal.get(0).get(listCol.indexOf("plate_num")).toString());
+					elect.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
+					elect.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
+					
+					if(mapElectList.containsKey(stationNum)) {
+						List<StationElectDto> listElect = mapElectList.get(stationNum);
+						listElect.add(elect);
+						mapElectList.put(stationNum, listElect);
+					}else {
+						//基站下车辆的数据
+						List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+						listElect.add(elect);
+						mapElectList.put(stationNum, listElect);
+					}
 				}
 			
 			
 		}
-		return mapList;
+		countAndList.setStationElectList(mapElectList);
+		countAndList.setElectCountByStation(mapList);
+		return countAndList;
 		
 	}
 	/**
@@ -321,6 +392,9 @@ public class ElectController extends BaseController {
 	public Object findElectsByStationIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
 			@RequestParam(value = "endTime", required = false) String endTime,
 			@RequestParam(value = "limit", required = false) String limit,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower,
 			@RequestParam(value = "stationPhyNum", required = false) Integer stationPhyNum)
 			throws UnsupportedEncodingException {
 		/*List<ElectrombileStation> electrombileStations = electrombileStationMapper
@@ -365,6 +439,28 @@ public class ElectController extends BaseController {
 				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
 			}
 		}
 		if( stationPhyNum != null) {
@@ -1080,6 +1176,9 @@ public class ElectController extends BaseController {
 	@RequestMapping(value = "/findElectLocation")
 	@ResponseBody
 	public Object findElectLocation(@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower,
 			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum)
 			throws UnsupportedEncodingException {
 //		Electrombile electrombile = electrombileMapper.findElectrombileForLocation(guaCardNum, plateNum);
@@ -1096,6 +1195,28 @@ public class ElectController extends BaseController {
 		String where = "";
 		if( plateNum != null && !"".equals(plateNum)) {
 			where += " plate_num = '"+plateNum+"'";
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
+			}
 		}
 		if( guaCardNum != null ) {
 			if(!where.equals("")) {
@@ -1180,7 +1301,10 @@ public class ElectController extends BaseController {
 	public Object findElectTrace(@RequestParam(value = "plateNum", required = false) String plateNum,
 			@RequestParam(value = "guaCardNum", required = false) Integer guaCardNum,
 			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
-			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
+			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
 		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
@@ -1205,6 +1329,28 @@ public class ElectController extends BaseController {
 				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
 			}
 		}
 		

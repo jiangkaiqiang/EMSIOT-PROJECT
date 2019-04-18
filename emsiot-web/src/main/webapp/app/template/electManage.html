@@ -1796,16 +1796,16 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th ng-style style="width: 100px !important;">经过基站ID</th>
+								<th ng-style style="width: 100px !important;">经过基站编号</th>
 								<th>经过基站名称</th>
 								<th>经过基站时间</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-repeat="traceStation in traceStations">
-								<td>{{traceStation.station.station_id}}</td>
-								<td>{{traceStation.station.station_name}}</td>
-								<td>{{traceStation.crossTime}}</td>
+								<td>{{traceStation.station_phy_num}}</td>
+								<td>{{traceStation.station_name}}</td>
+								<td>{{traceStation.update_time}}</td>
 							</tr>
 						</tbody>
 					</table>

@@ -292,6 +292,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 title_add = this.getTitle().split('\t');
                 //title_add = tmpStation.station_phy_num;
                 showElectsInStation(FormatDate(start), FormatDate(end), title_add[0],title_add[2]);  //根据物理编号查找
+                $scope.electsInStation = $scope.electsInStationMap[title_add[0]]==undefined?[]:$scope.electsInStationMap[title_add[0]];
                 var electInfo = '';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
                     //2018-10-15 修改
@@ -366,6 +367,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     		data: {
     			"startTime": startTime,
     			"endTime": endTime,
+    			"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power,
     			"stationPhyNum": stationPhyNum
     		}
     	}).success(function (data) {
@@ -389,7 +393,10 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 "areaPower": $scope.user.area_power
     		}
     	}).success(function (data) {
-    		counts=data;
+    		console.log(data)
+    		counts=data.electCountByStation;
+    		console.log(counts);
+    		$scope.electsInStationMap = data.stationElectList;
     	})
     	return counts;
     }
@@ -403,6 +410,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             data: {
 //                "startTime": startTime,
 //                "endTime": endTime,
+            	"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power,
                 "limit": limit,
                 "stationPhyNum": stationPhyNum
             }
@@ -436,16 +446,27 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         if ($scope.keywordTypeForLocation == "1") {
             $scope.plateNum = $scope.keywordForLocation;
             $scope.guaCardNum = null;
+            if($scope.plateNum==undefined || $scope.plateNum==""){
+            	alert("请输入车牌号！")
+            	return;
+            }
         }
         else if ($scope.keywordTypeForLocation == "0") {
             $scope.guaCardNum = $scope.keywordForLocation;
             $scope.plateNum = null;
+            if($scope.guaCardNum==undefined || $scope.guaCardNum==""){
+            	alert("请输入防盗芯片！")
+            	return;
+            }
         }
         else {
 
         }
         $http.get('/i/elect/findElectLocation', {
             params: {
+            	"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power,
                 "plateNum": $scope.plateNum,
                 "guaCardNum": $scope.guaCardNum
             }
@@ -485,11 +506,20 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.plateNum = $scope.keywordForTrace;
             $scope.guaCardNum = null;
             $scope.electNumForTraceTable = $scope.plateNum;
+            if($scope.plateNum==undefined || $scope.plateNum==""){
+            	alert("请输入车牌号！")
+            	return;
+            }
         }
         else if ($scope.keywordTypeForTrace == "0") {
             $scope.guaCardNum = $scope.keywordForTrace;
             $scope.plateNum = null;
             $scope.electNumForTraceTable = $scope.keywordForTrace;
+            console.log($scope.guaCardNum)
+            if($scope.guaCardNum==undefined || $scope.guaCardNum==""){
+            	alert("请输入防盗芯片！")
+            	return;
+            }
         }
         else {
 
@@ -503,6 +533,9 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var guijiModal = $("#guijiModal");
         $http.get('/i/elect/findElectTrace', {
             params: {
+            	"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power,
                 "plateNum": $scope.plateNum,
                 "guaCardNum": $scope.guaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
