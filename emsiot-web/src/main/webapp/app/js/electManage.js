@@ -744,6 +744,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 						}
 					}).success(function(data) {
 						$scope.traceStations = data;
+						console.log($scope.traceStations)
 						//$scope.bigTotalItemsForTrace = data.total;
 					});
 		 }

@@ -435,6 +435,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
         	//$scope.bigTotalItems = data.total;
             $scope.AllPeoplelarms = data;
+            console.log($scope.AllPeoplelarms)
             $scope.traceStationsLength = data.length;
             $scope.pointsArr = [];
             for(var j=0;j<data.length;j++){
