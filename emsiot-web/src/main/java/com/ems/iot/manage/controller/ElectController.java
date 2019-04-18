@@ -243,6 +243,11 @@ public class ElectController extends BaseController {
 		
 		//查询influxdb 2019-01-29
 		int count = 0;
+		Date sysDate = new Date();
+		
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		startTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);
 		String strSql=" SELECT gua_card_num,station_phy_num FROM " + Constant.electStationTable;
 		String where = "";
 		String timeCond = "";
@@ -250,7 +255,7 @@ public class ElectController extends BaseController {
 			timeCond += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			//SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			Date date=null;
 			Calendar calendar = Calendar.getInstance();
 			try {
