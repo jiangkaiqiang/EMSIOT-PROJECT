@@ -29,19 +29,20 @@ public class InfluxDbTest {
 		//testInsert();
 		//testBatchPoints();
 		testElectQuery();
-		//testCountQuery();
 		//testDelete();
+		testCountQuery();
 	}
 	public static void testElectQuery() {
 		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 		/*QueryResult results = influxDBConnection count(DISTINCT(gua_card_num))
 				.query("SELECT * FROM electStationTest2 order by time desc limit 1000");*/
-		String strSql="select * from electStationTest3 " +
-				//" where station_phy_num = '28954'"+
-				 " where time >= '2019-03-13' and time < '2019-03-14' " +
+		String strSql=" SELECT count(DISTINCT(gua_card_num)) FROM peopleStationTest1 where  time >= '2019-04-23' and time < '2019-04-24' and pro_id = 530000 and city_id = 533100 and area_id = 533103 "  +
+				//" where gua_card_num = 2543862"+
+				//" where station_phy_num = '33430'"+
+				// " where time >= '2019-03-13' and time < '2019-03-17' " +
 			
-				 "  GROUP BY gua_card_num ";
-				/*" order by time desc ";*/
+				//"  GROUP BY time(1s) order by time desc";
+				" order by time asc limit 50";
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date=new Date();
@@ -78,7 +79,7 @@ public class InfluxDbTest {
 				System.err.println();
 			}
 			
-			System.out.println(lists.size());
+			//System.out.println(lists.size());
 		}else {
 			System.err.println(oneResult.getError());
 		}
@@ -148,7 +149,7 @@ public class InfluxDbTest {
 	public static void testCountQuery() {
 		InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 		QueryResult results = influxDBConnection
-				.query("SELECT * FROM electStationTest3 order by time desc");
+				.query(" SELECT * FROM electStationTest3 where pro_id = 650000 and city_id = 653100 and area_id = 653101");
 		//results.getResults()是同时查询多条SQL语句的返回值，此处我们只有一条SQL，所以只取第一个结果集即可。
 		Result oneResult = results.getResults().get(0);
 		if (oneResult.getSeries() != null) {

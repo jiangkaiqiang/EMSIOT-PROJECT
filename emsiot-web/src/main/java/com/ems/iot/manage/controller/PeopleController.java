@@ -32,6 +32,8 @@ import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.BaseDto;
 import com.ems.iot.manage.dto.ElectAlarmDto;
+import com.ems.iot.manage.dto.ElectCountAndList;
+import com.ems.iot.manage.dto.PeopleCountAndList;
 import com.ems.iot.manage.dto.PeopleDto;
 import com.ems.iot.manage.dto.PeopleStationDto;
 import com.ems.iot.manage.dto.ResultDto;
@@ -258,7 +260,7 @@ public class PeopleController extends BaseController {
 		People people = new People();
 		people.setPeople_gua_card_num(people_gua_card_num);
 
-		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		// electrombile.setBuy_date(sdf.parse(buy_date));
 		people.setPeople_tele(people_tele);
 		people.setPolice_num(police_num);
@@ -275,6 +277,7 @@ public class PeopleController extends BaseController {
 		people.setGuardian_relation(guardian_relation);
 		people.setContact_address(contact_address);
 		people.setRecorder_id(recorder_id);
+		people.setRecorder_time(sdf.format(System.currentTimeMillis()));
 		
 		// 创建OSSClient实例。
 	    OSSClient ossClient = new OSSClient(OssService.endpoint, OssService.accessKeyId, OssService.accessKeySecret);
@@ -609,7 +612,48 @@ public class PeopleController extends BaseController {
 	
 	
 	
-	
+	public List<Integer> areaPeople(Integer proPower,Integer cityPower,Integer areaPower) {
+		String strSqlCard=" SELECT DISTINCT(people_gua_card_num) FROM " + Constant.peopleStationTable;
+		String whereCard = "";
+		if( proPower != null) {
+			if(!whereCard.equals("")) {
+				whereCard += " and pro_id = "+proPower;
+			}else {
+		
+				whereCard += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!whereCard.equals("")) {
+				whereCard += " and city_id = "+cityPower;
+			}else {
+				whereCard += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!whereCard.equals("")) {
+				whereCard += " and area_id = "+areaPower;
+			}else {
+				whereCard += " area_id = "+areaPower;
+			}
+		}
+		if(!whereCard.equals("")) {
+			strSqlCard+=" where "+ whereCard ;
+		}
+		QueryResult resultsCard = influxDBConnection
+				.query(strSqlCard);
+		Result oneResultCard = resultsCard.getResults().get(0);
+		
+		List<Integer> cardArray=new ArrayList<Integer>();
+		if (oneResultCard.getSeries() != null) {
+			List<Series> seriesCard = oneResultCard.getSeries();
+			List<List<Object>> listVal = seriesCard.get(0).getValues();
+			for (List<Object> lists : listVal) {
+				cardArray.add((int)Float.parseFloat(lists.get(1).toString()));
+			}
+		}
+		return cardArray;
+	}
 	
 	
 	
@@ -630,7 +674,10 @@ public class PeopleController extends BaseController {
 	@ResponseBody
 	public Object findPeoplesCountByStationsIdAndTime(@RequestParam(value = "startTime", required = false) String startTime,
 			@RequestParam(value = "endTime", required = false) String endTime,
-			@RequestParam(value = "stationPhyNumStr", required = false) String stationPhyNumStr)
+			@RequestParam(value = "stationPhyNumStr", required = false) String stationPhyNumStr,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
 		
 //		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
@@ -639,16 +686,28 @@ public class PeopleController extends BaseController {
 		if(stationPhyNumStr!=null) {
 			stationPhyNums=stationPhyNumStr.split(",");
 		}
+		
+		//查询该区域的人员
+		List<Integer> peopleArray = areaPeople(proPower, cityPower, areaPower);
+		PeopleCountAndList countAndList=new PeopleCountAndList();
+		
+		
 		//查询influxdb 2019-01-29
 		int count = 0;
-		String strSql=" SELECT count(*) FROM " + Constant.peopleStationTable;
+		Date sysDate = new Date();
+		
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		startTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);
+		
+		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
 		String where = "";
 		String timeCond = "";
 		if( startTime != null && !"".equals(startTime)) {
 			timeCond += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			Date date=null;
 			Calendar calendar = Calendar.getInstance();
 			try {
@@ -666,34 +725,81 @@ public class PeopleController extends BaseController {
 				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
-		Map<String, Object> mapList=new HashMap<String, Object>();
+		if( proPower != null) {
+			if(!timeCond.equals("")) {
+				timeCond += " and pro_id = "+proPower;
+			}else {
+		
+				timeCond += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!timeCond.equals("")) {
+				timeCond += " and city_id = "+cityPower;
+			}else {
+				timeCond += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!timeCond.equals("")) {
+				timeCond += " and area_id = "+areaPower;
+			}else {
+				timeCond += " area_id = "+areaPower;
+			}
+		}
+		Map<String, Integer> mapList=new HashMap<String, Integer>();
+		Map<String, List<StationPeopleDto>> mapElectList=new HashMap<String, List<StationPeopleDto>>();
 		String sql="";
-		for (String str : stationPhyNums) {
+		for (Integer str : peopleArray) {
 			
 				if(!timeCond.equals("")) {
-					where = " and station_phy_num = '"+str+"'";
+					where = " and people_gua_card_num = "+str;
 				}else {
-					where = " station_phy_num = '"+str+"'";
+					where = " people_gua_card_num = "+str;
 				}
 
-				sql=strSql+" where "+timeCond+where;
+				sql=strSql+" where "+timeCond+where+" order by time desc limit 1";
 				
 				QueryResult results = influxDBConnection
 						.query(sql);
 				Result oneResult = results.getResults().get(0);
 				if (oneResult.getSeries() != null) {
 					List<Series> series = oneResult.getSeries();
-					
+					List<String> listCol = series.get(0).getColumns();
 					List<List<Object>> listVal = series.get(0).getValues();
-					count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
-					mapList.put(str, count);
-				}else {
-					mapList.put(str, 0);
+					count = series.get(0).getValues().size();
+					String stationNum = listVal.get(0).get(listCol.indexOf("station_phy_num")).toString();
+					
+					if(mapList.containsKey(stationNum)) {
+						mapList.put(stationNum, mapList.get(stationNum)+count);
+					}else {
+						mapList.put(stationNum, count);
+					}
+					
+					StationPeopleDto people = new StationPeopleDto();
+					people.setPeople_name(listVal.get(0).get(listCol.indexOf("people_name")).toString());
+					people.setPeople_id_cards(listVal.get(0).get(listCol.indexOf("people_id_cards")).toString());
+					people.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
+					people.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
+					
+					if(mapElectList.containsKey(stationNum)) {
+						List<StationPeopleDto> listPeople = mapElectList.get(stationNum);
+						listPeople.add(people);
+						mapElectList.put(stationNum, listPeople);
+					}else {
+						//基站下车辆的数据
+						List<StationPeopleDto> listPeople = new ArrayList<StationPeopleDto>();
+						listPeople.add(people);
+						mapElectList.put(stationNum, listPeople);
+					}
+					
 				}
 			
 			
 		}
-		return mapList;
+		countAndList.setStationPeopleList(mapElectList);
+		countAndList.setPeopleCountByStation(mapList);
+		return countAndList;
 		
 	}
 	
@@ -777,6 +883,9 @@ public class PeopleController extends BaseController {
 	@RequestMapping(value = "/findPeopleLocation")
 	@ResponseBody
 	public Object findPeopleLocation(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower,
 			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum)
 			throws UnsupportedEncodingException {
 		Station station = new Station();
@@ -784,6 +893,28 @@ public class PeopleController extends BaseController {
 		String where = "";
 		if( peopleIdCards != null && !"".equals(peopleIdCards)) {
 			where += " people_id_cards = '"+peopleIdCards+"'";
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
+			}
 		}
 		if( peopleGuaCardNum != null ) {
 			if(!where.equals("")) {
@@ -835,7 +966,10 @@ public class PeopleController extends BaseController {
 	public Object findPeopleTrace(@RequestParam(value = "peopleIdCards", required = false) String peopleIdCards,
 			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum,
 			@RequestParam(value = "startTimeForTrace", required = false) String startTimeForTrace,
-			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace)
+			@RequestParam(value = "endTimeForTrace", required = false) String endTimeForTrace,
+			@RequestParam(value = "proPower", required = false) Integer proPower,
+			@RequestParam(value = "cityPower", required = false) Integer cityPower,
+			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
 		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
 		String where = "";
@@ -844,7 +978,7 @@ public class PeopleController extends BaseController {
 			where += " time >= '" + startTimeForTrace+"'";
 		}
 		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			/*SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 			Date date=null;
 			Calendar calendar = Calendar.getInstance();
 			try {
@@ -860,6 +994,33 @@ public class PeopleController extends BaseController {
 				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}*/
+			if(!where.equals("")) {
+				where += " and time <= '" + endTimeForTrace+"'";
+			}else {
+				where += " time <= '" + endTimeForTrace+"'";
+			}
+		}
+		if( proPower != null) {
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
+			}else {
+		
+				where += " pro_id = "+proPower;
+			}
+		}
+		if( cityPower != null) {
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
+			}else {
+				where += " city_id = "+cityPower;
+			}
+		}
+		if( areaPower != null) {
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
+			}else {
+				where += " area_id = "+areaPower;
 			}
 		}
 		
@@ -937,8 +1098,38 @@ public class PeopleController extends BaseController {
 		}
 		int count = 0;
 		
-		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
+		Date sysDate = new Date();
+		String startTime = null;
+		String endTime = null;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		startTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);
+		
+		String strSql=" SELECT count(DISTINCT(people_gua_card_num)) FROM " + Constant.peopleStationTable;
 		String where = "";
+		
+		if( startTime != null && !"".equals(startTime)) {
+			where += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
 		
 		if( proPower != null) {
 			if(!where.equals("")) {
@@ -974,7 +1165,8 @@ public class PeopleController extends BaseController {
 			List<Series> series = oneResult.getSeries();
 			
 			
-			count = series.get(0).getValues().size();
+			List<List<Object>> listVal = series.get(0).getValues();
+			count = (int)Float.parseFloat(listVal.get(0).get(1).toString());
 		}
 		return count;
 	}
