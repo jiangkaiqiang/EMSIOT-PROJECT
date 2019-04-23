@@ -35,7 +35,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
            // map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
 
-            showCssFlag('#xsjizhan');
+            //showCssFlag('#xsjizhan');
 
             $http.get('/i/station/findAllStationsForMap', {
                 params: {
@@ -199,7 +199,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     //2018-10-15 修改
                     peopleInfo += "<tr><td title='" + (k + 1) + "'>" + (k + 1) + "</td>" + "<td title='" + $scope.peopleInStation[k].people_name + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].people_name + "</td>" + "<td title='" + $scope.peopleInStation[k].corssTime + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + $scope.peopleInStation[k].corssTime + "</td></tr>";
                 }
-                var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 + $scope.peopleInStation.length + "辆" + sHtml3 + title_add[1] + sHtml4 + peopleInfo + endHtml);
+                var infoWindow = new BMap.InfoWindow(sHtml + title_add[0] + sHtml2 + $scope.peopleInStation.length + "人" + sHtml3 + title_add[1] + sHtml4 + peopleInfo + endHtml);
                 var p = e.target;
                 var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
                 map.openInfoWindow(infoWindow, point);
@@ -207,7 +207,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             markers.push(marker2);
         }
         //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-	    markerClusterer = new BMapLib.MarkerClusterer(map,
+        //console.log(new BMapLib.MarkerClusterer(map,{markers: markers}))
+        markerClusterer = new BMapLib.MarkerClusterer(map,
 	        {
 	            markers: markers,
 	            girdSize: 100,
@@ -330,7 +331,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
         $("#dingweiModal").modal("hide");
     };
-    //根据条件定位车辆
+    //根据条件定位人员
     $scope.findElectLocation = function () {
         $scope.showOperation = false;
         $scope.showTable = false;
@@ -394,7 +395,11 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     $scope.findElectTrace = function () {            //显示车辆轨迹
     	//$scope.jizhanjuheFlag = 0;
     	//$scope.jizhankongzhi();
-
+        if (lushu != null) {
+            lushu.stop();
+            lushu = null;
+        }
+        map.clearOverlays();
 
         //showStation();
         if ($scope.keywordTypeForTrace == "1") {
@@ -403,7 +408,8 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         		return;
         	}
             $scope.peopleIdCards = $scope.keywordForTrace;
-            $scope.peopleGuaCardNum = null
+            $scope.peopleGuaCardNum = null;
+            $scope.electNumForTraceTable = $scope.peopleIdCards;
 
         }
         else if ($scope.keywordTypeForTrace == "0") {
@@ -413,6 +419,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         	}
             $scope.peopleGuaCardNum = $scope.keywordForTrace;
             $scope.peopleIdCards = null;
+            $scope.electNumForTraceTable = $scope.peopleGuaCardNum;
 
         }
         else {
@@ -445,142 +452,74 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             }
 
             if (data.length == 1)
-                alert("该车辆仅经过一个基站：" + data[0].station_name);
+                alert("该人员仅经过一个基站：" + data[0].station_name);
             else if (data.length == 0)
                 alert("该车辆没有经过任何基站！");
             else{
-            	if(lushu!=null){
-            		lushu.stop();
-            		lushu=null;
-            	}
-            	$scope.elecMarker = null;
-            	map.clearOverlays();
+            	//if(lushu!=null){
+            	//	lushu.stop();
+            	//	lushu=null;
+            	//}
+            	//$scope.elecMarker = null;
             	var showLable="";
             	
             	var marker;
                 // var lushu;
-                 var arrPois=$scope.pointsArr;
-                 map.setViewport(arrPois);
-                 if(lushu==null){
-	                    marker=new BMap.Marker(arrPois[0],{
-	                        icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)})
-	                    });
-	                    var label = new BMap.Label($scope.keywordForTrace+":"+data[0].station_name,{offset:new BMap.Size(0,-30)});
-	                    label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px 10px",background:"rgb(255, 255, 255)"});
-	                    marker.setLabel(label);
-	                    map.addOverlay(marker);lushu=1
-                 }
-            	
-                for (var i = 0; i < data.length - 1; i++) {
-                    
-                    BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
-                        var pointsArr=[initPos,targetPos];  //点数组
-                        var me = this,
-
-                        //当前的帧数
-                            currentCount = 0,
-                        //步长，米/秒
-                            timer = 10,
-                            step = this._opts.speed / (1000 / timer),
-                        //初始坐标
-                            init_pos = this._projection.lngLatToPoint(initPos),
-                        //获取结束点的(x,y)坐标
-                            target_pos = this._projection.lngLatToPoint(targetPos),
-                        //总的步长
-                            count = Math.round(me._getDistance(init_pos, target_pos) / step);
-                        //显示折线 syj201607191107
-                        this._map.addOverlay(new BMap.Polyline(pointsArr, {
-                            strokeColor : "rgb(102, 179, 255)",
-                            strokeWeight : 2,
-                            strokeOpacity : 1
-                        })); // 画线
-                      //显示轨迹当前点的数据
-
-                        //如果小于1直接移动到下一点
-                        if (count < 1) {
-                            me._moveNext(++me.i);
-                            return;
-                        }
-                        me._intervalFlag = setInterval(function() {
-                            //两点之间当前帧数大于总帧数的时候，则说明已经完成移动
-                            if (currentCount >= count) {
-                                clearInterval(me._intervalFlag);
-                                //移动的点已经超过总的长度
-                                if(me.i > me._path.length){
-                                    return;
-                                }
-                                //运行下一个点
-                                me._moveNext(++me.i);
-                            }else {
-                                currentCount++;
-                                var x = effect(init_pos.x, target_pos.x, currentCount, count),
-                                    y = effect(init_pos.y, target_pos.y, currentCount, count),
-                                    pos = me._projection.pointToLngLat(new BMap.Pixel(x, y));
-                                //设置marker
-                                if(currentCount == 1){
-                                    var proPos = null;
-                                    if(me.i - 1 >= 0){
-                                        proPos = me._path[me.i - 1];
-                                    }
-                                    if(me._opts.enableRotation == true){
-                                        me.setRotation(proPos,initPos,targetPos);
-                                    }
-                                    if(me._opts.autoView){
-                                        if(!me._map.getBounds().containsPoint(pos)){
-                                            me._map.setCenter(pos);
-                                        }
-                                    }
-                                }
-                                //正在移动
-                                me._marker.setPosition(pos);
-                                //设置自定义overlay的位置
-                                me._setInfoWin(pos);
+                 var arrPoisRes=$scope.pointsArr;
+                 //map.setViewport(arrPois);
+                var arrPoisall = [];
+                var drv = new BMap.WalkingRoute(map, {
+                    //renderOptions:{
+                    //    map:map,
+                    //    autoViewport:true
+                    //},
+                    onSearchComplete: function(res) {
+                        console.log(res)
+                        //console.log("b")
+                        if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+                            var plan = res.getPlan(0);
+                            console.log(plan.getNumRoutes())
+                            var arrPois = [];
+                            for (var j = 0; j < plan.getNumRoutes(); j++) {
+                                var route = plan.getRoute(j);
+                                arrPois = arrPois.concat(route.getPath());
                             }
-                        },timer);
-                        if(showLable == ""){
-                        	showLable = me._opts.defaultContent
+                            console.log(arrPois,arrPois.length)
+                            arrPoisall = arrPoisall.concat(arrPois);
+                            console.log(arrPoisall,arrPoisall.length)
+                            map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
+                            //map.setViewport(arrPoisall);
+                            if(f_index < arrPoisRes.length - 1)
+                                workCallback()
+                            else if(f_index == arrPoisRes.length - 1){
+                                lushu = new BMapLib.LuShu(map, arrPoisall, {
+                                    defaultContent: $scope.electNumForTraceTable,//"从天安门到百度大厦"
+                                    autoView: true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                                    icon: new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50, 30), {anchor: new BMap.Size(27, 23)}),
+                                    speed: 300,
+                                    enableRotation: true,//是否设置marker随着道路的走向进行旋转
+                                    landmarkPois: [
+                                        {lng: arrPoisall[0].lng, lat: arrPoisall[0].lat, html: '起点', pauseTime: 0}
+                                    ]
+                                })
+                                drv.search(new BMap.Point(arrPoisRes[0].lng,arrPoisRes[0].lat),new BMap.Point(arrPoisRes[arrPoisRes.length-1].lng,arrPoisRes[arrPoisRes.length-1].lat))
+                                f_index++;
+                            }
                         }
-
-                        me._opts.defaultContent=showLable+":"+data[me.i+1].station_name
-
-                    };
-
-
+                    }
+                });
+                var f_index = 0;
+                workCallback()
+                console.log(arrPoisRes)
+                function workCallback() {
+                    console.log("f_index",f_index)
+                    drv.search(new BMap.Point(arrPoisRes[f_index].lng,arrPoisRes[f_index].lat),new BMap.Point(arrPoisRes[f_index+1].lng,arrPoisRes[f_index+1].lat))
+                    f_index++;
                 }
-
-                lushu = new BMapLib.LuShu(map,arrPois,{
-                    defaultContent:$scope.keywordForTrace,//"从天安门到百度大厦"
-                    autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                    icon  : new BMap.Icon('../app/img/people-icon.png', new BMap.Size(50,30),{anchor : new BMap.Size(27, 23)}),
-                    speed: 350,
-                    enableRotation:true,//是否设置marker随着道路的走向进行旋转
-                    landmarkPois:[
-                        {lng:$scope.pointsArr[0],lat:$scope.pointsArr[1],html:'加油站',pauseTime:2}
-                    ]
-
-                });
-                marker.addEventListener("click",function(){
-                    marker.enableMassClear();   //设置后可以隐藏改点的覆盖物
-                    marker.hide();
-                    lushu.start();
-                    //map.clearOverlays();  //清除所有覆盖物
-                });
-
-                //drv.search('天安门', '百度大厦');
-                // lushu.start();
-                // lushu.pause();
                 //绑定事件
                 $("run").onclick = function(){
-                    marker.enableMassClear(); //设置后可以隐藏改点的覆盖物
-                    marker.hide();
                     lushu.start();
-                    //map.clearOverlays();    //清除所有覆盖物
                 }
-                //$("stop").onclick = function(){
-                //    marker.enableMassClear();
-                //    marker.hide();
-                //    lushu.stop();
-                //}
                 $("pause").onclick = function(){
                     lushu.pause();
                 }
@@ -597,7 +536,6 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             }
             $scope.showOperation = true;
             $scope.showTable = true;
-            $scope.peopleNumForTraceTable = $scope.keywordForTrace;
         }).error(function(){
             $("#positionTable").removeClass("rightToggle");
             $scope.showOperation = false;
@@ -686,29 +624,29 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
     })
 
-    function showCssFlag(param) {
-        $(param).toggleClass("active");
-        var left = $(param).css('left');
-        left = parseInt(left);
-        if (left == 0) {
-            $(param).css('background-color', '#66b3ff');
-                $(param).parent().css('background-color', '#66b3ff');
-            $(param).parent().parent().addClass("active");
-        } else {
-            $(param).css('background-color', '#fff');
-                $(param).parent().css('background-color', '#ccc');
-            $(param).parent().parent().removeClass("active");
-        }
-    }
-
-    $(".dismis").click(function () {
-        $(this).parents('#positionTable').toggleClass("rightToggle");
-        if ($(this).hasClass("fa-angle-left")) {
-            $(this).removeClass("fa-angle-left").addClass("fa-angle-right")
-        } else {
-            $(this).removeClass("fa-angle-right").addClass("fa-angle-left")
-        }
-    });
+    //function showCssFlag(param) {
+    //    $(param).toggleClass("active");
+    //    var left = $(param).css('left');
+    //    left = parseInt(left);
+    //    if (left == 0) {
+    //        $(param).css('background-color', '#66b3ff');
+    //            $(param).parent().css('background-color', '#66b3ff');
+    //        $(param).parent().parent().addClass("active");
+    //    } else {
+    //        $(param).css('background-color', '#fff');
+    //            $(param).parent().css('background-color', '#ccc');
+    //        $(param).parent().parent().removeClass("active");
+    //    }
+    //}
+    //
+    //$(".dismis").click(function () {
+    //    $(this).parents('#positionTable').toggleClass("rightToggle");
+    //    if ($(this).hasClass("fa-angle-left")) {
+    //        $(this).removeClass("fa-angle-left").addClass("fa-angle-right")
+    //    } else {
+    //        $(this).removeClass("fa-angle-right").addClass("fa-angle-left")
+    //    }
+    //});
 
 
 

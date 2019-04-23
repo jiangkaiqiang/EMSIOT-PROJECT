@@ -564,6 +564,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             	var marker;
                 // var lushu;
                 var arrPoisRes = $scope.pointsArr;
+                console.log(arrPoisRes)
                 var arrPoisall = [];
                 //map.setViewport(arrPois);
                 // 实例化一个驾车导航用来生成路线
