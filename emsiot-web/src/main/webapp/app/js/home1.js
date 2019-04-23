@@ -291,7 +291,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 //title_add = tmpStation.station_phy_num;
-                showElectsInStation(FormatDate(start), FormatDate(end), title_add[0],title_add[2]);  //根据物理编号查找
+                //showElectsInStation(FormatDate(start), FormatDate(end), title_add[0],title_add[2]);  //根据物理编号查找
                 $scope.electsInStation = $scope.electsInStationMap[title_add[0]]==undefined?[]:$scope.electsInStationMap[title_add[0]];
                 var electInfo = '';
                 for (var k = 0; k < $scope.electsInStation.length; k++) {
@@ -335,10 +335,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         if ($scope.tiao != null) {
             $scope.tiao.setAnimation(null);
         }
-        var tablePoint = $(this).context.cells[1].innerHTML;//获取单击表格时的地址
-        //console.log(tablePoint);
+        var tablePoint = $(this).context.cells[0].innerHTML;//获取单击表格时的地址
+        console.log(tablePoint);
+        console.log($scope.stations)
+        console.log($scope.jizhanBounce)
         for (var g = 0; g < $scope.stations.length; g++) {
-            if (tablePoint == $scope.stations[g].station_address) {//表格获取到的地址等于循环基站时的基站地址
+            if (tablePoint == $scope.stations[g].station_name) {//表格获取到的地址等于循环基站时的基站地址
                // console.log(tablePoint == $scope.stations[g].station_address)
                 var allOverlay = $scope.jizhanBounce;
                // console.log($scope.jizhanBounce)
@@ -489,7 +491,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             map.centerAndZoom($scope.elecPt, 17);
             //用于基站跳动
-            $scope.jizhanBounce = map.getOverlays();
+            //$scope.jizhanBounce = map.getOverlays();
             $("#dingweiModal").modal("hide");
         }).error(function () {
             alert("请输入正确的车牌号或者芯片号！")
@@ -525,11 +527,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
         }
         var endTimeForTrace = "";
-        if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
-        	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";
-        }else{
-        	endTimeForTrace = $scope.endTimeForTrace ;
-        }
+//        if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
+//        	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";
+//        }else{
+//        	endTimeForTrace = $scope.endTimeForTrace ;
+//        }
+        endTimeForTrace = $scope.endTimeForTrace ;
         var guijiModal = $("#guijiModal");
         $http.get('/i/elect/findElectTrace', {
             params: {
@@ -688,21 +691,21 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     });
     //轨迹选择日期
     $('#homeDateStart').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: "month",
+        format: 'yyyy-mm-dd hh:ii:00',
+        minView: "hour",
         autoclose: true,
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $scope.startTimeForTrace=$scope.doDateStr(new Date())
+    //$scope.startTimeForTrace=$scope.doDateStr(new Date())
     $('#homeDateEnd').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: "month",
+        format: 'yyyy-mm-dd hh:ii:00',
+        minView: 'hour',
         autoclose: true,
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $scope.endTimeForTrace=$scope.doDateStr(new Date())
+    //$scope.endTimeForTrace=$scope.doDateStr(new Date())
     $scope.setCog = function(){
         $scope.center = map.getCenter();
         $scope.centerLat = $scope.center.lat;

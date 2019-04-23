@@ -1313,7 +1313,8 @@ public class ElectController extends BaseController {
 			where += " time >= '" + startTimeForTrace+"'";
 		}
 		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			/*
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd ");
 			Date date=null;
 			Calendar calendar = Calendar.getInstance();
 			try {
@@ -1329,6 +1330,12 @@ public class ElectController extends BaseController {
 				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+			*/
+			if(!where.equals("")) {
+				where += " and time <= '" + endTimeForTrace+"'";
+			}else {
+				where += " time <= '" + endTimeForTrace+"'";
 			}
 		}
 		if( proPower != null) {
@@ -1374,7 +1381,7 @@ public class ElectController extends BaseController {
 		}
 		
 		if(!where.equals("")) {
-			strSql+=" where "+where;
+			strSql+=" where "+ where;
 		}
 		QueryResult results = influxDBConnection
 				.query(strSql);
