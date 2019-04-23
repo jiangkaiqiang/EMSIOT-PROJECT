@@ -78,6 +78,9 @@
       <if test="people_sex != null">
         people_sex,
       </if>
+      <if test="police_num != null">
+        police_num,
+      </if>
       <if test="people_id_cards != null">
         people_id_cards,
       </if>
@@ -144,6 +147,9 @@
       <if test="people_sex != null">
         #{people_sex,jdbcType=INTEGER},
       </if>
+      <if test="police_num != null">
+        #{police_num,jdbcType=VARCHAR},
+      </if>
       <if test="people_id_cards != null">
         #{people_id_cards,jdbcType=VARCHAR},
       </if>
@@ -208,6 +214,9 @@
       </if>
       <if test="people_sex != null">
         people_sex = #{people_sex,jdbcType=INTEGER},
+      </if>
+      <if test="police_num != null">
+        police_num = #{police_num,jdbcType=VARCHAR},
       </if>
       <if test="people_id_cards != null">
         people_id_cards = #{people_id_cards,jdbcType=VARCHAR},

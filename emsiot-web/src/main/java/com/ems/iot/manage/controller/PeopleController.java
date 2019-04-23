@@ -220,6 +220,7 @@ public class PeopleController extends BaseController {
 			@RequestParam(required = false) Integer people_age, @RequestParam(required = false) Integer pro_id,
 			@RequestParam(required = false) Integer city_id, @RequestParam(required = false) Integer area_id,
 			@RequestParam(required = false) Integer people_type, @RequestParam(required = false) String guardian_name,
+			@RequestParam(required = false) String police_num,
 			@RequestParam(required = false) MultipartFile people_pic,
 			@RequestParam(required = false) String guardian_tele, @RequestParam(required = false) String guardian_relation,
 			@RequestParam(required = false) String contact_address, @RequestParam(required = false) Integer recorder_id)
@@ -242,6 +243,9 @@ public class PeopleController extends BaseController {
 		if (people_name==null){
 			return new ResultDto(-1, "人员姓名不能为空");
 		}
+		/*if (police_num==null){
+			return new ResultDto(-1, "警员证号不能为空");
+		}*/
 		if (people_id_cards==null){
 			return new ResultDto(-1, "人员身份证号不能为空");
 		}
@@ -257,6 +261,7 @@ public class PeopleController extends BaseController {
 		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		// electrombile.setBuy_date(sdf.parse(buy_date));
 		people.setPeople_tele(people_tele);
+		people.setPolice_num(police_num);
 		people.setPeople_id_cards(people_id_cards);
 		people.setPeople_name(people_name);
 		people.setPeople_sex(people_sex);
@@ -282,7 +287,7 @@ public class PeopleController extends BaseController {
 			people.setPeople_pic(OssService.readUrl + dir+elect_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 		}
 		
-		peopleMapper.insert(people);
+		peopleMapper.insertSelective(people);
 		 // 关闭OSSClient。
 	 	ossClient.shutdown();
 		return new ResultDto(0, "添加成功");
@@ -306,7 +311,8 @@ public class PeopleController extends BaseController {
 	@RequestParam(required = false) Integer people_type, @RequestParam(required = false) String guardian_name,
 	@RequestParam(required = false) MultipartFile people_pic,@RequestParam(required = false) Integer wornCardNum,
 	@RequestParam(required = false) String guardian_tele, @RequestParam(required = false) String guardian_relation,
-	@RequestParam(required = false) String contact_address,	@RequestParam(required = false) Integer update_id)
+	@RequestParam(required = false) String contact_address,	@RequestParam(required = false) Integer update_id,
+	@RequestParam(required = false) String police_num)
 			throws ParseException, IOException {
 		if (people_gua_card_num == null) {
 			return new ResultDto(-1, "防盗芯片编号不能为空！");
@@ -326,6 +332,9 @@ public class PeopleController extends BaseController {
 		if (people_name==null){
 			return new ResultDto(-1, "人员姓名不能为空");
 		}
+		/*if (police_num==null){
+			return new ResultDto(-1, "警员证号不能为空");
+		}*/
 		if (people_id_cards==null){
 			return new ResultDto(-1, "人员身份证号不能为空");
 		}
@@ -348,6 +357,7 @@ public class PeopleController extends BaseController {
 		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		// electrombile.setBuy_date(sdf.parse(buy_date));
 		people.setPeople_tele(people_tele);
+		people.setPolice_num(police_num);
 		people.setPeople_id_cards(people_id_cards);
 		people.setPeople_name(people_name);
 		people.setPeople_sex(people_sex);

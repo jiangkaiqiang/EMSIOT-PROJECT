@@ -496,6 +496,7 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
                 'guardian_name': $scope.addGuardianName,
                 'guardian_tele': $scope.addGuardianTele,
                 'guardian_relation': $scope.addGuardianRelation,
+                'police_num': $scope.addPoliceNum,
                 'pro_id': $scope.addProvinceID,
                 'city_id': $scope.addCityID,
                 'area_id': $scope.addAreaID,

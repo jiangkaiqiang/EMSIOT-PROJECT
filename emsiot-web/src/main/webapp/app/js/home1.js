@@ -84,7 +84,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     $scope.blackElectsCount = data;
                 });
                 // 获取在线车辆数量
-                $http.get('/i/elect/findInlineElectsNum', {
+                /*$http.get('/i/elect/findInlineElectsNum', {
                     params: {
                         "areaPower": $scope.user.area_power,
                         "cityPower": $scope.user.city_power,
@@ -92,7 +92,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     }
                 }).success(function (data) {
                     $scope.inlineElects = data;
-                });
+                });*/
+                $scope.inlineElectsNum();
                 // 获取报警数量
                 $http.get('/i/electalarm/findElectAlarmsListCount', {
                     params: {
@@ -108,10 +109,22 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             });
         });
     };
+    $scope.inlineElectsNum = function(){
+	    $http.get('/i/elect/findInlineElectsNum', {
+	        params: {
+	            "areaPower": $scope.user.area_power,
+	            "cityPower": $scope.user.city_power,
+	            "proPower": $scope.user.pro_power
+	        }
+	    }).success(function (data) {
+	        $scope.inlineElects = data;
+	    });
+    }
     $scope.load();
 
     //定时刷新页面基站经过的车辆
     var timeelect = function(){
+    	$scope.inlineElectsNum();
         var time = new Date().getTime();//当前时间
         var start;
         if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
@@ -136,18 +149,18 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         var carRefrehNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyRefrehNums);
         for(var i = 0; i < $scope.stations.length; i++){
         	tmpStation = $scope.stations[i];
-        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carRefrehNums[tmpStation.station_phy_num]==undefined?0:carRefrehNums[tmpStation.station_phy_num]);
+        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + (carRefrehNums[tmpStation.station_phy_num]==undefined?0:carRefrehNums[tmpStation.station_phy_num]));
         }
         if(markerClusterer!=null){
             markerClusterer._redraw();
         }
     };
-  /*  setInterval(console.log(1),3000);
+    //setInterval(console.log(1),3000);
     setInterval(function(){
         timeelect();
-     $scope.allStationAndElectNums = a
-
-   ,10000);*/
+     //$scope.allStationAndElectNums = a
+    }
+   ,60000);
 
     var lushu = null;
 

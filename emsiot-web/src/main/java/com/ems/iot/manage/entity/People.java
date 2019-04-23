@@ -6,6 +6,8 @@ public class People {
 	
 	private Integer people_gua_card_num;
 	
+	private String police_num;
+	
 	private String people_tele;
 	
 	private String people_name;
@@ -169,6 +171,12 @@ public class People {
 	}
 	public void setArea_id(Integer area_id) {
 		this.area_id = area_id;
+	}
+	public String getPolice_num() {
+		return police_num;
+	}
+	public void setPolice_num(String police_num) {
+		this.police_num = police_num;
 	}
 	
 	
