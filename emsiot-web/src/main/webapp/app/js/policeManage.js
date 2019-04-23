@@ -143,7 +143,7 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
     $scope.AllSearchKeyType = [
         {id: "1", name: "手机号"},
         {id: "2", name: "姓名"},
-        {id: "3", name: "警员证号"},
+        {id: "3", name: "身份证号"},
         {id: "4", name: "防盗芯片编号"},
         {id: "5", name: "监护人手机号"}
     ];
@@ -185,7 +185,7 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
         }).success(function (data) {
             $scope.bigTotalItems = data.total;
             $scope.AllPeopleDtos = data.list;
-            //.log(data.list)
+            console.log($scope.AllPeopleDtos )
         });
     }
 
@@ -198,6 +198,7 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
     }
 
     $scope.goSearch = function () {
+        console.log($scope.searchKeyType)
         if ($scope.searchKeyType == "1") {
             $scope.peopleTele = $scope.searchKey;
         }
@@ -434,11 +435,11 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
             flag = false;
             return;
         }
-        if (!$scope.idCardReg.test($scope.addPeopleIdCards)) {
-            alert('警员证号格式不正确');
-            flag = false;
-            return;
-        }
+        //if (!$scope.idCardReg.test($scope.addPeopleIdCards)) {
+        //    alert('警员证号格式不正确');
+        //    flag = false;
+        //    return;
+        //}
         // 检查必须填写项
         if ($scope.addPeopleGuaCardNum == undefined || $scope.addPeopleGuaCardNum == '') {
         	flag = false;
@@ -451,16 +452,16 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
         		return;
         	}*/
         }
-        if ($scope.addGuardianName == undefined || $scope.addGuardianName == '') {
-        	alert('监护人姓名不能为空');
-        	flag = false;
-        	return;
-        }
-        if (!$scope.phoneReg.test($scope.addGuardianTele)) {
-            alert('监护人手机格式不正确');
-            flag = false;
-            return;
-        }
+        //if ($scope.addGuardianName == undefined || $scope.addGuardianName == '') {
+        //	alert('监护人姓名不能为空');
+        //	flag = false;
+        //	return;
+        //}
+        //if (!$scope.phoneReg.test($scope.addGuardianTele)) {
+        //    alert('监护人手机格式不正确');
+        //    flag = false;
+        //    return;
+        //}
         if ($scope.addContactAddress == undefined || $scope.addContactAddress == '') {
             alert('联系地址不能为空');
             return;
@@ -495,9 +496,9 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
                 'people_id_cards': $scope.addPeopleIdCards,
                 'people_age': $scope.addPeopleAge,
                 'people_type': $scope.addPeopleType,
-                'guardian_name': $scope.addGuardianName,
-                'guardian_tele': $scope.addGuardianTele,
-                'guardian_relation': $scope.addGuardianRelation,
+                //'guardian_name': $scope.addGuardianName,
+                //'guardian_tele': $scope.addGuardianTele,
+                //'guardian_relation': $scope.addGuardianRelation,
                 'police_num': $scope.addPoliceNum,
                 'pro_id': $scope.addProvinceID,
                 'city_id': $scope.addCityID,
@@ -563,11 +564,11 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
                 return;
             }
         }
-        if (!$scope.idCardReg.test($scope.updatePeople.people.people_id_cards)) {
-            alert('警员证号格式不正确');
-            flag = false;
-            return;
-        }
+        //if (!$scope.idCardReg.test($scope.updatePeople.people.people_id_cards)) {
+        //    alert('警员证号格式不正确');
+        //    flag = false;
+        //    return;
+        //}
         // 检查必须填写项
         if ($scope.updatePeople.people.people_gua_card_num== undefined || $scope.updatePeople.people.people_gua_card_num == '') {
             flag = false;
@@ -580,17 +581,17 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
                 return;
             }*/
         }
-        if ($scope.updatePeople.people.guardian_name == undefined || $scope.updatePeople.people.guardian_name == '') {
-        	alert('监护人姓名不能为空');
-        	flag = false;
-        	return;
-        }
-        
-        if (!$scope.phoneReg.test($scope.updatePeople.people.guardian_tele)) {
-            alert('监护人手机格式不正确');
-            flag = false;
-            return;
-        }
+        //if ($scope.updatePeople.people.guardian_name == undefined || $scope.updatePeople.people.guardian_name == '') {
+        //	alert('监护人姓名不能为空');
+        //	flag = false;
+        //	return;
+        //}
+        //
+        //if (!$scope.phoneReg.test($scope.updatePeople.people.guardian_tele)) {
+        //    alert('监护人手机格式不正确');
+        //    flag = false;
+        //    return;
+        //}
         if ($scope.updatePeople.people.contact_address == undefined || $scope.updatePeople.people.contact_address == '') {
         	alert('联系地址不能为空');
         	return;
@@ -610,9 +611,9 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
                 'people_id_cards': $scope.updatePeople.people.people_id_cards,
                 'people_age': $scope.updatePeople.people.people_age,
                 'people_type': $scope.updatePeople.people.people_type,
-                'guardian_name': $scope.updatePeople.people.guardian_name,
-                'guardian_tele': $scope.updatePeople.people.guardian_tele,
-                'guardian_relation': $scope.updatePeople.people.guardian_relation,
+                //'guardian_name': $scope.updatePeople.people.guardian_name,
+                //'guardian_tele': $scope.updatePeople.people.guardian_tele,
+                //'guardian_relation': $scope.updatePeople.people.guardian_relation,
                 'contact_address': $scope.updatePeople.people.contact_address,
                 'pro_id': $scope.updatePeople.people.pro_id,
                 'city_id': $scope.updatePeople.people.city_id,

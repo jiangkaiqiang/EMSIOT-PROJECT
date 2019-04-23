@@ -3,6 +3,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         minZoom: 5,
         maxZoom: 30
     });    // 创建Map实例
+    map.addControl(new BMap.MapTypeControl(
+        {
+            mapTypes:[
+                BMAP_NORMAL_MAP,
+                BMAP_HYBRID_MAP
+            ]}
+    ));
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
 
@@ -456,23 +463,11 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             else if (data.length == 0)
                 alert("该车辆没有经过任何基站！");
             else{
-            	//if(lushu!=null){
-            	//	lushu.stop();
-            	//	lushu=null;
-            	//}
-            	//$scope.elecMarker = null;
-            	var showLable="";
-            	
             	var marker;
-                // var lushu;
                  var arrPoisRes=$scope.pointsArr;
                  //map.setViewport(arrPois);
                 var arrPoisall = [];
                 var drv = new BMap.WalkingRoute(map, {
-                    //renderOptions:{
-                    //    map:map,
-                    //    autoViewport:true
-                    //},
                     onSearchComplete: function(res) {
                         console.log(res)
                         //console.log("b")
