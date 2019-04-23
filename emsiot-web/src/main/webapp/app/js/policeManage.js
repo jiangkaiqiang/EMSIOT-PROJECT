@@ -147,7 +147,8 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
         {id: "4", name: "防盗芯片编号"},
         {id: "5", name: "监护人手机号"}
     ];
-    $scope.peopleType = '1';
+    //查询类型（固定）
+    $scope.peopleType = '5';
 
     // 获取当前车辆的列表
     $scope.getPeoples = function () {
@@ -473,7 +474,8 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
         {id: "1", name: "学生"},
         {id: "2", name: "老人"},
         {id: "3", name: "戒毒者"},
-        {id: "4", name: "犯罪者"}
+        {id: "4", name: "犯罪者"},
+        {id: "5", name: "警员"}
     ];
 
     $scope.AllSexType = [
@@ -482,7 +484,7 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
     ];
     $scope.addPeopleAge = "25";
     $scope.addPeopleSex = "0";
-    $scope.addPeopleType = "1";
+    $scope.addPeopleType = "5";
     $scope.submit = function () {
         if (checkInput()) {
             data = {
