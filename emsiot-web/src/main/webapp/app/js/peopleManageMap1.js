@@ -169,7 +169,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         var end = new Date(time);
         console.log(FormatDate(start))
         console.log(FormatDate(end))*/
-        var carInitNums = showElectsCountInStations($scope.peopleStartTime, $scope.peopleEndTime, stationPhyInitNums);
+        var carInitNums = showPeoplesCountInStations($scope.peopleStartTime, $scope.peopleEndTime, stationPhyInitNums);
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
             pt = new BMap.Point(tmpStation.longitude, tmpStation.latitude);
@@ -188,12 +188,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             //var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), num);
             //$scope.labelSet(carNum, marker2);
             //marker2.setTitle(carNum);
-            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[tmpStation.station_phy_num]);
+            marker2.setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + (carInitNums[tmpStation.station_phy_num]==undefined?0:carInitNums[tmpStation.station_phy_num]));
             marker2.addEventListener("click", function (e) {
                 var title_add = new Array();
                 title_add = this.getTitle().split('\t');
                 //title_add = tmpStation.station_phy_num;
-                showPeopleInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
+                //showPeopleInStation(FormatDate(start), FormatDate(end), title_add[0]);  //根据物理编号查找
+                $scope.peopleInStation = $scope.peoplesInStationMap[title_add[0]]==undefined?[]:$scope.peoplesInStationMap[title_add[0]];
                 var peopleInfo = '';
                 for (var k = 0; k < $scope.peopleInStation.length; k++) {
                     //2018-10-15 修改
@@ -294,7 +295,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         })
     }
     //根据时间和基站的ids批量获取基站下面的经过车辆数量
-    function showElectsCountInStations(startTime, endTime, stationPhyNumStr) {
+    function showPeoplesCountInStations(startTime, endTime, stationPhyNumStr) {
     	var counts;
     	$.ajax({
     		method: 'GET',
@@ -303,10 +304,16 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     		data: {
 //    			"startTime": startTime,
 //    			"endTime": endTime,
-    			"stationPhyNumStr": stationPhyNumStr
+    			"stationPhyNumStr": stationPhyNumStr,
+    			"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power
     		}
     	}).success(function (data) {
-    		counts=data;
+    		console.log(data)
+    		counts=data.peopleCountByStation;
+    		console.log(counts);
+    		$scope.peoplesInStationMap = data.stationPeopleList;
     	})
     	return counts;
     }
@@ -357,6 +364,9 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
         $http.get('/i/people/findPeopleLocation', {
             params: {
+            	"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power,
                 "peopleIdCards": $scope.peopleIdCards,
                 "peopleGuaCardNum": $scope.peopleGuaCardNum
             }
@@ -433,6 +443,9 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         }
         $http.get('/i/people/findPeopleTrace', {
             params: {
+            	"proPower": $scope.user.pro_power,
+                "cityPower": $scope.user.city_power,
+                "areaPower": $scope.user.area_power,
                 "peopleIdCards": $scope.peopleIdCards,
                 "peopleGuaCardNum": $scope.peopleGuaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
@@ -701,10 +714,10 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             		stationPhyInitNums+=","+$scope.stations[i].station_phy_num
             }
             
-            var carInitNums = showElectsCountInStations($scope.peopleStartTime, $scope.peopleEndTime, stationPhyInitNums);
+            var carInitNums = showPeoplesCountInStations($scope.peopleStartTime, $scope.peopleEndTime, stationPhyInitNums);
             for (var i = 0; i < $scope.stations.length; i++) {
             	tmpStation = $scope.stations[i];
-            	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carInitNums[tmpStation.station_phy_num]);
+            	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + (carInitNums[tmpStation.station_phy_num]==undefined?0:carInitNums[tmpStation.station_phy_num]));
             	
             }
             /*if(markerClusterer!=null){
