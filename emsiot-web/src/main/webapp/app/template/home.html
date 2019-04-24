@@ -84,9 +84,12 @@
 
                         <div class="col-sm-7">
                             <div class="col-sm-3">
-                                <select name="" class="form-control">
-                                    <option value="">电动车</option>
-                                    <option value="">摩托车</option>
+                                <select name="" class="form-control"
+                                        ng-model="electTypeForTrace"
+                                        ng-options="x.id as x.name for x in electType"
+                                        ng-disabled="editable">
+                                    <!--<option value="">电动车</option>-->
+                                    <!--<option value="">摩托车</option>-->
                                 </select>
                             </div>
                             <div class="col-sm-4" ng-style style="margin: 0 5px;">

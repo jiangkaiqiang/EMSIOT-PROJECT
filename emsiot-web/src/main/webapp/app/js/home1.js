@@ -443,8 +443,13 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         {id: "0", name: "防盗芯片ID"},
         {id: "1", name: "车牌号"}
     ];
+    $scope.electType = [
+        {id:"0",name:"电动车"},
+        {id:"1",name:"摩托车"}
+    ];
     $scope.keywordTypeForLocation = "0";
     $scope.keywordTypeForTrace = "0";
+    $scope.electTypeForTrace = 0;
     //清除定位
     var stationIDforDelete;
     $scope.clearElectLocation = function () {
@@ -525,20 +530,30 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             	alert("请输入车牌号！")
             	return;
             }
+            //console.log($scope.endTimeForTrace)
+            //console.log($scope.startTimeForTrace)
         }
         else if ($scope.keywordTypeForTrace == "0") {
             $scope.guaCardNum = $scope.keywordForTrace;
             $scope.plateNum = null;
             $scope.electNumForTraceTable = $scope.keywordForTrace;
-            console.log($scope.guaCardNum)
+            //console.log($scope.guaCardNum)
             if($scope.guaCardNum==undefined || $scope.guaCardNum==""){
             	alert("请输入防盗芯片！")
             	return;
             }
+            //console.log($scope.endTimeForTrace)
+            //console.log($scope.startTimeForTrace)
         }
-        else {
-
+        if($scope.startTimeForTrace==undefined || $scope.startTimeForTrace == ''){
+            alert("请选择开始时间！")
+            return;
         }
+        if($scope.endTimeForTrace==undefined || $scope.endTimeForTrace == ''){
+            alert("请选择结束时间！")
+            return;
+        }
+//console.log("111")
         var endTimeForTrace = "";
 //        if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
 //        	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";

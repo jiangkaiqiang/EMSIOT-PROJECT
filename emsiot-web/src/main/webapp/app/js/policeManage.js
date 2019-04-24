@@ -676,14 +676,16 @@ coldWeb.controller('policeManage', function ($rootScope, $scope, $state, $cookie
         pickerPosition: "bottom-left"
     });
     $('#electDateStart').datetimepicker({
-        format: 'yyyy-mm-dd',//时间格式
+        format: 'yyyy-mm-dd hh:ii:00',
+        //format: 'yyyy-mm-dd',//时间格式
         minView: "month",//最小选择到月
         autoclose: true,//选择好时间关闭弹框
         maxDate: new Date(),//默认当前时间
         pickerPosition: "bottom-left"//位置左下
     });
     $("#electDateEnd").datetimepicker({
-        format: 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd hh:ii:00',
+        //format: 'yyyy-mm-dd',
         minView: 'month',
         autoclose: true,
         maxDate: new Date(),
