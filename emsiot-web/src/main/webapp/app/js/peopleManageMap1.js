@@ -5,11 +5,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     });    // 创建Map实例
     map.addControl(new BMap.MapTypeControl(
         {
-            mapTypes:[
+            mapTypes: [
                 BMAP_NORMAL_MAP,
                 BMAP_HYBRID_MAP
-            ]}
+            ]
+        }
     ));
+    $scope.load = function(){
     $.ajax({type: "GET", cache: false, dataType: 'json', url: '/i/user/findUser'}).success(function (data) {
         $scope.user = data;
 
@@ -31,47 +33,50 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             myGeo.getPoint($scope.cityName, function (point) {
                 $scope.point = point;
                 //console.log($scope.user.fixed_lon);
-                if($scope.user.fixed_lat == null || $scope.user.fixed_lat == undefined || $scope.user.fixed_lon == null || $scope.user.fixed_lon == undefined){
-                    //map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
+                if ($scope.user.fixed_lat == null || $scope.user.fixed_lat == undefined || $scope.user.fixed_lon == null || $scope.user.fixed_lon == undefined) {
+                    map.centerAndZoom(new BMap.Point($scope.point.lng, $scope.point.lat), 15); // 初始化地图,设置中心点坐标和地图级别
                     map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
-                }else{
+                } else {
                     map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
                     //map.centerAndZoom($scope.cityName, $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
+                    console.log(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom)
                 }
+                map.setCurrentCity($scope.cityName); // 初始化地图,设置中心点坐标和地图级别
+                map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+                map.disableDoubleClickZoom();//禁止地图双击放大功能
+                //showCssFlag('#xsjizhan');
+                var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+                var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+                map.addControl(top_left_control);
+                map.addControl(top_left_navigation);
+
+                $http.get('/i/station/findAllStationsForMap', {
+                    params: {
+                        "proPower": $scope.user.pro_power,
+                        "cityPower": $scope.user.city_power,
+                        "areaPower": $scope.user.area_power
+                    }
+                }).success(function (data) {
+                    $scope.stations = data;
+                    showStation();
+                });
             })
-            map.setCurrentCity($scope.cityName); // 初始化地图,设置中心点坐标和地图级别
-            map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-            map.disableDoubleClickZoom();//禁止地图双击放大功能
-            //showCssFlag('#xsjizhan');
-            var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
-            var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
-            map.addControl(top_left_control);
-            map.addControl(top_left_navigation);
-            
-            $http.get('/i/station/findAllStationsForMap', {
-                params: {
-                    "proPower": $scope.user.pro_power,
-                    "cityPower": $scope.user.city_power,
-                    "areaPower": $scope.user.area_power
-                }
-            }).success(function (data) {
-                $scope.stations = data;
-                showStation();
-            });
-            
-         // 获取在线人数
+
+
+            // 获取在线人数
             /*$http.get('/i/people/findInlinePeoplesNum', {
-                params: {
-                    "areaPower": $scope.user.area_power,
-                    "cityPower": $scope.user.city_power,
-                    "proPower": $scope.user.pro_power
-                }
-            }).success(function (data) {
-                $scope.inlinePeoples = data;
-            });*/
+             params: {
+             "areaPower": $scope.user.area_power,
+             "cityPower": $scope.user.city_power,
+             "proPower": $scope.user.pro_power
+             }
+             }).success(function (data) {
+             $scope.inlinePeoples = data;
+             });*/
             $scope.inlinePeoplesNum();
         });
     });
+    }
     
     $scope.inlinePeoplesNum = function(){
 	    $http.get('/i/people/findInlinePeoplesNum', {
@@ -84,6 +89,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 	        $scope.inlinePeoples = data;
 	    });
     }
+    $scope.load();
     
   //定时刷新页面基站经过的车辆
     var timeelect = function(){
