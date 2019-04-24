@@ -506,8 +506,13 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             $scope.electNumForTraceTable = $scope.peopleGuaCardNum;
 
         }
-        else {
-
+        if($scope.startTimeForTrace==undefined || $scope.startTimeForTrace == ''){
+            alert("请选择开始时间！")
+            return;
+        }
+        if($scope.endTimeForTrace==undefined || $scope.endTimeForTrace == ''){
+            alert("请选择结束时间！")
+            return;
         }
         /*var endTimeForTrace = "";
         if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
@@ -665,7 +670,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
+    //$scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd hh:ii:00',
         minView: "hour",
@@ -673,7 +678,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
+    //$scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
     //报警车辆日期
     $('#peopleStartTime').datetimepicker({
     	format: 'yyyy-mm-dd',
