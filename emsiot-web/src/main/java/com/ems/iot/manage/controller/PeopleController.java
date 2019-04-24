@@ -694,11 +694,11 @@ public class PeopleController extends BaseController {
 		
 		//查询influxdb 2019-01-29
 		int count = 0;
-		Date sysDate = new Date();
+//		Date sysDate = new Date();
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		startTime = sdf.format(sysDate);
-		endTime = sdf.format(sysDate);
+//		startTime = sdf.format(sysDate);
+//		endTime = sdf.format(sysDate);
 		
 		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
 		String where = "";
@@ -1098,17 +1098,17 @@ public class PeopleController extends BaseController {
 		}
 		int count = 0;
 		
-		Date sysDate = new Date();
+		/*Date sysDate = new Date();
 		String startTime = null;
 		String endTime = null;
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		startTime = sdf.format(sysDate);
-		endTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);*/
 		
 		String strSql=" SELECT count(DISTINCT(people_gua_card_num)) FROM " + Constant.peopleStationTable;
 		String where = "";
 		
-		if( startTime != null && !"".equals(startTime)) {
+		/*if( startTime != null && !"".equals(startTime)) {
 			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
@@ -1129,7 +1129,7 @@ public class PeopleController extends BaseController {
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
-		}
+		}*/
 		
 		if( proPower != null) {
 			if(!where.equals("")) {

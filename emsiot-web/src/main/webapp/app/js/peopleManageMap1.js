@@ -39,11 +39,15 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                     //map.centerAndZoom($scope.cityName, $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
                 }
             })
-           // map.centerAndZoom($scope.cityName, 15); // 初始化地图,设置中心点坐标和地图级别
+            map.setCurrentCity($scope.cityName); // 初始化地图,设置中心点坐标和地图级别
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-
+            map.disableDoubleClickZoom();//禁止地图双击放大功能
             //showCssFlag('#xsjizhan');
-
+            var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+            var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+            map.addControl(top_left_control);
+            map.addControl(top_left_navigation);
+            
             $http.get('/i/station/findAllStationsForMap', {
                 params: {
                     "proPower": $scope.user.pro_power,
@@ -56,18 +60,79 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
             });
             
          // 获取在线人数
-            $http.get('/i/people/findInlinePeoplesNum', {
+            /*$http.get('/i/people/findInlinePeoplesNum', {
                 params: {
                     "areaPower": $scope.user.area_power,
                     "cityPower": $scope.user.city_power,
                     "proPower": $scope.user.pro_power
                 }
             }).success(function (data) {
-                $scope.inlineElects = data;
-            });
-
+                $scope.inlinePeoples = data;
+            });*/
+            $scope.inlinePeoplesNum();
         });
     });
+    
+    $scope.inlinePeoplesNum = function(){
+	    $http.get('/i/people/findInlinePeoplesNum', {
+	        params: {
+	            "areaPower": $scope.user.area_power,
+	            "cityPower": $scope.user.city_power,
+	            "proPower": $scope.user.pro_power
+	        }
+	    }).success(function (data) {
+	        $scope.inlinePeoples = data;
+	    });
+    }
+    
+  //定时刷新页面基站经过的车辆
+    var timeelect = function(){
+    	console.log("人员定时执行")
+    	$scope.inlinePeoplesNum();
+        var time = new Date().getTime();//当前时间
+        var start;
+        if($scope.user.fixed_query_time == null || $scope.user.fixed_query_time == undefined ){
+            start = new Date(time - 60 * 1000 * 60);//一小时
+        }else{
+            start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );//一小时
+        }
+        var end = new Date(time);
+//      for (var i = 0; i < $scope.stations.length; i++) {
+//            tmpStation = $scope.stations[i];
+//            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
+//            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
+//      }	
+
+        var stationPhyRefrehNums = '';
+        for(var i = 0; i < $scope.stations.length; i++){
+        	if(stationPhyRefrehNums=="")
+        		stationPhyRefrehNums=$scope.stations[i].station_phy_num;
+        	else
+        		stationPhyRefrehNums+=","+$scope.stations[i].station_phy_num
+        }
+        var carRefrehNums = showPeoplesCountInStations(FormatDate(start), FormatDate(end), stationPhyRefrehNums);
+        for(var i = 0; i < $scope.stations.length; i++){
+        	tmpStation = $scope.stations[i];
+        	markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + (carRefrehNums[tmpStation.station_phy_num]==undefined?0:carRefrehNums[tmpStation.station_phy_num]));
+        }
+        if(markerClusterer!=null){
+            markerClusterer._redraw();
+        }
+    };
+    //setInterval(console.log(1),3000);
+    $scope.$on("$destroy", function() {
+        //清除配置,不然scroll会重复请求
+    	console.log("清除人员定时器")
+    	clearInterval($scope.timingCount)
+    })
+    $scope.timingCount = setInterval(function(){
+        timeelect();
+     //$scope.allStationAndElectNums = a
+    }
+   ,1000 * 60);
+    
+    
+    
     var lushu=null;
     function G(id) {
         return document.getElementById(id);
@@ -234,7 +299,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         
 
         //用于基站跳动
-        $scope.jizhanBounce = markers;
+	    $scope.jizhanBounce = markers;
     }
 
     
@@ -247,10 +312,12 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     	if($scope.tiao!=null){
     		$scope.tiao.setAnimation(null);
     	}
-        var tablePoint =  $(this).context.cells[1].innerHTML;//获取单击表格时的地址
-        for(var g =0;g < $scope.peopleData.length; g++){
-        	if($scope.peopleData[g].station==null)continue;
-            if(tablePoint==$scope.peopleData[g].ownerPlateNum){//表格获取到的地址等于循环基站时的基站地址
+        var tablePoint =  $(this).context.cells[2].innerHTML;//获取单击表格时的地址
+        //console.log(tablePoint)
+        console.log($scope.jizhanBounce)
+        for(var g =0;g < $scope.stations.length; g++){
+        	
+            if(tablePoint==$scope.stations[g].station_name){//表格获取到的地址等于循环基站时的基站地址
 
                 var allOverlay = $scope.jizhanBounce;
 
@@ -402,7 +469,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
 
           //用于基站跳动
-            $scope.jizhanBounce=map.getOverlays();
+           // $scope.jizhanBounce=map.getOverlays();
         }).error(function(){
         	alert("搜索条件有误！");
         });
@@ -442,12 +509,12 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         else {
 
         }
-        var endTimeForTrace = "";
+        /*var endTimeForTrace = "";
         if($scope.endTimeForTrace != null && $scope.endTimeForTrace != undefined && $scope.endTimeForTrace != ""){
         	endTimeForTrace = $scope.endTimeForTrace + " 23:59:59";
         }else{
         	endTimeForTrace = $scope.endTimeForTrace ;
-        }
+        }*/
         $http.get('/i/people/findPeopleTrace', {
             params: {
             	"proPower": $scope.user.pro_power,
@@ -456,7 +523,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 "peopleIdCards": $scope.peopleIdCards,
                 "peopleGuaCardNum": $scope.peopleGuaCardNum,
                 "startTimeForTrace": $scope.startTimeForTrace,
-                "endTimeForTrace": endTimeForTrace
+                "endTimeForTrace": $scope.endTimeForTrace
             }
         }).success(function (data) {
 
@@ -555,7 +622,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
 
         $("#guijiModal").modal("hide");
         //用于基站跳动
-        $scope.jizhanBounce=map.getOverlays();
+        //$scope.jizhanBounce=map.getOverlays();
     };
     $scope.showOperation = false;
     $scope.showTable = false;
@@ -592,21 +659,21 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
     });
     //轨迹选择日期
     $('#homeDateStart').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: "month",
+        format: 'yyyy-mm-dd hh:ii:00',
+        minView: "hour",
         autoclose: true,
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $scope.startTimeForTrace=$scope.doDateStr(new Date())
+    $scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
     $('#homeDateEnd').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: "month",
+        format: 'yyyy-mm-dd hh:ii:00',
+        minView: "hour",
         autoclose: true,
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    $scope.endTimeForTrace=$scope.doDateStr(new Date())
+    $scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
     //报警车辆日期
     $('#peopleStartTime').datetimepicker({
     	format: 'yyyy-mm-dd',

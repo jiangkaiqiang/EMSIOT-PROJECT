@@ -4,7 +4,7 @@
             <ul class="flex flex-items">
                 <li><i class="iconfont icon-zaixiancheliang"></i></li>
                 <li>
-                    <p>{{inlineElects}}</p> <span> 线上人数</span>
+                    <p>{{inlinePeoples}}</p> <span> 线上人数</span>
                 </li>
             </ul>
         </a>
@@ -258,14 +258,12 @@
                            ng-click="toggle(peopleDto, selected)"/>
                 </td>
                 <td title="{{peopleDto.people_name}}">{{peopleDto.people_name}}</td>
-                <td style="display: none;">{{peopleDto.station_address}}</td>
-                <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.station_address}}">
-                    {{peopleDto.station_name}}
-                </td>
+                
+                <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.station_address}}">{{peopleDto.station_name}}</td>
                 <td title="{{peopleDto.people_tele}}">{{peopleDto.people_tele}}</td>
 
-                <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.update_time}}">
-                    {{peopleDto.update_time}}
+                <td data-toggle="tooltip" data-placement="right" title="{{peopleDto.hard_read_time">
+                    {{peopleDto.hard_read_time}}
                 </td>
                 <!-- <td ng-show="rootUserPowerDto.sysUser.opt_power==1">
                     <i ng-show="rootUserPowerDto.alarmDelete==1" class="glyphicon glyphicon-trash"

@@ -124,6 +124,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 
     //定时刷新页面基站经过的车辆
     var timeelect = function(){
+    	console.log("车辆定时执行")
     	$scope.inlineElectsNum();
         var time = new Date().getTime();//当前时间
         var start;
@@ -156,11 +157,16 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         }
     };
     //setInterval(console.log(1),3000);
-    setInterval(function(){
+    $scope.$on("$destroy", function() {
+        //清除配置,不然scroll会重复请求
+    	console.log("清除车辆定时器")
+    	clearInterval($scope.timingCount)
+    })
+    $scope.timingCount = setInterval(function(){
         timeelect();
      //$scope.allStationAndElectNums = a
     }
-   ,60000);
+   ,1000 * 60);
 
     var lushu = null;
 
@@ -449,7 +455,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     ];
     $scope.keywordTypeForLocation = "0";
     $scope.keywordTypeForTrace = "0";
-    $scope.electTypeForTrace = 0;
+    $scope.electTypeForTrace = "0";
     //清除定位
     var stationIDforDelete;
     $scope.clearElectLocation = function () {
@@ -726,7 +732,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    //$scope.startTimeForTrace=$scope.doDateStr(new Date())
+    $scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd hh:ii:00',
         minView: 'hour',
@@ -734,7 +740,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    //$scope.endTimeForTrace=$scope.doDateStr(new Date())
+    $scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
     $scope.setCog = function(){
         $scope.center = map.getCenter();
         $scope.centerLat = $scope.center.lat;

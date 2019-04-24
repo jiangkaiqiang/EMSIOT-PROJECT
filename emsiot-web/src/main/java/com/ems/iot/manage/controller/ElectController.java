@@ -270,11 +270,11 @@ public class ElectController extends BaseController {
 		
 		//查询influxdb 2019-01-29
 		int count = 0;
-		Date sysDate = new Date();
+//		Date sysDate = new Date();
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		startTime = sdf.format(sysDate);
-		endTime = sdf.format(sysDate);
+//		startTime = sdf.format(sysDate);
+//		endTime = sdf.format(sysDate);
 		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
 		String timeCond = "";
@@ -544,15 +544,15 @@ public class ElectController extends BaseController {
 		
 		
 		int count = 0;
-		Date sysDate = new Date();
+		/*Date sysDate = new Date();
 		String startTime = null;
 		String endTime = null;
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		startTime = sdf.format(sysDate);
-		endTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);*/
 		String strSql=" SELECT count(DISTINCT(gua_card_num)) FROM " + Constant.electStationTable;
 		String where = "";
-		if( startTime != null && !"".equals(startTime)) {
+		/*if( startTime != null && !"".equals(startTime)) {
 			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
@@ -573,7 +573,7 @@ public class ElectController extends BaseController {
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
-		}
+		}*/
 		if( proPower != null) {
 			if(!where.equals("")) {
 				where += " and pro_id = "+proPower;
