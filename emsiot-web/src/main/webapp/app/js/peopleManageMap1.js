@@ -331,7 +331,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
                 for (var i = 0; i < allOverlay.length; i++) {
 					Oe = allOverlay[i].point;
 					if(Oe==null)continue;
-	                if(Oe.lng==$scope.peopleData[g].station.longitude && Oe.lat==$scope.peopleData[g].station.latitude){
+	                if(Oe.lng==$scope.stations[g].longitude && Oe.lat==$scope.stations[g].latitude){
 	                	$scope.tiao = allOverlay[i];//保存上一次跳动的基站
 	                	allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 	                    return;

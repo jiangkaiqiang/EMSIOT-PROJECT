@@ -522,7 +522,7 @@ public class HardAcceptController extends BaseController {
 		tags.put("people_name", peopleStationInfluxDto.getPeople().getPeople_name());
 		tags.put("people_id_cards", peopleStationInfluxDto.getPeople().getPeople_id_cards());
 		tags.put("people_tele", peopleStationInfluxDto.getPeople().getPeople_tele());
-		tags.put("guardian_relation", peopleStationInfluxDto.getPeople().getGuardian_relation());
+		tags.put("guardian_relation", peopleStationInfluxDto.getPeople().getGuardian_relation()==null?"":peopleStationInfluxDto.getPeople().getGuardian_relation());
 		Map<String, Object> fields = new HashMap<String, Object>();
 		fields.put("longitude", peopleStationInfluxDto.getStation().getLongitude());
 		fields.put("latitude", peopleStationInfluxDto.getStation().getLatitude());
@@ -532,8 +532,8 @@ public class HardAcceptController extends BaseController {
 		fields.put("people_sex", peopleStationInfluxDto.getPeople().getPeople_sex());
 		fields.put("people_age", peopleStationInfluxDto.getPeople().getPeople_age());
 		fields.put("people_type", peopleStationInfluxDto.getPeople().getPeople_type());
-		fields.put("guardian_name", peopleStationInfluxDto.getPeople().getGuardian_name());
-		fields.put("guardian_tele", peopleStationInfluxDto.getPeople().getGuardian_tele());
+		fields.put("guardian_name", peopleStationInfluxDto.getPeople().getGuardian_name()==null?"":peopleStationInfluxDto.getPeople().getGuardian_name());
+		fields.put("guardian_tele", peopleStationInfluxDto.getPeople().getGuardian_tele()==null?"":peopleStationInfluxDto.getPeople().getGuardian_tele());
 		fields.put("contact_address", peopleStationInfluxDto.getPeople().getContact_address());
 		fields.put("pro_id", peopleStationInfluxDto.getPeople().getPro_id());
 		fields.put("city_id", peopleStationInfluxDto.getPeople().getCity_id());

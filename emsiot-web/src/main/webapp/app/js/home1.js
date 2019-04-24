@@ -225,18 +225,19 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     $scope.labelSet = function (value1, value2) {
         var label = new BMap.Label(value1, {offset: new BMap.Size(0, -30)});
         label.setStyle({
-            color: "rgb(102, 179, 255)",
-            fontSize: "16px",
-            backgroundColor: "#fff",
+        	color: "#fff",
+            fontSize: "14px",
+            backgroundColor: "#66B3FF",
             border: "1px solid rgb(102, 179, 255)",
-            fontWeight: "bold",
+            fontWeight: "normal",
             display: "block",
-            borderShadow: "0 5px 15px rgba(0, 0, 0, .5)",
+            borderShadow: "0 5px 15px rgba(0, 0, 0, 0.6)",
             minHeight: "20px",
-            minWidth: "25px",
+            minWidth: "40px",
             lineHeight: "20px",
             borderRadius: "5px",
-            textAlign: "center"
+            textAlign: "center",
+            padding:"1px 8px"
         });
         value2.setLabel(label);
     };
@@ -510,7 +511,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.elecIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
             $scope.elecMarker = new BMap.Marker($scope.elecPt, {icon: $scope.elecIcon});
             $scope.elecMarker.setZIndex(10);//设置单个marker的index
-
+            $scope.labelSet($scope.keywordForLocation+":"+data.station_name,$scope.elecMarker);
 
             map.addOverlay($scope.elecMarker);
             $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
