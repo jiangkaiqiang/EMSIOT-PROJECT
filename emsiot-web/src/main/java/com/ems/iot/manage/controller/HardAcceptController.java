@@ -530,7 +530,7 @@ public class HardAcceptController extends BaseController {
 		fields.put("station_status", peopleStationInfluxDto.getStation().getStation_status());
 		fields.put("people_gua_card_num", peopleStationInfluxDto.getPeople().getPeople_gua_card_num());
 		fields.put("people_sex", peopleStationInfluxDto.getPeople().getPeople_sex());
-		fields.put("people_age", peopleStationInfluxDto.getPeople().getPeople_age());
+		fields.put("people_age", peopleStationInfluxDto.getPeople().getPeople_age()==null?"":peopleStationInfluxDto.getPeople().getPeople_age());
 		fields.put("people_type", peopleStationInfluxDto.getPeople().getPeople_type());
 		fields.put("guardian_name", peopleStationInfluxDto.getPeople().getGuardian_name()==null?"":peopleStationInfluxDto.getPeople().getGuardian_name());
 		fields.put("guardian_tele", peopleStationInfluxDto.getPeople().getGuardian_tele()==null?"":peopleStationInfluxDto.getPeople().getGuardian_tele());

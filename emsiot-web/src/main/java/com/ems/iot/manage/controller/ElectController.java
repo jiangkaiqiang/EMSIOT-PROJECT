@@ -196,6 +196,34 @@ public class ElectController extends BaseController {
 	public List<Integer> areaCar(Integer proPower,Integer cityPower,Integer areaPower) {
 		String strSqlCard=" SELECT DISTINCT(gua_card_num) FROM " + Constant.electStationTable;
 		String whereCard = "";
+		Date sysDate = new Date();
+		String startTime = null;
+		String endTime = null;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		startTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);
+		if( startTime != null && !"".equals(startTime)) {
+			whereCard += " time >= '" + startTime+"'";
+		}
+		if( endTime != null && !"".equals(endTime)) {
+			//SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date date=null;
+			Calendar calendar = Calendar.getInstance();
+			try {
+				
+				date=sdf.parse(endTime);
+				calendar.setTime(date);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!whereCard.equals("")) {
+				whereCard += " and time < '" + sdf.format(calendar.getTime())+"'";
+			}else {
+				whereCard += " time < '" + sdf.format(calendar.getTime())+"'";
+			}
+		}
 		if( proPower != null) {
 			if(!whereCard.equals("")) {
 				whereCard += " and pro_id = "+proPower;
@@ -270,11 +298,11 @@ public class ElectController extends BaseController {
 		
 		//查询influxdb 2019-01-29
 		int count = 0;
-//		Date sysDate = new Date();
+		Date sysDate = new Date();
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-//		startTime = sdf.format(sysDate);
-//		endTime = sdf.format(sysDate);
+		startTime = sdf.format(sysDate);
+		endTime = sdf.format(sysDate);
 		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
 		String timeCond = "";
@@ -544,15 +572,15 @@ public class ElectController extends BaseController {
 		
 		
 		int count = 0;
-		/*Date sysDate = new Date();
+		Date sysDate = new Date();
 		String startTime = null;
 		String endTime = null;
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		startTime = sdf.format(sysDate);
-		endTime = sdf.format(sysDate);*/
+		endTime = sdf.format(sysDate);
 		String strSql=" SELECT count(DISTINCT(gua_card_num)) FROM " + Constant.electStationTable;
 		String where = "";
-		/*if( startTime != null && !"".equals(startTime)) {
+		if( startTime != null && !"".equals(startTime)) {
 			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
@@ -573,7 +601,7 @@ public class ElectController extends BaseController {
 			}else {
 				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
-		}*/
+		}
 		if( proPower != null) {
 			if(!where.equals("")) {
 				where += " and pro_id = "+proPower;
