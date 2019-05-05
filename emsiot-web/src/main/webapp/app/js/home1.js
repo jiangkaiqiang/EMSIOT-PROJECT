@@ -734,7 +734,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    //$scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
+    $scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd hh:ii:00',
         minView: 'hour',
@@ -742,7 +742,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    //$scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
+    $scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
     $scope.setCog = function(){
         $scope.center = map.getCenter();
         $scope.centerLat = $scope.center.lat;

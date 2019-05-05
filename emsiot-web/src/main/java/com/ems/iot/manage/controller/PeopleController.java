@@ -688,7 +688,7 @@ public class PeopleController extends BaseController {
 		}
 		
 		//查询该区域的人员
-		List<Integer> peopleArray = areaPeople(proPower, cityPower, areaPower);
+		//List<Integer> peopleArray = areaPeople(proPower, cityPower, areaPower);
 		PeopleCountAndList countAndList=new PeopleCountAndList();
 		
 		
@@ -702,9 +702,9 @@ public class PeopleController extends BaseController {
 		
 		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
 		String where = "";
-		String timeCond = "";
+		//String timeCond = "";
 		if( startTime != null && !"".equals(startTime)) {
-			timeCond += " time >= '" + startTime+"'";
+			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
 //			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -719,84 +719,79 @@ public class PeopleController extends BaseController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(!timeCond.equals("")) {
-				timeCond += " and time < '" + sdf.format(calendar.getTime())+"'";
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
-				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
 		if( proPower != null) {
-			if(!timeCond.equals("")) {
-				timeCond += " and pro_id = "+proPower;
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
 			}else {
 		
-				timeCond += " pro_id = "+proPower;
+				where += " pro_id = "+proPower;
 			}
 		}
 		if( cityPower != null) {
-			if(!timeCond.equals("")) {
-				timeCond += " and city_id = "+cityPower;
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
 			}else {
-				timeCond += " city_id = "+cityPower;
+				where += " city_id = "+cityPower;
 			}
 		}
 		if( areaPower != null) {
-			if(!timeCond.equals("")) {
-				timeCond += " and area_id = "+areaPower;
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
 			}else {
-				timeCond += " area_id = "+areaPower;
+				where += " area_id = "+areaPower;
 			}
 		}
 		Map<String, Integer> mapList=new HashMap<String, Integer>();
 		Map<String, List<StationPeopleDto>> mapElectList=new HashMap<String, List<StationPeopleDto>>();
 		String sql="";
-		for (Integer str : peopleArray) {
-			
-				if(!timeCond.equals("")) {
-					where = " and people_gua_card_num = "+str;
-				}else {
-					where = " people_gua_card_num = "+str;
-				}
-
-				sql=strSql+" where "+timeCond+where+" order by time desc limit 1";
+		
+		sql=strSql+" where "+where+" group by people_id_cards order by time desc limit 1";
+		
+		QueryResult results = influxDBConnection
+				.query(sql);
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> seriesList = oneResult.getSeries();
+			for (Series series : seriesList) {
+				List<String> listCol = series.getColumns();
+				List<List<Object>> listVal = series.getValues();
+				count = series.getValues().size();
+				String stationNum = listVal.get(0).get(listCol.indexOf("station_phy_num")).toString();
 				
-				QueryResult results = influxDBConnection
-						.query(sql);
-				Result oneResult = results.getResults().get(0);
-				if (oneResult.getSeries() != null) {
-					List<Series> series = oneResult.getSeries();
-					List<String> listCol = series.get(0).getColumns();
-					List<List<Object>> listVal = series.get(0).getValues();
-					count = series.get(0).getValues().size();
-					String stationNum = listVal.get(0).get(listCol.indexOf("station_phy_num")).toString();
-					
-					if(mapList.containsKey(stationNum)) {
-						mapList.put(stationNum, mapList.get(stationNum)+count);
-					}else {
-						mapList.put(stationNum, count);
-					}
-					
-					StationPeopleDto people = new StationPeopleDto();
-					people.setPeople_name(listVal.get(0).get(listCol.indexOf("people_name")).toString());
-					people.setPeople_id_cards(listVal.get(0).get(listCol.indexOf("people_id_cards")).toString());
-					people.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
-					people.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
-					
-					if(mapElectList.containsKey(stationNum)) {
-						List<StationPeopleDto> listPeople = mapElectList.get(stationNum);
-						listPeople.add(people);
-						mapElectList.put(stationNum, listPeople);
-					}else {
-						//基站下车辆的数据
-						List<StationPeopleDto> listPeople = new ArrayList<StationPeopleDto>();
-						listPeople.add(people);
-						mapElectList.put(stationNum, listPeople);
-					}
-					
+				if(mapList.containsKey(stationNum)) {
+					mapList.put(stationNum, mapList.get(stationNum)+count);
+				}else {
+					mapList.put(stationNum, count);
 				}
-			
-			
+						
+				StationPeopleDto people = new StationPeopleDto();
+				people.setPeople_name(listVal.get(0).get(listCol.indexOf("people_name")).toString());
+				//people.setPeople_id_cards(listVal.get(0).get(listCol.indexOf("people_id_cards")).toString());
+				people.setPeople_id_cards(series.getTags().get("people_id_cards"));
+				people.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
+				people.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
+				
+				if(mapElectList.containsKey(stationNum)) {
+					List<StationPeopleDto> listPeople = mapElectList.get(stationNum);
+					listPeople.add(people);
+					mapElectList.put(stationNum, listPeople);
+				}else {
+					//基站下车辆的数据
+					List<StationPeopleDto> listPeople = new ArrayList<StationPeopleDto>();
+					listPeople.add(people);
+					mapElectList.put(stationNum, listPeople);
+				}
+					
+			}
 		}
+			
+		
 		countAndList.setStationPeopleList(mapElectList);
 		countAndList.setPeopleCountByStation(mapList);
 		return countAndList;
