@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.influxdb.dto.QueryResult;
+import org.influxdb.dto.QueryResult.Result;
+import org.influxdb.dto.QueryResult.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,8 @@ import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.service.CookieService;
+import com.ems.iot.manage.util.Constant;
+import com.ems.iot.manage.util.InfluxDBConnection;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 /**
  * @author Barry
@@ -57,6 +62,7 @@ public class ElectUserAppController extends AppBaseController {
 	private CityMapper cityMapper;
 	@Autowired
 	private AppUserMapper appUserMapper;
+	InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 	/**
 	 * 根据电动车的ID寻找电动车
 	 * @param electID
@@ -90,9 +96,9 @@ public class ElectUserAppController extends AppBaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findElectLocation")
+	/*@RequestMapping(value = "/findElectLocation")
 	@ResponseBody
-	public Object findElectLocation(
+	public Object findElectLocation1(
 			@RequestParam(value="plateNum", required=false) String plateNum,
 			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
 			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
@@ -115,6 +121,71 @@ public class ElectUserAppController extends AppBaseController {
 			return new AppResultDto(0, "未查询到车辆的位置信息");
 		}
 		return new AppResultDto(station);
+	}*/
+	
+	/**
+	 * 
+	 * 查询车辆定位   查询influxdb 2019-05-05  重写
+	 * 
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @param token
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectLocation")
+	@ResponseBody
+	public Object findElectLocation(
+			@RequestParam(value="plateNum", required=false) String plateNum,
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
+
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		if (plateNum==null) {
+			return new AppResultDto(3001, "车牌号不能为空", false);
+		}
+		
+		Station station = new Station();
+		String strSql=" SELECT * FROM  " + Constant.electStationTable;
+		String where = "";
+		if( plateNum != null && !"".equals(plateNum)) {
+			where += " plate_num = '"+plateNum+"'";
+		}
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = "+guaCardNum;
+			}else {
+				where += " gua_card_num = "+guaCardNum;
+			}
+		}
+		
+		if(!where.equals("")) {
+			strSql+=" where "+ where +" order by time desc limit 1 ";
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			List<Object> values = listVal.get(0);
+			station.setLatitude(values.get(listCol.indexOf("latitude")).toString());
+			station.setLongitude(values.get(listCol.indexOf("longitude")).toString());
+			station.setStation_phy_num(Integer.parseInt(values.get(listCol.indexOf("station_phy_num")).toString()));
+			station.setStation_name(values.get(listCol.indexOf("station_name")).toString());
+			station.setStation_address(values.get(listCol.indexOf("station_address")).toString());
+			station.setStation_type(values.get(listCol.indexOf("station_type")).toString());
+		}
+		if (station==null||station.getLongitude()==null||station.getLatitude()==null) {
+			return new AppResultDto(0, "未查询到车辆的位置信息");
+		}
+		
+		return new AppResultDto(station);
+		
 	}
 	
 	/**
@@ -126,7 +197,7 @@ public class ElectUserAppController extends AppBaseController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/findElectTrace")
+	/*@RequestMapping(value = "/findElectTrace")
 	@ResponseBody
 	public Object findElectTrace(
 			@RequestParam(value="plateNum", required=false) String plateNum,
@@ -150,6 +221,92 @@ public class ElectUserAppController extends AppBaseController {
 				TraceStationDto traceStationDto = new TraceStationDto();
 				traceStationDto.setCrossTime(electrombileStation.getUpdate_time());
 				traceStationDto.setStation(stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num()));
+				traceStationDtos.add(traceStationDto);
+			}
+		}
+		if (traceStationDtos==null||traceStationDtos.size()==0) {
+			return new AppResultDto(2001, "未查询到该车辆的轨迹");
+		}
+		return new AppResultDto(traceStationDtos);
+	}*/
+	
+	/**
+	 * 查询车辆轨迹   查询influxdb 2019-05-05  重写
+	 * 
+	 * @param plateNum
+	 * @param guaCardNum
+	 * @param startTimeForTrace
+	 * @param endTimeForTrace
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findElectTrace")
+	@ResponseBody
+	public Object findElectTrace(
+			@RequestParam(value="plateNum", required=false) String plateNum,
+			@RequestParam(value="guaCardNum", required=false) Integer guaCardNum,
+			@RequestParam(value="startTimeForTrace", required=false) String startTimeForTrace,
+			@RequestParam(value="endTimeForTrace", required=false) String endTimeForTrace,
+			@RequestParam(value="token", required=false) String token) throws UnsupportedEncodingException {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		if (plateNum==null) {
+			return new AppResultDto(3001, "车牌号不能为空", false);
+		}
+		
+		String strSql=" SELECT * FROM " + Constant.electStationTable;
+		String where = "";
+		
+		if( startTimeForTrace != null && !"".equals(startTimeForTrace)) {
+			where += " time >= '" + startTimeForTrace+"'";
+		}
+		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
+			if(!where.equals("")) {
+				where += " and time <= '" + endTimeForTrace+"'";
+			}else {
+				where += " time <= '" + endTimeForTrace+"'";
+			}
+		}
+		
+		if( plateNum != null && !"".equals(plateNum)) {
+			if(!where.equals("")) {
+				where += " and plate_num = '"+plateNum+"'";
+			}else {
+				
+				where += " plate_num = '"+plateNum+"'";
+			}
+		}
+		if( guaCardNum != null ) {
+			if(!where.equals("")) {
+				where += " and gua_card_num = "+guaCardNum;
+			}else {
+				where += " gua_card_num = "+guaCardNum;
+			}
+		}
+		
+		if(!where.equals("")) {
+			strSql+=" where "+ where;
+		}
+		QueryResult results = influxDBConnection
+				.query(strSql);
+		Result oneResult = results.getResults().get(0);
+		List<TraceStationDto> traceStationDtos = new ArrayList<TraceStationDto>();
+		if (oneResult.getSeries() != null) {
+			List<Series> series = oneResult.getSeries();
+			List<String> listCol = series.get(0).getColumns();
+			List<List<Object>> listVal = series.get(0).getValues();
+			for (List<Object> lists : listVal) {
+				TraceStationDto traceStationDto = new TraceStationDto();
+				Station station = new Station();
+				station.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
+				station.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+				station.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
+				station.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
+				station.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
+				traceStationDto.setStation(station);
+				traceStationDto.setCrossTime(lists.get(listCol.indexOf("hard_read_time")).toString());
 				traceStationDtos.add(traceStationDto);
 			}
 		}

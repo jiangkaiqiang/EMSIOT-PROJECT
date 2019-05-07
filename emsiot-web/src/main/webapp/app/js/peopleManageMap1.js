@@ -676,7 +676,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    //$scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
+    $scope.startTimeForTrace=$scope.doDateStr(new Date(),1)
     $('#homeDateEnd').datetimepicker({
         format: 'yyyy-mm-dd hh:ii:00',
         minView: "hour",
@@ -684,7 +684,7 @@ coldWeb.controller('peopleManageMap', function ($rootScope, $scope, $state, $coo
         maxDate: new Date(),
         pickerPosition: "bottom-left"
     });
-    //$scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
+    $scope.endTimeForTrace=$scope.doDateStr(new Date(),1)
     //报警车辆日期
     $('#peopleStartTime').datetimepicker({
     	format: 'yyyy-mm-dd',

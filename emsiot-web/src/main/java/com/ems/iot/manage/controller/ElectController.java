@@ -290,7 +290,7 @@ public class ElectController extends BaseController {
 		}
 		
 		//查询该区域的车辆
-		List<Integer> cardArray = areaCar(proPower, cityPower, areaPower);
+		//List<Integer> cardArray = areaCar(proPower, cityPower, areaPower);
 		ElectCountAndList countAndList=new ElectCountAndList();
 		
 		
@@ -305,9 +305,9 @@ public class ElectController extends BaseController {
 		endTime = sdf.format(sysDate);
 		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
-		String timeCond = "";
+		//String timeCond = "";
 		if( startTime != null && !"".equals(startTime)) {
-			timeCond += " time >= '" + startTime+"'";
+			where += " time >= '" + startTime+"'";
 		}
 		if( endTime != null && !"".equals(endTime)) {
 			//SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -322,85 +322,81 @@ public class ElectController extends BaseController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(!timeCond.equals("")) {
-				timeCond += " and time < '" + sdf.format(calendar.getTime())+"'";
+			if(!where.equals("")) {
+				where += " and time < '" + sdf.format(calendar.getTime())+"'";
 			}else {
-				timeCond += " time < '" + sdf.format(calendar.getTime())+"'";
+				where += " time < '" + sdf.format(calendar.getTime())+"'";
 			}
 		}
 		if( proPower != null) {
-			if(!timeCond.equals("")) {
-				timeCond += " and pro_id = "+proPower;
+			if(!where.equals("")) {
+				where += " and pro_id = "+proPower;
 			}else {
 		
-				timeCond += " pro_id = "+proPower;
+				where += " pro_id = "+proPower;
 			}
 		}
 		if( cityPower != null) {
-			if(!timeCond.equals("")) {
-				timeCond += " and city_id = "+cityPower;
+			if(!where.equals("")) {
+				where += " and city_id = "+cityPower;
 			}else {
-				timeCond += " city_id = "+cityPower;
+				where += " city_id = "+cityPower;
 			}
 		}
 		if( areaPower != null) {
-			if(!timeCond.equals("")) {
-				timeCond += " and area_id = "+areaPower;
+			if(!where.equals("")) {
+				where += " and area_id = "+areaPower;
 			}else {
-				timeCond += " area_id = "+areaPower;
+				where += " area_id = "+areaPower;
 			}
 		}
 		
 		Map<String, Integer> mapList=new HashMap<String, Integer>();
 		Map<String, List<StationElectDto>> mapElectList=new HashMap<String, List<StationElectDto>>();
 		String sql="";
-		for (Integer str : cardArray) {
+		//for (Integer str : cardArray) {
 			
-				if(!timeCond.equals("")) {
-					where = " and gua_card_num = "+str;
-				}else {
-					where = " gua_card_num = "+str;
-				}
-
-				sql=strSql+" where "+timeCond+where+" order by time desc limit 1";
+		sql=strSql+" where "+where+" group by plate_num order by time desc limit 1";
 				
-				QueryResult results = influxDBConnection
-						.query(sql);
-				Result oneResult = results.getResults().get(0);
-				if (oneResult.getSeries() != null) {
-					List<Series> series = oneResult.getSeries();
-					List<String> listCol = series.get(0).getColumns();
-					List<List<Object>> listVal = series.get(0).getValues();
-					count = series.get(0).getValues().size();
-					String stationNum = listVal.get(0).get(listCol.indexOf("station_phy_num")).toString();
-					Integer cardNum = (int)Float.parseFloat(listVal.get(0).get(listCol.indexOf("gua_card_num")).toString());
-					if(mapList.containsKey(stationNum)) {
-						mapList.put(stationNum, mapList.get(stationNum)+count);
-					}else {
-						mapList.put(stationNum, count);
-					}
-					//基站下车辆的数据
-					//List<StationElectDto> listElect = new ArrayList<StationElectDto>();
-					StationElectDto elect = new StationElectDto();
-					elect.setOwner_name(listVal.get(0).get(listCol.indexOf("owner_name")).toString());
-					elect.setPlate_num(listVal.get(0).get(listCol.indexOf("plate_num")).toString());
-					elect.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
-					elect.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
-					
-					if(mapElectList.containsKey(stationNum)) {
-						List<StationElectDto> listElect = mapElectList.get(stationNum);
-						listElect.add(elect);
-						mapElectList.put(stationNum, listElect);
-					}else {
-						//基站下车辆的数据
-						List<StationElectDto> listElect = new ArrayList<StationElectDto>();
-						listElect.add(elect);
-						mapElectList.put(stationNum, listElect);
-					}
+		QueryResult results = influxDBConnection
+				.query(sql);
+		Result oneResult = results.getResults().get(0);
+		if (oneResult.getSeries() != null) {
+			List<Series> seriesList = oneResult.getSeries();
+			for (Series series : seriesList) {
+				List<String> listCol = series.getColumns();
+				List<List<Object>> listVal = series.getValues();
+				count = series.getValues().size();
+				String stationNum = listVal.get(0).get(listCol.indexOf("station_phy_num")).toString();
+				Integer cardNum = (int)Float.parseFloat(listVal.get(0).get(listCol.indexOf("gua_card_num")).toString());
+				if(mapList.containsKey(stationNum)) {
+					mapList.put(stationNum, mapList.get(stationNum)+count);
+				}else {
+					mapList.put(stationNum, count);
 				}
-			
-			
+				//基站下车辆的数据
+				//List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+				StationElectDto elect = new StationElectDto();
+				elect.setOwner_name(listVal.get(0).get(listCol.indexOf("owner_name")).toString());
+				//elect.setPlate_num(listVal.get(0).get(listCol.indexOf("plate_num")).toString());
+				elect.setPlate_num(series.getTags().get("plate_num"));
+				elect.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
+				elect.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
+				
+				if(mapElectList.containsKey(stationNum)) {
+					List<StationElectDto> listElect = mapElectList.get(stationNum);
+					listElect.add(elect);
+					mapElectList.put(stationNum, listElect);
+				}else {
+					//基站下车辆的数据
+					List<StationElectDto> listElect = new ArrayList<StationElectDto>();
+					listElect.add(elect);
+					mapElectList.put(stationNum, listElect);
+				}
+			}
 		}
+			
+		//}
 		countAndList.setStationElectList(mapElectList);
 		countAndList.setElectCountByStation(mapList);
 		return countAndList;
@@ -1341,25 +1337,6 @@ public class ElectController extends BaseController {
 			where += " time >= '" + startTimeForTrace+"'";
 		}
 		if( endTimeForTrace != null && !"".equals(endTimeForTrace)) {
-			/*
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd ");
-			Date date=null;
-			Calendar calendar = Calendar.getInstance();
-			try {
-				
-				date=sdf.parse(endTimeForTrace);
-				calendar.setTime(date);
-				calendar.add(Calendar.DAY_OF_MONTH, 1);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(!where.equals("")) {
-				where += " and time < '" + sdf.format(calendar.getTime())+"'";
-			}else {
-				where += " time < '" + sdf.format(calendar.getTime())+"'";
-			}
-			*/
 			if(!where.equals("")) {
 				where += " and time <= '" + endTimeForTrace+"'";
 			}else {
