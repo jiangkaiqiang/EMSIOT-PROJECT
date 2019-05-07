@@ -39,7 +39,6 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                     }else{
                         map.centerAndZoom(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
                         //map.centerAndZoom($scope.cityName, $scope.user.fixed_zoom); // 初始化地图,设置中心点坐标和地图级别
-                        console.log(new BMap.Point($scope.user.fixed_lon, $scope.user.fixed_lat), $scope.user.fixed_zoom)
                     }
 
                     map.setCurrentCity($scope.cityName);
@@ -105,8 +104,8 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                 }).success(function (data) {
                     $scope.electAlarmsCount = data;
                 });
-                
-               
+
+
             });
         });
     };
@@ -139,7 +138,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
 //            tmpStation = $scope.stations[i];
 //            var carNum = showElectsCountInStation(FormatDate(start), FormatDate(end), tmpStation.station_phy_num);
 //            markers[i].setTitle(tmpStation.station_phy_num + '\t' + tmpStation.station_address + '\t' + carNum);
-//      }	
+//      }
 
         var stationPhyRefrehNums = '';
         for(var i = 0; i < $scope.stations.length; i++){
@@ -225,19 +224,18 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     $scope.labelSet = function (value1, value2) {
         var label = new BMap.Label(value1, {offset: new BMap.Size(0, -30)});
         label.setStyle({
-        	color: "#fff",
-            fontSize: "14px",
-            backgroundColor: "#66B3FF",
+            color: "rgb(102, 179, 255)",
+            fontSize: "16px",
+            backgroundColor: "#fff",
             border: "1px solid rgb(102, 179, 255)",
-            fontWeight: "normal",
+            fontWeight: "bold",
             display: "block",
-            borderShadow: "0 5px 15px rgba(0, 0, 0, 0.6)",
+            borderShadow: "0 5px 15px rgba(0, 0, 0, .5)",
             minHeight: "20px",
-            minWidth: "40px",
+            minWidth: "25px",
             lineHeight: "20px",
             borderRadius: "5px",
-            textAlign: "center",
-            padding:"1px 8px"
+            textAlign: "center"
         });
         value2.setLabel(label);
     };
@@ -285,7 +283,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             start = new Date(time - 60 * 1000 * $scope.user.fixed_query_time );/*自定义查询时间;*/
         }
         var end = new Date(time);
-       
+
         var carInitNums = showElectsCountInStations(FormatDate(start), FormatDate(end), stationPhyInitNums);
         for (var i = 0; i < $scope.stations.length; i++) {
             tmpStation = $scope.stations[i];
@@ -423,7 +421,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
     	})
     	return counts;
     }
-    
+
     //根据时间和基站id获取基站下面的当前所有车辆
     function showElectsInStation(startTime, endTime, stationPhyNum,limit) {
         $.ajax({
@@ -511,7 +509,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             $scope.elecIcon = new BMap.Icon("../app/img/eb-1.jpg", new BMap.Size(67, 51));
             $scope.elecMarker = new BMap.Marker($scope.elecPt, {icon: $scope.elecIcon});
             $scope.elecMarker.setZIndex(10);//设置单个marker的index
-            $scope.labelSet($scope.keywordForLocation+":"+data.station_name,$scope.elecMarker);
+
 
             map.addOverlay($scope.elecMarker);
             $scope.elecMarker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
@@ -532,29 +530,22 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         //showStation();
         if ($scope.keywordTypeForTrace == "1") {
             $scope.plateNum = $scope.keywordForTrace;
-            $scope.guaCardNum = null;
-            $scope.electNumForTraceTable = $scope.plateNum;
-            if($scope.plateNum==undefined || $scope.plateNum==""){
+            $scope.guaCardNum = fined || $scope.plateNum==""){
             	alert("请输入车牌号！")
             	return;
             }
             //console.log($scope.endTimeForTrace)
             //console.log($scope.startTimeForTrace)
         }
-        else if ($scope.keywordTypeForTrace == "0") {
+        else if ($scope.keywdTypeForTrace == "0") {
             $scope.guaCardNum = $scope.keywordForTrace;
             $scope.plateNum = null;
-            $scope.electNumForTraceTable = $scope.keywordForTrace;
-            //console.log($scope.guaCardNum)
-            if($scope.guaCardNum==undefined || $scope.guaCardNum==""){
-            	alert("请输入防盗芯片！")
-            	return;
-            }
-            //console.log($scope.endTimeForTrace)
-            //console.log($scope.startTimeForTrace)
-        }
-        if($scope.startTimeForTrace==undefined || $scope.startTimeForTrace == ''){
-            alert("请选择开始时间！")
+            $scope.electNumForTraceTable = $scope.ked || $sco
+        else {
+
+        }pe.guaCardNum==""){
+            	ale
+始时间！")
             return;
         }
         if($scope.endTimeForTrace==undefined || $scope.endTimeForTrace == ''){
