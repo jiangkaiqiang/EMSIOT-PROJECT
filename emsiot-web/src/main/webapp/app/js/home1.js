@@ -548,7 +548,7 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
             //console.log($scope.guaCardNum)
             if($scope.guaCardNum==undefined || $scope.guaCardNum==""){
             	alert("请输入防盗芯片！")
-            	return;
+            	return; 
             }
             //console.log($scope.endTimeForTrace)
             //console.log($scope.startTimeForTrace)
