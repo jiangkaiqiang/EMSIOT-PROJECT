@@ -117,8 +117,7 @@
   <select id="findUser" parameterType="map" resultType="com.ems.iot.manage.entity.AppUser">
 		SELECT u.*
 		FROM app_user u
-		WHERE u.user_name = #{user_name} AND u.password =
-		#{password}
+		WHERE (u.user_name = #{user_name} OR u.user_tele = #{user_name}) AND u.password = #{password}
 	</select>
 	<select id="findUserByName" parameterType="map" resultType="com.ems.iot.manage.entity.AppUser">
 		SELECT u.* FROM app_user u

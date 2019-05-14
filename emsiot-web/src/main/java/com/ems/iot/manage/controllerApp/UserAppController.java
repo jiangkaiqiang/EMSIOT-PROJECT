@@ -194,17 +194,26 @@ public class UserAppController extends AppBaseController {
 	
 	@RequestMapping(value = "/changePwd")
 	@ResponseBody
-	public Object changePwd(HttpServletRequest request,@RequestParam(value="password") String password,
+	public Object changePwd(HttpServletRequest request,
+			@RequestParam(value="password") String password,
+			@RequestParam(value="oldPassword", required=false) String oldPassword,
 			@RequestParam(value="appUserID", required=false) Integer appUserID, String token) {
 		Cookies effectiveCookie = cookieService.findEffectiveCookie(token); 
+		AppUser oldAppUser = appUserMapper.findUserById(appUserID);
 		if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
+		if (oldPassword==null || oldPassword.equals("")) {
+			return new ResultDto(3001, "旧密码不能为空", false);
+		}
 		if (password==null || password.equals("")) {
-			return new ResultDto(3001, "密码不能为空", false);
+			return new ResultDto(3001, "新密码不能为空", false);
 		}
 		if (appUserID==null) {
 			return new ResultDto(3001,"用户id不能为空",false);
+		}
+		if (!oldAppUser.getPassword().equals(oldPassword)) {
+			return new ResultDto(3001, "旧密码输入错误", false);
 		}
 		AppUser appUser = new AppUser();
 		appUser.setUser_id(Long.parseLong(appUserID+""));
