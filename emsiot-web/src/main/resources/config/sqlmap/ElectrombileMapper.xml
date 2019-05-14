@@ -705,6 +705,18 @@
       <if test="black_list_time != null">
         black_list_time = #{black_list_time,jdbcType=TIMESTAMP},
       </if>
+      <if test="lock_status != null">
+        lock_status = #{lock_status,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lock_address != null">
+        lock_address = #{lock_address,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lock_station != null">
+        lock_station = #{lock_station,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lock_time != null">
+        lock_time = #{lock_time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where plate_num = #{plate_num,jdbcType=VARCHAR}
   </update>

@@ -57,8 +57,16 @@ public class Electrombile {
     private String black_list_time;
     
     private String insur_pic;
-
+    
     private String tele_fee_pic;
+
+    private Integer lock_status;
+    
+    private String lock_address;
+    
+    private String lock_station;
+    
+    private String lock_time;
     
     ////////////////////
     
@@ -358,6 +366,38 @@ public class Electrombile {
 
 	public void setOwner_born(String owner_born) {
 		this.owner_born = owner_born;
+	}
+
+	public Integer getLock_status() {
+		return lock_status;
+	}
+
+	public void setLock_status(Integer lock_status) {
+		this.lock_status = lock_status;
+	}
+
+	public String getLock_address() {
+		return lock_address;
+	}
+
+	public void setLock_address(String lock_address) {
+		this.lock_address = lock_address;
+	}
+
+	public String getLock_station() {
+		return lock_station;
+	}
+
+	public void setLock_station(String lock_station) {
+		this.lock_station = lock_station;
+	}
+
+	public String getLock_time() {
+		return lock_time;
+	}
+
+	public void setLock_time(String lock_time) {
+		this.lock_time = lock_time;
 	}
     
 	

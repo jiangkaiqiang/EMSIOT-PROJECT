@@ -426,6 +426,10 @@ public class HardAcceptController extends BaseController {
 						doElectAlarm(electrombile, station);
 					} else {	
 					}
+					//基站布防锁定后报警					
+					if(electrombile.getLock_status() == 1) {
+						
+					}
 				}
 				else{	
 					People people = peopleMapper.findPlateNumByPeopleGuaCardNum(Integer.valueOf(guaCardNum));
@@ -482,6 +486,7 @@ public class HardAcceptController extends BaseController {
 		tags.put("owner_name", electStationInfluxDto.getElectrombile().getOwner_name());
 		tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
 		tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());
+		tags.put("lock_time", electStationInfluxDto.getElectrombile().getLock_time());
 		Map<String, Object> fields = new HashMap<String, Object>();
 		fields.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num());
 		fields.put("longitude", electStationInfluxDto.getStation().getLongitude());
@@ -495,6 +500,7 @@ public class HardAcceptController extends BaseController {
 		fields.put("city_id", electStationInfluxDto.getElectrombile().getCity_id());
 		fields.put("area_id", electStationInfluxDto.getElectrombile().getArea_id());
 		fields.put("hard_read_time", electStationInfluxDto.getHard_read_time());
+		fields.put("lock_status", electStationInfluxDto.getElectrombile().getLock_status());
 		// 时间使用毫秒为单位
 	    //System.out.println(System.currentTimeMillis());
 	    Date date = new Date();

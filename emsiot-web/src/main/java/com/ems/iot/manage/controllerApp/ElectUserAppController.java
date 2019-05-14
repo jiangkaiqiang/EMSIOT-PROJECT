@@ -25,6 +25,7 @@ import com.ems.iot.manage.dao.ProvinceMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.BaseDto;
+import com.ems.iot.manage.dto.ElectLockTraceDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.entity.AppUser;
@@ -454,4 +455,111 @@ public class ElectUserAppController extends AppBaseController {
 		blackelectMapper.deleteByPrimaryKey(blackID);
 		return new AppResultDto(1001, "删除成功");
 	}
+	
+	/**
+	 * 设置车辆布防
+	 * @param plate_num		车牌号
+	 * @param lock_status	锁定状态
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping(value = "/lockMyElect")
+	@ResponseBody
+	public Object lockMyElect(
+			@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "lockStatus", required = false) Integer lockStatus,
+			@RequestParam(value="token", required=false) String token
+			) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+		}
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
+		if(electrombile==null){
+			return new AppResultDto(3001, "该车牌号不存在！", false);
+		}
+		if(electrombile!=null) {
+			String influxSql=" SELECT * FROM " + Constant.electStationTable 
+							+ " where plate_num = '"+electrombile.getPlate_num()+"'"
+							+" order by time desc limit 1 ";
+			QueryResult results = influxDBConnection
+					.query(influxSql);
+			Result oneResult = results.getResults().get(0);
+			if (oneResult.getSeries() != null) {
+				List<Series> series = oneResult.getSeries();
+				List<String> listCol = series.get(0).getColumns();
+				List<List<Object>> listVal = series.get(0).getValues();
+				List<Object> values = listVal.get(0);
+				electrombile.setPlate_num(electrombile.getPlate_num());
+				electrombile.setLock_status(lockStatus);
+				electrombile.setLock_station(values.get(listCol.indexOf("station_name")).toString());
+				electrombile.setLock_address(values.get(listCol.indexOf("station_address")).toString());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				electrombile.setLock_time(sdf.format(System.currentTimeMillis()));
+				electrombileMapper.updateByPlateNumSelective(electrombile);
+			} else {
+				return new AppResultDto(2001, "该车牌号未经过任何基站,无法锁定！", false);
+			}
+		}
+		return new AppResultDto(1001, "修改成功");
+	}
+	
+	@RequestMapping(value = "/lockMyElectTrack")
+	@ResponseBody
+	public Object lockMyElectTrack(
+			@RequestParam(value = "plateNum", required = false) String plateNum,
+			@RequestParam(value = "lockTime", required = false) String lockTime,
+			@RequestParam(value="token", required=false) String token
+			) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+		}
+		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
+		if(electrombile==null){
+			return new AppResultDto(3001, "该车牌号不存在！", false);
+		}
+		if(electrombile!=null) {
+			String where = "";
+			if( lockTime != null && !"".equals(lockTime)) {
+				where += " and lock_time = '" + lockTime+"'";
+			}
+			String influxSql=" SELECT * FROM " + Constant.electStationTable 
+							+ " where plate_num = '"+electrombile.getPlate_num()+"'"
+							+ where
+							+" group by lock_time ";
+			QueryResult results = influxDBConnection
+					.query(influxSql);
+			Result oneResult = results.getResults().get(0);
+			List<ElectLockTraceDto> electLockTrackDtos = new ArrayList<ElectLockTraceDto>();
+			if (oneResult.getSeries() != null) {
+				List<Series> seriesList = oneResult.getSeries();
+				for (Series series : seriesList) {
+					List<String> listCol = series.getColumns();
+					List<List<Object>> listVal = series.getValues();
+					String lock_time = series.getTags().get("lock_time");
+					ElectLockTraceDto electLock = new ElectLockTraceDto();
+					electLock.setLockTime(lock_time);
+					List<Station> stations = new ArrayList<Station>();
+					for (List<Object> lists : listVal) {
+						Station station = new Station();
+						station.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
+						station.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
+						station.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
+						station.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
+						station.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
+						stations.add(station);
+					}
+					electLock.setStation(stations);
+					electLockTrackDtos.add(electLock);
+				}
+			} else {
+				return new AppResultDto(2001, "该车牌号未经过任何基站！", false);
+			}
+		}
+		return new AppResultDto(1001, "修改成功");
+	}
+	
+	
+	
 }
