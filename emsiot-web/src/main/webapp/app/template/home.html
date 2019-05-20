@@ -304,8 +304,14 @@
             <tbody>
             <tr ng-repeat="traceStation in traceStations"
                 style="cursor: pointer;">
-                <td title="{{traceStation.station_name}}">{{traceStation.station_name}}</td>
-                <td title="{{traceStation.station_address}}">{{traceStation.station_address}}</td>
+                <td ng-if="stationMap[traceStation.station_phy_num].station_name!=null && stationMap[traceStation.station_phy_num].station_name!=undefined"
+                title="{{stationMap[traceStation.station_phy_num].station_name}}">{{stationMap[traceStation.station_phy_num].station_name}}</td>
+                <td ng-if="stationMap[traceStation.station_phy_num].station_name==null || stationMap[traceStation.station_phy_num].station_name==undefined"
+                title="{{traceStation.station_name}}">{{traceStation.station_name}}</td>
+                <td ng-if="stationMap[traceStation.station_phy_num].station_address!=null && stationMap[traceStation.station_phy_num].station_address!=undefined"
+                title="{{stationMap[traceStation.station_phy_num].station_address}}">{{stationMap[traceStation.station_phy_num].station_address}}</td>
+                <td ng-if="stationMap[traceStation.station_phy_num].station_address==null || stationMap[traceStation.station_phy_num].station_address==undefined"
+                title="{{traceStation.station_address}}">{{traceStation.station_address}}</td>
                 <td title="{{traceStation.update_time}}">{{traceStation.update_time}}</td>
             </tr>
             </tbody>

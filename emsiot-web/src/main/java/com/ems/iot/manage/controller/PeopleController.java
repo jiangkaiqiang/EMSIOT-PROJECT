@@ -52,6 +52,7 @@ import com.ems.iot.manage.entity.SysUser;
 import com.ems.iot.manage.service.OssService;
 import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.InfluxDBConnection;
+import com.ems.iot.manage.util.TimeUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -775,7 +776,7 @@ public class PeopleController extends BaseController {
 				//people.setPeople_id_cards(listVal.get(0).get(listCol.indexOf("people_id_cards")).toString());
 				people.setPeople_id_cards(series.getTags().get("people_id_cards"));
 				people.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
-				people.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
+				people.setCorssTime(TimeUtil.getInfluxTime(listVal.get(0).get(listCol.indexOf("time")).toString()));
 				
 				if(mapElectList.containsKey(stationNum)) {
 					List<StationPeopleDto> listPeople = mapElectList.get(stationNum);
@@ -865,7 +866,7 @@ public class PeopleController extends BaseController {
 				people.setPeople_name(lists.get(listCol.indexOf("people_name")).toString());
 				people.setPeople_id_cards(lists.get(listCol.indexOf("people_id_cards")).toString());
 				people.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
-				people.setCorssTime(lists.get(listCol.indexOf("hard_read_time")).toString());
+				people.setCorssTime(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
 				listElect.add(people);
 			}
 		}
@@ -1062,7 +1063,7 @@ public class PeopleController extends BaseController {
 				people.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
 				people.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
 				people.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
-				people.setUpdate_time(lists.get(listCol.indexOf("time")).toString());
+				people.setUpdate_time(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
 				listPeople.add(people);
 			}
 		}

@@ -186,7 +186,7 @@
 									class="glyphicon glyphicon-eye-open"></i> 查看详情
 							</a></li>
 							<li><a href="#"
-								ng-click="goSearchForTrace(electDto.electrombile.gua_card_num)"
+								ng-click="goSearchForTrace(electDto.electrombile.gua_card_num,true)"
 								data-toggle="modal" data-target="#guijiModalElec"> <img
 									src="app/img/table-guiji.png" alt="" /> 查看轨迹
 							</a></li>
@@ -789,7 +789,7 @@
 									<a href="javascript:;" ng-show="rootUserPowerDto.privatePower==1" class="picfile" style="width: 324px;height: 204px;background-image: none;">
 
 										 <output id="pic_list" class="pic_list" style="display: block 1px red ;width: 324px;height: 204px;">
-											<img style="width: 324px;height: 204px;"
+											<img ng-show="viewElect.electrombile.indentity_card_pic!=null" style="width: 324px;height: 204px;"
 													src="{{viewElect.electrombile.indentity_card_pic}}">
 										 </output>
 	
@@ -1804,7 +1804,11 @@
 						<tbody>
 							<tr ng-repeat="traceStation in traceStations">
 								<td>{{traceStation.station_phy_num}}</td>
-								<td>{{traceStation.station_name}}</td>
+								<!-- <td>{{traceStation.station_name}}</td> -->
+								<td ng-if="stationMap[traceStation.station_phy_num].station_name!=null && stationMap[traceStation.station_phy_num].station_name!=undefined"
+				                title="{{stationMap[traceStation.station_phy_num].station_name}}">{{stationMap[traceStation.station_phy_num].station_name}}</td>
+				                <td ng-if="stationMap[traceStation.station_phy_num].station_name==null || stationMap[traceStation.station_phy_num].station_name==undefined"
+				                title="{{traceStation.station_name}}">{{traceStation.station_name}}</td>
 								<td>{{traceStation.update_time}}</td>
 							</tr>
 						</tbody>

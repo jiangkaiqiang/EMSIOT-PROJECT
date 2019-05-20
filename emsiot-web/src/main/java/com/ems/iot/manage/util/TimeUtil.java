@@ -148,7 +148,16 @@ public class TimeUtil {
         calendar.setTime(date);
         return calendar.get(Calendar.HOUR_OF_DAY);
     }
-
+    /**
+     * influxdb Time字段使用(2019-04-18T15:24:04.95Z)
+     * @param time
+     * @return
+     */
+    public static String getInfluxTime(String time) {
+		time = time.substring(0,19);
+		time = time.replace("T", " ");
+		return time;
+    }
     public static void main(String[] args) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");

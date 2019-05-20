@@ -75,6 +75,20 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 				            $scope.sysUserID = "0";
 				        });
 				    	$scope.getElects();
+				    	// 获取基站进行处理用于轨迹查询对应最新基站信息
+	                    $http.get('/i/station/findAllStationsForMap', {
+	                        params: {
+	                        	"proPower" : $scope.userPowerDto.sysUser.pro_power,
+			        			"cityPower" : $scope.userPowerDto.sysUser.city_power,
+			        			"areaPower" : $scope.userPowerDto.sysUser.area_power
+	                        }
+	                    }).success(function (data) {
+	                        $scope.stationMap={}
+	                        for (var i = 0; i < data.length; i++) {
+	                        	$scope.stationMap[data[i].station_phy_num+""]=data[i]
+							}
+	                    });
+				    	
 			    });
 		   });
 	};
@@ -731,12 +745,20 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		        }
 		    }
 		 
-		$scope.goSearchForTrace = function(gua_card_num) {
+		 $scope.goSearchForTrace = function(gua_card_num, time_is_null) {
+				if(time_is_null){
+					$scope.searchTraceStart = null;
+					$scope.searchTraceEnd = null;
+					$scope.traceStations = null;
+				}
 			    $scope.gua_card_numForTrace = gua_card_num;
 				$http.get('/i/elect/findElectTrace', {
 						params : {
 //							'pageNum' : $scope.bigTotalItemsForTrace,
 //							'pageSize' : $scope.maxSizeForTrace,
+							"proPower" : $scope.userPowerDto.sysUser.pro_power,
+		        			"cityPower" : $scope.userPowerDto.sysUser.city_power,
+		        			"areaPower" : $scope.userPowerDto.sysUser.area_power,
 							"plateNum" : null,
 							"guaCardNum" : gua_card_num,
 							"startTimeForTrace" : $scope.searchTraceStart,
@@ -749,7 +771,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 					});
 		 }
 		$scope.goSearchForTraceWithTime = function() {
-			$scope.goSearchForTrace($scope.gua_card_numForTrace);
+			$scope.goSearchForTrace($scope.gua_card_numForTrace,false);
 		}
 //		$scope.pageChangedForTrace = function() {
 //			$scope.goSearchForTrace($scope.gua_card_numForTrace);
@@ -771,14 +793,14 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		pickerPosition: "bottom-left"
 	});
 	$('#guijiSearchStart').datetimepicker({
-		format: 'yyyy-mm-dd - hh:ii:ss.s',
+		format: 'yyyy-mm-dd hh:ii:00',
 		//minView: "month",
 		autoclose:true,
 		maxDate:new Date(),
 		pickerPosition: "bottom-left"
 	});
 	$("#guijiSearchEnd").datetimepicker({
-		format : 'yyyy-mm-dd - hh:ii:ss.s',
+		format : 'yyyy-mm-dd hh:ii:00',
 		//minView: 'month',
 		autoclose:true,
 		maxDate:new Date(),

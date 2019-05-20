@@ -60,6 +60,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
                         }
                     }).success(function (data) {
                         $scope.stations = data;
+                        console.log(data)
+                        $scope.stationMap={}
+                        for (var i = 0; i < data.length; i++) {
+                        	$scope.stationMap[data[i].station_phy_num+""]=data[i]
+						}
+                        console.log($scope.stationMap)
                         showStation();
                     });
                     // 获取登记车辆数量
@@ -356,12 +362,12 @@ coldWeb.controller('home', function ($rootScope, $scope, $state, $cookies, $http
         if ($scope.tiao != null) {
             $scope.tiao.setAnimation(null);
         }
-        var tablePoint = $(this).context.cells[0].innerHTML;//获取单击表格时的地址
-        console.log(tablePoint);
+        var tablePoint = $(this).context.cells[0].innerHTML;//获取单击表格时的基站
+
         console.log($scope.stations)
         console.log($scope.jizhanBounce)
         for (var g = 0; g < $scope.stations.length; g++) {
-            if (tablePoint == $scope.stations[g].station_name) {//表格获取到的地址等于循环基站时的基站地址
+            if (tablePoint == $scope.stations[g].station_name) {//表格获取到的基站等于循环基站时的基站基站
                // console.log(tablePoint == $scope.stations[g].station_address)
                 var allOverlay = $scope.jizhanBounce;
                // console.log($scope.jizhanBounce)
