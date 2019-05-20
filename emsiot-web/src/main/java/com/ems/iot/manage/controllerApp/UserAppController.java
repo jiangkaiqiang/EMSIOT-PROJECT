@@ -61,6 +61,30 @@ public class UserAppController extends AppBaseController {
 		}		
 	}
 	
+	
+	@RequestMapping(value = "/loginWithLoginCode")
+	@ResponseBody
+	public Object loginWithLoginCode(String appUserName,HttpServletRequest request, String loginCode) {
+		if(StringUtil.isnotNull(appUserName)){
+			String sessyzm=""+request.getSession().getAttribute("loginCode");
+			if(loginCode==null||!(sessyzm).equalsIgnoreCase(loginCode)){
+				return new AppResultDto(3001,"验证码输入错误",false);
+			}
+			AppUser appUser = appUserMapper.findUserByName(appUserName);
+			if (appUser == null) {
+				return new AppResultDto(3001, "该用户不存在请先注册", false);
+				
+			}else {
+				appUser.setLogin_time(new Date());
+				appUserMapper.updateByPrimaryKeySelective(appUser);
+				String cookie = cookieService.insertCookie(appUserName);
+	            return new AppResultDto(true, 1001, "登录成功", cookie);
+			}
+		}else{
+			return new AppResultDto(3001, "用户名不能为空", false);
+		}		
+	}
+	
 	/**
 	 * app个人用户注销
 	 * @param token
@@ -105,7 +129,7 @@ public class UserAppController extends AppBaseController {
 	}
 	
 	/**
-	 * 校验验证码是否正确
+	 * 校验注册验证码是否正确
 	 * @param request
 	 * @param signUpCode
 	 * @return
@@ -121,7 +145,7 @@ public class UserAppController extends AppBaseController {
 	}
 	
 	/**
-	 * 发送验证码
+	 * 发送注册验证码
 	 * @param request
 	 * @param telephone
 	 * @return
@@ -144,6 +168,29 @@ public class UserAppController extends AppBaseController {
 	}
 	
 	/**
+	 * 发送登录验证码
+	 * @param request
+	 * @param telephone
+	 * @return
+	 * @throws ServerException
+	 * @throws ClientException
+	 */
+	@RequestMapping(value = "/sendLoginCode")
+	@ResponseBody
+	public Object sendLoginCode(HttpServletRequest request,@RequestParam(value="telephone",required=true) String telephone) throws ServerException, ClientException {
+		if(telephone!=null&&!telephone.equals("")){
+			TelephoneVerifyUtil teleVerify = new TelephoneVerifyUtil();
+			String loginCode = teleVerify.loginVerify(telephone);
+            if (loginCode==null) {
+            	return new AppResultDto(3001,"获取验证码失败",false);
+			}
+			request.getSession().setAttribute("loginCode", loginCode);
+			return new AppResultDto(1001,"验证码已发送，请查收！"); 
+		}
+		return new AppResultDto(3001,"请输入手机号",false);
+	}
+	
+	/**
 	 * 个人用户注册
 	 * @param sysUser
 	 * @return
@@ -152,6 +199,42 @@ public class UserAppController extends AppBaseController {
 	@RequestMapping(value = "/addAppUser")
 	@ResponseBody
 	public Object addAppUser(String password,String userTele,String nickname) throws UnsupportedEncodingException {
+		if (password == null||userTele==null) {
+			return new AppResultDto(3001, "手机号和密码不能为空",false);
+		}
+		AppUser appUser = new AppUser();
+		appUser.setNickname(nickname);
+		appUser.setPassword(password);
+		/**
+		 * 在此将用户名和手机号都设置为手机号，用户注册只需要输入手机号即可
+		 */
+		appUser.setUser_name(userTele);
+		appUser.setUser_tele(userTele);
+		if (appUserMapper.findUserByName(appUser.getUser_name())!=null) {
+			return new AppResultDto(3001, "用户手机号已存在", false);
+		}
+		appUserMapper.insert(appUser);
+		return new AppResultDto(1001,"注册成功");
+	}
+	
+	
+	/**
+	 * 个人用户注册，包含注册码验证
+	 * @param request
+	 * @param password
+	 * @param userTele
+	 * @param nickname
+	 * @param signUpCode
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/addAppUserWithSignUpCode")
+	@ResponseBody
+	public Object addAppUserWithSignUpCode(HttpServletRequest request,String password,String userTele,String nickname, String signUpCode) throws UnsupportedEncodingException {
+		String sessyzm=""+request.getSession().getAttribute("signUpCode");
+		if(signUpCode==null||!(sessyzm).equalsIgnoreCase(signUpCode)){
+			 return new AppResultDto(3001,"验证码输入错误",false);
+		}
 		if (password == null||userTele==null) {
 			return new AppResultDto(3001, "手机号和密码不能为空",false);
 		}
@@ -203,9 +286,9 @@ public class UserAppController extends AppBaseController {
 		if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
-		if (oldPassword==null || oldPassword.equals("")) {
-			return new ResultDto(3001, "旧密码不能为空", false);
-		}
+//		if (oldPassword==null || oldPassword.equals("")) {
+//			return new ResultDto(3001, "旧密码不能为空", false);
+//		}
 		if (password==null || password.equals("")) {
 			return new ResultDto(3001, "新密码不能为空", false);
 		}
