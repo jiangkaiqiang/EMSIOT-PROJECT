@@ -479,6 +479,12 @@ public class ElectUserAppController extends AppBaseController {
 			return new AppResultDto(3001, "该车牌号不存在！", false);
 		}
 		if(electrombile!=null) {
+			List<Electrombile> openLockElect = electrombileMapper.findAllOpenLockElectByTele(electrombile.getOwner_tele());
+			if(electrombile.getLock_status() == 0) {
+				if(openLockElect.size()>0) {
+					return new AppResultDto(5001, "该用户已有布防车辆，（仅限布防单个车辆）！", false);
+				}
+			}
 			String influxSql=" SELECT * FROM " + Constant.electStationTable 
 							+ " where plate_num = '"+electrombile.getPlate_num()+"'"
 							+" order by time desc limit 1 ";

@@ -835,4 +835,9 @@
 		</where>
 	</select>
 	
+	<select id="findAllOpenLockElectByTele" parameterType="map" resultType="com.ems.iot.manage.entity.Electrombile">
+        SELECT *
+        FROM `electrombile` WHERE `owner_tele` = #{tele} and lock_status = 1
+    </select>
+	
 </mapper>
