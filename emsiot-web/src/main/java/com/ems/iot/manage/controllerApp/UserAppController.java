@@ -191,6 +191,29 @@ public class UserAppController extends AppBaseController {
 	}
 	
 	/**
+	 * 发送找回密码验证码
+	 * @param request
+	 * @param telephone
+	 * @return
+	 * @throws ServerException
+	 * @throws ClientException
+	 */
+	@RequestMapping(value = "/sendFindPasswordCode")
+	@ResponseBody
+	public Object sendFindPasswordCode(HttpServletRequest request,@RequestParam(value="telephone",required=true) String telephone) throws ServerException, ClientException {
+		if(telephone!=null&&!telephone.equals("")){
+			TelephoneVerifyUtil teleVerify = new TelephoneVerifyUtil();
+			String findPasswordCode = teleVerify.findPassWordVerify(telephone);
+            if (findPasswordCode==null) {
+            	return new AppResultDto(3001,"获取验证码失败",false);
+			}
+			request.getSession().setAttribute("findPasswordCode", findPasswordCode);
+			return new AppResultDto(1001,"验证码已发送，请查收！"); 
+		}
+		return new AppResultDto(3001,"请输入手机号",false);
+	}
+	
+	/**
 	 * 个人用户注册
 	 * @param sysUser
 	 * @return
@@ -254,6 +277,37 @@ public class UserAppController extends AppBaseController {
 	}
 	
 	/**
+	 * 个人用户根据找回密码验证码找回密码
+	 * @param request
+	 * @param password
+	 * @param userTele
+	 * @param appUserID
+	 * @param findPasswordCode
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/findPasswordWithfindPasswordCode")
+	@ResponseBody
+	public Object findPasswordWithfindPasswordCode(HttpServletRequest request,String password,String userTele,Integer appUserID, String findPasswordCode) throws UnsupportedEncodingException {
+		String sessyzm=""+request.getSession().getAttribute("findPasswordCode");
+		if(findPasswordCode==null||!(sessyzm).equalsIgnoreCase(findPasswordCode)){
+			 return new AppResultDto(3001,"验证码输入错误",false);
+		}
+		if (password == null||userTele==null) {
+			return new AppResultDto(3001, "手机号和密码不能为空",false);
+		}
+		if (appUserID==null) {
+			return new ResultDto(3001,"用户id不能为空",false);
+		}
+		AppUser appUser = new AppUser();
+		appUser.setPassword(password);
+		appUser.setUser_id(Long.parseLong(appUserID+""));
+		appUser.setUser_tele(userTele);
+		appUserMapper.updateByPrimaryKeySelective(appUser);
+		return new AppResultDto(1001,"设置成功");
+	}
+	
+	/**
 	 * 修改app个人用户信息
 	 * @param appUser
 	 * @param token
@@ -274,7 +328,15 @@ public class UserAppController extends AppBaseController {
 		return new ResultDto(1001,"更新成功");
 	}
 	
-	
+	/**
+	 * 个人用户修改密码
+	 * @param request
+	 * @param password
+	 * @param oldPassword
+	 * @param appUserID
+	 * @param token
+	 * @return
+	 */
 	@RequestMapping(value = "/changePwd")
 	@ResponseBody
 	public Object changePwd(HttpServletRequest request,
