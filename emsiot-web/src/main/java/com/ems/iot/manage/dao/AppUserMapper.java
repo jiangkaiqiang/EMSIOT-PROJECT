@@ -20,6 +20,8 @@ public interface AppUserMapper {
     AppUser findUser(@Param("user_name") String username, @Param("password") String password);
 
     AppUser findUserByName(@Param("user_name") String user_name);
+    
+    AppUser findUserByTele(@Param("user_tele") String user_tele);
 	
     AppUser findUserById(@Param("user_id") int user_id);
 }

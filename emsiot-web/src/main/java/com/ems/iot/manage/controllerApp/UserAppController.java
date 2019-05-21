@@ -70,7 +70,11 @@ public class UserAppController extends AppBaseController {
 	public Object loginWithLoginCode(String appUserName,HttpServletRequest request, String loginCode, String telephone) {
 		if(StringUtil.isnotNull(appUserName)){
 			//String sessyzm=""+request.getSession().getAttribute("loginCode");
-			String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(2, telephone).getCode_num();
+			VerifyCode verifyCode = verifyCodeMapper.findVerifyCodeByTypeAndTele(2, telephone);
+			if (verifyCode==null) {
+				return new AppResultDto(3001,"手机号输入错误",false);
+			}
+			String sessyzm = verifyCode.getCode_num();
 			if(loginCode==null||!(sessyzm).equalsIgnoreCase(loginCode)){
 				return new AppResultDto(3001,"验证码输入错误",false);
 			}
@@ -142,7 +146,11 @@ public class UserAppController extends AppBaseController {
 	@ResponseBody
 	public Object verifySignUpCode(HttpServletRequest request, String telephone, String signUpCode) {
 		//String sessyzm=""+request.getSession().getAttribute("signUpCode");
-		String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, telephone).getCode_num();
+		VerifyCode verifyCode = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, telephone);
+		if (verifyCode==null) {
+			return new AppResultDto(3001,"手机号输入错误",false);
+		}
+		String sessyzm = verifyCode.getCode_num();
 		if(signUpCode==null||!(sessyzm).equalsIgnoreCase(signUpCode))
 		    return new AppResultDto(3001,"验证码输入错误",false);
 		else 
@@ -283,7 +291,11 @@ public class UserAppController extends AppBaseController {
 	@ResponseBody
 	public Object addAppUserWithSignUpCode(HttpServletRequest request,String password,String userTele,String nickname, String signUpCode) throws UnsupportedEncodingException {
 		//String sessyzm=""+request.getSession().getAttribute("signUpCode");
-		String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, userTele).getCode_num();
+		VerifyCode verifyCode = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, userTele);
+		if (verifyCode==null) {
+			return new AppResultDto(3001,"手机号输入错误",false);
+		}
+		String sessyzm = verifyCode.getCode_num();
 		if(signUpCode==null||!(sessyzm).equalsIgnoreCase(signUpCode)){
 			 return new AppResultDto(3001,"验证码输入错误",false);
 		}
@@ -317,21 +329,26 @@ public class UserAppController extends AppBaseController {
 	 */
 	@RequestMapping(value = "/findPasswordWithfindPasswordCode")
 	@ResponseBody
-	public Object findPasswordWithfindPasswordCode(HttpServletRequest request,String password,String userTele,Integer appUserID, String findPasswordCode) throws UnsupportedEncodingException {
+	public Object findPasswordWithfindPasswordCode(HttpServletRequest request,String password,String userTele, String findPasswordCode) throws UnsupportedEncodingException {
 		//String sessyzm=""+request.getSession().getAttribute("findPasswordCode");
-		String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(3, userTele).getCode_num();
+		VerifyCode verifyCode = verifyCodeMapper.findVerifyCodeByTypeAndTele(3, userTele);
+		if (verifyCode==null) {
+			return new AppResultDto(3001,"手机号输入错误",false);
+		}
+		String sessyzm = verifyCode.getCode_num();
 		if(findPasswordCode==null||!(sessyzm).equalsIgnoreCase(findPasswordCode)){
 			 return new AppResultDto(3001,"验证码输入错误",false);
 		}
 		if (password == null||userTele==null) {
 			return new AppResultDto(3001, "手机号和密码不能为空",false);
 		}
-		if (appUserID==null) {
-			return new ResultDto(3001,"用户id不能为空",false);
+		AppUser appUserOld = appUserMapper.findUserByTele(userTele);
+		if (appUserOld==null) {
+			return new ResultDto(3001,"该手机号未绑定账号，请注册",false);
 		}
 		AppUser appUser = new AppUser();
 		appUser.setPassword(password);
-		appUser.setUser_id(Long.parseLong(appUserID+""));
+		appUser.setUser_id(appUserOld.getUser_id());
 		appUser.setUser_tele(userTele);
 		appUserMapper.updateByPrimaryKeySelective(appUser);
 		return new AppResultDto(1001,"设置成功");

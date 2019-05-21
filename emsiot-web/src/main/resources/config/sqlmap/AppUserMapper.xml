@@ -123,6 +123,10 @@
 		SELECT u.* FROM app_user u
 		WHERE u.`user_name` = #{user_name}
 	</select>
+	<select id="findUserByTele" parameterType="map" resultType="com.ems.iot.manage.entity.AppUser">
+		SELECT u.* FROM app_user u
+		WHERE u.`user_tele` = #{user_tele}
+	</select>
 	<select id="findUserById" parameterType="map" resultType="com.ems.iot.manage.entity.AppUser">
 		SELECT
 		u.* FROM app_user u
