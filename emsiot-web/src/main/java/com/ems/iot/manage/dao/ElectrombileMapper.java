@@ -121,4 +121,10 @@ public interface ElectrombileMapper {
      */
     List<Electrombile> findElectsListByElectState(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower,@Param("electState") Integer electState);
     
+    /**
+     * 查询已经布防的车辆
+     * @param tele
+     * @return
+     */
+    List<Electrombile> findAllOpenLockElectByTele(@Param("tele") String tele);
 }
