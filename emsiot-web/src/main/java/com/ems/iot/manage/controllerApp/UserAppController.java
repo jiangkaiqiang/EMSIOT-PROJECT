@@ -13,10 +13,12 @@ import com.aliyuncs.exceptions.ServerException;
 import com.ems.iot.manage.dao.AppUserMapper;
 import com.ems.iot.manage.dao.BlackelectMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
+import com.ems.iot.manage.dao.VerifyCodeMapper;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.entity.AppUser;
 import com.ems.iot.manage.entity.Cookies;
+import com.ems.iot.manage.entity.VerifyCode;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.util.StringUtil;
 import com.ems.iot.manage.util.TelephoneVerifyUtil;
@@ -37,7 +39,8 @@ public class UserAppController extends AppBaseController {
 	private ElectrombileMapper electrombileMapper;
 	@Autowired
 	private BlackelectMapper blackelectMapper;
-	
+	@Autowired
+	private VerifyCodeMapper verifyCodeMapper;
 	/**
 	 * app 个人用户登录
 	 * @param appUserName
@@ -64,9 +67,10 @@ public class UserAppController extends AppBaseController {
 	
 	@RequestMapping(value = "/loginWithLoginCode")
 	@ResponseBody
-	public Object loginWithLoginCode(String appUserName,HttpServletRequest request, String loginCode) {
+	public Object loginWithLoginCode(String appUserName,HttpServletRequest request, String loginCode, String telephone) {
 		if(StringUtil.isnotNull(appUserName)){
-			String sessyzm=""+request.getSession().getAttribute("loginCode");
+			//String sessyzm=""+request.getSession().getAttribute("loginCode");
+			String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(2, telephone).getCode_num();
 			if(loginCode==null||!(sessyzm).equalsIgnoreCase(loginCode)){
 				return new AppResultDto(3001,"验证码输入错误",false);
 			}
@@ -136,8 +140,9 @@ public class UserAppController extends AppBaseController {
 	 */
 	@RequestMapping(value = "/verifySignUpCode")
 	@ResponseBody
-	public Object verifySignUpCode(HttpServletRequest request, String signUpCode) {
-		String sessyzm=""+request.getSession().getAttribute("signUpCode");
+	public Object verifySignUpCode(HttpServletRequest request, String telephone, String signUpCode) {
+		//String sessyzm=""+request.getSession().getAttribute("signUpCode");
+		String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, telephone).getCode_num();
 		if(signUpCode==null||!(sessyzm).equalsIgnoreCase(signUpCode))
 		    return new AppResultDto(3001,"验证码输入错误",false);
 		else 
@@ -161,10 +166,31 @@ public class UserAppController extends AppBaseController {
             if (signUpCode==null) {
             	return new AppResultDto(3001,"获取验证码失败",false);
 			}
-			request.getSession().setAttribute("signUpCode", signUpCode);
+			//request.getSession().setAttribute("signUpCode", signUpCode);
+            insertVerifyCode(1, telephone, signUpCode);
 			return new AppResultDto(1001,"验证码已发送，请查收！"); 
 		}
 		return new AppResultDto(3001,"请输入手机号",false);
+	}
+	
+	/**
+	 * 将验证码入库
+	 * @param code_type
+	 * @param telephone
+	 * @param signUpCode
+	 */
+	public void insertVerifyCode(Integer code_type, String telephone, String signUpCode){
+		VerifyCode verifyCode = new VerifyCode();
+        verifyCode.setCode_num(signUpCode);
+        verifyCode.setCode_type(code_type);
+        verifyCode.setUser_tele(telephone);
+        VerifyCode verifyCodeOld = verifyCodeMapper.findVerifyCodeByTypeAndTele(verifyCode.getCode_type(), verifyCode.getUser_tele());
+        if (verifyCodeOld!=null) {
+        	verifyCode.setCode_id(verifyCodeOld.getCode_id());
+			verifyCodeMapper.updateByPrimaryKeySelective(verifyCode);
+		}else {
+			verifyCodeMapper.insert(verifyCode);
+		}
 	}
 	
 	/**
@@ -184,7 +210,8 @@ public class UserAppController extends AppBaseController {
             if (loginCode==null) {
             	return new AppResultDto(3001,"获取验证码失败",false);
 			}
-			request.getSession().setAttribute("loginCode", loginCode);
+			//request.getSession().setAttribute("loginCode", loginCode);
+            insertVerifyCode(2, telephone, loginCode);
 			return new AppResultDto(1001,"验证码已发送，请查收！"); 
 		}
 		return new AppResultDto(3001,"请输入手机号",false);
@@ -207,7 +234,8 @@ public class UserAppController extends AppBaseController {
             if (findPasswordCode==null) {
             	return new AppResultDto(3001,"获取验证码失败",false);
 			}
-			request.getSession().setAttribute("findPasswordCode", findPasswordCode);
+			//request.getSession().setAttribute("findPasswordCode", findPasswordCode);
+            insertVerifyCode(3, telephone, findPasswordCode);
 			return new AppResultDto(1001,"验证码已发送，请查收！"); 
 		}
 		return new AppResultDto(3001,"请输入手机号",false);
@@ -254,7 +282,8 @@ public class UserAppController extends AppBaseController {
 	@RequestMapping(value = "/addAppUserWithSignUpCode")
 	@ResponseBody
 	public Object addAppUserWithSignUpCode(HttpServletRequest request,String password,String userTele,String nickname, String signUpCode) throws UnsupportedEncodingException {
-		String sessyzm=""+request.getSession().getAttribute("signUpCode");
+		//String sessyzm=""+request.getSession().getAttribute("signUpCode");
+		String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, userTele).getCode_num();
 		if(signUpCode==null||!(sessyzm).equalsIgnoreCase(signUpCode)){
 			 return new AppResultDto(3001,"验证码输入错误",false);
 		}
@@ -289,7 +318,8 @@ public class UserAppController extends AppBaseController {
 	@RequestMapping(value = "/findPasswordWithfindPasswordCode")
 	@ResponseBody
 	public Object findPasswordWithfindPasswordCode(HttpServletRequest request,String password,String userTele,Integer appUserID, String findPasswordCode) throws UnsupportedEncodingException {
-		String sessyzm=""+request.getSession().getAttribute("findPasswordCode");
+		//String sessyzm=""+request.getSession().getAttribute("findPasswordCode");
+		String sessyzm = verifyCodeMapper.findVerifyCodeByTypeAndTele(3, userTele).getCode_num();
 		if(findPasswordCode==null||!(sessyzm).equalsIgnoreCase(findPasswordCode)){
 			 return new AppResultDto(3001,"验证码输入错误",false);
 		}

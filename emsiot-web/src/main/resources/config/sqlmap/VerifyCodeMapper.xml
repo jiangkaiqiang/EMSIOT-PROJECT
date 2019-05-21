@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.VerifyCodeMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.VerifyCode">
+    <id column="code_id" jdbcType="INTEGER" property="code_id" />
+    <result column="code_num" jdbcType="VARCHAR" property="code_num" />
+    <result column="code_type" jdbcType="INTEGER" property="code_type" />
+    <result column="user_tele" jdbcType="VARCHAR" property="user_tele" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    code_id, code_num, code_type, user_tele
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from verify_code
+    where code_id = #{code_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from verify_code
+    where code_id = #{code_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.VerifyCode">
+    insert into verify_code (code_id, code_num, code_type, 
+      user_tele)
+    values (#{code_id,jdbcType=INTEGER}, #{code_num,jdbcType=VARCHAR}, #{code_type,jdbcType=INTEGER}, 
+      #{user_tele,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.VerifyCode">
+    insert into verify_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code_id != null">
+        code_id,
+      </if>
+      <if test="code_num != null">
+        code_num,
+      </if>
+      <if test="code_type != null">
+        code_type,
+      </if>
+      <if test="user_tele != null">
+        user_tele,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code_id != null">
+        #{code_id,jdbcType=INTEGER},
+      </if>
+      <if test="code_num != null">
+        #{code_num,jdbcType=VARCHAR},
+      </if>
+      <if test="code_type != null">
+        #{code_type,jdbcType=INTEGER},
+      </if>
+      <if test="user_tele != null">
+        #{user_tele,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.VerifyCode">
+    update verify_code
+    <set>
+      <if test="code_num != null">
+        code_num = #{code_num,jdbcType=VARCHAR},
+      </if>
+      <if test="code_type != null">
+        code_type = #{code_type,jdbcType=INTEGER},
+      </if>
+      <if test="user_tele != null">
+        user_tele = #{user_tele,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code_id = #{code_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.VerifyCode">
+    update verify_code
+    set code_num = #{code_num,jdbcType=VARCHAR},
+      code_type = #{code_type,jdbcType=INTEGER},
+      user_tele = #{user_tele,jdbcType=VARCHAR}
+    where code_id = #{code_id,jdbcType=INTEGER}
+  </update>
+  <select id="findVerifyCodeByTypeAndTele" parameterType="map" resultType="com.ems.iot.manage.entity.VerifyCode">
+		SELECT * FROM verify_code WHERE code_type = #{code_type,jdbcType=INTEGER} AND user_tele = #{user_tele,jdbcType=VARCHAR}
+  </select>
+</mapper>
