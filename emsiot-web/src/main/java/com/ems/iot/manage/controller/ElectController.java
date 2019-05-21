@@ -53,6 +53,7 @@ import com.ems.iot.manage.service.OssService;
 import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.ExcelImportUtil;
 import com.ems.iot.manage.util.InfluxDBConnection;
+import com.ems.iot.manage.util.TimeUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -381,7 +382,7 @@ public class ElectController extends BaseController {
 				//elect.setPlate_num(listVal.get(0).get(listCol.indexOf("plate_num")).toString());
 				elect.setPlate_num(series.getTags().get("plate_num"));
 				elect.setStation_name(listVal.get(0).get(listCol.indexOf("station_name")).toString());
-				elect.setCorssTime(listVal.get(0).get(listCol.indexOf("hard_read_time")).toString());
+				elect.setCorssTime(TimeUtil.getInfluxTime(listVal.get(0).get(listCol.indexOf("time")).toString()));
 				
 				if(mapElectList.containsKey(stationNum)) {
 					List<StationElectDto> listElect = mapElectList.get(stationNum);
@@ -510,7 +511,7 @@ public class ElectController extends BaseController {
 				elect.setOwner_name(lists.get(listCol.indexOf("owner_name")).toString());
 				elect.setPlate_num(lists.get(listCol.indexOf("plate_num")).toString());
 				elect.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
-				elect.setCorssTime(lists.get(listCol.indexOf("hard_read_time")).toString());
+				elect.setCorssTime(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
 				listElect.add(elect);
 			}
 		}
@@ -1409,7 +1410,7 @@ public class ElectController extends BaseController {
 				elect.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
 				elect.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
 				elect.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
-				elect.setUpdate_time(lists.get(listCol.indexOf("hard_read_time")).toString());
+				elect.setUpdate_time(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
 				listElect.add(elect);
 			}
 		}
