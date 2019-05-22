@@ -532,6 +532,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     		
     	}
 	}
+    $scope.isSubmit = false;
     $scope.addInsurDetail = "2";
     $scope.submit = function(){
     	if(rdcardIndex!=-1){
@@ -574,6 +575,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'recorder_id' : $rootScope.admin.user_id,
     			    'elect_state' : 1
 	            };
+        	$scope.isSubmit = true;
 	       Upload.upload({
 	                url: '/i/elect/addElect',
 	                headers :{ 'Content-Transfer-Encoding': 'utf-8' },
@@ -587,6 +589,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
             else{
             	 alert(data.message);
             }
+            $scope.isSubmit = false;
         });
           }
        else {
@@ -830,7 +833,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	$('#addCar').on('shown.bs.modal', function () {
 		myopen_onclick(0);
 		beginread_onclick();
-
+		$scope.isSubmit = false;
 	});
 	$('#addCar').on('hidden.bs.modal', function () {
 		endread_onclick()

@@ -486,7 +486,10 @@ public class HardAcceptController extends BaseController {
 		tags.put("owner_name", electStationInfluxDto.getElectrombile().getOwner_name());
 		tags.put("owner_id", electStationInfluxDto.getElectrombile().getOwner_id());
 		tags.put("owner_tele", electStationInfluxDto.getElectrombile().getOwner_tele());
-		tags.put("lock_time", electStationInfluxDto.getElectrombile().getLock_time());
+		if(electStationInfluxDto.getElectrombile().getLock_time()!=null && electStationInfluxDto.getElectrombile().getLock_status() == 1) {
+			String lockTime = electStationInfluxDto.getElectrombile().getLock_time().substring(0, 19);
+			tags.put("lock_time", lockTime);
+		}
 		Map<String, Object> fields = new HashMap<String, Object>();
 		fields.put("gua_card_num", electStationInfluxDto.getElectrombile().getGua_card_num());
 		fields.put("longitude", electStationInfluxDto.getStation().getLongitude());
