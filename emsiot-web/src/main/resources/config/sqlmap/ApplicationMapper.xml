@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.iot.manage.dao.ApplicationMapper">
+  <resultMap id="BaseResultMap" type="com.ems.iot.manage.entity.Application">
+    <id column="app_name" jdbcType="VARCHAR" property="app_name" />
+    <result column="app_version" jdbcType="VARCHAR" property="app_version" />
+    <result column="app_url" jdbcType="VARCHAR" property="app_url" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    app_name, app_version, app_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from application
+    where app_name = #{app_name,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from application
+    where app_name = #{app_name,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ems.iot.manage.entity.Application">
+    insert into application (app_name, app_version, app_url
+      )
+    values (#{app_name,jdbcType=VARCHAR}, #{app_version,jdbcType=VARCHAR}, #{app_url,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.Application">
+    insert into application
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="app_name != null">
+        app_name,
+      </if>
+      <if test="app_version != null">
+        app_version,
+      </if>
+      <if test="app_url != null">
+        app_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="app_name != null">
+        #{app_name,jdbcType=VARCHAR},
+      </if>
+      <if test="app_version != null">
+        #{app_version,jdbcType=VARCHAR},
+      </if>
+      <if test="app_url != null">
+        #{app_url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.iot.manage.entity.Application">
+    update application
+    <set>
+      <if test="app_version != null">
+        app_version = #{app_version,jdbcType=VARCHAR},
+      </if>
+      <if test="app_url != null">
+        app_url = #{app_url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where app_name = #{app_name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.iot.manage.entity.Application">
+    update application
+    set app_version = #{app_version,jdbcType=VARCHAR},
+      app_url = #{app_url,jdbcType=VARCHAR}
+    where app_name = #{app_name,jdbcType=VARCHAR}
+  </update>
+</mapper>
