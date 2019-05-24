@@ -426,58 +426,59 @@
     where elect_id = #{elect_id,jdbcType=INTEGER}
   </update>
   <select id="findAllElectrombiles" parameterType="map" resultType="Electrombile">
-		SELECT * FROM `electrombile`
+		<!-- SELECT * FROM `electrombile` -->
+		SELECT au.user_tele,e.* FROM `electrombile` e LEFT JOIN `app_user` au on e.owner_tele = au.user_tele
 		<where>
 			<if test="recorderID != null">
-				recorder_id = #{recorderID}
+				e.recorder_id = #{recorderID}
 			</if>
 			<if test="electState != null">
-				AND elect_state = #{electState}
+				AND e.elect_state = #{electState}
 			</if>
 			<if test="insurDetail != null">
-				AND insur_detail = #{insurDetail}
+				AND e.insur_detail = #{insurDetail}
 			</if>
 			<if test="proID != null">
-				AND pro_id = #{proID}
+				AND e.pro_id = #{proID}
 			</if>
 			<if test="cityID != null">
-				AND city_id = #{cityID}
+				AND e.city_id = #{cityID}
 			</if>
 			<if test="areaID != null">
-				AND area_id = #{areaID}
+				AND e.area_id = #{areaID}
 			</if>
 			<if test="proPower != null">
-				AND pro_id = #{proPower}
+				AND e.pro_id = #{proPower}
 			</if>
 			<if test="cityPower != null">
-				AND city_id = #{cityPower}
+				AND e.city_id = #{cityPower}
 			</if>
 			<if test="areaPower != null">
-				AND area_id = #{areaPower}
+				AND e.area_id = #{areaPower}
 			</if>
 			<if test="ownerTele != null">
-				AND owner_tele like "%"#{ownerTele}"%"
+				AND e.owner_tele like "%"#{ownerTele}"%"
 			</if>
 			<if test="ownerID != null">
-				AND owner_id like "%"#{ownerID}"%"
+				AND e.owner_id like "%"#{ownerID}"%"
 			</if>
 			<if test="plateNum != null">
-				AND plate_num like "%"#{plateNum}"%"
+				AND e.plate_num like "%"#{plateNum}"%"
 			</if>
 			<if test="guaCardNum != null">
-				AND gua_card_num like "%"#{guaCardNum}"%"
+				AND e.gua_card_num like "%"#{guaCardNum}"%"
 			</if>
 			<if test="ownerName != null">
-				AND owner_name like "%"#{ownerName}"%"
+				AND e.owner_name like "%"#{ownerName}"%"
 			</if>
 			<if test="startTime!=null and startTime!=''">
-				AND recorder_time &gt;= #{startTime}
+				AND e.recorder_time &gt;= #{startTime}
 			</if>
 			<if test="endTime!=null and endTime!=''">
-				AND recorder_time &lt;= #{endTime}
+				AND e.recorder_time &lt;= #{endTime}
 			</if>
 		</where>
-		order by `recorder_time` desc
+		order by e.`recorder_time` desc
 	</select>
 	  <select id="findPlateNumByGuaCardNum" parameterType="map" resultType="com.ems.iot.manage.entity.Electrombile">
         SELECT *

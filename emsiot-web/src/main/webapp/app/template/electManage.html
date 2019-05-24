@@ -120,6 +120,7 @@
 				<th>所属地区</th>
 				<th>车辆状态</th>
 				<th>录入人</th>
+				<th>用户注册</th>
 				<th>是否投保</th>
 				<th>车主姓名</th>
 				<th>身份证号</th>
@@ -146,6 +147,9 @@
 				<td ng-bind="getState(electDto.electrombile.elect_state)"></td>
 				<td data-toggle="tooltip" data-placement="right"
 					title="{{electDto.recordName}}">{{electDto.recordName}}</td>
+					
+				<td ng-bind="getUserRegister(electDto.electrombile.user_tele)"></td>
+					
 				<td ng-bind="getInsur(electDto.electrombile.insur_detail)"></td>
 
 				<td ng-show="rootUserPowerDto.privatePower==1" data-toggle="tooltip"

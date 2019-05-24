@@ -289,7 +289,7 @@ public class UserAppController extends AppBaseController {
 	 */
 	@RequestMapping(value = "/addAppUserWithSignUpCode")
 	@ResponseBody
-	public Object addAppUserWithSignUpCode(HttpServletRequest request,String password,String userTele,String nickname, String signUpCode) throws UnsupportedEncodingException {
+	public Object addAppUserWithSignUpCode(HttpServletRequest request,String password,String userTele,String nickname, String signUpCode,Integer source) throws UnsupportedEncodingException {
 		//String sessyzm=""+request.getSession().getAttribute("signUpCode");
 		VerifyCode verifyCode = verifyCodeMapper.findVerifyCodeByTypeAndTele(1, userTele);
 		if (verifyCode==null) {
@@ -313,6 +313,10 @@ public class UserAppController extends AppBaseController {
 		if (appUserMapper.findUserByName(appUser.getUser_name())!=null) {
 			return new AppResultDto(3001, "用户手机号已存在", false);
 		}
+		/**
+		 * 注册来源（1：IOS，2：Android，3、小程序）
+		 */
+		appUser.setSource(source);
 		appUserMapper.insert(appUser);
 		return new AppResultDto(1001,"注册成功");
 	}
@@ -413,5 +417,36 @@ public class UserAppController extends AppBaseController {
 		appUserMapper.updateByPrimaryKeySelective(appUser);
 		logout(token);
 		return new ResultDto(1001, "修改成功");
+	}
+	
+	@RequestMapping(value = "/changeArea")
+	@ResponseBody
+	public Object changeArea(HttpServletRequest request,
+			@RequestParam(value="proId", required=false) Integer proId,
+			@RequestParam(value="cityId", required=false) Integer cityId,
+			@RequestParam(value="areaId", required=false) Integer areaId, String token) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token); 
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+		}
+		AppUser appUser = null;
+		if (proId==null) {
+			return new ResultDto(3001, "所属省不能为空", false);
+		}
+		if (cityId==null || cityId==-1) {
+			return new ResultDto(3001, "所属市不能为空", false);
+		}
+		if (areaId==null || areaId==-1) {
+			return new ResultDto(3001, "所属区/县不能为空", false);
+		}
+		appUser = appUserMapper.findUserByName(effectiveCookie.getUsername());
+		if(appUser==null){
+			return new ResultDto(3001, "用户不存在", false);
+		}
+		appUser.setPro_id(proId);
+		appUser.setCity_id(cityId);
+		appUser.setArea_id(areaId);
+		appUserMapper.updateByPrimaryKeySelective(appUser);
+		return new ResultDto(1001, "修改成功",true);
 	}
 }

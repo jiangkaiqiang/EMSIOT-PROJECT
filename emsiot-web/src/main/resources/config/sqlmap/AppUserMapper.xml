@@ -9,6 +9,10 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
     <result column="login_time" jdbcType="TIMESTAMP" property="login_time" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="pro_id" jdbcType="INTEGER" property="pro_id" />
+    <result column="city_id" jdbcType="INTEGER" property="city_id" />
+    <result column="area_id" jdbcType="INTEGER" property="area_id" />
+    <result column="source" jdbcType="INTEGER" property="source" />
   </resultMap>
   <sql id="Base_Column_List">
     user_id, user_name, password, user_tele, create_time, login_time, nickname
@@ -26,10 +30,10 @@
   <insert id="insert" parameterType="com.ems.iot.manage.entity.AppUser">
     insert into app_user (user_id, user_name, password, 
       user_tele, create_time, login_time, 
-      nickname)
+      nickname,source)
     values (#{user_id,jdbcType=BIGINT}, #{user_name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{user_tele,jdbcType=VARCHAR}, now(), now(), 
-      #{nickname,jdbcType=VARCHAR})
+      #{nickname,jdbcType=VARCHAR},#{source,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ems.iot.manage.entity.AppUser">
     insert into app_user
@@ -55,6 +59,18 @@
       <if test="nickname != null">
         nickname,
       </if>
+      <if test="pro_id != null">
+        pro_id,
+      </if>
+      <if test="city_id != null">
+        city_id,
+      </if>
+      <if test="area_id != null">
+        area_id,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="user_id != null">
@@ -77,6 +93,18 @@
       </if>
       <if test="nickname != null">
         #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="pro_id != null">
+        #{pro_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null">
+        #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="area_id != null">
+        #{area_id,jdbcType=INTEGER},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -101,6 +129,18 @@
       <if test="nickname != null">
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
+      <if test="pro_id != null">
+		pro_id = #{pro_id,jdbcType=INTEGER},
+	  </if>
+	  <if test="city_id != null">
+		city_id = #{city_id,jdbcType=INTEGER},
+	  </if>
+	  <if test="area_id != null">
+		area_id = #{area_id,jdbcType=INTEGER},
+	  </if>
+	  <if test="source != null">
+		source = #{source,jdbcType=INTEGER},
+	  </if>
     </set>
     where user_id = #{user_id,jdbcType=BIGINT}
   </update>

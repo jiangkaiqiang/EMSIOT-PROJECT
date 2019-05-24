@@ -37,6 +37,7 @@ import com.ems.iot.manage.entity.Station;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.InfluxDBConnection;
+import com.ems.iot.manage.util.TimeUtil;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 /**
  * @author Barry
@@ -307,7 +308,7 @@ public class ElectUserAppController extends AppBaseController {
 				station.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
 				station.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
 				traceStationDto.setStation(station);
-				traceStationDto.setCrossTime(lists.get(listCol.indexOf("hard_read_time")).toString());
+				traceStationDto.setCrossTime(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
 				traceStationDtos.add(traceStationDto);
 			}
 		}

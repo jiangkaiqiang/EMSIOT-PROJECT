@@ -20,6 +20,14 @@ public class AppUser {
     private Integer electCount;
     
     private Integer alarnCount;
+    
+    private Integer pro_id;
+
+    private Integer city_id;
+
+    private Integer area_id;
+    
+    private Integer source;
 
     public Long getUser_id() {
         return user_id;
@@ -92,5 +100,38 @@ public class AppUser {
 	public void setAlarnCount(Integer alarnCount) {
 		this.alarnCount = alarnCount;
 	}
+
+	public Integer getPro_id() {
+		return pro_id;
+	}
+
+	public void setPro_id(Integer pro_id) {
+		this.pro_id = pro_id;
+	}
+
+	public Integer getCity_id() {
+		return city_id;
+	}
+
+	public void setCity_id(Integer city_id) {
+		this.city_id = city_id;
+	}
+
+	public Integer getArea_id() {
+		return area_id;
+	}
+
+	public void setArea_id(Integer area_id) {
+		this.area_id = area_id;
+	}
+
+	public Integer getSource() {
+		return source;
+	}
+
+	public void setSource(Integer source) {
+		this.source = source;
+	}
     
+	
 }

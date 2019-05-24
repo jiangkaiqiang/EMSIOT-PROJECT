@@ -477,6 +477,13 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
         }
     }
     
+    $scope.getUserRegister = function(user_tele){
+    	if(user_tele!=null)
+    		return '是';
+        else if(user_tele==null)
+    		return '否';
+    }
+    
     $scope.getState = function(elect_state){
     	if(elect_state==1)
     		return '正常';
@@ -810,14 +817,14 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		pickerPosition: "bottom-left"
 	});
 	$('#electDateStart').datetimepicker({
-		format: 'yyyy-mm-dd - hh:ii:ss.s',//时间格式
+		format: 'yyyy-mm-dd hh:ii:00',//时间格式
 		//minView: "month",//最小选择到月
 		autoclose:true,//选择好时间关闭弹框
 		maxDate:new Date(),//默认当前时间
 		pickerPosition: "bottom-left"//位置左下
 	});
 	$("#electDateEnd").datetimepicker({
-		format : 'yyyy-mm-dd - hh:ii:ss.s',
+		format : 'yyyy-mm-dd hh:ii:00',
 		//minView: 'month',
 		autoclose:true,
 		maxDate:new Date(),
@@ -831,25 +838,44 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	/////////////////////////////////////////////
 	
 	$('#addCar').on('shown.bs.modal', function () {
-		myopen_onclick(0);
-		beginread_onclick();
+		try {
+			myopen_onclick(0);
+			beginread_onclick();
+		} catch (e) {
+			// TODO: handle exception
+			return;
+		}
 		$scope.isSubmit = false;
 	});
 	$('#addCar').on('hidden.bs.modal', function () {
-		endread_onclick()
-		myclose_onclick()
+		try {
+			endread_onclick()
+			myclose_onclick()
+		} catch (e) {
+			// TODO: handle exception
+			return;
+		}
 	});
 	
 	
 	$('#updateCar').on('shown.bs.modal', function () {
-		
-		myopen_onclick(1);
-		beginread_onclick();
+		try {
+			myopen_onclick(1);
+			beginread_onclick();
+		} catch (e) {
+			// TODO: handle exception
+			return;
+		}
 
 	});
 	$('#updateCar').on('hidden.bs.modal', function () {
-		endread_onclick()
-		myclose_onclick()
+		try {
+			endread_onclick()
+			myclose_onclick()
+		} catch (e) {
+			// TODO: handle exception
+			return;
+		}
 
 	});
 

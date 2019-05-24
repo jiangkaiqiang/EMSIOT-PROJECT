@@ -77,7 +77,8 @@ public class Electrombile {
     private String owner_id_useful_life;
     private String owner_pic;
     private String owner_born;
-    
+    ////////////////////
+    private String user_tele;
     
 
     public String getOwner_id_type() {
@@ -398,6 +399,14 @@ public class Electrombile {
 
 	public void setLock_time(String lock_time) {
 		this.lock_time = lock_time;
+	}
+
+	public String getUser_tele() {
+		return user_tele;
+	}
+
+	public void setUser_tele(String user_tele) {
+		this.user_tele = user_tele;
 	}
     
 	
