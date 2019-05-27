@@ -313,7 +313,7 @@ public class ElectUserAppController extends AppBaseController {
 			}
 		}
 		if (traceStationDtos==null||traceStationDtos.size()==0) {
-			return new AppResultDto(2001, "未查询到该车辆的轨迹");
+			return new AppResultDto(2001, plateNum + "：未查询到该车辆的轨迹");
 		}
 		return new AppResultDto(traceStationDtos);
 	}

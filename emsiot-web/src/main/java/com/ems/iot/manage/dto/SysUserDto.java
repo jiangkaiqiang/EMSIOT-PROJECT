@@ -89,6 +89,8 @@ public class SysUserDto {
 	
 	private String dataAnalysis = "0";//图表统计
 	
+	private String userAppManage = "0";//APP用户管理
+	
 	private String userManage = "0";//用户管理
 	
 	private String userAdd = "0";//用户管理-用户添加
@@ -574,6 +576,14 @@ public class SysUserDto {
 
 	public void setGowsterPeopleDelete(String gowsterPeopleDelete) {
 		this.gowsterPeopleDelete = gowsterPeopleDelete;
+	}
+
+	public String getUserAppManage() {
+		return userAppManage;
+	}
+
+	public void setUserAppManage(String userAppManage) {
+		this.userAppManage = userAppManage;
 	}
 	
 }

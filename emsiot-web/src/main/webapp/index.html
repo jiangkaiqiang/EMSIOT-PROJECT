@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="app/css/blackListManage.css">
     <link rel="stylesheet" type="text/css" href="app/css/stationManage.css">
     <link rel="stylesheet" type="text/css" href="app/css/userManage.css">
+    <link rel="stylesheet" type="text/css" href="app/css/userAppManage.css">
     <link rel="stylesheet" type="text/css" href="app/css/alarmManage.css">
      <link rel="stylesheet" type="text/css" href="app/css/electAlarm.css">
     <link rel="stylesheet" type="text/css" href="app/css/specialArea.css">
@@ -325,6 +326,12 @@
                                 <span class="font-bold">用户管理</span>
                             </a>
                         </li>
+                         <li ui-sref-active="active" ng-show="rootUserPowerDto.userAppManage==1">
+                            <a href="#/userAppManage">
+                                <i class="iconfont icon-yonghuguanli"></i>
+                                <span class="font-bold">APP用户管理</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- nav -->
@@ -444,6 +451,7 @@
 <script src="app/js/operationLog.js"></script>
 <script src="app/js/personalSpace.js"></script>
 <script src="app/js/userManage.js"></script>
+<script src="app/js/userAppManage.js"></script>
 <script src="app/js/kidsManage.js"></script>
 <script src="app/js/policeManage.js"></script>
 <script src="app/js/peopleManageMap1.js"></script>

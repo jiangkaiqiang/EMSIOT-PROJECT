@@ -172,4 +172,33 @@
 		u.* FROM app_user u
 		WHERE u.user_id = #{user_id}
 	</select>
+	
+	<select id="findAllUserApp" parameterType="int" resultType="AppUser">
+		SELECT * FROM `app_user`
+		<where>
+			<if test="keyword != null">
+			    user_name like "%"#{keyword}"%"
+			</if>
+			<if test="userTele != null">
+			    user_tele like = #{userTele}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND create_time &lt;= #{endTime}
+			</if>
+			
+			<if test="proPower != null">
+				AND pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND area_id = #{areaPower}
+			</if>
+		</where>
+		order by `create_time` desc
+	</select>
 </mapper>

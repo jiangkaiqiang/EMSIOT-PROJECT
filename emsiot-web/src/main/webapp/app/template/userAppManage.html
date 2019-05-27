@@ -1,0 +1,78 @@
+<nav class="page-title shadow userAppManage">
+    <div class="title-brand flex-between align-items">
+        <div class="title-text">APP用户管理</div>
+        <ul class="title-nav flex align-items">
+            <li>
+                <form class="navbar-form navbar-form-sm navbar-left" ui-shift="prependTo"
+                      data-target=".navbar-collapse" role="search">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" ng-model="keyword"
+                                   typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                                   class="form-control input-sm bg-light no-border searchInput padder"
+                                   placeholder="账户查询">
+                                 <span class="input-group-btn">
+                                    <button ng-click="goSearch()" type="submit" class="btn btn-sm bg-light searchInput">
+                                        <i
+                                                class="fa fa-search margin-right"></i></button>
+                                </span>
+                        </div>
+                    </div>
+                </form>
+            </li>
+            
+        </ul>
+    </div>
+</nav>
+
+<!-- 表格开始部分 -->
+<div class="tableArea countent no-padding shadow">
+    <table class="table table-striped" id="tableArea" ng-model="AlluserApps">
+        <thead>
+        <tr>
+            <th>
+                <div>
+                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()" class="checkBox">
+                    <label for="allSecSon"></label>
+                </div>
+            </th>
+            <th>序号</th>
+            <th>用户账号</th>
+            <th>昵称</th>
+            <th>手机号</th>
+            <th>所属区域</th>
+            <th>注册来源</th>
+            <th>创建时间</th>
+            <!-- <th ng-show="rootUserPowerDto.appUser.opt_power==1">操作</th> -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in AlluserApps">
+            <td>
+                <input type="checkbox" ng-checked="exists(user, selected)"
+                       ng-click="toggle(user, selected)"/>
+            </td>
+            <!-- <td>{{user.appUser.user_id}}</td> -->
+            <td>{{$index+1}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.appUser.user_name}}">{{user.appUser.user_name}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.appUser.nickname}}">{{user.appUser.nickname}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{user.appUser.user_tele}}">{{user.appUser.user_tele}}</td>
+            <td data-toggle="tooltip" data-placement="right" title="{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}">{{user.pro_name}}_{{user.city_name}}_{{user.area_name}}</td>
+            <td ng-bind="getSource(user.appUser.source)"></td>
+            <td data-toggle="tooltip" data-placement="right" title="{{doDateStr(user.appUser.create_time,1)}}">{{doDateStr(user.appUser.create_time,1)}}</td>
+            <td ng-show="rootUserPowerDto.appUser.opt_power==1">
+                <i ng-show="rootUserPowerDto.userDelete==1" class="glyphicon glyphicon-trash" ng-click="goDeleteUser(user.appUser.user_id)"></i>
+                <i   ng-show="rootUserPowerDto.userEdit==1" class="glyphicon glyphicon-edit" ng-click="goUpdateUser(user.appUser.user_id)" data-toggle="modal" data-target="#updateUser"></i>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="page">
+        <!-- 表格分页 -->
+        <div class="row" style="text-align:center">
+            <pagination ng-change="pageChanged()" total-items="bigTotalItems"
+                        ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                        boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+    </div>
+</div>

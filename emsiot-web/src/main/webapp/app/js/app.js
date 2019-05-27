@@ -158,6 +158,10 @@ coldWeb.config(function ($stateProvider, $urlRouterProvider) {
         url: '/userManage',
         controller: 'userManage',
         templateUrl: 'app/template/userManage.html'
+    }).state('userAppManage', {
+        url: '/userAppManage',
+        controller: 'userAppManage',
+        templateUrl: 'app/template/userAppManage.html'
     }).state('operationLog', {
         url: '/operationLog',
         controller: 'operationLog',

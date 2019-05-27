@@ -1,10 +1,12 @@
 package com.ems.iot.manage.controllerApp;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -12,16 +14,22 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.ems.iot.manage.dao.AppUserMapper;
 import com.ems.iot.manage.dao.BlackelectMapper;
+import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.VerifyCodeMapper;
 import com.ems.iot.manage.dto.AppResultDto;
+import com.ems.iot.manage.dto.AppUserDto;
 import com.ems.iot.manage.dto.ResultDto;
+import com.ems.iot.manage.dto.SysUserDto;
 import com.ems.iot.manage.entity.AppUser;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.VerifyCode;
 import com.ems.iot.manage.service.CookieService;
 import com.ems.iot.manage.util.StringUtil;
 import com.ems.iot.manage.util.TelephoneVerifyUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 /**
  * @author Barry
  * @date 2018年3月20日下午3:33:14  
@@ -41,6 +49,8 @@ public class UserAppController extends AppBaseController {
 	private BlackelectMapper blackelectMapper;
 	@Autowired
 	private VerifyCodeMapper verifyCodeMapper;
+	@Autowired
+	private CityMapper cityMapper;
 	/**
 	 * app 个人用户登录
 	 * @param appUserName
@@ -448,5 +458,65 @@ public class UserAppController extends AppBaseController {
 		appUser.setArea_id(areaId);
 		appUserMapper.updateByPrimaryKeySelective(appUser);
 		return new ResultDto(1001, "修改成功",true);
+	}
+	
+	@RequestMapping(value = "/findUserAppList", method = RequestMethod.POST)
+	@ResponseBody
+	public Object findUserAppList(@RequestParam(value="pageNum",required=false) Integer pageNum,
+			@RequestParam(value="pageSize") Integer pageSize, 
+			@RequestParam(required = false) Integer proPower,
+			@RequestParam(required = false) Integer cityPower,
+			@RequestParam(required = false) Integer areaPower,
+			@RequestParam(value="startTime", required=false) String startTime,
+			@RequestParam(value="endTime", required=false) String endTime,
+			@RequestParam(value="userTele", required=false) String userTele,
+			@RequestParam(value="keyword", required=false) String keyword) throws UnsupportedEncodingException {
+		pageNum = pageNum == null? 1:pageNum;
+		pageSize = pageSize==null? 12:pageSize;
+		PageHelper.startPage(pageNum, pageSize);
+		if (null==proPower||proPower==-1) {
+			proPower = null;
+		}
+		if (null==cityPower||cityPower==-1) {
+			cityPower = null;
+		}
+		if (null==areaPower||areaPower==-1) {
+			areaPower = null;
+		}
+		if(keyword.equals("undefined"))
+			keyword = null;
+		else{
+		keyword = URLDecoder.decode(keyword, "UTF-8");
+		}
+		Page<AppUser> appUsers = appUserMapper.findAllUserApp(keyword, userTele, startTime, endTime, proPower, cityPower, areaPower);
+		Page<AppUserDto> appUserDtos = new Page<AppUserDto>();
+		for (AppUser appUser : appUsers) {
+			AppUserDto appUserDto = new AppUserDto();
+			appUserDto.setAppUser(appUser);
+			if (null==appUser.getPro_id() || appUser.getPro_id()==-1) {
+				appUserDto.setPro_name("不限");
+			}
+			else {
+				appUserDto.setPro_name(cityMapper.findProvinceById(appUser.getPro_id()).getName());
+			}
+			if (null==appUser.getCity_id() || appUser.getCity_id()==-1) {
+				appUserDto.setCity_name("不限");
+			}
+			else {
+				appUserDto.setCity_name(cityMapper.findCityById(appUser.getCity_id()).getName());
+			}
+			if (null==appUser.getArea_id() || appUser.getArea_id()==-1) {
+				appUserDto.setArea_name("不限");
+			}
+			else {
+				appUserDto.setArea_name(cityMapper.findAreaNameByAreaID(appUser.getArea_id()).getName());
+			}
+			appUserDtos.add(appUserDto);
+		}
+		appUserDtos.setPageSize(appUsers.getPageSize());
+		appUserDtos.setPages(appUsers.getPages());
+		appUserDtos.setTotal(appUsers.getTotal());
+		return new PageInfo<AppUserDto>(appUserDtos);
+		
 	}
 }

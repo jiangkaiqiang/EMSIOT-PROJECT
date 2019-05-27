@@ -186,6 +186,9 @@ public class UserController extends BaseController {
 	     if (menuPowerList.contains("dataAnalysis")) {
 	    	 sysUserDto.setDataAnalysis("1");
 		 }
+	     if (menuPowerList.contains("userAppManage")) {
+	    	 sysUserDto.setUserAppManage("1");
+	     }
 	     if (menuPowerList.contains("userManage")) {
 	    	 sysUserDto.setUserManage("1");
 	     }

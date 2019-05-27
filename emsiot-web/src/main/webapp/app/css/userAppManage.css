@@ -1,0 +1,265 @@
+.userAppManage .title-nav form.navbar-form{
+    background: #EAF2FF;
+    border-radius: 5px;
+    margin-right:8px;
+}
+.userAppManage .title-nav form.navbar-form button.bg-light{
+    color:#2B7DFA!important;
+    text-align:right;
+}
+.userAppManage .title-nav form.navbar-form input.bg-light{
+    color:#333!important;
+    text-align:left;
+}
+.userAppManage .title-nav form.navbar-form input.bg-light{
+    color:#333!important;
+    text-align:left;
+}
+.userAppManage .title-nav .border-dashed{
+    border-right: 1px dashed #91A2BE;
+    margin: 0 3px;
+    padding: 0 10px 0 0px;
+    display: inline-block!important;
+    height: 15px!important;
+}
+ .title-nav .border-dashed-left{
+    border-left: 1px dashed #91A2BE;
+    margin: 0 3px;
+    padding: 0 10px 0 0px;
+    display: inline-block!important;
+    height: 15px!important;
+}
+.userAppManage .title-nav form.navbar-form{
+    margin-top:3px!important;
+}
+.userAppManage .title-brand{
+    border:0!important;
+}
+
+.countWarp .addUserModal{
+    width:100%;
+}
+
+.countWarp .addUserTitle{
+    color:#2D7DF6;
+    padding-left:5px;
+    border-left:3px solid #2D7DF6;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+.countWarp .btn-white{
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:20px;
+    /*padding:6px 0 6px 15px!important;*/
+}
+
+.countWarp .btn-white.searchRoule{
+    border:1px solid #2D7DF6!important;
+    color:#2D7DF6;
+}
+#updateUser .btn-white.active{
+    border:1px solid #2D7DF6!important;
+    color:#2D7DF6;
+}
+.countWarp .userModalSwitch .btn-white{padding:7px 12px!important;}
+.countWarp .btn-white:hover,.countWarp .btn-white:focus,
+.countWarp .btn-white:active,.countWarp .btn-white:visited{
+    border:1px solid #ddd;
+}
+.countWarp .addUserModal .active
+{
+    border:1px solid #2D7DF6!important;
+    color:#2D7DF6;
+}
+.countWarp .configSelect{padding:6px 12px;width:125px;border-radius:20px;}
+.countWarp #addUser .swichWrap {
+    float:right;
+    width:40px;
+    height:17px;
+    margin-top:2px;
+    margin-left:20px;
+    background-color:#ccc;
+    border-radius:16px;
+    position:relative;
+    transition:0.3s
+}
+.countWarp .btnCircle {
+    width:16px;
+    height:16px;
+    background-color:#fff;
+    border-radius:50%;
+    position:absolute;
+    left:0px;
+    transition:0.3s;
+    box-shadow:0px 1px 5px rgba(0,0,0,.5);
+}
+.countWarp .btnCircle:hover {
+    transform:scale(1.2);
+    box-shadow:0px 1px 6px rgba(0,0,0,.5);
+}
+.countWarp .btn-ok{
+    top:-10px;
+    right:-5px;
+    background:transparent;
+    color:transparent;
+    border-radius:50%;
+    padding:3px;
+}
+.countWarp .icon-active{
+    background:#2D7DF6;
+    color:#fff;
+}
+.addUserModal .page-title{
+    width: 100%;
+    background: #F6F7F9;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 10px 10px;
+}
+.addUserModal .title-nav>li:last-child>a{
+    /*background:transparent;*/
+}
+
+#addUser .search-container{
+    padding:5px 0;
+}
+#addUser .search-container button,#updateUser .search-container button{
+    margin:5px;
+}
+/*ul.search-container li{*/
+    /*display:none;*/
+/*}*/
+
+/*ul.search-container li:first-child{*/
+    /*display:block;*/
+/*}*/
+ul.search-container .search-container{
+    display:block;
+}
+.userAppManage .title-brand{padding:10px 0;}
+
+.userAppManage .title-brand .navbar-form button{
+    width: 50px!important;
+    height: 25px!important;
+    /*border-left: 1px solid #c0c3c9!important;*/
+    border-left: 1px solid rgba(192,195,201,0.5)!important;
+}
+
+#userAreaSelect select{margin:0 5px;width:100px;}
+
+#userAreaSelect .form-control{margin-bottom:0;}
+
+/*tabs�л�ҳ�����ʽ*/
+.tabs {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    position: relative;}
+.tabs input[name="tab-control"] {
+    display: none;
+}
+.tabs ul li label {
+    color: #428BFF;
+}
+.tabs ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.tabs ul li {
+    box-sizing: border-box;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin:0 20px;
+    width: 55%;
+    text-align: center;
+}
+.tabs ul li label {
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    color: #929daf;
+    padding: 5px auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.tabs ul li label:hover, .tabs ul li label:focus, .tabs ul li label:active {
+    outline: 0;
+    color: #bec5cf;
+}
+.tabs .slider {
+    position: relative;
+    width: 52%;
+    -webkit-transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+    transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+}
+.tabs .slider .indicator {
+    position: relative;
+    width: 45px;
+    max-width: 100%;
+    margin: 0 auto;
+    height: 3px;
+    background: #2A7CF9;
+    border-radius: 1px;
+}
+
+.tabs input[name="tab-control"]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+    cursor: pointer;
+    color: #2A7CF9;
+}
+
+.tabs input[name="tab-control"]:nth-of-type(1):checked ~ .slider {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+}
+.tabs input[name="tab-control"]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+    cursor: pointer;
+    color: #428BFF;
+}
+
+.tabs input[name="tab-control"]:nth-of-type(2):checked ~ .slider {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}
+#userAreaSelect button{
+    margin-left:5px;
+}
+
+#addUser .addUserModal .page-title i,#updateUser .addUserModal .page-title i{
+    font-size:20px;
+    color:#2A7CF9;
+}
+
+
+

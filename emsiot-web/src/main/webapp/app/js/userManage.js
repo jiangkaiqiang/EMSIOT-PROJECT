@@ -389,6 +389,10 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
         	  if($("#userEdit").is(":checked")){
         		  menuPower = menuPower+"userEdit;";
         	  }
+        	  //app用户权限
+        	  if($("#userAppManagePower").is(":checked")){
+        		  menuPower = menuPower+"userAppManage;";
+        	  }
         	  if($("#privatePower").is(":checked")){
         		  menuPower = menuPower+"privatePower";
         	  }
@@ -729,6 +733,12 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 					 else{
 						 $("#dataAnalysisChange").prop("checked",false);
 					 }
+					 if($scope.userForUpdate.userAppManage=="1"){
+						 $("#userAppManageChange").prop("checked",true);//1
+					 }
+					 else{
+						 $("#userAppManageChange").prop("checked",false);
+					 }
 					 if($scope.userForUpdate.userManage=="1"){
 						 $("#userManageChange").prop("checked",true);//1
 					 }
@@ -979,6 +989,10 @@ coldWeb.controller('userManage', function ($rootScope, $scope, $state, $cookies,
 	        	  if($("#dataAnalysisChange").is(":checked")){
 	        		  menuPower = menuPower+"dataAnalysis;";
 	        	  }
+	        	  if($("#userAppManageChange").is(":checked")){
+	        		  menuPower = menuPower+"userAppManage;";
+	        	  }
+	        	  console.log(menuPower)
 	        	  if($("#userManageChange").is(":checked")){
 	        		  menuPower = menuPower+"userManage;";
 	        	  }
