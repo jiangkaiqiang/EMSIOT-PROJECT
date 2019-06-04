@@ -29,6 +29,12 @@ public class AppUser {
     
     private Integer source;
     
+    private String area_name;
+	
+    private String pro_name;
+	
+	private String city_name;
+    
     private boolean haveAddress = false;
 
     public Long getUser_id() {
@@ -143,4 +149,29 @@ public class AppUser {
 		this.haveAddress = haveAddress;
 	}
 
+	public String getArea_name() {
+		return area_name;
+	}
+
+	public void setArea_name(String area_name) {
+		this.area_name = area_name;
+	}
+
+	public String getPro_name() {
+		return pro_name;
+	}
+
+	public void setPro_name(String pro_name) {
+		this.pro_name = pro_name;
+	}
+
+	public String getCity_name() {
+		return city_name;
+	}
+
+	public void setCity_name(String city_name) {
+		this.city_name = city_name;
+	}
+	
+	
 }

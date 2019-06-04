@@ -138,7 +138,11 @@ public class UserAppController extends AppBaseController {
 					appUser.setPassword("********");
 					if(appUser.getPro_id()!=null && appUser.getCity_id()!=null && appUser.getArea_id()!=null) {
 						appUser.setHaveAddress(true);
+						appUser.setPro_name(cityMapper.findProvinceById(appUser.getPro_id()).getName());
+						appUser.setCity_name(cityMapper.findCityById(appUser.getCity_id()).getName());
+						appUser.setArea_name(cityMapper.findAreaNameByAreaID(appUser.getArea_id()).getName());
 					}
+					
 					return new AppResultDto(true, 1001, "用户已登录", appUser);
 				}
 			}
