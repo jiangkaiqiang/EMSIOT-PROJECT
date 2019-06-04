@@ -28,6 +28,8 @@ public class AppUser {
     private Integer area_id;
     
     private Integer source;
+    
+    private boolean haveAddress = false;
 
     public Long getUser_id() {
         return user_id;
@@ -132,6 +134,13 @@ public class AppUser {
 	public void setSource(Integer source) {
 		this.source = source;
 	}
-    
-	
+
+	public boolean isHaveAddress() {
+		return haveAddress;
+	}
+
+	public void setHaveAddress(boolean haveAddress) {
+		this.haveAddress = haveAddress;
+	}
+
 }

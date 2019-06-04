@@ -136,6 +136,9 @@ public class UserAppController extends AppBaseController {
 					appUser.setElectCount(electrombileMapper.findElectsCountByTele(appUser.getUser_tele()));
 					appUser.setAlarnCount(blackelectMapper.findBlackelectsCountByOwnerTele(appUser.getUser_tele()));
 					appUser.setPassword("********");
+					if(appUser.getPro_id()!=null && appUser.getCity_id()!=null && appUser.getArea_id()!=null) {
+						appUser.setHaveAddress(true);
+					}
 					return new AppResultDto(true, 1001, "用户已登录", appUser);
 				}
 			}
