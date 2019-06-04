@@ -158,7 +158,7 @@ public class TelephoneVerifyUtil {
 			sb.append(list.get(i));
 		}
 		String afterShuffle = sb.toString();
-		String code = afterShuffle.substring(5, 9);
+		String code = afterShuffle.substring(4, 8);
 		return code;
 	}
 
