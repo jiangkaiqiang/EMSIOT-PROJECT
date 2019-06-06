@@ -119,7 +119,15 @@ public class ElectController extends BaseController {
 		
 //		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
 //		return count;
-		
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		//查询influxdb 2019-01-29
 		int count = 0;
 		String strSql=" SELECT count(*) FROM " + Constant.electStationTable;
@@ -285,6 +293,15 @@ public class ElectController extends BaseController {
 		
 //		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
 //		return count;
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		String[] stationPhyNums=null;
 		if(stationPhyNumStr!=null) {
 			stationPhyNums=stationPhyNumStr.split(",");
@@ -436,6 +453,15 @@ public class ElectController extends BaseController {
 		}*/
 		//List<StationElectDto> stationElectDtos = electrombileStationMapper.selectElectsByStationPhyNumAndTime2(stationPhyNum, startTime, endTime);
 		//return stationElectDtos;
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		List<StationElectDto> listElect = new ArrayList<StationElectDto>();
 		if("0".equals(limit)) {
 			return listElect;
@@ -773,7 +799,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) Integer city_id, @RequestParam(required = false) Integer area_id,
 			@RequestParam(required = false) Integer elect_type, @RequestParam(required = false) Integer insur_detail,
 			@RequestParam(required = false) MultipartFile elect_pic,
-			@RequestParam(required = false) String indentity_card_pic,
+			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
 			@RequestParam(required = false) MultipartFile insur_pic,
@@ -867,12 +893,12 @@ public class ElectController extends BaseController {
 	    	electrombile.setOwner_pic(OssService.readUrl + dir+owner_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 	    }*/
 	    //本人身份证照片
-	    if (null != indentity_card_pic && !"".equals(indentity_card_pic)) {
+	    if (null != indentity_card_pic) {
 	    	String dir = String.format("%s/ownerPic/", baseDir);
 	    	String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), "h", "jpg");
 	    	// 上传文件流。
 	    	
-	    	InputStream file = new FileInputStream(indentity_card_pic);
+	    	InputStream file = indentity_card_pic.getInputStream();
 	    	
 	    	/*InputStream inputStream = owner_pic.getInputStream();*/
 	    	ossClient.putObject("emsiot", dir+indentity_card_pic_name, file);
@@ -951,7 +977,7 @@ public class ElectController extends BaseController {
 			@RequestParam(required = false) Integer area_id, @RequestParam(required = false) Integer elect_type,
 			@RequestParam(required = false) Integer insur_detail,
 			@RequestParam(required = false) MultipartFile elect_pic,
-			@RequestParam(required = false) String indentity_card_pic,
+			@RequestParam(required = false) MultipartFile indentity_card_pic,
 			@RequestParam(required = false) MultipartFile record_pic,
 			@RequestParam(required = false) MultipartFile install_card_pic,
 			@RequestParam(required = false) MultipartFile insur_pic,
@@ -1045,12 +1071,12 @@ public class ElectController extends BaseController {
 	    	electrombile.setOwner_pic(OssService.readUrl + dir+owner_pic_name);//https://emsiot.oss-cn-hangzhou.aliyuncs.com/picture/stationPic/geek.png
 	    }*/
 	  //修改本人身份证照片
-	    if (null != indentity_card_pic && !"".equals(indentity_card_pic) && indentity_card_pic.indexOf("C:")>-1) {
+	    if (null != indentity_card_pic) {
 	    	String dir = String.format("%s/ownerPic/", baseDir);
 	    	String indentity_card_pic_name = String.format("%s_%s.%s", electrombile.getOwner_id(), "h", "jpg");
 	    	// 上传文件流。
 	    	
-	    	InputStream file = new FileInputStream(indentity_card_pic);
+	    	InputStream file = indentity_card_pic.getInputStream();
 	    	
 	    	/*InputStream inputStream = owner_pic.getInputStream();*/
 	    	ossClient.putObject("emsiot", dir+indentity_card_pic_name, file);
@@ -1214,7 +1240,15 @@ public class ElectController extends BaseController {
 //			station = stationMapper.selectByStationPhyNum(electrombileStation.getStation_phy_num());
 //		}
 //		return station;
-		
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		Station station = new Station();
 		String strSql=" SELECT * FROM  " + Constant.electStationTable;
 		String where = "";
@@ -1331,6 +1365,15 @@ public class ElectController extends BaseController {
 			@RequestParam(value = "cityPower", required = false) Integer cityPower,
 			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		String strSql=" SELECT * FROM " + Constant.electStationTable;
 		String where = "";
 		
