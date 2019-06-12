@@ -221,8 +221,8 @@ public class BlackelectController extends BaseController {
 		SysUser user = (SysUser)request.getSession().getAttribute("user");
 		blackelect.setComfirm_sysuser_name(user.getUser_name());
 		blackelect.setCase_occur_time(case_occur_time);
-		blackelect.setOwner_tele(owner_tele);
-		blackelect.setOwner_name(owner_name);
+		blackelect.setOwner_tele(electrombile.getOwner_tele());
+		blackelect.setOwner_name(electrombile.getOwner_name());
 		blackelect.setPro_id(pro_id);
 		blackelect.setCity_id(city_id);
 		blackelect.setArea_id(area_id);

@@ -141,18 +141,19 @@
 								</label>
 
 								<div class="col-sm-8">
-									<input ng-attr-type type="text" class="form-control"
+									<input ng-attr-type type="text" class="form-control" ng-attr-placeholder placeholder="请输入车牌号"
 										ng-model="addPlateNum">
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 案发时间： </label>
 
 								<div class="col-sm-8">
 									<div class='input-group date' id='electAlarmDate'>
-										<input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="选择开始时间"
+										<input ng-attr-type type='text' class="form-control" ng-attr-placeholder placeholder="请选择开始时间"
 											readonly ng-model="addOccurDate" /> <span
 											class="input-group-addon"> <span
 											class="glyphicon glyphicon-calendar"></span>
@@ -161,26 +162,28 @@
 								</div>
 							</div>
 						</div>
+						
 					</div>
 
-					<div class="row">
-
+					<div class="row" >
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 车主手机： </label>
 
-								<div class="col-sm-8">
-									<input ng-attr-type type="text" class="form-control" id="addOwnerTele"  ng-model="addOwnerTele">
+								<div class="col-sm-8 control-label" style="text-align: left;">
+									{{addOwnerTele}}
+									<!-- <input ng-attr-type type="text" class="form-control" id="addOwnerTele"  ng-model="addOwnerTele"> -->
 								</div>
 							</div>
 						</div>
-
+						
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 车主姓名： </label>
-								<div class="col-sm-8">
-									<input ng-attr-type type="text" class="form-control" id="addOwnerName"  ng-model="addOwnerName">
+								<div class="col-sm-8 control-label" style="text-align: left;">
+									{{addOwnerName}}
+									<!-- <input ng-attr-type type="text" class="form-control" id="addOwnerName"  ng-model="addOwnerName"> -->
 								</div>
 							</div>
 						</div>
@@ -227,6 +230,7 @@
 								<div class="col-sm-8">
 									<select name="" id="" class="form-control"
 										ng-model="addAddressType">
+										<option ng-attr-value disabled value="">--请选择--</option>
 										<option ng-attr-value value="社区">社区</option>
 										<option ng-attr-value value="地铁站">地铁站</option>
 										<option ng-attr-value value="商场">商场</option>
@@ -250,7 +254,7 @@
 								<label for="" class="col-sm-4 control-label"> 详细地址： </label>
 
 								<div class="col-sm-8">
-									<input ng-attr-type type="text" class="form-control" ng-model="addDetailAddress">
+									<input ng-attr-type type="text" class="form-control" ng-model="addDetailAddress" ng-attr-placeholder placeholder="请输入详细地址">
 								</div>
 							</div>
 							</div>
@@ -263,7 +267,7 @@
 								<label for="" class="col-sm-2 control-label"> 备注： </label>
 
 								<div class="col-sm-10">
-									<textarea rows="3" ng-style style="border:1px solid #ddd;width:100%"
+									<textarea rows="3" ng-style style="border:1px solid #ddd;width:100%" ng-attr-placeholder placeholder="备注"
 										class="form-control" ng-model="addCaseDetail"></textarea>
 								</div>
 							</div>
@@ -343,8 +347,9 @@
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 车主手机： </label>
 
-								<div class="col-sm-8">
-									<input ng-attr-type type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_tele">
+								<div class="col-sm-8 control-label" style="text-align: left;">
+								{{blackElectForUpdate.blackelect.owner_tele}}
+									<!-- <input ng-attr-type type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_tele"> -->
 								</div>
 							</div>
 						</div>
@@ -353,8 +358,9 @@
 							<div class="form-group">
 								<label for="" class="col-sm-4 control-label"> 车主姓名： </label>
 
-								<div class="col-sm-8">
-									<input ng-attr-type type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_name">
+								<div class="col-sm-8 control-label" style="text-align: left;">
+								{{blackElectForUpdate.blackelect.owner_name}}
+									<!-- <input ng-attr-type type="text" readonly class="form-control" ng-model="blackElectForUpdate.blackelect.owner_name"> -->
 								</div>
 							</div>
 						</div>
@@ -425,7 +431,7 @@
 								<label for="" class="col-sm-4 control-label"> 详细地址： </label>
 
 								<div class="col-sm-8">
-									<input ng-attr-type type="text" class="form-control" ng-model="blackElectForUpdate.blackelect.detail_address">
+									<input ng-attr-type type="text" class="form-control" ng-model="blackElectForUpdate.blackelect.detail_address" ng-attr-placeholder placeholder="请输入详细地址">
 								</div>
 							</div>
 							</div>
@@ -438,7 +444,7 @@
 
 								<div class="col-sm-10">
 									<!--<textarea name="" id="" cols="30" rows="10"></textarea>-->
-									<textarea rows="3" ng-style style="border:1px solid #ddd;width:100%"
+									<textarea rows="3" ng-style style="border:1px solid #ddd;width:100%" ng-attr-placeholder placeholder="备注"
 										class="form-control" ng-model="blackElectForUpdate.blackelect.case_detail"></textarea>
 								</div>
 							</div>
