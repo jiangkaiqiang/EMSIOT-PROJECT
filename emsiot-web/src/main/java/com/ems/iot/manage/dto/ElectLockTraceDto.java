@@ -6,9 +6,19 @@ import com.ems.iot.manage.entity.Station;
 
 public class ElectLockTraceDto {
 
+	private String plateNum;
+	
 	private String lockTime;
 	
 	private List<Station> station;
+
+	public String getPlateNum() {
+		return plateNum;
+	}
+
+	public void setPlateNum(String plateNum) {
+		this.plateNum = plateNum;
+	}
 
 	public String getLockTime() {
 		return lockTime;

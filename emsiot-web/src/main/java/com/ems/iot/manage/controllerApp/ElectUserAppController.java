@@ -526,9 +526,7 @@ public class ElectUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 		}
 		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
-		if(electrombile==null){
-			return new AppResultDto(3001, "该车牌号不存在！", false);
-		}
+		
 		if(electrombile!=null) {
 			String where = "";
 			if( lockTime != null && !"".equals(lockTime)) {
@@ -550,6 +548,7 @@ public class ElectUserAppController extends AppBaseController {
 					String lock_time = series.getTags().get("lock_time");
 					ElectLockTraceDto electLock = new ElectLockTraceDto();
 					electLock.setLockTime(lock_time);
+					electLock.setPlateNum(plateNum);
 					List<Station> stations = new ArrayList<Station>();
 					for (List<Object> lists : listVal) {
 						Station station = new Station();
@@ -563,11 +562,14 @@ public class ElectUserAppController extends AppBaseController {
 					electLock.setStation(stations);
 					electLockTrackDtos.add(electLock);
 				}
+				return new AppResultDto(electLockTrackDtos);
 			} else {
-				return new AppResultDto(2001, "该车牌号未经过任何基站！", false);
+				return new AppResultDto(3001, "该车牌号未经过任何基站！", false);
 			}
+		}else {
+			return new AppResultDto(3001, "该车牌号不存在！", false);
 		}
-		return new AppResultDto(1001, "修改成功");
+		
 	}
 	
 	
