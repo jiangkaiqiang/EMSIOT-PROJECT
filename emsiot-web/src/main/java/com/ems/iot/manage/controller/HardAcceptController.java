@@ -18,6 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
 import com.ems.iot.manage.dao.AreaAlarmMapper;
 import com.ems.iot.manage.dao.ElectAlarmMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
@@ -43,6 +46,7 @@ import com.ems.iot.manage.entity.StationStatusRecord;
 import com.ems.iot.manage.service.base.HttpService;
 import com.ems.iot.manage.service.base.impl.HttpServiceImpl;
 import com.ems.iot.manage.util.ResponseData;
+import com.ems.iot.manage.util.TelephoneVerifyUtil;
 import com.ems.iot.manage.util.CometUtil;
 import com.ems.iot.manage.util.Constant;
 import com.ems.iot.manage.util.InfluxDBConnection;
@@ -380,6 +384,8 @@ public class HardAcceptController extends BaseController {
 	 * @param hardReadTime
 	 * @return
 	 * @throws UnsupportedEncodingException
+	 * @throws ClientException 
+	 * @throws ServerException 
 	 */
 	@RequestMapping(value = "/accepterIntoInfluxDb")
 	@ResponseBody
@@ -387,7 +393,8 @@ public class HardAcceptController extends BaseController {
 			@RequestParam(value = "eleGuaCardNum", required = false) String eleGuaCardNum,
 			@RequestParam(value = "stationPhyNum") Integer stationPhyNum,
 			@RequestParam(value = "hardReadTime", required = false) String hardReadTime)
-			throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException, ServerException, ClientException {
+		TelephoneVerifyUtil teleVerify = null;
 		Electrombile electrombile = null;
 		Station station = stationMapper.selectByStationPhyNum(stationPhyNum);
 		if (eleGuaCardNum != null && !eleGuaCardNum.equals("")) {
@@ -427,8 +434,13 @@ public class HardAcceptController extends BaseController {
 					} else {	
 					}
 					//基站布防锁定后报警					
-					if(electrombile.getLock_status() == 1) {
-						
+					if(electrombile.getLock_status() == 1 && electrombile.getAlarm_sms() == 0) {
+						teleVerify = new TelephoneVerifyUtil();
+						teleVerify.findProtectionAlarmWordInform(electrombile.getOwner_tele(), electrombile.getOwner_name(), electrombile.getPlate_num());
+						Electrombile updateElect = new Electrombile();
+						updateElect.setPlate_num(electrombile.getPlate_num());
+						updateElect.setAlarm_sms(1);
+						electrombileMapper.updateByPlateNumSelective(updateElect);
 					}
 				}
 				else{	

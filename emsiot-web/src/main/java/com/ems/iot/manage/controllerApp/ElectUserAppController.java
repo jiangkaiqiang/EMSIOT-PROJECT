@@ -499,6 +499,9 @@ public class ElectUserAppController extends AppBaseController {
 				List<Object> values = listVal.get(0);
 				electrombile.setPlate_num(electrombile.getPlate_num());
 				electrombile.setLock_status(lockStatus);
+				if(lockStatus == 1) {
+					electrombile.setAlarm_sms(0);
+				}
 				electrombile.setLock_station(values.get(listCol.indexOf("station_name")).toString());
 				electrombile.setLock_address(values.get(listCol.indexOf("station_address")).toString());
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

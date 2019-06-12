@@ -68,6 +68,8 @@ public class Electrombile {
     
     private String lock_time;
     
+    private Integer alarm_sms;
+    
     ////////////////////
     
     private String owner_id_type;
@@ -408,6 +410,16 @@ public class Electrombile {
 	public void setUser_tele(String user_tele) {
 		this.user_tele = user_tele;
 	}
+
+	public Integer getAlarm_sms() {
+		return alarm_sms;
+	}
+
+	public void setAlarm_sms(Integer alarm_sms) {
+		this.alarm_sms = alarm_sms;
+	}
+
+	
     
 	
 }

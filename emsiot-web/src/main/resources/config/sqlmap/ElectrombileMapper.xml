@@ -718,6 +718,9 @@
       <if test="lock_time != null">
         lock_time = #{lock_time,jdbcType=TIMESTAMP},
       </if>
+      <if test="alarm_sms != null">
+        alarm_sms = #{alarm_sms,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where plate_num = #{plate_num,jdbcType=VARCHAR}
   </update>
