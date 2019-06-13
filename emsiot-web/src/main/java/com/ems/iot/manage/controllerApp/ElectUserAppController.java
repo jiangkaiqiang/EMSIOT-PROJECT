@@ -549,17 +549,20 @@ public class ElectUserAppController extends AppBaseController {
 					ElectLockTraceDto electLock = new ElectLockTraceDto();
 					electLock.setLockTime(lock_time);
 					electLock.setPlateNum(plateNum);
-					List<Station> stations = new ArrayList<Station>();
+					List<TraceStationDto> traceStations = new ArrayList<TraceStationDto>();
 					for (List<Object> lists : listVal) {
+						TraceStationDto traceStationDto = new TraceStationDto();
 						Station station = new Station();
 						station.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
 						station.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
 						station.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
 						station.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
 						station.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
-						stations.add(station);
+						traceStationDto.setStation(station);
+						traceStationDto.setCrossTime(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
+						traceStations.add(traceStationDto);
 					}
-					electLock.setStation(stations);
+					electLock.setTraceStation(traceStations);
 					electLockTrackDtos.add(electLock);
 				}
 				return new AppResultDto(electLockTrackDtos);
