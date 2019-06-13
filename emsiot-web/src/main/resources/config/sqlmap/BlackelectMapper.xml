@@ -245,6 +245,9 @@
 			<if test="areaPower != null">
 				AND electrombile.`area_id` = #{areaPower}
 			</if>
+			<if test="dealStatus != null">
+				AND blackelect.deal_status = #{dealStatus}
+			</if>
 			</where>
    </select>
    

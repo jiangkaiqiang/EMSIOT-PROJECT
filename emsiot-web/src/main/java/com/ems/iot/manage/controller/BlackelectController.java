@@ -370,7 +370,7 @@ public class BlackelectController extends BaseController {
 		if (null == areaPower || areaPower == -1) {
 			areaPower = null;
 		}
-		Integer count = blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower);
+		Integer count = blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,null);
 		return count;
 	}
 }

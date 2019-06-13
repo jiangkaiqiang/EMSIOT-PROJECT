@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.CountDto;
 import com.ems.iot.manage.entity.Electrombile;
 import com.github.pagehelper.Page;
 
@@ -127,4 +128,33 @@ public interface ElectrombileMapper {
      * @return
      */
     List<Electrombile> findAllOpenLockElectByTele(@Param("tele") String tele);
+    
+    /**
+     * 查询备案车辆周和月的统计（按时间）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param dayList
+     * @return
+     */
+    List<CountDto> findElectDateDayCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("dayList") List<Integer> dayList);
+    /**
+     * 查询备案车辆统计（按时间）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param dayList
+     * @return
+     */
+    List<CountDto> findElectDateCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
+    /**
+     * 查询备案车辆当天小时统计（按时间小时）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param dayList
+     * @return
+     */
+    List<CountDto> findElectDateHourCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
 }

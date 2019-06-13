@@ -707,19 +707,19 @@
         black_list_time = #{black_list_time,jdbcType=TIMESTAMP},
       </if>
       <if test="lock_status != null">
-        lock_status = #{lock_status,jdbcType=TIMESTAMP},
+        lock_status = #{lock_status,jdbcType=INTEGER},
       </if>
       <if test="lock_address != null">
-        lock_address = #{lock_address,jdbcType=TIMESTAMP},
+        lock_address = #{lock_address,jdbcType=VARCHAR},
       </if>
       <if test="lock_station != null">
-        lock_station = #{lock_station,jdbcType=TIMESTAMP},
+        lock_station = #{lock_station,jdbcType=VARCHAR},
       </if>
       <if test="lock_time != null">
-        lock_time = #{lock_time,jdbcType=TIMESTAMP},
+        lock_time = #{lock_time,jdbcType=VARCHAR},
       </if>
       <if test="alarm_sms != null">
-        alarm_sms = #{alarm_sms,jdbcType=TIMESTAMP},
+        alarm_sms = #{alarm_sms,jdbcType=INTEGER},
       </if>
     </set>
     where plate_num = #{plate_num,jdbcType=VARCHAR}
@@ -843,5 +843,65 @@
         SELECT *
         FROM `electrombile` WHERE `owner_tele` = #{tele} and lock_status = 1
     </select>
+    
+	<select id="findElectDateDayCount" parameterType="map" resultType="com.ems.iot.manage.dto.CountDto">
+	     select DATE_FORMAT(total.time,'%Y-%m-%d') as dateKey,ifnull(COUNT(elect.recorder_time), 0) as dateValue from (
+			SELECT curdate() as time
+			union all
+			<foreach collection="dayList" separator=" UNION ALL " item="item">
+				SELECT date_sub(curdate(), interval ${item} day) as time
+			</foreach>
+			) as total
+			LEFT JOIN 
+			(
+				SELECT * from electrombile        
+				<where>
+					<if test="proPower != null">
+					    AND electrombile.pro_id = #{proPower}
+					</if>
+					<if test="cityPower != null">
+						AND electrombile.city_id = #{cityPower}
+					</if>
+					<if test="areaPower != null">
+						AND electrombile.area_id = #{areaPower}
+					</if>
+				</where> 
+			) elect on DATE_FORMAT(elect.recorder_time,'%Y-%m-%d')=total.time
+			
+			GROUP BY dateKey
+	</select>
+	
+	 <select id="findElectDateCount" parameterType="map" resultType="com.ems.iot.manage.dto.CountDto">
+	    select DATE_FORMAT(recorder_time,'%Y-%m-%d') as dateKey,ifnull(COUNT(recorder_time), 0) as dateValue FROM electrombile
+			<where>
+				<if test="proPower != null">
+				    AND electrombile.pro_id = #{proPower}
+				</if>
+				<if test="cityPower != null">
+					AND electrombile.city_id = #{cityPower}
+				</if>
+				<if test="areaPower != null">
+					AND electrombile.area_id = #{areaPower}
+				</if>
+			</where> 
+		 GROUP BY dateKey
+	</select>
+	
+	 <select id="findElectDateHourCount" parameterType="map" resultType="com.ems.iot.manage.dto.CountDto">
+	    select DATE_FORMAT(recorder_time,'%H:00') as dateKey,ifnull(COUNT(recorder_time), 0) as dateValue FROM electrombile
+			<where>
+			    DATE(electrombile.recorder_time) = curdate()
+				<if test="proPower != null">
+				    AND electrombile.pro_id = #{proPower}
+				</if>
+				<if test="cityPower != null">
+					AND electrombile.city_id = #{cityPower}
+				</if>
+				<if test="areaPower != null">
+					AND electrombile.area_id = #{areaPower}
+				</if>
+			</where> 
+		 GROUP BY dateKey
+	</select>
 	
 </mapper>
