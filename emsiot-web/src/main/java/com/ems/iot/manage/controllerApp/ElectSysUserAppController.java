@@ -650,17 +650,30 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (effectiveCookie==null) {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 		}
+		
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
 		List<CountDto> countDtos = null;
 		if(type == null || (type != 1 && type != 2 && type != 3)) {
 			//按当天时间段查询数量（默认）
-			countDtos =  electrombileMapper.findElectDateHourCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
+			countDtos =  electrombileMapper.findElectDateHourCount(proPower, cityPower, areaPower);
 		}else if(type == 2 || type == 1) {
 			//type=1 统计本周的数量 ，type=2 统计本月的数量
-			countDtos =  electrombileMapper.findElectDateDayCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()), dateList(type));
+			countDtos =  electrombileMapper.findElectDateDayCount(proPower, cityPower, areaPower, dateList(type));
 		}else if(type == 3) {
 			//所有时间段的统计
-			countDtos =  electrombileMapper.findElectDateCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
+			countDtos =  electrombileMapper.findElectDateCount(proPower, cityPower, areaPower);
 		}
 		
 		return new AppResultDto(countDtos);
@@ -681,7 +694,6 @@ public class ElectSysUserAppController extends AppBaseController {
 				     weekDay = 7;
 				 }
 			}
-			System.out.println(weekDay);
 			
 			for (int i = 0; i < weekDay-1; i++) {
 				day.add(i+1);
@@ -692,7 +704,6 @@ public class ElectSysUserAppController extends AppBaseController {
 
 			//获取月
 			int monthDay = calendar.get(Calendar.DAY_OF_MONTH);
-			System.out.println(monthDay);
 			
 			for (int i = 0; i < monthDay-1; i++) {
 				day.add(i+1);
@@ -727,8 +738,19 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 		}
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
-		
-		List<CountDto> countDtos =  electAlarmMapper.findElectAlarmsInRecent7DaysCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
+		List<CountDto> countDtos =  electAlarmMapper.findElectAlarmsInRecent7DaysCount(proPower, cityPower, areaPower);
 		return new AppResultDto(countDtos);
 	}
 	
@@ -749,10 +771,21 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
-
-		List<Station> station =  stationMapper.findStationsByStatus(null,Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
-		List<Station> stationOnLine =  stationMapper.findStationsByStatus(0,Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
-		List<Station> stationOffLine =  stationMapper.findStationsByStatus(1,Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
+		List<Station> station =  stationMapper.findStationsByStatus(null, proPower, cityPower, areaPower);
+		List<Station> stationOnLine =  stationMapper.findStationsByStatus(0, proPower, cityPower, areaPower);
+		List<Station> stationOffLine =  stationMapper.findStationsByStatus(1, proPower, cityPower, areaPower);
 		
 		CountDto countDto = new CountDto();
 		countDto.setStationSum(station.size());
@@ -777,10 +810,21 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
-
-		Integer blacklistCount = blackelectMapper.findBlackelectsListCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()),null);
-		Integer untreatedBlacklistCount =  blackelectMapper.findBlackelectsListCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()),1);
-		Integer processedBlacklistCount =  blackelectMapper.findBlackelectsListCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()),2);
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
+		Integer blacklistCount = blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,null);
+		Integer untreatedBlacklistCount =  blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,1);
+		Integer processedBlacklistCount =  blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,2);
 		
 		CountDto countDto = new CountDto();
 		countDto.setElectBlacklistSum(blacklistCount);
@@ -805,15 +849,26 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录移动失效，请先登录", false);
 	    }
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
-
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
 		List<Electrombile> electrombiles =  electrombileMapper.findElectsByRecorderId(sysUser.getUser_id().toString());
 		List<Electrombile> electBlacklist =  electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), 2, null, null, null, null, null, null, null, null, null, null, null, null);
-		Integer electAlarmSum = electAlarmMapper.findElectalarmsListCount(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()));
+		Integer electAlarmSum = electAlarmMapper.findElectalarmsListCount(proPower, cityPower, areaPower);
 		CountDto countDto = new CountDto();
 		countDto.setElectRegisterSum(electrombiles.size());
 		countDto.setElectBlacklistSum(electBlacklist.size());
 		countDto.setElectAlarmSum(electAlarmSum);
-		countDto.setElectOnLineSum(electOnLineSum(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power())));
+		countDto.setElectOnLineSum(electOnLineSum(proPower, cityPower, areaPower));
 		return new AppResultDto(countDto);
 	}
 	/**

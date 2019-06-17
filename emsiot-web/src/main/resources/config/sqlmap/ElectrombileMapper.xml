@@ -847,7 +847,9 @@
 	<select id="findElectDateDayCount" parameterType="map" resultType="com.ems.iot.manage.dto.CountDto">
 	     select DATE_FORMAT(total.time,'%Y-%m-%d') as dateKey,ifnull(COUNT(elect.recorder_time), 0) as dateValue from (
 			SELECT curdate() as time
-			union all
+			<if test="dayList.size > 0">
+				union all
+			</if>
 			<foreach collection="dayList" separator=" UNION ALL " item="item">
 				SELECT date_sub(curdate(), interval ${item} day) as time
 			</foreach>

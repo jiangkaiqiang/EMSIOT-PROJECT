@@ -535,7 +535,7 @@ public class ElectUserAppController extends AppBaseController {
 			String influxSql=" SELECT * FROM " + Constant.electStationTable 
 							+ " where plate_num = '"+electrombile.getPlate_num()+"'"
 							+ where
-							+" group by lock_time ";
+							+" group by lock_time order by time desc ";
 			QueryResult results = influxDBConnection
 					.query(influxSql);
 			Result oneResult = results.getResults().get(0);
