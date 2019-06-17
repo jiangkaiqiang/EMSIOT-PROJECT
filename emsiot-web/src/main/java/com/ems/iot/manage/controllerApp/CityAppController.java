@@ -9,6 +9,9 @@ import com.ems.iot.manage.dao.CityMapper;
 import com.ems.iot.manage.dao.ProvinceMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.AppResultDto;
+import com.ems.iot.manage.dto.CityDto;
+import com.ems.iot.manage.entity.Area;
+import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.Cookies;
 import com.ems.iot.manage.entity.Province;
 import com.ems.iot.manage.entity.SysUser;
@@ -96,6 +99,52 @@ public class CityAppController {
 				}
 			}
 		}
+    }
+    
+    
+    /**
+     * 当前账号的省市区
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/findCityByUser")
+    @ResponseBody
+    public Object findCityByUser(String token) {
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		Integer proID = null;
+		Integer cityID = null;
+		Integer areaID = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proID = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityID = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaID = Integer.valueOf(sysUser.getArea_power());
+		}
+		CityDto cityDto = new CityDto();
+    	if (proID != null) {
+    		Province province = cityMapper.findProvinceById(proID);
+    		cityDto.setProvinceId(proID);
+    		cityDto.setProvinceName(province.getName());
+		}
+    	if (cityID!=null) {
+			City city = cityMapper.findCityById(cityID);
+			cityDto.setCityId(cityID);
+    		cityDto.setCityName(city.getName());
+		}
+    	if (areaID!=null) {
+			Area area = cityMapper.findAreaNameByAreaID(areaID);
+			cityDto.setAreaId(areaID);
+    		cityDto.setAreaName(area.getName());
+		}
+    	
+    	return new AppResultDto(cityDto);
     }
     
 }
