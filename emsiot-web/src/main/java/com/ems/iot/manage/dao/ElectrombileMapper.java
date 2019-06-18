@@ -60,7 +60,7 @@ public interface ElectrombileMapper {
     		@Param("recorderID")Integer recorderID, @Param("electState")Integer electState, @Param("insurDetail")Integer insurDetail,
     		@Param("proID")Integer proID, @Param("cityID")Integer cityID, @Param("areaID")Integer areaID, @Param("ownerTele")String ownerTele, @Param("ownerID")String ownerID, 
     		@Param("plateNum")String plateNum, @Param("guaCardNum")String guaCardNum, @Param("ownerName")String ownerName,
-    		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
+    		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower, @Param("plateNumList")List<String> plateNumList);
     /**
      * 为车辆定位提供查询操作
      * @param guaCardNum
@@ -137,7 +137,7 @@ public interface ElectrombileMapper {
      * @param dayList
      * @return
      */
-    List<CountDto> findElectDateDayCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("dayList") List<Integer> dayList);
+    List<CountDto> findElectDateDayCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("recorderId") Integer recorderId, @Param("dayList") List<Integer> dayList);
     /**
      * 查询备案车辆统计（按时间）
      * @param proPower
@@ -146,7 +146,7 @@ public interface ElectrombileMapper {
      * @param dayList
      * @return
      */
-    List<CountDto> findElectDateCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    List<CountDto> findElectDateCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("recorderId") Integer recorderId);
     
     /**
      * 查询备案车辆当天小时统计（按时间小时）
@@ -156,5 +156,5 @@ public interface ElectrombileMapper {
      * @param dayList
      * @return
      */
-    List<CountDto> findElectDateHourCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    List<CountDto> findElectDateHourCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("recorderId") Integer recorderId);
 }

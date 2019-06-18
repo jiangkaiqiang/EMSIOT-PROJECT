@@ -245,6 +245,24 @@
 			<if test="areaPower != null">
 				AND electrombile.`area_id` = #{areaPower}
 			</if>
+			</where>
+   </select>
+   
+    <select id="findBlackelectsListCountForApp" parameterType="map" resultType="Integer">
+      SELECT  count(black_id) FROM `blackelect` LEFT join  `electrombile` on blackelect.`plate_num` =electrombile.`plate_num`
+        <where>
+			<if test="proPower != null">
+			    electrombile.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.`area_id` = #{areaPower}
+			</if>
+			<if test="recorderId != null">
+				AND electrombile.`recorder_id` = #{recorderId}
+			</if>
 			<if test="dealStatus != null">
 				AND blackelect.deal_status = #{dealStatus}
 			</if>

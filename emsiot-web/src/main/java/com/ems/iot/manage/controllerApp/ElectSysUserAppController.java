@@ -16,6 +16,7 @@ import org.influxdb.dto.QueryResult.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,7 @@ import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dao.SysUserMapper;
 import com.ems.iot.manage.dto.ElectrombileDto;
 import com.ems.iot.manage.dto.CountDto;
+import com.ems.iot.manage.dto.ElectAlarmDto;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
 import com.ems.iot.manage.dto.UploadFileEntity;
@@ -36,6 +38,7 @@ import com.ems.iot.manage.entity.Area;
 import com.ems.iot.manage.entity.Blackelect;
 import com.ems.iot.manage.entity.City;
 import com.ems.iot.manage.entity.Cookies;
+import com.ems.iot.manage.entity.ElectAlarm;
 import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.ElectrombileStation;
 import com.ems.iot.manage.entity.Province;
@@ -186,7 +189,7 @@ public class ElectSysUserAppController extends AppBaseController {
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
 		Page<Electrombile> electrombiles = electrombileMapper.findAllElectrombilesForApp(startTime, endTime, sysUser.getUser_id(), electState, insurDetail, proID, 
-				cityID, areaID, keyword, ownerID, keyword, guaCardNum, keyword,null,null,null);
+				cityID, areaID, keyword, ownerID, keyword, guaCardNum, keyword,null,null,null,null);
         if (electrombiles==null||electrombiles.size()==0) {
         	return new AppResultDto(2001, "在该管理员所具有的权限区域内未查询到车辆信息");
 		}
@@ -667,13 +670,13 @@ public class ElectSysUserAppController extends AppBaseController {
 		List<CountDto> countDtos = null;
 		if(type == null || (type != 1 && type != 2 && type != 3)) {
 			//按当天时间段查询数量（默认）
-			countDtos =  electrombileMapper.findElectDateHourCount(proPower, cityPower, areaPower);
+			countDtos =  electrombileMapper.findElectDateHourCount(proPower, cityPower, areaPower, sysUser.getUser_id());
 		}else if(type == 2 || type == 1) {
 			//type=1 统计本周的数量 ，type=2 统计本月的数量
-			countDtos =  electrombileMapper.findElectDateDayCount(proPower, cityPower, areaPower, dateList(type));
+			countDtos =  electrombileMapper.findElectDateDayCount(proPower, cityPower, areaPower, sysUser.getUser_id(), dateList(type));
 		}else if(type == 3) {
 			//所有时间段的统计
-			countDtos =  electrombileMapper.findElectDateCount(proPower, cityPower, areaPower);
+			countDtos =  electrombileMapper.findElectDateCount(proPower, cityPower, areaPower, sysUser.getUser_id());
 		}
 		
 		return new AppResultDto(countDtos);
@@ -750,7 +753,7 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (!sysUser.getArea_power().equals("-1")) {
 			areaPower = Integer.valueOf(sysUser.getArea_power());
 		}
-		List<CountDto> countDtos =  electAlarmMapper.findElectAlarmsInRecent7DaysCount(proPower, cityPower, areaPower);
+		List<CountDto> countDtos =  electAlarmMapper.findElectAlarmsInRecent7DaysCount(proPower, cityPower, areaPower, sysUser.getUser_id());
 		return new AppResultDto(countDtos);
 	}
 	
@@ -822,9 +825,9 @@ public class ElectSysUserAppController extends AppBaseController {
 		if (!sysUser.getArea_power().equals("-1")) {
 			areaPower = Integer.valueOf(sysUser.getArea_power());
 		}
-		Integer blacklistCount = blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,null);
-		Integer untreatedBlacklistCount =  blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,1);
-		Integer processedBlacklistCount =  blackelectMapper.findBlackelectsListCount(proPower, cityPower, areaPower,2);
+		Integer blacklistCount = blackelectMapper.findBlackelectsListCountForApp(proPower, cityPower, areaPower, sysUser.getUser_id(), null);
+		Integer untreatedBlacklistCount =  blackelectMapper.findBlackelectsListCountForApp(proPower, cityPower, areaPower, sysUser.getUser_id(), 1);
+		Integer processedBlacklistCount =  blackelectMapper.findBlackelectsListCountForApp(proPower, cityPower, areaPower, sysUser.getUser_id(), 2);
 		
 		CountDto countDto = new CountDto();
 		countDto.setElectBlacklistSum(blacklistCount);
@@ -862,23 +865,39 @@ public class ElectSysUserAppController extends AppBaseController {
 			areaPower = Integer.valueOf(sysUser.getArea_power());
 		}
 		List<Electrombile> electrombiles =  electrombileMapper.findElectsByRecorderId(sysUser.getUser_id().toString());
-		List<Electrombile> electBlacklist =  electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), 2, null, null, null, null, null, null, null, null, null, null, null, null);
-		Integer electAlarmSum = electAlarmMapper.findElectalarmsListCount(proPower, cityPower, areaPower);
+		List<Electrombile> electBlacklist =  electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), 2, null, null, null, null, null, null, null, null, null, null, null, null,null);
+		Integer electAlarmSum = electAlarmMapper.findElectalarmsListCountForApp(proPower, cityPower, areaPower, sysUser.getUser_id());
 		CountDto countDto = new CountDto();
+		//登记数
 		countDto.setElectRegisterSum(electrombiles.size());
+		//黑名单数
 		countDto.setElectBlacklistSum(electBlacklist.size());
+		//报警次数
 		countDto.setElectAlarmSum(electAlarmSum);
-		countDto.setElectOnLineSum(electOnLineSum(proPower, cityPower, areaPower));
+		//获取当前app管理用户录入的活跃车辆数
+		List<Series> seriesList = electOnLineSum(proPower, cityPower, areaPower);
+		List<String> serSrt = null;
+		if(seriesList != null) {
+			serSrt = new ArrayList<String>();
+			for (Series series : seriesList) {
+				serSrt.add(series.getTags().get("plate_num"));
+			}
+		}
+		Page<Electrombile> activeElect = electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), null, null, proPower, 
+				cityPower, areaPower, null, null, null, null, null,null,null,null,serSrt);
+		countDto.setElectOnLineSum(activeElect.size());
+		
+		//countDto.setElectOnLineSum(electOnLineSum(proPower, cityPower, areaPower));
 		return new AppResultDto(countDto);
 	}
 	/**
-	 * 当天在线移动车辆
+	 * 当天在线移动车辆 
 	 * @param proPower
 	 * @param cityPower
 	 * @param areaPower
 	 * @return
 	 */
-	public Integer electOnLineSum(Integer proPower, Integer cityPower, Integer areaPower) {
+	public List<Series> electOnLineSum(Integer proPower, Integer cityPower, Integer areaPower) {
 		String startTime = null;
 		String endTime = null;
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -941,9 +960,183 @@ public class ElectSysUserAppController extends AppBaseController {
 		Result oneResult = results.getResults().get(0);
 		if (oneResult.getSeries() != null) {
 			List<Series> seriesList = oneResult.getSeries();
-			return seriesList.size();
+			return seriesList;
 		}
-		return 0;
+		return null;
+	}
+	
+	
+	/**
+	 * 根据条件查询报警信息
+	 * 
+	 * @returnx
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/findElectAlarmList")
+	@ResponseBody
+	public Object findElectAlarmList(
+			@RequestParam(value="token", required=false) String token,
+			@RequestParam(value="pageNum",required=false) Integer pageNum,
+			@RequestParam(value="pageSize",required=false) Integer pageSize,
+			@RequestParam(value="plateNum",required=false) String plateNum,
+			@RequestParam(value="alarmDateStart",required=false) String alarmDateStartStr,
+			@RequestParam(value="alarmDateEnd",required=false) String alarmDateEndStr
+			
+			) throws UnsupportedEncodingException, ParseException {
+		
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		if (null==alarmDateStartStr ) {
+			alarmDateStartStr = null;
+		}
+		if (null==alarmDateEndStr) {
+			alarmDateEndStr = null;
+		}
+		if (null==plateNum) {
+			plateNum = null;
+		}
+		
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
+		
+		pageNum = pageNum == null? 1:pageNum;
+		pageSize = pageSize==null? 12:pageSize;
+		PageHelper.startPage(pageNum, pageSize);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date alarmDateStart=null;
+		Date alarmDateEnd=null;
+		if(alarmDateStartStr!="" && alarmDateStartStr!=null){
+			alarmDateStart=sdf.parse(alarmDateStartStr);
+		}
+		if(alarmDateEndStr!="" && alarmDateEndStr!=null){
+			alarmDateEnd=sdf.parse(alarmDateEndStr);
+		}
+		
+		Page<ElectAlarm> electAlarms=electAlarmMapper.findAllElectalarmByOptionsForApp(plateNum, alarmDateStart, alarmDateEnd, proPower, cityPower, areaPower, sysUser.getUser_id());
+		Page<ElectAlarmDto> electAlarmDtos = new Page<ElectAlarmDto>();
+		for(ElectAlarm electAlarm:electAlarms){
+			ElectAlarmDto electAlarmDto = new ElectAlarmDto();
+			electAlarmDto.setElectAlarm(electAlarm);
+			Page<Station> station = stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null,null,null,null);
+			if(station.size()>0) {
+				electAlarmDto.setStatioAddress(station.get(0).getStation_address());
+				electAlarmDto.setStatioName(station.get(0).getStation_name());
+			}
+			Electrombile elect = electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
+			Electrombile electrombile = new Electrombile();
+			if(elect!=null) {
+				electrombile = elect;
+				electAlarmDto.setOwnerName(electrombile.getOwner_name());
+				electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
+				electAlarmDto.setOwnerPlateNum(electrombile.getPlate_num());
+			}
+			electAlarmDtos.add(electAlarmDto);
+		}
+		electAlarmDtos.setPageSize(electAlarms.getPageSize());
+		electAlarmDtos.setPages(electAlarms.getPages());
+		electAlarmDtos.setTotal(electAlarms.getTotal());
+		PageInfo<ElectAlarmDto> pageInfo = new PageInfo<ElectAlarmDto>(electAlarmDtos);
+		return new AppResultDto(pageInfo);
+	}
+	
+	/**
+	 * 根据条件查询活跃车辆信息
+	 * 
+	 * @returnx
+	 * @throws UnsupportedEncodingException
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/findElectOnLineList")
+	@ResponseBody
+	public Object findElectOnLineList(
+			@RequestParam(value="token", required=false) String token,
+			@RequestParam(value="pageNum",required=false) Integer pageNum,
+			@RequestParam(value="pageSize",required=false) Integer pageSize,
+			@RequestParam(value="plateNum",required=false) String plateNum
+			
+			) throws UnsupportedEncodingException, ParseException {
+		
+		Cookies effectiveCookie = cookieService.findEffectiveCookie(token);
+		if (effectiveCookie==null) {
+			return new AppResultDto(4001, "登录失效，请先登录", false);
+	    }
+		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		if (null==plateNum) {
+			plateNum = null;
+		}
+		Integer proPower = null;
+		Integer cityPower = null;
+		Integer areaPower = null;
+		if (!sysUser.getPro_power().equals("-1")) {
+			proPower = Integer.valueOf(sysUser.getPro_power());
+		}
+		if (!sysUser.getCity_power().equals("-1")) {
+			cityPower = Integer.valueOf(sysUser.getCity_power());
+		}
+		if (!sysUser.getArea_power().equals("-1")) {
+			areaPower = Integer.valueOf(sysUser.getArea_power());
+		}
+		List<Series> seriesList = electOnLineSum(proPower, cityPower, areaPower);
+		List<String> serSrt = null;
+		if(seriesList != null) {
+			serSrt = new ArrayList<String>();
+			for (Series series : seriesList) {
+				serSrt.add(series.getTags().get("plate_num"));
+			}
+		}
+		
+		pageNum = pageNum == null? 1:pageNum;
+		pageSize = pageSize==null? 12:pageSize;
+		PageHelper.startPage(pageNum, pageSize);
+		Page<Electrombile> electrombiles = new Page<Electrombile>();
+		if(serSrt!=null) {
+			electrombiles = electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), null, null, proPower, 
+				cityPower, areaPower, null, null, plateNum, null, null,null,null,null,serSrt);
+		}
+
+        Page<ElectrombileDto> electrombileDtos = new Page<ElectrombileDto>();
+		for (Electrombile electrombile : electrombiles) {
+			ElectrombileDto electrombileDto = new ElectrombileDto();
+			electrombileDto.setElectrombile(electrombile);
+			Province province = cityMapper.findProvinceById(electrombile.getPro_id());
+			if (province!=null) {
+				electrombileDto.setProvinceName(province.getName());
+			}
+			City city = cityMapper.findCityById(electrombile.getCity_id());
+			if (city!=null) {
+				electrombileDto.setCityName(city.getName());
+			}
+			Area area = cityMapper.findAreaNameByAreaID(electrombile.getArea_id());
+			if (area!=null) {
+				electrombileDto.setAreaName(area.getName());
+			}
+			SysUser sysRecorder = sysUserMapper.findUserById(electrombile.getRecorder_id());
+			if (sysRecorder!=null) {
+				electrombileDto.setRecordName(sysRecorder.getUser_name());
+			}
+			electrombileDtos.add(electrombileDto);
+		}
+		electrombileDtos.setPageSize(electrombiles.getPageSize());
+		electrombileDtos.setPages(electrombiles.getPages());
+		electrombileDtos.setTotal(electrombiles.getTotal());
+		
+		PageInfo<ElectrombileDto> elePageInfo = new PageInfo<ElectrombileDto>(electrombileDtos);
+		return new AppResultDto(elePageInfo);
+        
 	}
 	
 }

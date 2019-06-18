@@ -805,9 +805,17 @@
 			<if test="endTime!=null and endTime!=''">
 				AND recorder_time &lt;= #{endTime}
 			</if>
+			<if test="plateNumList != null">
+			    AND plate_num in
+				<foreach collection="plateNumList" index="index" item="item" open="(" separator="," close=")">
+		            #{item}
+		        </foreach>
+	        </if>
 		</where>
 		order by `recorder_time` desc
 	</select>
+
+	
 	<select id="findElectForFilter" parameterType="map" resultType="Electrombile">
 		SELECT * FROM `electrombile`
 		<where>
@@ -867,6 +875,9 @@
 					<if test="areaPower != null">
 						AND electrombile.area_id = #{areaPower}
 					</if>
+					<if test="recorderId != null">
+						AND electrombile.recorder_id = #{recorderId}
+					</if>
 				</where> 
 			) elect on DATE_FORMAT(elect.recorder_time,'%Y-%m-%d')=total.time
 			
@@ -885,6 +896,9 @@
 				<if test="areaPower != null">
 					AND electrombile.area_id = #{areaPower}
 				</if>
+				<if test="recorderId != null">
+					AND electrombile.recorder_id = #{recorderId}
+				</if>
 			</where> 
 		 GROUP BY dateKey
 	</select>
@@ -901,6 +915,9 @@
 				</if>
 				<if test="areaPower != null">
 					AND electrombile.area_id = #{areaPower}
+				</if>
+				<if test="recorderId != null">
+					AND electrombile.recorder_id = #{recorderId}
 				</if>
 			</where> 
 		 GROUP BY dateKey
