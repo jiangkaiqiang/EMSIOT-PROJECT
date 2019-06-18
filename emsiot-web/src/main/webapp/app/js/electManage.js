@@ -252,6 +252,11 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	}
     
 	$scope.goSearch = function () {
+		$scope.ownerTele = "";
+		$scope.ownerID = "";
+		$scope.plateNum = "";
+		$scope.guaCardNum = "";
+		$scope.ownerName = "";
 		if($scope.searchKeyType=="1"){
 			$scope.ownerTele = $scope.searchKey;
 		}
