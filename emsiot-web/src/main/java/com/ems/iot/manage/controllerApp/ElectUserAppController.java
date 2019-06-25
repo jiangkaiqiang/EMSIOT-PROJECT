@@ -25,6 +25,7 @@ import com.ems.iot.manage.dao.ProvinceMapper;
 import com.ems.iot.manage.dao.StationMapper;
 import com.ems.iot.manage.dto.AppResultDto;
 import com.ems.iot.manage.dto.BaseDto;
+import com.ems.iot.manage.dto.BlackElectAppDto;
 import com.ems.iot.manage.dto.ElectLockTraceDto;
 import com.ems.iot.manage.dto.ResultDto;
 import com.ems.iot.manage.dto.TraceStationDto;
@@ -423,7 +424,15 @@ public class ElectUserAppController extends AppBaseController {
 	     }
 		AppUser appUser =  appUserMapper.findUserByName(effectiveCookie.getUsername());
 		List<Blackelect> blackelects = blackelectMapper.findBlackelectsByOwnerTele(appUser.getUser_tele());
-		return new AppResultDto(blackelects);
+		List<BlackElectAppDto> blackElectAppDtos = new ArrayList<BlackElectAppDto>();
+		for (Blackelect blackelect : blackelects) {
+			BlackElectAppDto blackElectAppDto = new BlackElectAppDto();
+			blackElectAppDto.setBlackelect(blackelect);
+			Electrombile electrombile = electrombileMapper.findGuaCardNumByPlateNum(blackelect.getPlate_num());
+			blackElectAppDto.setElectrombile(electrombile);
+			blackElectAppDtos.add(blackElectAppDto);
+		}
+		return new AppResultDto(blackElectAppDtos);
 	}
 	
 	/**
