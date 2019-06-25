@@ -680,7 +680,15 @@ public class PeopleController extends BaseController {
 			@RequestParam(value = "cityPower", required = false) Integer cityPower,
 			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
-		
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 //		Integer count = electrombileStationMapper.selectElectsCountByStationPhyNumAndTime(stationPhyNum, startTime, endTime);
 //		return count;
 		String[] stationPhyNums=null;
@@ -751,8 +759,11 @@ public class PeopleController extends BaseController {
 		Map<String, Integer> mapList=new HashMap<String, Integer>();
 		Map<String, List<StationPeopleDto>> mapElectList=new HashMap<String, List<StationPeopleDto>>();
 		String sql="";
-		
-		sql=strSql+" where "+where+" group by people_id_cards order by time desc limit 1";
+		if(where.equals("")) {
+			sql=strSql+" group by people_id_cards order by time desc limit 1";
+		}else {
+			sql=strSql+" where "+where+" group by people_id_cards order by time desc limit 1";
+		}
 		
 		QueryResult results = influxDBConnection
 				.query(sql);
@@ -884,6 +895,15 @@ public class PeopleController extends BaseController {
 			@RequestParam(value = "areaPower", required = false) Integer areaPower,
 			@RequestParam(value = "peopleGuaCardNum", required = false) Integer peopleGuaCardNum)
 			throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		Station station = new Station();
 		String strSql=" SELECT * FROM  " + Constant.peopleStationTable;
 		String where = "";
@@ -967,6 +987,15 @@ public class PeopleController extends BaseController {
 			@RequestParam(value = "cityPower", required = false) Integer cityPower,
 			@RequestParam(value = "areaPower", required = false) Integer areaPower)
 					throws UnsupportedEncodingException {
+		if (null == proPower || proPower == -1) {
+			proPower = null;
+		}
+		if (null == cityPower || cityPower == -1) {
+			cityPower = null;
+		}
+		if (null == areaPower || areaPower == -1) {
+			areaPower = null;
+		}
 		String strSql=" SELECT * FROM " + Constant.peopleStationTable;
 		String where = "";
 		

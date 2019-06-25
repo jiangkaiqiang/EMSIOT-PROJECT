@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.CountDto;
 import com.ems.iot.manage.entity.Electrombile;
 import com.github.pagehelper.Page;
 
@@ -59,7 +60,7 @@ public interface ElectrombileMapper {
     		@Param("recorderID")Integer recorderID, @Param("electState")Integer electState, @Param("insurDetail")Integer insurDetail,
     		@Param("proID")Integer proID, @Param("cityID")Integer cityID, @Param("areaID")Integer areaID, @Param("ownerTele")String ownerTele, @Param("ownerID")String ownerID, 
     		@Param("plateNum")String plateNum, @Param("guaCardNum")String guaCardNum, @Param("ownerName")String ownerName,
-    		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower);
+    		@Param("proPower")Integer proPower, @Param("cityPower")Integer cityPower, @Param("areaPower")Integer areaPower, @Param("plateNumList")List<String> plateNumList);
     /**
      * 为车辆定位提供查询操作
      * @param guaCardNum
@@ -127,4 +128,33 @@ public interface ElectrombileMapper {
      * @return
      */
     List<Electrombile> findAllOpenLockElectByTele(@Param("tele") String tele);
+    
+    /**
+     * 查询备案车辆周和月的统计（按时间）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param dayList
+     * @return
+     */
+    List<CountDto> findElectDateDayCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("recorderId") Integer recorderId, @Param("dayList") List<Integer> dayList);
+    /**
+     * 查询备案车辆统计（按时间）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param dayList
+     * @return
+     */
+    List<CountDto> findElectDateCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("recorderId") Integer recorderId);
+    
+    /**
+     * 查询备案车辆当天小时统计（按时间小时）
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @param dayList
+     * @return
+     */
+    List<CountDto> findElectDateHourCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower, @Param("recorderId") Integer recorderId);
 }

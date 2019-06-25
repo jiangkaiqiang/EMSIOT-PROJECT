@@ -67,7 +67,7 @@ public class ElectAlarmController extends BaseController {
 		pageNum = pageNum == null? 1:pageNum;
 		pageSize = pageSize==null? 12:pageSize;
 		PageHelper.startPage(pageNum, pageSize);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd - HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date alarmDateStart=null;
 		Date alarmDateEnd=null;
 		if(alarmDateStartStr!="" && alarmDateStartStr!=null){

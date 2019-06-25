@@ -508,6 +508,9 @@ public class ElectUserAppController extends AppBaseController {
 				List<Object> values = listVal.get(0);
 				electrombile.setPlate_num(electrombile.getPlate_num());
 				electrombile.setLock_status(lockStatus);
+				if(lockStatus == 1) {
+					electrombile.setAlarm_sms(0);
+				}
 				electrombile.setLock_station(values.get(listCol.indexOf("station_name")).toString());
 				electrombile.setLock_address(values.get(listCol.indexOf("station_address")).toString());
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -532,9 +535,7 @@ public class ElectUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 		}
 		Electrombile electrombile=electrombileMapper.findGuaCardNumByPlateNum(plateNum);
-		if(electrombile==null){
-			return new AppResultDto(3001, "该车牌号不存在！", false);
-		}
+		
 		if(electrombile!=null) {
 			String where = "";
 			if( lockTime != null && !"".equals(lockTime)) {
@@ -543,7 +544,7 @@ public class ElectUserAppController extends AppBaseController {
 			String influxSql=" SELECT * FROM " + Constant.electStationTable 
 							+ " where plate_num = '"+electrombile.getPlate_num()+"'"
 							+ where
-							+" group by lock_time ";
+							+" group by lock_time order by time desc ";
 			QueryResult results = influxDBConnection
 					.query(influxSql);
 			Result oneResult = results.getResults().get(0);
@@ -556,24 +557,31 @@ public class ElectUserAppController extends AppBaseController {
 					String lock_time = series.getTags().get("lock_time");
 					ElectLockTraceDto electLock = new ElectLockTraceDto();
 					electLock.setLockTime(lock_time);
-					List<Station> stations = new ArrayList<Station>();
+					electLock.setPlateNum(plateNum);
+					List<TraceStationDto> traceStations = new ArrayList<TraceStationDto>();
 					for (List<Object> lists : listVal) {
+						TraceStationDto traceStationDto = new TraceStationDto();
 						Station station = new Station();
 						station.setStation_phy_num(Integer.parseInt(lists.get(listCol.indexOf("station_phy_num")).toString()));
 						station.setStation_name(lists.get(listCol.indexOf("station_name")).toString());
 						station.setLongitude(lists.get(listCol.indexOf("longitude")).toString());
 						station.setLatitude(lists.get(listCol.indexOf("latitude")).toString());
 						station.setStation_address(lists.get(listCol.indexOf("station_address")).toString());
-						stations.add(station);
+						traceStationDto.setStation(station);
+						traceStationDto.setCrossTime(TimeUtil.getInfluxTime(lists.get(listCol.indexOf("time")).toString()));
+						traceStations.add(traceStationDto);
 					}
-					electLock.setStation(stations);
+					electLock.setTraceStation(traceStations);
 					electLockTrackDtos.add(electLock);
 				}
+				return new AppResultDto(electLockTrackDtos);
 			} else {
-				return new AppResultDto(2001, "该车牌号未经过任何基站！", false);
+				return new AppResultDto(3001, "该车牌号未经过任何基站！", false);
 			}
+		}else {
+			return new AppResultDto(3001, "该车牌号不存在！", false);
 		}
-		return new AppResultDto(1001, "修改成功");
+		
 	}
 	
 	

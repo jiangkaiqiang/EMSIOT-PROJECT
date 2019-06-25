@@ -103,6 +103,33 @@
 			</where>
 			order by alarm_time desc
    </select>
+     <select id="findAllElectalarmByOptionsForApp" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
+        SELECT  elect_alarm.* FROM `elect_alarm` LEFT join  `electrombile` on elect_alarm.`alarm_gua_card_num` =electrombile.`gua_card_num`
+        <where>
+        	<if test="plateNum != null and plateNum != ''">
+				electrombile.plate_num = #{plateNum}
+			</if>
+			<if test="alarmDateStart != null and alarmDateStart != ''">
+				AND alarm_time  &gt;= #{alarmDateStart}
+			</if>
+			<if test="alarmDateEnd != null and alarmDateEnd != ''">
+				AND alarm_time &lt;= #{alarmDateEnd}
+			</if>
+			<if test="proPower != null">
+			    AND electrombile.`pro_id` = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.`city_id` = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.`area_id` = #{areaPower}
+			</if>
+			<if test="recorderId != null">
+				AND electrombile.`recorder_id` = #{recorderId}
+			</if>
+			</where>
+			order by alarm_time desc
+   </select>
    <select id="findElectalarmsList" parameterType="map" resultType="com.ems.iot.manage.entity.ElectAlarm">
         SELECT * FROM `elect_alarm` left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
         <where>
@@ -130,6 +157,23 @@
 			</if>
 			<if test="areaPower != null">
 				AND electrombile.area_id = #{areaPower}
+			</if>
+		</where>
+   </select>
+   <select id="findElectalarmsListCountForApp" parameterType="map" resultType="Integer">
+        SELECT count(*) FROM `elect_alarm` left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num
+        <where>
+			<if test="proPower != null">
+			    electrombile.pro_id = #{proPower}
+			</if>
+			<if test="cityPower != null">
+				AND electrombile.city_id = #{cityPower}
+			</if>
+			<if test="areaPower != null">
+				AND electrombile.area_id = #{areaPower}
+			</if>
+			<if test="recorderId != null">
+				AND electrombile.recorder_id = #{recorderId}
 			</if>
 		</where>
    </select>
@@ -287,5 +331,46 @@ GROUP BY a.alarm_gua_card_num
 		
 	</select>
 	
+   
+   
+   <select id="findElectAlarmsInRecent7DaysCount" parameterType="map" resultType="com.ems.iot.manage.dto.CountDto">
+       
+       select DATE_FORMAT(total.alarm_time,'%Y-%m-%d') as dateKey,ifnull(COUNT(alarm.alarm_time), 0) as dateValue from (
+			SELECT curdate() as alarm_time
+			union all
+			SELECT date_sub(curdate(), interval 1 day) as alarm_time
+			union all
+			SELECT date_sub(curdate(), interval 2 day) as alarm_time
+			union all
+			SELECT date_sub(curdate(), interval 3 day) as alarm_time
+			union all
+			SELECT date_sub(curdate(), interval 4 day) as alarm_time
+			union all
+			SELECT date_sub(curdate(), interval 5 day) as alarm_time
+			union all
+			SELECT date_sub(curdate(), interval 6 day) as alarm_time
+			) as total
+			LEFT JOIN 
+			(
+				SELECT elect_alarm.* FROM `elect_alarm` left join electrombile on electrombile.gua_card_num = elect_alarm.alarm_gua_card_num          
+				<where>
+					<if test="proPower != null">
+					    AND electrombile.pro_id = #{proPower}
+					</if>
+					<if test="cityPower != null">
+						AND electrombile.city_id = #{cityPower}
+					</if>
+					<if test="areaPower != null">
+						AND electrombile.area_id = #{areaPower}
+					</if>
+					<if test="recorderId != null">
+						AND electrombile.recorder_id = #{recorderId}
+					</if>
+				</where> 
+			) alarm on DATE_FORMAT(alarm.alarm_time,'%Y-%m-%d')=total.alarm_time
+			
+			GROUP BY dateKey
+   </select>
+   
    
 </mapper>

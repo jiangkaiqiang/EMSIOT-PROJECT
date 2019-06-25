@@ -6,9 +6,19 @@ import com.ems.iot.manage.entity.Station;
 
 public class ElectLockTraceDto {
 
+	private String plateNum;
+	
 	private String lockTime;
 	
-	private List<Station> station;
+	private List<TraceStationDto> traceStation;
+
+	public String getPlateNum() {
+		return plateNum;
+	}
+
+	public void setPlateNum(String plateNum) {
+		this.plateNum = plateNum;
+	}
 
 	public String getLockTime() {
 		return lockTime;
@@ -18,13 +28,16 @@ public class ElectLockTraceDto {
 		this.lockTime = lockTime;
 	}
 
-	public List<Station> getStation() {
-		return station;
+	public List<TraceStationDto> getTraceStation() {
+		return traceStation;
 	}
 
-	public void setStation(List<Station> station) {
-		this.station = station;
+	public void setTraceStation(List<TraceStationDto> traceStation) {
+		this.traceStation = traceStation;
 	}
+
+	
+	
 	
 	
 }

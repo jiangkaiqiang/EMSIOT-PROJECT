@@ -5,7 +5,7 @@
     <title>电动车管理系统</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="renderer" content="ie-stand"> 
     <META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
     <META HTTP-EQUIV="expires" CONTENT="0">
@@ -632,7 +632,8 @@ function getinfo_onclick() {
 	document.getElementsByName("ownerIdIssuingAuthority")[rdcardIndex].value=rdcard.Police;
 	document.getElementsByName("ownerIdUsefulLife")[rdcardIndex].value=rdcard.ActivityL;
 	document.getElementsByName("ownerBorn")[rdcardIndex].value=rdcard.BornL;
-
+	document.getElementsByName("ownerCardIdPic")[rdcardIndex].value='data:image/jpeg;base64,' + rdcard.JPGBuffer;
+	document.getElementsByName('ownerCardIdPhoto')[rdcardIndex].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;
 	if(rdcard.bHaveCard == "1")
 	{
 		if(rdcard.CardType == "I")
@@ -659,8 +660,11 @@ function getinfo_onclick() {
 	//document.all['photo'][rdcardIndex].src  = 'data:image/jpeg;base64,' + rdcard.JPGBuffer;
 	//console.log(rdcard.FrontJpgPic)
 	rdcard.SaveCardPic("C:\\temp\\sfzh.jpg","C:\\temp\\sfzs.jpg",1)
-	document.getElementsByName("ownerCardIdPic")[rdcardIndex].value="C:\\temp\\sfzh.jpg";
-	document.getElementsByName('ownerCardIdPhoto')[rdcardIndex].src  = 'C:\\temp\\sfzh.jpg';
+	//document.getElementsByName("ownerCardIdPic")[rdcardIndex].value="file://C:\\temp\\sfzh.jpg";
+	//document.getElementsByName('ownerCardIdPhoto')[rdcardIndex].src  = 'file://C:\\temp\\sfzh.jpg';
+	//document.getElementsByName("ownerCardIdPic")[rdcardIndex].value='data:image/jpeg;base64,' + rdcard.FrontJpgPic;
+	//document.getElementsByName('ownerCardIdPhoto')[rdcardIndex].src  = 'data:image/jpeg;base64,' + rdcard.FrontJpgPic;
+	
 	//document.all['recordPic'].src  = 'data:image/jpeg;base64,' + rdcard.FrontJpgPic;
 }
 

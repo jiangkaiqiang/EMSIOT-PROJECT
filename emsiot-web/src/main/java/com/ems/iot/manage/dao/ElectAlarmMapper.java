@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.ems.iot.manage.dto.CountDto;
 import com.ems.iot.manage.dto.ElectAlarmDto;
 import com.ems.iot.manage.dto.StationElectDto;
 import com.ems.iot.manage.entity.ElectAlarm;
@@ -27,9 +28,14 @@ public interface ElectAlarmMapper {
     Page<ElectAlarm> findAllElectalarmByOptions(@Param("plateNum")String plateNum,@Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
     		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
+    Page<ElectAlarm> findAllElectalarmByOptionsForApp(@Param("plateNum")String plateNum,@Param("alarmDateStart")Date alarmDateStart,@Param("alarmDateEnd")Date alarmDateEnd,
+    		@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower,@Param("recorderId") Integer recorderId);
+    
     List<ElectAlarm> findElectalarmsList(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
     
     Integer findElectalarmsListCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
+    Integer findElectalarmsListCountForApp(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower,@Param("recorderId") Integer recorderId);
     
     /**
      * 根据车辆芯片编号和时间，查询报警车辆轨迹
@@ -78,5 +84,14 @@ public interface ElectAlarmMapper {
      * @return
      */
     List<ElectAlarm> selectElectAlarmVehicleByTime(@Param("startTime") String startTime, @Param("endTime") String endTime, @Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower);
+    
+    /**
+     * 获取近7天的报警统计值
+     * @param proPower
+     * @param cityPower
+     * @param areaPower
+     * @return
+     */
+    List<CountDto> findElectAlarmsInRecent7DaysCount(@Param("proPower") Integer proPower,@Param("cityPower") Integer cityPower,@Param("areaPower") Integer areaPower,@Param("recorderId") Integer recorderId);
     
 }

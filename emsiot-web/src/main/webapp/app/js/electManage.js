@@ -252,6 +252,11 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 	}
     
 	$scope.goSearch = function () {
+		$scope.ownerTele = "";
+		$scope.ownerID = "";
+		$scope.plateNum = "";
+		$scope.guaCardNum = "";
+		$scope.ownerName = "";
 		if($scope.searchKeyType=="1"){
 			$scope.ownerTele = $scope.searchKey;
 		}
@@ -545,6 +550,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     	if(rdcardIndex!=-1){
     		addGive();
     	}
+    	var indentityCardPicFile = null;
+    	if($scope.indentityCardPic!=null && $scope.indentityCardPic!=undefined){
+	    	var myFile = dataURLtoFile(dataURLtoBlob($scope.indentityCardPic),'sfz');
+	    	console.log(myFile)
+	    	indentityCardPicFile = myFile
+    	}
         if (checkInput()){
         	data = {
         			'gua_card_num': $scope.addGuaCardNum,
@@ -561,7 +572,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
     			    'elect_type' : $("input[name='addElectType']:checked").val(),
     			    'insur_detail' : $scope.addInsurDetail,
     			    'elect_pic' : $scope.electPic,
-    			    'indentity_card_pic' : $scope.indentityCardPic,
+    			    'indentity_card_pic' : indentityCardPicFile,
     			    'record_pic' : $scope.recordPic,
     			    'install_card_pic' : $scope.installCardPic,
     			    'insur_pic' : $scope.insurPic,
@@ -693,10 +704,50 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		        }
 		        return flag;
 	    }
+		function dataURLtoBlob(dataurl) {
+
+			var arr = dataurl.split(','),
+
+			        mime = arr[0].match(/:(.*?);/)[1],
+
+			        bstr =atob(arr[1]),
+
+			        n = bstr.length,
+
+			        u8arr =new Uint8Array(n);
+
+			    while (n--) {
+
+			u8arr[n] = bstr.charCodeAt(n);
+
+			    }
+
+			return new Blob([u8arr], {type: mime });
+
+			}
+
+			//将blob转换成file
+
+			function dataURLtoFile(theBlob, fileName){
+
+			theBlob.lastModifiedDate =new Date();
+
+			    theBlob.name = fileName;
+
+			    return theBlob;
+
+			}
 		 $scope.update = function(){
 			 if(rdcardIndex!=-1){
 		    		addGive();
 		    	}
+			 var indentityCardPicFile = null;
+		    	if($scope.indentityCardPic!=null && $scope.indentityCardPic!=undefined){
+			    	var myFile = dataURLtoFile(dataURLtoBlob($scope.updateElect.electrombile.indentity_card_pic),'sfz');
+			    	console.log(myFile)
+			    	indentityCardPicFile = myFile
+		    	}
+
 			 if (checkInputForUpdate()){
 				 data = {
 						    'elect_id':$scope.updateElect.electrombile.elect_id,
@@ -714,7 +765,7 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		    			    'elect_type' : $("input[name='updateElectType']:checked").val(),
 		    			    'insur_detail' : $scope.updateElect.electrombile.insur_detail,
 		    			    'elect_pic' : $scope.updateElect.electrombile.elect_pic,
-		    			    'indentity_card_pic' : $scope.updateElect.electrombile.indentity_card_pic,
+		    			    'indentity_card_pic' : indentityCardPicFile,
 		    			    'record_pic' : $scope.updateElect.electrombile.record_pic,
 		    			    'install_card_pic' : $scope.updateElect.electrombile.install_card_pic,
 		    			    'insur_pic' : $scope.updateElect.electrombile.insur_pic,
@@ -843,9 +894,12 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 			beginread_onclick();
 		} catch (e) {
 			// TODO: handle exception
+			console.error(e);
 			return;
 		}
 		$scope.isSubmit = false;
+		
+		
 	});
 	$('#addCar').on('hidden.bs.modal', function () {
 		try {
@@ -878,8 +932,8 @@ coldWeb.controller('electManage', function ($rootScope, $scope, $state, $cookies
 		}
 
 	});
-
-
+	
+	
 });
 
 
