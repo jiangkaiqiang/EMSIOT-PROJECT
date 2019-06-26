@@ -82,7 +82,10 @@ public class Electrombile {
     ////////////////////
     private String user_tele;
     
-
+	private String provinceName;
+	private String cityName;
+	private String areaName;
+	
     public String getOwner_id_type() {
 		return owner_id_type;
 	}
@@ -417,6 +420,30 @@ public class Electrombile {
 
 	public void setAlarm_sms(Integer alarm_sms) {
 		this.alarm_sms = alarm_sms;
+	}
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public String getAreaName() {
+		return areaName;
+	}
+
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
 	}
 
 	

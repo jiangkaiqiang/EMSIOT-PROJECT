@@ -1,6 +1,7 @@
 package com.ems.iot.manage.dto;
 
 import com.ems.iot.manage.entity.ElectAlarm;
+import com.ems.iot.manage.entity.Electrombile;
 import com.ems.iot.manage.entity.Station;
 
 public class ElectAlarmDto {
@@ -11,6 +12,7 @@ public class ElectAlarmDto {
 	private String ownerName;
 	private String ownerPlateNum;
 	private Station station;
+	private Electrombile electrombile;
 	public ElectAlarm getElectAlarm() {
 		return electAlarm;
 	}
@@ -52,6 +54,12 @@ public class ElectAlarmDto {
 	}
 	public void setStation(Station station) {
 		this.station = station;
+	}
+	public Electrombile getElectrombile() {
+		return electrombile;
+	}
+	public void setElectrombile(Electrombile electrombile) {
+		this.electrombile = electrombile;
 	}
 	
 }

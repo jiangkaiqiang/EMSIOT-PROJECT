@@ -1033,16 +1033,30 @@ public class ElectSysUserAppController extends AppBaseController {
 			electAlarmDto.setElectAlarm(electAlarm);
 			Page<Station> station = stationMapper.findAllStationsByKey(null, null, electAlarm.getAlarm_station_phy_num(), null, null,null,null,null);
 			if(station.size()>0) {
-				electAlarmDto.setStatioAddress(station.get(0).getStation_address());
-				electAlarmDto.setStatioName(station.get(0).getStation_name());
+//				electAlarmDto.setStatioAddress(station.get(0).getStation_address());
+//				electAlarmDto.setStatioName(station.get(0).getStation_name());
+				electAlarmDto.setStation(station.get(0));
 			}
 			Electrombile elect = electrombileMapper.findPlateNumByGuaCardNum(electAlarm.getAlarm_gua_card_num());
 			Electrombile electrombile = new Electrombile();
 			if(elect!=null) {
 				electrombile = elect;
-				electAlarmDto.setOwnerName(electrombile.getOwner_name());
-				electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
-				electAlarmDto.setOwnerPlateNum(electrombile.getPlate_num());
+//				electAlarmDto.setOwnerName(electrombile.getOwner_name());
+//				electAlarmDto.setOwnerTele(electrombile.getOwner_tele());
+//				electAlarmDto.setOwnerPlateNum(electrombile.getPlate_num());
+				Province province = cityMapper.findProvinceById(electrombile.getPro_id());
+				if (province!=null) {
+					electrombile.setProvinceName(province.getName());
+				}
+				City city = cityMapper.findCityById(electrombile.getCity_id());
+				if (city!=null) {
+					electrombile.setCityName(city.getName());
+				}
+				Area area = cityMapper.findAreaNameByAreaID(electrombile.getArea_id());
+				if (area!=null) {
+					electrombile.setAreaName(area.getName());
+				}
+				electAlarmDto.setElectrombile(electrombile);
 			}
 			electAlarmDtos.add(electAlarmDto);
 		}
