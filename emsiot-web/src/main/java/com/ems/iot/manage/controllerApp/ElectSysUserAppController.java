@@ -883,10 +883,13 @@ public class ElectSysUserAppController extends AppBaseController {
 				serSrt.add(series.getTags().get("plate_num"));
 			}
 		}
-		Page<Electrombile> activeElect = electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), null, null, proPower, 
-				cityPower, areaPower, null, null, null, null, null,null,null,null,serSrt);
-		countDto.setElectOnLineSum(activeElect.size());
-		
+		if (serSrt!=null) {
+			Page<Electrombile> activeElect = electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), null, null, proPower, 
+					cityPower, areaPower, null, null, null, null, null,null,null,null,serSrt);
+			countDto.setElectOnLineSum(activeElect.size());
+		}else {
+			countDto.setElectOnLineSum(0);
+		}
 		//countDto.setElectOnLineSum(electOnLineSum(proPower, cityPower, areaPower));
 		return new AppResultDto(countDto);
 	}
