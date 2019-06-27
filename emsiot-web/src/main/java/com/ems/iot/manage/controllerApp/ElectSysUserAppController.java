@@ -1083,6 +1083,8 @@ public class ElectSysUserAppController extends AppBaseController {
 			@RequestParam(value="token", required=false) String token,
 			@RequestParam(value="pageNum",required=false) Integer pageNum,
 			@RequestParam(value="pageSize",required=false) Integer pageSize,
+			@RequestParam(value="electState", required=false) Integer electState,
+			@RequestParam(value="insurDetail", required=false) Integer insurDetail,
 			@RequestParam(value="plateNum",required=false) String plateNum
 			
 			) throws UnsupportedEncodingException, ParseException {
@@ -1092,6 +1094,12 @@ public class ElectSysUserAppController extends AppBaseController {
 			return new AppResultDto(4001, "登录失效，请先登录", false);
 	    }
 		SysUser sysUser = sysUserMapper.findUserByName(effectiveCookie.getUsername());
+		if (null==electState||electState==8) {
+			electState = null;
+		}
+		if (null==insurDetail||insurDetail==8) {
+			insurDetail = null;
+		}
 		if (null==plateNum) {
 			plateNum = null;
 		}
@@ -1121,7 +1129,7 @@ public class ElectSysUserAppController extends AppBaseController {
 		PageHelper.startPage(pageNum, pageSize);
 		Page<Electrombile> electrombiles = new Page<Electrombile>();
 		if(serSrt!=null) {
-			electrombiles = electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), null, null, proPower, 
+			electrombiles = electrombileMapper.findAllElectrombilesForApp(null, null, sysUser.getUser_id(), electState, insurDetail, proPower, 
 				cityPower, areaPower, null, null, plateNum, null, null,null,null,null,serSrt);
 		}
 
