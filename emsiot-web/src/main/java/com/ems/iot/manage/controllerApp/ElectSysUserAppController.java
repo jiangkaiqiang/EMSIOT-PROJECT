@@ -632,6 +632,21 @@ public class ElectSysUserAppController extends AppBaseController {
 		List<Electrombile> electrombiles = null;
 		if (sysUser!=null) {
 			electrombiles = electrombileMapper.findElectsListByElectState(Integer.parseInt(sysUser.getPro_power()), Integer.parseInt(sysUser.getCity_power()), Integer.parseInt(sysUser.getArea_power()), 2);
+			for (Electrombile elect : electrombiles) {
+				Province province = cityMapper.findProvinceById(elect.getPro_id());
+				if (province!=null) {
+					elect.setProvinceName(province.getName());
+				}
+				City city = cityMapper.findCityById(elect.getCity_id());
+				if (city!=null) {
+					elect.setCityName(city.getName());
+				}
+				Area area = cityMapper.findAreaNameByAreaID(elect.getArea_id());
+				if (area!=null) {
+					elect.setAreaName(area.getName());
+				}
+			}
+			
 		}
 		return new AppResultDto(electrombiles);
 	}
