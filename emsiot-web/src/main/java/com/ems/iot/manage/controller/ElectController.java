@@ -29,7 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyun.oss.OSSClient;
+import com.ems.iot.manage.dao.BlackelectMapper;
 import com.ems.iot.manage.dao.CityMapper;
+import com.ems.iot.manage.dao.ElectAlarmMapper;
 import com.ems.iot.manage.dao.ElectrombileMapper;
 import com.ems.iot.manage.dao.ElectrombileStationMapper;
 import com.ems.iot.manage.dao.PeopleMapper;
@@ -81,7 +83,8 @@ public class ElectController extends BaseController {
 	private StationMapper stationMapper;
 	@Autowired
 	private PeopleMapper peopleMapper;
-	
+	@Autowired
+	private BlackelectMapper blackelectMapper;
 	InfluxDBConnection influxDBConnection = new InfluxDBConnection("admin", "admin", "http://47.100.242.28:8086", "emsiot", null);
 	/**
 	 * 根据电动车的ID寻找电动车
@@ -1145,7 +1148,11 @@ public class ElectController extends BaseController {
 	@RequestMapping(value = "/deleteElectByID")
 	@ResponseBody
 	public Object deleteElectByID(Integer electID) {
-		electrombileMapper.deleteByPrimaryKey(electID);
+		Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
+		if (electrombile!=null) {
+			blackelectMapper.deleteByPlateNum(electrombile.getPlate_num());
+			electrombileMapper.deleteByPrimaryKey(electID);
+		}
 		return new BaseDto(0);
 	}
 
@@ -1159,7 +1166,11 @@ public class ElectController extends BaseController {
 	@ResponseBody
 	public Object deleteElectByIDs(Integer[] electIDs) {
 		for (Integer electID : electIDs) {
-			electrombileMapper.deleteByPrimaryKey(electID);
+			Electrombile electrombile = electrombileMapper.selectByPrimaryKey(electID);
+			if (electrombile!=null) {
+				blackelectMapper.deleteByPlateNum(electrombile.getPlate_num());
+				electrombileMapper.deleteByPrimaryKey(electID);
+			}
 		}
 		return new BaseDto(0);
 	}

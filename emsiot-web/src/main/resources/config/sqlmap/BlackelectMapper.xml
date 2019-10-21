@@ -30,6 +30,10 @@
     delete from blackelect
     where black_id = #{black_id,jdbcType=INTEGER}
   </delete>
+   <delete id="deleteByPlateNum" parameterType="map">
+    delete from blackelect
+    where plate_num = #{plate_num}
+  </delete>
   <insert id="insert" parameterType="com.ems.iot.manage.entity.Blackelect">
     insert into blackelect (black_id, plate_num, case_occur_time, 
       owner_tele, owner_name, pro_id, 

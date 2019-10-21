@@ -9,6 +9,8 @@ import com.github.pagehelper.Page;
 
 public interface BlackelectMapper {
     int deleteByPrimaryKey(Integer black_id);
+    
+    int deleteByPlateNum(String plate_num);
 
     int insert(Blackelect record);
 
