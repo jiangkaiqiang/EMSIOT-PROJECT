@@ -18,12 +18,12 @@ public class TelephoneVerifyUtil {
 	final String product = "Dysmsapi";// 短信API产品名称（短信产品名固定，无需修改）
 	final String domain = "dysmsapi.aliyuncs.com";// 短信API产品域名（接口地址固定，无需修改）
 	// 替换成你的AK 车去哪了AK
-	final String accessKeyId = "LTAIAiMSprSiH8Vt";// 你的accessKeyId,参考本文档步骤2
-	final String accessKeySecret = "O06kgfFkdEHwEkA7rKTFUWzS4KDUKF";// 你的accessKeySecret，参考本文档步骤2
+	final String accessKeyId = "***";// 你的accessKeyId,参考本文档步骤2
+	final String accessKeySecret = "***";// 你的accessKeySecret，参考本文档步骤2
 	
 	// 替换成你的AK 蔚蓝树AK
-    //final String accessKeyId = "23581395";// 你的accessKeyId,参考本文档步骤2
-	//final String accessKeySecret = "a1fe24f669df3f81006d002858d7c079";// 你的accessKeySecret，参考本文档步骤2
+    //final String accessKeyId = "***";// 你的accessKeyId,参考本文档步骤2
+	//final String accessKeySecret = "***";// 你的accessKeySecret，参考本文档步骤2
 	// 初始化ascClient,暂时不支持多region（请勿修改）
 	IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
 	/**
