@@ -9,7 +9,7 @@
 	<properties>
 		<env>alpha</env>
 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-		<spring.version>4.1.4.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 	</properties>
 	<dependencies>
 		<!-- test -->
